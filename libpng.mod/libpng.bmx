@@ -71,34 +71,34 @@ Const PNG_INTERLACE_ADAM7=			1
 
 Function png_sig_cmp( buf:Byte Ptr,start,count ) = "bmx_png_sig_cmp"
 
-Function png_create_read_struct( ver_string$z,user_error_ptr:Byte Ptr,user_error_fn:Byte Ptr,user_warning_fn:Byte Ptr) = "bmx_png_create_read_struct"
-Function png_create_write_struct( ver_string$z,user_error_ptr:Byte Ptr,user_error_fn:Byte Ptr,user_warning_fn:Byte Ptr) = "bmx_png_create_write_struct"
+Function png_create_read_struct:Byte Ptr( ver_string$z,user_error_ptr:Byte Ptr,user_error_fn:Byte Ptr,user_warning_fn:Byte Ptr) = "bmx_png_create_read_struct"
+Function png_create_write_struct:Byte Ptr( ver_string$z,user_error_ptr:Byte Ptr,user_error_fn:Byte Ptr,user_warning_fn:Byte Ptr) = "bmx_png_create_write_struct"
 
-Function png_destroy_read_struct( png_ptr Ptr,info_ptr1 Ptr,info_ptr2 Ptr ) = "bmx_png_destroy_read_struct"
-Function png_destroy_write_struct( png_ptr Ptr,info_ptr1 Ptr,info_ptr2 Ptr ) = "bmx_png_destroy_write_struct"
+Function png_destroy_read_struct( png_ptr:Byte Ptr,info_ptr1:Byte Ptr,info_ptr2:Byte Ptr ) = "bmx_png_destroy_read_struct"
+Function png_destroy_write_struct( png_ptr:Byte Ptr,info_ptr1:Byte Ptr,info_ptr2:Byte Ptr ) = "bmx_png_destroy_write_struct"
 
-Function png_create_info_struct( png_ptr ) = "bmx_png_create_info_struct"
+Function png_create_info_struct:Byte Ptr( png_ptr:Byte Ptr ) = "bmx_png_create_info_struct"
 
-Function png_init_io( png_ptr,c_stream ) = "bmx_png_init_io"
-Function png_set_sig_bytes( png_ptr,number ) = "bmx_png_set_sig_bytes"
+Function png_init_io( png_ptr:Byte Ptr,c_stream:Byte Ptr ) = "bmx_png_init_io"
+Function png_set_sig_bytes( png_ptr:Byte Ptr,number ) = "bmx_png_set_sig_bytes"
 
-Function png_set_read_fn( png_ptr,user:Byte Ptr,read_fn(png_ptr,buf:Byte Ptr,size) ) = "bmx_png_set_read_fn"
-Function png_set_write_fn( png_ptr,user:Byte Ptr,write_fn(png_ptr,buf:Byte Ptr,size),flush_fn(png_ptr) ) = "bmx_png_set_write_fn"
+Function png_set_read_fn( png_ptr:Byte Ptr,user:Byte Ptr,read_fn(png_ptr:Byte Ptr,buf:Byte Ptr,size) ) = "bmx_png_set_read_fn"
+Function png_set_write_fn( png_ptr:Byte Ptr,user:Byte Ptr,write_fn(png_ptr:Byte Ptr,buf:Byte Ptr,size),flush_fn(png_ptr:Byte Ptr) ) = "bmx_png_set_write_fn"
 
-Function png_set_expand( png_ptr ) = "bmx_png_set_expand"
-Function png_set_strip_16( png_ptr ) = "bmx_png_set_strip_16"
-Function png_set_gray_to_rgb( png_ptr ) = "bmx_png_set_gray_to_rgb"
+Function png_set_expand( png_ptr:Byte Ptr ) = "bmx_png_set_expand"
+Function png_set_strip_16( png_ptr:Byte Ptr ) = "bmx_png_set_strip_16"
+Function png_set_gray_to_rgb( png_ptr:Byte Ptr ) = "bmx_png_set_gray_to_rgb"
 
-Function png_set_compression_level( png_ptr,level ) = "bmx_png_set_compression_level"
-Function png_set_compression_strategy( png_ptr,strategy ) = "bmx_png_set_compression_strategy"
+Function png_set_compression_level( png_ptr:Byte Ptr,level ) = "bmx_png_set_compression_level"
+Function png_set_compression_strategy( png_ptr:Byte Ptr,strategy ) = "bmx_png_set_compression_strategy"
 
-Function png_read_png( png_ptr,info_ptr,png_transforms,reserved ) = "bmx_png_read_png"
-Function png_write_png( png_ptr,info_ptr,png_transforms,reserved ) = "bmx_png_write_png"
+Function png_read_png( png_ptr:Byte Ptr,info_ptr:Byte Ptr,png_transforms,reserved:Byte Ptr ) = "bmx_png_read_png"
+Function png_write_png( png_ptr:Byte Ptr,info_ptr:Byte Ptr,png_transforms,reserved:Byte Ptr ) = "bmx_png_write_png"
 
-Function png_get_rows:Byte Ptr Ptr( png_ptr,info_ptr ) = "bmx_png_get_rows"
-Function png_set_rows( png_ptr,info_ptr,rows:Byte Ptr ) = "bmx_png_set_rows"
+Function png_get_rows:Byte Ptr Ptr( png_ptr:Byte Ptr,info_ptr:Byte Ptr ) = "bmx_png_get_rows"
+Function png_set_rows( png_ptr:Byte Ptr,info_ptr:Byte Ptr,rows:Byte Ptr ) = "bmx_png_set_rows"
 
-Function png_get_IHDR( png_ptr,info_ptr,width Var,height Var,bit_depth Var,color_type Var,interlace_type Var,compression_type Var,filter_method Var ) = "bmx_png_get_IHDR"
-Function png_set_IHDR( png_ptr,info_ptr,width,height,bit_depth,color_type,interlace_type,compression_type,filter_method ) = "bmx_png_set_IHDR"
+Function png_get_IHDR( png_ptr:Byte Ptr,info_ptr:Byte Ptr,width Var,height Var,bit_depth Var,color_type Var,interlace_type Var,compression_type Var,filter_method Var ) = "bmx_png_get_IHDR"
+Function png_set_IHDR( png_ptr:Byte Ptr,info_ptr:Byte Ptr,width,height,bit_depth,color_type,interlace_type,compression_type,filter_method ) = "bmx_png_set_IHDR"
 
 End Extern
