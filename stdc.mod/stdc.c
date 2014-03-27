@@ -29,9 +29,9 @@ extern int _bbusew;
 
 #endif
  
-int stdin_;
-int stdout_;
-int stderr_;
+FILE* stdin_;
+FILE* stdout_;
+FILE* stderr_;
 
 #if _WIN32
 
