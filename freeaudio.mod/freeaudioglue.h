@@ -16,10 +16,10 @@ extern "C" {
 int		fa_Reset(struct audiodevice *device);
 int		fa_Close();
 
-int		fa_CreateSound(int samples,int bits,int channels,int freq,const char *buf,int loop);
-int		fa_WriteSound( int sound, void *data, int samples);
-int		fa_FreeSound( int sound );
-int		fa_PlaySound( int sound,int paused,int channel );
+sample*		fa_CreateSound(int samples,int bits,int channels,int freq,const char *buf,int loop);
+int		fa_WriteSound( sample* sound, void *data, int samples);
+int		fa_FreeSound( sample* sound );
+int		fa_PlaySound( sample* sound,int paused,int channel );
 
 int		fa_AllocChannel();
 void	fa_FreeChannel( int channel );

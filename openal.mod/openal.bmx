@@ -151,7 +151,7 @@ about:
 The return value will be NULL if there is an error.<br><br>
 Returns a pointer to the opened device. Will return NULL if a device can not be opened.
 End Rem
-Global alcOpenDevice( devicename$z )=P("alcOpenDevice")
+Global alcOpenDevice:Byte Ptr( devicename$z )=P("alcOpenDevice")
 Rem
 bbdoc: This function closes a device by name.
 about:
@@ -161,14 +161,14 @@ about:
 <tr><td>ALC_INVALID_DEVICE</td><td>The specified device name doesn't exist.</td></tr></table><br>
 Any contexts and buffers within the device will be destroyed when the device is closed, and ALC_TRUE will be returned on success or ALC_FALSE on failure.
 End Rem
-Global alcCloseDevice( device )=P("alcCloseDevice")
+Global alcCloseDevice( device:Byte Ptr )=P("alcCloseDevice")
 Rem
 bbdoc: This function retrieves the current context error state.
 about:
 <table><tr><th>Parameters</th><th>Description</th></tr>
 <tr><td>device</td><td>a pointer to the device to retrieve the error state from</td></tr></table><br>
 End Rem
-Global alcGetError( device )=P("alcGetError")
+Global alcGetError( device:Byte Ptr )=P("alcGetError")
 Rem
 bbdoc: This function returns pointers to strings related to the context.
 about:
@@ -183,7 +183,7 @@ ALC_DEVICE_SPECIFIER will return the name of the specified output device if a po
 ALC_CAPTURE_DEVICE_SPECIFIER will return the name of the specified capture device if a pointer is supplied, or will return a list of all available devices if a NULL device pointer is supplied.<br><br>
 ALC_EXTENSIONS returns a list of available context extensions, with each extension separated by a space and the list terminated by a NULL character.<br><br>
 End Rem
-Global alcGetString:Byte Ptr( device,param )=P("alcGetString")
+Global alcGetString:Byte Ptr( device:Byte Ptr,param )=P("alcGetString")
 Rem
 bbdoc: This function returns integers related to the context.
 about:
@@ -199,7 +199,7 @@ about:
 <tr><td>ALC_INVALID_CONTEXT</td><td>The specified context is not valid.</td></tr></table><br>
 The versions returned refer to the specification version that the implementation meets.
 End Rem
-Global alcGetIntegerv( device,param,size,data:Int Ptr )=P("alcGetIntegerv")
+Global alcGetIntegerv( device:Byte Ptr,param,size,data:Int Ptr )=P("alcGetIntegerv")
 Rem
 bbdoc: This function creates a context using a specified device.
 about:
@@ -211,7 +211,7 @@ about:
 <tr><td>ALC_INVALID_DEVICE</td><td>The specified device is not a valid output device.</td></tr></table><br>
 returns: A pointer to the new context (NULL on failure).
 End Rem
-Global alcCreateContext( device,attrlist:Int Ptr )=P("alcCreateContext")
+Global alcCreateContext:Byte Ptr( device:Byte Ptr,attrlist:Int Ptr )=P("alcCreateContext")
 Rem
 bbdoc: This function makes a specified context the current context.
 about:
@@ -221,7 +221,7 @@ about:
 <tr><td>ALC_INVALID_CONTEXT</td><td>The specified context is invalid.</td></tr></table><br>
 Returns ALC_TRUE on success, or ALC_FALSE on failure.
 End Rem
-Global alcMakeContextCurrent( context )=P("alcMakeContextCurrent")
+Global alcMakeContextCurrent( context:Byte Ptr )=P("alcMakeContextCurrent")
 Rem
 bbdoc: This function tells a context to begin processing.
 about:
@@ -231,7 +231,7 @@ about:
 <tr><td>ALC_INVALID_CONTEXT</td><td>The specified context is invalid.</td></tr></table><br>
 When a context is suspended, changes in OpenAL state will be accepted but will not be processed. #alcSuspendContext can be used to suspend a context, and then all the OpenAL state changes can be applied at once, followed by a call to alcProcessContext to apply all the state changes immediately. In some cases, this procedure may be more efficient than application of properties in a non-suspended state. In some implementations, process and suspend calls are each a NOP.
 End Rem
-Global alcProcessContext( context )=P("alcProcessContext")
+Global alcProcessContext( context:Byte Ptr )=P("alcProcessContext")
 Rem
 bbdoc: This function suspends processing on a specified context.
 about:
@@ -241,7 +241,7 @@ about:
 <tr><td>ALC_INVALID_CONTEXT</td><td>The specified context is invalid.</td></tr></table><br>
 When a context is suspended, changes in OpenAL state will be accepted but will not be processed. A typical use of alcSuspendContext would be to suspend a context, apply all the OpenAL state changes at once, and then call #alcProcessContext to apply all the state changes at once. In some cases, this procedure may be more efficient than application of properties in a non-suspended state. In some implementations, process and suspend calls are each a NOP.
 End Rem
-Global alcSuspendContext( context )=P("alcSuspendContext")
+Global alcSuspendContext( context:Byte Ptr )=P("alcSuspendContext")
 Rem
 bbdoc: This function destroys a context.
 about:
@@ -251,12 +251,12 @@ about:
 <tr><td>ALC_INVALID_CONTEXT</td><td>The specified context is invalid.</td></tr></table><br>
 A context which is not current can be destroyed at any time (all sources within that context will also be deleted - buffers are not affected). #alcMakeContextCurrent should be used to make sure the context to be destroyed is not current (NULL is valid for #alcMakeContextCurrent).
 End Rem
-Global alcDestroyContext( context )=P("alcDestroyContext")
+Global alcDestroyContext( context:Byte Ptr )=P("alcDestroyContext")
 Rem
 bbdoc: This function retrieves the current context.
 returns: a pointer to the current context.
 End Rem
-Global alcGetCurrentContext()=P("alcGetCurrentContext")
+Global alcGetCurrentContext:Byte Ptr()=P("alcGetCurrentContext")
 Rem
 bbdoc: This function retrieves a context's device pointer.
 about:
@@ -266,7 +266,7 @@ about:
 <tr><td>ALC_INVALID_CONTEXT</td><td>The specified context is invalid.</td></tr></table><br>
 Returns: a pointer to the specified context's device.
 End Rem
-Global alcGetContextsDevice( context )=P("alcGetContextsDevice")
+Global alcGetContextsDevice:Byte Ptr( context:Byte Ptr )=P("alcGetContextsDevice")
 Rem
 bbdoc: This function queries if a specified context extension is available.
 about:
@@ -277,7 +277,7 @@ about:
 <tr><td>ALC_INVALID_VALUE</td><td>The string pointer is not valid.</td></tr></table><br>
 Returns ALC_TRUE if the extension is available, ALC_FALSE if the extension is not available.
 End Rem
-Global alcIsExtensionPresent( device,extName$z )=P("alcIsExtensionPresent")
+Global alcIsExtensionPresent( device:Byte Ptr,extName$z )=P("alcIsExtensionPresent")
 Rem
 bbdoc: This function retrieves the address of a specified context extension function.
 about:
@@ -288,7 +288,7 @@ about:
 <tr><td>ALC_INVALID_VALUE</td><td>The string pointer is not valid.</td></tr></table><br>
 Returns the address of the function, or NULL if it is not found.
 End Rem
-Global alcGetProcAddress:Byte Ptr( device,funcName$z )=P("alcGetProcAddress")
+Global alcGetProcAddress:Byte Ptr( device:Byte Ptr,funcName$z )=P("alcGetProcAddress")
 Rem
 bbdoc: This function retrieves the enum value for a specified enumeration name.
 about:
@@ -299,7 +299,7 @@ about:
 <tr><td>ALC_INVALID_VALUE</td><td>The string pointer is not valid.</td></tr></table><br>
 Returns the enum value described by the enumName string. This is most often used for querying an enum value for an ALC extension.
 End Rem
-Global alcGetEnumValue( device,enumName$z )=P("alcGetEnumValue")
+Global alcGetEnumValue( device:Byte Ptr,enumName$z )=P("alcGetEnumValue")
 Rem
 bbdoc: This function opens a capture device by name.
 about:
@@ -313,7 +313,7 @@ about:
 <tr><td>ALC_OUT_OF_MEMORY</td><td>The specified device is invalid, or can not capture audio.</td></tr></table><br>
 Returns the capture device pointer, or NULL on failure.
 End Rem
-Global alcCaptureOpenDevice( devicename$z,frequency,format,buffersize )=P("alcCaptureOpenDevice")
+Global alcCaptureOpenDevice:Byte Ptr( devicename$z,frequency,format,buffersize )=P("alcCaptureOpenDevice")
 Rem
 bbdoc: This function closes the specified capture device.
 about:
@@ -323,7 +323,7 @@ about:
 <tr><td>ALC_INVALID_DEVICE</td><td>The specified device is not a valid capture device.</td></tr></table><br>
 Returns ALC_TRUE if the close operation was successful, ALC_FALSE on failure.
 End Rem
-Global alcCaptureCloseDevice( device )=P("alcCaptureCloseDevice")
+Global alcCaptureCloseDevice( device:Byte Ptr )=P("alcCaptureCloseDevice")
 Rem
 bbdoc: This function begins a capture operation.
 about:
@@ -333,7 +333,7 @@ about:
 <tr><td>ALC_INVALID_DEVICE</td><td>The specified device is not a valid capture device.</td></tr></table><br>
 alcCaptureStart will begin recording to an internal ring buffer of the size specified when opening the capture device. The application can then retrieve the number of samples currently available using the ALC_CAPTURE_SAPMPLES token with #alcGetIntegerv. When the application determines that enough samples are available for processing, then it can obtain them with a call to #alcCaptureSamples.
 End Rem
-Global alcCaptureStart( device )=P("alcCaptureStart")
+Global alcCaptureStart( device:Byte Ptr )=P("alcCaptureStart")
 Rem
 bbdoc: This function stops a capture operation.
 about:
@@ -342,7 +342,7 @@ about:
 <table><tr><th>Possible Error States</th><th>Description</th></tr>
 <tr><td>ALC_INVALID_DEVICE</td><td>The specified device is not a valid capture device.</td></tr></table><br>
 End Rem
-Global alcCaptureStop( device )=P("alcCaptureStop")
+Global alcCaptureStop( device:Byte Ptr )=P("alcCaptureStop")
 Rem
 bbdoc: This function completes a capture operation.
 about:
@@ -354,7 +354,7 @@ about:
 <tr><td>ALC_INVALID_VALUE</td><td>The specified number of samples is larger than the number of available samples.</td></tr>
 <tr><td>ALC_INVALID_DEVICE</td><td>The specified device is not a valid capture device.</td></tr></table><br>
 End Rem
-Global alcCaptureSamples( device,buffer:Byte Ptr,samples )=P("alcCaptureSamples")
+Global alcCaptureSamples( device:Byte Ptr,buffer:Byte Ptr,samples )=P("alcCaptureSamples")
 
 Const AL_NONE=0
 Const AL_FALSE=0

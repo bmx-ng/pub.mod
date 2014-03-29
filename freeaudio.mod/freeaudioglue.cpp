@@ -22,7 +22,7 @@ int BBCALL fa_Close(){
 	return 0;
 }
 
-int BBCALL fa_PlaySound( int sound,int paused,int ch ){
+int BBCALL fa_PlaySound( sample* sound,int paused,int ch ){
 	output	*out;
 	bool	recycle;
 	if (audio && sound)
@@ -121,7 +121,7 @@ int BBCALL fa_SetChannelDepth( int channel,float depth ){
 	return 0;
 }
 
-int BBCALL fa_CreateSound( int length,int bits,int channels,int freq,const char *samples,int loop ){
+sample* BBCALL fa_CreateSound( int length,int bits,int channels,int freq,const char *samples,int loop ){
 	sample		*sam;
   
 	if (io==0) return 0;
@@ -133,10 +133,10 @@ int BBCALL fa_CreateSound( int length,int bits,int channels,int freq,const char 
 		if( samples ) sam->write((void*)samples,length,0);
 	}
 	sam->setloop(loop);
-	return (int)sam;
+	return sam;
 }
 
-int BBCALL fa_WriteSound( int sound, void *data, int samples){
+int BBCALL fa_WriteSound( sample* sound, void *data, int samples){
 	sample		*sam;
 
 	if (io==0) return 0;
@@ -144,7 +144,7 @@ int BBCALL fa_WriteSound( int sound, void *data, int samples){
 	return sam->write(data,samples,0);
 }
 
-int BBCALL fa_FreeSound( int sound ){
+int BBCALL fa_FreeSound( sample* sound ){
 	sample	*sam;
 	if (io==0) return 0;
 	sam=(sample*)sound;
