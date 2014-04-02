@@ -55,15 +55,15 @@ Import "freeaudioglue.cpp"
 Import "dsounddevice.cpp"
 Import "mmdevice.cpp"
 Extern "C"
-Function OpenMultiMediaDevice()
-Function OpenDirectSoundDevice()
+Function OpenMultiMediaDevice:Byte Ptr()
+Function OpenDirectSoundDevice:Byte Ptr()
 End Extern
 ?MacOS
 Import "-framework AudioUnit"
 Import "-framework AudioToolbox"
 Import "coreaudiodevice.cpp"
 Extern
-Function OpenCoreAudioDevice()
+Function OpenCoreAudioDevice:Byte Ptr()
 End Extern
 ?Linux
 Import "-ldl"
@@ -74,8 +74,8 @@ Import "pulseaudiodevice.cpp"
 'Import "ossdevice.cpp"
 Extern "C"
 'Function OpenOSSDevice()
-Function OpenALSADevice()
-Function OpenPulseAudioDevice()
+Function OpenALSADevice:Byte Ptr()
+Function OpenPulseAudioDevice:Byte Ptr()
 End Extern
 ?
 
