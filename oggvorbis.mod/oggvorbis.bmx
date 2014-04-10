@@ -52,7 +52,7 @@ Extern
 Function Decode_Ogg:Byte Ptr(..
 	datasource:Object,..
 	reado(buf@Ptr,size,nmemb,src:Object),..
-	seeko(src:Object,off0,off1,whence),..
+	seeko(src:Object,offset:Long,whence),..
 	closeo(src:Object),..
 	tello(src:Object ),..
 	samples Var,channels Var,freq Var)
