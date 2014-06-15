@@ -747,7 +747,7 @@ Function ClientToScreen( hwnd,point:Byte Ptr )
 Function ShowWindow( hwnd,nCmdShow )
 Function SetMenu( hwnd,hmenu )
 Function DrawMenuBar( hwnd )
-Function CreateMenu_()="CreateMenu@0"
+Function CreateMenu_()="CreateMenu" '"CreateMenu@0"
 Function CreatePopupMenu()
 Function TrackPopupMenu(hMenu,uFLags,x,y,nReserved,hWnd,prcRect)
 Function DestroyMenu(hMenu)
@@ -765,7 +765,7 @@ Function SetWindowPos( hwnd,hwndInsertAfter,x,y,cx,cy,uFlags )
 Function GetForegroundWindow()
 Function SetForegroundWindow(hwnd)
 Function IsIconic(hwnd)
-Function GetParent_(hwnd)="GetParent@4"
+Function GetParent_(hwnd)="GetParent" '"GetParent@4"
 Function GetWindowLongA( hwnd,index )
 Function SetWindowLongA( hwnd,index,newlong )
 Function GetWindowLongW( hwnd,index )
@@ -798,7 +798,7 @@ Function GetFocus()
 Function GetActiveWindow()
 Function SetActiveWindow( hWnd )
 Function MoveWindow( hWnd,x,y,w,h,bRepaint )
-Function SetParent_( hWnd,hWnd2 )="SetParent@8"
+Function SetParent_( hWnd,hWnd2 )="SetParent" '"SetParent@8"
 Function WindowFromPoint( point:Int Ptr )
 Function GetKeyState(vkey)
 
@@ -810,7 +810,7 @@ Function EnableWindow( hWnd,enable )
 Function IsWindowEnabled( hWnd )
 Function IsWindowVisible( hWnd )
 Function GetWindowInfo( hWnd,winfo:Byte Ptr )
-Function GetCursorPos_( lpPoint:Int Ptr)="GetCursorPos@4"
+Function GetCursorPos_( lpPoint:Int Ptr)="GetCursorPos" '"GetCursorPos@4"
 
 Function EnumChildWindows( hWnd,lpfn:Byte Ptr,lp )
 

@@ -474,18 +474,18 @@ End Type
 
 Extern "Win32"
 
-Function GetStockObject( fnObject )
-Function ChoosePixelFormat( hdc,ppfd:Byte Ptr )
-Function SetPixelFormat( hdc,iPixelFormat,ppfd:Byte Ptr )
-Function SwapBuffers( hdc )
+Function GetStockObject:Byte Ptr( fnObject )
+Function ChoosePixelFormat( hdc:Byte Ptr,ppfd:Byte Ptr )
+Function SetPixelFormat( hdc:Byte Ptr,iPixelFormat,ppfd:Byte Ptr )
+Function SwapBuffers( hdc:Byte Ptr )
 
-Function wglCreateContext( hdc )
+Function wglCreateContext( hdc:Byte Ptr )
 Function wglDeleteContext( hglrc )
-Function wglMakeCurrent( hdc,hglrc )
+Function wglMakeCurrent( hdc:Byte Ptr,hglrc )
 
-Function BitBlt(hdc,x,y,w,h,src_dc,src_x,src_y,dwrop)
+Function BitBlt(hdc:Byte Ptr,x,y,w,h,src_dc,src_x,src_y,dwrop)
 
-Function GetDeviceCaps(hdc,indec)
+Function GetDeviceCaps(hdc:Byte Ptr,indec)
 
 
 Function CreateFontA(cHeight,cWidth,cEscapement,cOrientation,cWeight,bItalic,bUnderline,bStrikeOut,..
@@ -494,24 +494,24 @@ Function CreateFontA(cHeight,cWidth,cEscapement,cOrientation,cWeight,bItalic,bUn
 Function CreateFontW(cHeight,cWidth,cEscapement,cOrientation,cWeight,bItalic,bUnderline,bStrikeOut,..
 	iCharSet,iOutPrecision,iClipPrecision,iQuality,iPitchAndFamily,pszFaceName:Short Ptr)
 
-Function SelectObject(hdc,obj)
+Function SelectObject(hdc:Byte Ptr,obj)
 
-Function DeleteObject( hObject )
+Function DeleteObject( hObject:Byte Ptr )
 
 Function CreateSolidBrush( crColor )
 
-Function CreateCompatibleDC( hdc )
-Function CreateCompatibleBitmap( hdc,nWidth,nHeight )
+Function CreateCompatibleDC( hdc:Byte Ptr )
+Function CreateCompatibleBitmap( hdc:Byte Ptr,nWidth,nHeight )
 
-Function SetDIBits( hdc,hbmp,uStartScan,cScanLines,lpvBits:Byte Ptr,lpbmi:Byte Ptr,fuColorUse )
-Function DeleteDC( hdc )
+Function SetDIBits( hdc:Byte Ptr,hbmp,uStartScan,cScanLines,lpvBits:Byte Ptr,lpbmi:Byte Ptr,fuColorUse )
+Function DeleteDC( hdc:Byte Ptr )
 
-Function SetStretchBltMode( hdc,iStretchMode )
+Function SetStretchBltMode( hdc:Byte Ptr,iStretchMode )
 
-Function StretchBlt( hdcDest,dx,dy,dw,dh,hdcSrc,sx,sy,sw,sh,dwRop )
+Function StretchBlt( hdcDest:Byte Ptr,dx,dy,dw,dh,hdcSrc:Byte Ptr,sx,sy,sw,sh,dwRop )
 
 Function CreateFontIndirectW( lplf:Byte Ptr )
-Function GetTextMetricsW( hdc,lptm:Byte Ptr )
-Function GetTextFaceW( hdc,nCount,lpFaceName:Short Ptr )
+Function GetTextMetricsW( hdc:Byte Ptr,lptm:Byte Ptr )
+Function GetTextFaceW( hdc:Byte Ptr,nCount,lpFaceName:Short Ptr )
 
 End Extern
