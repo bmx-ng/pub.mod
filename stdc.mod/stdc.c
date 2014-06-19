@@ -66,7 +66,7 @@ int chdir_( BBString *path ){
 }
 
 FILE* fopen_( BBString *file,BBString *mode ){
-	if( _bbusew ) return (int)_wfopen( bbTmpWString(file),bbTmpWString(mode) );
+	if( _bbusew ) return _wfopen( bbTmpWString(file),bbTmpWString(mode) );
 	return fopen( bbTmpCString(file),bbTmpCString(mode) );
 }
 
