@@ -63,7 +63,7 @@ Function getenv_$( env$ )
 
 'file system
 
-Function fopen_%( file$,Mode$ )
+Function fopen_:Byte Ptr( file$,Mode$ )
 Function fclose_%( c_stream:Byte Ptr )="fclose"
 Function fread_( buf:Byte Ptr,size,count,c_stream:Byte Ptr )="fread"
 Function fwrite_( buf:Byte Ptr,size,count,c_stream:Byte Ptr )="fwrite"
