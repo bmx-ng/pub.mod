@@ -18,8 +18,8 @@ Extern
 
 Function is_pid_native( pid )
 Function Gestalt( tag,result Var )
-Function bbStringFromNSString$( ns_string )
-Function NSStringFromBBString( bb_string$ )
+Function bbStringFromNSString$( ns_string:Byte Ptr )
+Function NSStringFromBBString:Byte Ptr( bb_string$ )
 
 End Extern
 ?
