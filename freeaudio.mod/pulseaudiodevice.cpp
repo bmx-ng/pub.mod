@@ -26,13 +26,32 @@ int LoadPulse(){
 	return _pulse!=0;
 }
 
-void InitPulse(){
+int InitPulse(){
 
-	if( !_pulse ) return;
+	if( !_pulse ) return 0;
 	
 	pulse_pa_simple_new = (pa_simple* (*)(const char *, const char *, pa_stream_direction_t , const char *, const char *, const pa_sample_spec *, const pa_channel_map *, const pa_buffer_attr *, int *))dlsym(_pulse, "pa_simple_new");
 	pulse_pa_simple_free = (void (*)(pa_simple *))dlsym(_pulse, "pa_simple_free");
 	pulse_pa_simple_write = (int (*)(pa_simple *, const void *, size_t , int *))dlsym(_pulse, "pa_simple_write");
+	
+	// try an open a connection to pulse - if it fails, we can presume pulse is not working?
+	
+	pa_sample_spec spec;
+	spec.format=PA_SAMPLE_S16LE;
+	spec.rate=44100;
+	spec.channels=2;
+	int error = 0;
+	
+	pa_simple * simple = pulse_pa_simple_new(NULL,"freeaudio",PA_STREAM_PLAYBACK,NULL,"playback",&spec,NULL,NULL,&error);
+	
+	if (simple) {
+		pulse_pa_simple_free(simple);
+		
+		if (!error) {
+			return 1;
+		}
+	}
+	return 0;
 }
 
 }
@@ -120,8 +139,9 @@ struct pulseaudiodevice:audiodevice{
 
 audiodevice *OpenPulseAudioDevice(){
 	if (LoadPulse()) {
-		InitPulse();
-		return new pulseaudiodevice();
+		if (InitPulse()) {
+			return new pulseaudiodevice();
+		}
 	}
 	return 0;
 }
