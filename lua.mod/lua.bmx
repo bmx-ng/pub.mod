@@ -50,6 +50,10 @@ ModuleInfo "History: Replaced byte ptr with $z (CString) where a C string is exp
 ModuleInfo "History: 1.12 Release"
 ModuleInfo "History: Removed lua.h import"
 
+?linux
+Import "-ldl"
+?
+
 Import "lua-5.1.4/src/lstate.c"
 Import "lua-5.1.4/src/llex.c"
 Import "lua-5.1.4/src/ltm.c"
