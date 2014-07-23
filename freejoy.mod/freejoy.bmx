@@ -4,12 +4,14 @@ bbdoc: User input/Joystick
 End Rem
 Module Pub.FreeJoy
 
-ModuleInfo "Version: 1.08"
+ModuleInfo "Version: 1.09"
 ModuleInfo "Author: Simon Armstrong"
 ModuleInfo "License: zlib/libpng"
 ModuleInfo "Copyright: Blitz Research Ltd"
 ModuleInfo "Modserver: BRL"
 
+ModuleInfo "History: 1.09 Release"
+ModuleInfo "History: Linux devices can be located in various places."
 ModuleInfo "History: 1.08 Release"
 ModuleInfo "History: Added JoyHit samplejoy fix, thanks to HamishTheHystericalHamster"
 ModuleInfo "History: 1.07 Release"

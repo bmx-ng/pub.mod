@@ -72,7 +72,11 @@ linuxjoy *getjoy(int n)
 	
 	sprintf(fname,"/dev/js%d",n);
 	fd=open(fname,O_RDONLY);
-	if (fd==-1) return 0;
+	if (fd==-1) {
+		sprintf(fname,"/dev/input/js%d",n);
+		fd=open(fname,O_RDONLY);
+		if (fd==-1) return 0;
+	}
 	j=(linuxjoy*)calloc(1,sizeof(struct linuxjoy));
 	j->fd=fd;
 	ioctl(fd,JSIOCGNAME(256),&j->name);
