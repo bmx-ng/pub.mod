@@ -8,22 +8,26 @@ Function CoCreateInstance(rclsid:Byte Ptr,pUnkOuter:Byte Ptr,dwClsContext,riid:B
 Function IIDFromString(lpsz$w,riid:Byte Ptr)
 
 Type IUnknown 
-	Method QueryInterface( riid:Byte Ptr,ppvObj:Byte Ptr )
-	Method AddRef()
-	Method Release_()
+	Method QueryInterface( riid:Byte Ptr,ppvObj:Byte Ptr )="IUnknown_QueryInterface"
+	Method AddRef()="IUnknown_AddRef"
+	Method Release_()="IUnknown_Release"
 End Type
 
 
 ' oleautomation
 
-Function SysAllocStringLen:Short ptr(bstr:Short Ptr,length)
+Function SysAllocStringLen:Short Ptr(bstr:Short Ptr,length)
 Function SysFreeString(bstr:Short Ptr)
 
 Type IDispatch Extends IUnknown
-	Method lfGetTypeInfoCount(pctinfo:Byte Ptr) 
-	Method lfGetTypeInfo(iTInfo,lcid,ITypeInfo:Byte Ptr)
-	Method lfGetIDsOfNames( riid:Byte Ptr,rgszNames:Byte Ptr Ptr,cNames,lcid,rgDispId:Byte Ptr)
-	Method Invoke(dispIdMember:Byte Ptr,riid:Byte Ptr,lcid,wFlags,pDispParams:Byte Ptr,pVarResult:Byte Ptr,pExcepInfo:Byte Ptr,puArgErr:Byte Ptr)
+	Method QueryInterface( riid:Byte Ptr,ppvObj:Byte Ptr )="IDispatch_QueryInterface"
+	Method AddRef()="IDispatch_AddRef"
+	Method Release_()="IDispatch_Release"
+
+	Method lfGetTypeInfoCount(pctinfo:Byte Ptr)="IDispatch_lfGetTypeInfoCount"
+	Method lfGetTypeInfo(iTInfo,lcid,ITypeInfo:Byte Ptr)="IDispatch_lfGetTypeInfo"
+	Method lfGetIDsOfNames( riid:Byte Ptr,rgszNames:Byte Ptr Ptr,cNames,lcid,rgDispId:Byte Ptr)="IDispatch_lfGetIDsOfNames"
+	Method Invoke(dispIdMember:Byte Ptr,riid:Byte Ptr,lcid,wFlags,pDispParams:Byte Ptr,pVarResult:Byte Ptr,pExcepInfo:Byte Ptr,puArgErr:Byte Ptr)="IDispatch_Invoke"
 End Type
 
 Type IWebBrowser Extends IDispatch	

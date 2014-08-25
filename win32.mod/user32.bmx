@@ -598,8 +598,8 @@ Type MENUITEMINFOW
 End Type
 
 Const GWL_WNDPROC=-4
-Const GWL_HINSTANCE=-6
-Const GWL_HWNDPARENT=-8
+Const GWL_hInstance=-6
+Const GWL_hWndPARENT=-8
 Const GWL_STYLE=-16
 Const GWL_EXSTYLE=-20
 Const GWL_USERDATA=-21
@@ -622,7 +622,7 @@ Const WA_ACTIVE=1
 Const WA_CLICKACTIVE=2
 
 Type MSG
-	Field hwnd
+	Field hWnd:Byte Ptr
 	Field message
 	Field wParam
 	Field lParam
@@ -635,7 +635,7 @@ Type WNDCLASS
 	Field lpfnWndProc:Byte Ptr
 	Field cbClsExtra
 	Field cbWndExtra
-	Field hInstance
+	Field hInstance:Byte Ptr
 	Field hIcon
 	Field hCursor
 	Field hbrBackground
@@ -648,7 +648,7 @@ Type WNDCLASSW
 	Field lpfnWndProc:Byte Ptr
 	Field cbClsExtra
 	Field cbWndExtra
-	Field hInstance
+	Field hInstance:Byte Ptr
 	Field hIcon
 	Field hCursor
 	Field hbrBackground
@@ -700,121 +700,121 @@ Const POINT_Y=1
 
 Extern "Win32"
 
-Function SetCapture( hwnd )
+Function SetCapture( hWnd:Byte Ptr )
 Function ReleaseCapture()
 
 Function RegisterClassA( lpWndClass:Byte Ptr )
 Function RegisterClassW( lpWndClass:Byte Ptr )
-Function CreateWindowExA( dwExStyle,lpClassName:Byte Ptr,lpWindowName:Byte Ptr,dwStyle,x,y,nWidth,nHeight,hWndParent,hMenu,hInstance,lpParam:Byte Ptr )
-Function CreateWindowExW( dwExStyle,lpClassName$w,lpWindowName$w,dwStyle,x,y,nWidth,nHeight,hWndParent,hMenu,hInstance,lpParam:Byte Ptr )
-Function DefWindowProcA( hWnd,MSG,wParam,lParam )
-Function DefWindowProcW( hWnd,MSG,wParam,lParam )
+Function CreateWindowExA:Byte Ptr( dwExStyle,lpClassName:Byte Ptr,lpWindowName:Byte Ptr,dwStyle,x,y,nWidth,nHeight,hWndParent,hmenu:Byte Ptr,hInstance:Byte Ptr,lpParam:Byte Ptr )
+Function CreateWindowExW:Byte Ptr( dwExStyle,lpClassName$w,lpWindowName$w,dwStyle,x,y,nWidth,nHeight,hWndParent,hmenu:Byte Ptr,hInstance:Byte Ptr,lpParam:Byte Ptr )
+Function DefWindowProcA( hWnd:Byte Ptr,MSG,wParam,lParam )
+Function DefWindowProcW( hWnd:Byte Ptr,MSG,wParam,lParam )
 Function DispatchMessageA( lpMsg:Byte Ptr )
 Function DispatchMessageW( lpMsg:Byte Ptr )
-Function GetMessageA( lpMsg:Byte Ptr,hWnd,wMsgFilterMin,wMsgFilterMax )
-Function GetMessageW( lpMsg:Byte Ptr,hWnd,wMsgFilterMin,wMsgFilterMax )
-Function PeekMessageA( lpMsg:Byte Ptr,hWnd,wMsgFilterMin,wMsgFilterMax,wRemoveMsg )
-Function PeekMessageW( lpMsg:Byte Ptr,hWnd,wMsgFilterMin,wMsgFilterMax,wRemoveMsg )
-Function PostMessageA( hWnd,MSG,wParam,lParam )
-Function PostMessageW( hWnd,MSG,wParam,lParam )
-Function SendMessageA( hWnd,MSG,wParam,lParam )
-Function SendMessageW( hWnd,MSG,wParam,lParam )
+Function GetMessageA( lpMsg:Byte Ptr,hWnd:Byte Ptr,wMsgFilterMin,wMsgFilterMax )
+Function GetMessageW( lpMsg:Byte Ptr,hWnd:Byte Ptr,wMsgFilterMin,wMsgFilterMax )
+Function PeekMessageA( lpMsg:Byte Ptr,hWnd:Byte Ptr,wMsgFilterMin,wMsgFilterMax,wRemoveMsg )
+Function PeekMessageW( lpMsg:Byte Ptr,hWnd:Byte Ptr,wMsgFilterMin,wMsgFilterMax,wRemoveMsg )
+Function PostMessageA( hWnd:Byte Ptr,MSG,wParam,lParam )
+Function PostMessageW( hWnd:Byte Ptr,MSG,wParam,lParam )
+Function SendMessageA( hWnd:Byte Ptr,MSG,wParam,lParam )
+Function SendMessageW( hWnd:Byte Ptr,MSG,wParam,lParam )
 Function PostThreadMessageA( idThread,Msg,wParam,lParam )
 Function PostThreadMessageW( idThread,Msg,wParam,lParam )
-Function GetDC( hWnd )
+Function GetDC:Byte Ptr( hWnd:Byte Ptr )
 Function PostQuitMessage( nExitCode )
 Function TranslateMessage( lpMsg:Byte Ptr )
-Function DestroyWindow( hWnd )
+Function DestroyWindow( hWnd:Byte Ptr )
 Function MsgWaitForMultipleObjects( nCount,pHandles:Byte Ptr,fWaitAll,dwMilliseconds,dwWakeMask )
 Function MsgWaitForMultipleObjectsEx( nCount,pHandles:Byte Ptr,dwMilliseconds,dwWakeMask,dwFlags )
 Function ChangeDisplaySettingsA( lpDevMode:Byte Ptr,dwFlags )
 Function ChangeDisplaySettingsW( lpDevMode:Byte Ptr,dwFlags )
-Function LoadCursorA( hInstance,lpCursorName:Byte Ptr )
-Function LoadCursorW( hInstance,lpCursorName:Short Ptr )
+Function LoadCursorA:Byte Ptr( hInstance:Byte Ptr,lpCursorName:Byte Ptr )
+Function LoadCursorW:Byte Ptr( hInstance:Byte Ptr,lpCursorName:Short Ptr )
 Function ShowCursor( visible )
-Function SetCursor( hCursor )
-Function LoadIconA( resourceid,lpIconName:Byte Ptr )
-Function LoadIconW( resourceid,lpIconName:Short Ptr )
+Function SetCursor( hCursor:Byte Ptr )
+Function LoadIconA:Byte Ptr( resourceid,lpIconName:Byte Ptr )
+Function LoadIconW:Byte Ptr( resourceid,lpIconName:Short Ptr )
 Function LoadLibraryA( dll$z )
-Function GetProcAddress:Byte Ptr( libhandle,func$z )
+Function GetProcAddress:Byte Ptr( libhandle:Byte Ptr,func$z )
 Function LoadLibraryW( dll$w )
-Function GetClientRect( hWnd,lpRect:Int Ptr )
-Function GetWindowRect( hWnd,lpRect:Int Ptr )
+Function GetClientRect( hWnd:Byte Ptr,lpRect:Int Ptr )
+Function GetWindowRect( hWnd:Byte Ptr,lpRect:Int Ptr )
 Function GetDesktopWindow()
 Function AdjustWindowRect( rect:Int Ptr,style,menu )
 Function AdjustWindowRectEx( rect:Int Ptr,style,menu,exstyle )
-Function ClientToScreen( hwnd,point:Byte Ptr )
-Function ShowWindow( hwnd,nCmdShow )
-Function SetMenu( hwnd,hmenu )
-Function DrawMenuBar( hwnd )
-Function CreateMenu_()="CreateMenu" '"CreateMenu@0"
-Function CreatePopupMenu()
-Function TrackPopupMenu(hMenu,uFLags,x,y,nReserved,hWnd,prcRect)
-Function DestroyMenu(hMenu)
-Function EnableMenuItem(hMenu,uIDEnableItem,uEnable)
-Function CheckMenuItem(hMenu,uIDCheckItem,uCheck)
+Function ClientToScreen( hWnd:Byte Ptr,point:Byte Ptr )
+Function ShowWindow( hWnd:Byte Ptr,nCmdShow )
+Function SetMenu( hWnd:Byte Ptr,hmenu:Byte Ptr )
+Function DrawMenuBar( hWnd:Byte Ptr )
+Function CreateMenu_:Byte Ptr()="CreateMenu" '"CreateMenu@0"
+Function CreatePopupMenu:Byte Ptr()
+Function TrackPopupMenu(hmenu:Byte Ptr,uFLags,x,y,nReserved,hWnd:Byte Ptr,prcRect)
+Function DestroyMenu(hmenu:Byte Ptr)
+Function EnableMenuItem(hmenu:Byte Ptr,uIDEnableItem,uEnable)
+Function CheckMenuItem(hmenu:Byte Ptr,uIDCheckItem,uCheck)
 
-Function AppendMenuA(hMenu,uFlags,uIDNewItem,lpNewItem:Byte Ptr)
-Function AppendMenuW(hMenu,uFlags,uIDNewItem,lpNewItem:Byte Ptr)
-Function SetMenuItemInfoA( hMenu,item,fByPosition,info:Byte Ptr )
-Function SetMenuItemInfoW( hMenu,item,fByPosition,info:Byte Ptr )
-Function GetMenuItemCount( hMenu )
-Function SetWindowTextA( hwnd,text$z )
-Function SetWindowTextW( hwnd,text$w )
-Function SetWindowPos( hwnd,hwndInsertAfter,x,y,cx,cy,uFlags )
+Function AppendMenuA(hmenu:Byte Ptr,uFlags,uIDNewItem,lpNewItem:Byte Ptr)
+Function AppendMenuW(hmenu:Byte Ptr,uFlags,uIDNewItem,lpNewItem:Byte Ptr)
+Function SetMenuItemInfoA( hmenu:Byte Ptr,item,fByPosition,info:Byte Ptr )
+Function SetMenuItemInfoW( hmenu:Byte Ptr,item,fByPosition,info:Byte Ptr )
+Function GetMenuItemCount( hmenu:Byte Ptr )
+Function SetWindowTextA( hWnd:Byte Ptr,text$z )
+Function SetWindowTextW( hWnd:Byte Ptr,text$w )
+Function SetWindowPos( hWnd:Byte Ptr,hWndInsertAfter,x,y,cx,cy,uFlags )
 Function GetForegroundWindow()
-Function SetForegroundWindow(hwnd)
-Function IsIconic(hwnd)
-Function GetParent_(hwnd)="GetParent" '"GetParent@4"
-Function GetWindowLongA( hwnd,index )
-Function SetWindowLongA( hwnd,index,newlong )
-Function GetWindowLongW( hwnd,index )
-Function SetWindowLongW( hwnd,index,newlong )
-Function GetClassLongA( hwnd,index )
-Function SetClassLongA( hwnd,index,newlong )
-Function GetClassLongW( hwnd,index )
-Function SetClassLongW( hwnd,index,newlong )
-Function IsZoomed( hwnd )
-Function CallWindowProcA( proc:Byte Ptr,hwnd,msg,wp,lp )
-Function CallWindowProcW( proc:Byte Ptr,hwnd,msg,wp,lp )
+Function SetForegroundWindow(hWnd:Byte Ptr)
+Function IsIconic(hWnd:Byte Ptr)
+Function GetParent_:Byte Ptr(hWnd:Byte Ptr)="GetParent" '"GetParent@4"
+Function GetWindowLongA( hWnd:Byte Ptr,index )
+Function SetWindowLongA( hWnd:Byte Ptr,index,newlong )
+Function GetWindowLongW( hWnd:Byte Ptr,index )
+Function SetWindowLongW( hWnd:Byte Ptr,index,newlong )
+Function GetClassLongA( hWnd:Byte Ptr,index )
+Function SetClassLongA( hWnd:Byte Ptr,index,newlong )
+Function GetClassLongW( hWnd:Byte Ptr,index )
+Function SetClassLongW( hWnd:Byte Ptr,index,newlong )
+Function IsZoomed( hWnd:Byte Ptr )
+Function CallWindowProcA( proc:Byte Ptr,hWnd:Byte Ptr,msg,wp,lp )
+Function CallWindowProcW( proc:Byte Ptr,hWnd:Byte Ptr,msg,wp,lp )
 Function OleInitialize(pvReserved:Byte Ptr)
 Function OleUninitialize()
 Function InitCommonControlsEx(controlsex:Byte Ptr)
-Function SetScrollPos( hwnd,nBar,nPos,bRedraw )
-Function GetScrollPos( hwnd,nBar )
-Function SetScrollRange( hwnd,nBar,nMinPos,nMaxPos,bRedraw )
-Function GetScrollRange( hwnd,nBar,lpMinPos:Int Ptr,lpMaxPos:Int Ptr )
-Function ShowScrollBar( hwnd,wBar,bShow )
-Function EnableScrollBar( hwnd,wSBflags,wArrows )
-Function SetScrollInfo( hwnd,nBar,lpsi:SCROLLINFO,redraw )
-Function GetScrollInfo( hwnd,nBar,lpsi:SCROLLINFO )
-Function InvalidateRect( hWnd,lpRect:Int Ptr,bErase )
-Function ValidateRect( hWnd,lpRect:Int Ptr )
-Function BeginPaint( hWnd,lpPaint:Byte Ptr )
+Function SetScrollPos( hWnd:Byte Ptr,nBar,nPos,bRedraw )
+Function GetScrollPos( hWnd:Byte Ptr,nBar )
+Function SetScrollRange( hWnd:Byte Ptr,nBar,nMinPos,nMaxPos,bRedraw )
+Function GetScrollRange( hWnd:Byte Ptr,nBar,lpMinPos:Int Ptr,lpMaxPos:Int Ptr )
+Function ShowScrollBar( hWnd:Byte Ptr,wBar,bShow )
+Function EnableScrollBar( hWnd:Byte Ptr,wSBflags,wArrows )
+Function SetScrollInfo( hWnd:Byte Ptr,nBar,lpsi:SCROLLINFO,redraw )
+Function GetScrollInfo( hWnd:Byte Ptr,nBar,lpsi:SCROLLINFO )
+Function InvalidateRect( hWnd:Byte Ptr,lpRect:Int Ptr,bErase )
+Function ValidateRect( hWnd:Byte Ptr,lpRect:Int Ptr )
+Function BeginPaint( hWnd:Byte Ptr,lpPaint:Byte Ptr )
 Function FillRect( hdc,lpRect:Int Ptr,hbr )
-Function EndPaint( hWnd,lpPaint:Byte Ptr )
-Function SetFocus( hWnd )
-Function GetFocus()
-Function GetActiveWindow()
-Function SetActiveWindow( hWnd )
-Function MoveWindow( hWnd,x,y,w,h,bRepaint )
-Function SetParent_( hWnd,hWnd2 )="SetParent" '"SetParent@8"
-Function WindowFromPoint( point:Int Ptr )
+Function EndPaint( hWnd:Byte Ptr,lpPaint:Byte Ptr )
+Function SetFocus:Byte Ptr( hWnd:Byte Ptr )
+Function GetFocus:Byte Ptr()
+Function GetActiveWindow:Byte Ptr()
+Function SetActiveWindow( hWnd:Byte Ptr )
+Function MoveWindow( hWnd:Byte Ptr,x,y,w,h,bRepaint )
+Function SetParent_:Byte Ptr( hWnd:Byte Ptr,hWnd2:Byte Ptr )="SetParent" '"SetParent@8"
+Function WindowFromPoint:Byte Ptr( point:Int Ptr )
 Function GetKeyState(vkey)
 
 Function SetWindowsHookExW(idHook,lpfn:Byte Ptr,hmod,dwThreadId)
 Function CallNextHookEx(hhk,ncode,wparam,lparam)
 Function UnhookWindowsHookEx(hhk)
 
-Function EnableWindow( hWnd,enable )
-Function IsWindowEnabled( hWnd )
-Function IsWindowVisible( hWnd )
-Function GetWindowInfo( hWnd,winfo:Byte Ptr )
+Function EnableWindow( hWnd:Byte Ptr,enable )
+Function IsWindowEnabled( hWnd:Byte Ptr )
+Function IsWindowVisible( hWnd:Byte Ptr )
+Function GetWindowInfo( hWnd:Byte Ptr,winfo:Byte Ptr )
 Function GetCursorPos_( lpPoint:Int Ptr)="GetCursorPos" '"GetCursorPos@4"
 
-Function EnumChildWindows( hWnd,lpfn:Byte Ptr,lp )
+Function EnumChildWindows( hWnd:Byte Ptr,lpfn:Byte Ptr,lp )
 
-Function OpenClipboard(hWnd)
+Function OpenClipboard(hWnd:Byte Ptr)
 Function CloseClipboard()
 Function SetClipboardData(uFormat,hMem)
 Function GetClipboardData(uFormat)
@@ -825,7 +825,7 @@ Function DefDlgProcW(hDlg,Msg,wParam,lParam)
 
 'shellapi
 
-Function DragAcceptFiles(hWnd,fAccept)
+Function DragAcceptFiles(hWnd:Byte Ptr,fAccept)
 Function DragQueryPoint(hDrop,lpPoint:Int Ptr)
 Function DragQueryFileW(hDrop,iFile,lpszFile:Short Ptr,cch)
 Function DragFinish(hDrop)
