@@ -52,11 +52,11 @@ Import "freeaudio.cpp"
 Import "freeaudioglue.cpp"
 
 ?Win32
-Import "dsounddevice.cpp"
+'Import "dsounddevice.cpp"
 Import "mmdevice.cpp"
 Extern "C"
 Function OpenMultiMediaDevice:Byte Ptr()
-Function OpenDirectSoundDevice:Byte Ptr()
+'Function OpenDirectSoundDevice:Byte Ptr()
 End Extern
 ?MacOS
 Import "-framework AudioUnit"
@@ -112,11 +112,11 @@ End Extern
 Function fa_Init( deviceid )
 	Local device:Byte Ptr
 ?Win32
-	If deviceid
-		device=OpenDirectSoundDevice()
-	Else
+'	If deviceid
+'		device=OpenDirectSoundDevice()
+'	Else
 		device=OpenMultiMediaDevice()
-	EndIf
+'	EndIf
 ?Linux
 	Select deviceid
 		Case 0
