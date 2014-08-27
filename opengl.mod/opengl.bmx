@@ -17,6 +17,7 @@ ModuleInfo "History: Restored GLU"
 Import "-framework AGL"
 Import "-framework OpenGL"
 ?Win32
+Import "GL/gl.h"
 Import "-lglu32"
 Import "-lopengl32"
 ?Linux
