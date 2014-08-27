@@ -14,7 +14,7 @@
 
 extern "C" audiodevice *OpenMultiMediaDevice();
 
-static void __stdcall audioTimerProc( UINT id,UINT msg,DWORD user,DWORD u1,DWORD u2 );
+static void __stdcall audioTimerProc( UINT id,UINT msg,DWORD_PTR user,DWORD_PTR u1,DWORD_PTR u2 );
 
 struct pcmsetting
 {
@@ -43,7 +43,7 @@ struct abuffer {
 		id=n;
 		hdr->lpData=(LPSTR)data;
 		hdr->dwBufferLength=size;
-		hdr->dwUser=(int)this;
+		hdr->dwUser=(DWORD_PTR)this;
 		hdr->dwFlags=WHDR_BEGINLOOP|WHDR_ENDLOOP;
 		hdr->dwLoops=0x7fffffff;
 		waveOutPrepareHeader(device,hdr,sizeof(WAVEHDR));
@@ -126,13 +126,13 @@ struct winmmdevice:audiodevice {
 	{
 		pcmsetting	pcm(freq,channels,bits);
 		if (bits==8) {mode=0;samplesize=1;} else {mode=1;samplesize=2;}
-		if (waveOutOpen(&device,WAVE_MAPPER,&pcm.wf,0,(long)this,0)) return 1;
+		if (waveOutOpen(&device,WAVE_MAPPER,&pcm.wf,0,(DWORD_PTR)this,0)) return 1;
 		buffersize=size;
 		bnum=0;
 		mix->freq=freq;
 		mix->channels=channels;
 		buffer.init(device,size*samplesize*32,0);
-		timeSetEvent(5,5,audioTimerProc,(DWORD)this,TIME_ONESHOT);//PERIODIC );
+		timeSetEvent(5,5,audioTimerProc,(DWORD_PTR)this,TIME_ONESHOT);//PERIODIC );
 		timeout=0;
 		playing=1;
 		lagbuffers=6;
@@ -195,9 +195,9 @@ struct winmmdevice:audiodevice {
 	}
 };
 
-static void __stdcall audioTimerProc( UINT id,UINT msg,DWORD user,DWORD u1,DWORD u2 ) {
+static void __stdcall audioTimerProc( UINT id,UINT msg,DWORD_PTR user,DWORD_PTR u1,DWORD_PTR u2 ) {
 	((winmmdevice *)user)->flip();
-	timeSetEvent(5,5,audioTimerProc,(DWORD)user,TIME_ONESHOT);
+	timeSetEvent(5,5,audioTimerProc,(DWORD_PTR)user,TIME_ONESHOT);
 }
 
 audiodevice *OpenMultiMediaDevice() {
