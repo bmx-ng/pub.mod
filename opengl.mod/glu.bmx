@@ -1,6 +1,10 @@
 
 Strict
 
+?win32
+Import "GL/glu.h"
+?
+
 Extern "Os"
 
 Function gluBeginCurve(nurbs_nurb:Byte Ptr)
