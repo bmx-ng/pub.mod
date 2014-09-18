@@ -97,6 +97,8 @@ Import "src/winfonts/winfnt.c"
 
 ?
 
+Import "glue.c"
+
 Extern
 
 Function FT_Init_FreeType( ft_lib:Byte Ptr Ptr )
@@ -115,6 +117,23 @@ Function FT_Set_Charmap( ft_face:Byte Ptr,charmap )
 Function FT_Load_Char( ft_face:Byte Ptr,index,flags )
 Function FT_Load_Glyph( ft_face:Byte Ptr,index,flags )
 Function FT_Render_Glyph( ft_glyph:Byte Ptr,Mode )
+
+
+Function bmx_freetype_Face_numglyphs:Int(ft_face:Byte Ptr)
+Function bmx_freetype_Face_glyph:Byte Ptr(ft_face:Byte Ptr)
+Function bmx_freetype_Face_size:Byte Ptr(ft_face:Byte Ptr)
+Function bmx_freetype_Size_height:Int(ft_size:Byte Ptr)
+Function bmx_freetype_Size_ascend:Int(ft_size:Byte Ptr)
+Function bmx_freetype_Size_descend:Int(ft_size:Byte Ptr)
+
+Function bmx_freetype_Slot_bitmapleft:Int(slot:Byte Ptr)
+Function bmx_freetype_Slot_bitmaptop:Int(slot:Byte Ptr)
+Function bmx_freetype_Slot_bitmap_width:Int(slot:Byte Ptr)
+Function bmx_freetype_Slot_bitmap_rows:Int(slot:Byte Ptr)
+Function bmx_freetype_Slot_bitmap_pitch:Int(slot:Byte Ptr)
+Function bmx_freetype_Slot_advance_x:Int(slot:Byte Ptr)
+Function bmx_freetype_Slot_bitmap_buffer:Byte Ptr(slot:Byte Ptr)
+Function bmx_freetype_Slot_bitmap_numgreys:Int(slot:Byte Ptr)
 
 End Extern
 
