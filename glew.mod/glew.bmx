@@ -25,9 +25,13 @@ ModuleInfo "History: Updated To glew 1.3.4"
 ModuleInfo "History: 1.03 Release"
 ModuleInfo "History: Updated To GL2.0 compatible version 1.3.3"
 
+?win32
+Import "GL/glew.h"
+?Not win32
 Import Pub.OpenGL
+?
 
-Import "glew_static.c"
+Import "glew.c"
 
 Extern "Os"
 rem
