@@ -35,7 +35,12 @@
 #endif
 
 #include <stddef.h> /* for wchar_t */
+#ifdef _WIN32
+/* on Windows, use our local version */
+#include "../GL/gl.h"
+#else
 #include <GL/gl.h>
+#endif
 
 #ifdef __cplusplus
 extern "C" {
