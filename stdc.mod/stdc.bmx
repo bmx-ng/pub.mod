@@ -36,6 +36,10 @@ ModuleInfo "History: 1.05 Release"
 ModuleInfo "History: 1.04 Release"
 ModuleInfo "History: Fixed C Compiler warnings"
 
+?linux
+ModuleInfo "CC_OPTS: -D_FILE_OFFSET_BITS=64"
+?
+
 Import "stdc.c"
 
 'c lib
@@ -65,11 +69,11 @@ Function getenv_$( env$ )
 
 Function fopen_:Byte Ptr( file$,Mode$ )
 Function fclose_%( c_stream:Byte Ptr )="fclose"
-Function fread_( buf:Byte Ptr,size,count,c_stream:Byte Ptr )="fread"
-Function fwrite_( buf:Byte Ptr,size,count,c_stream:Byte Ptr )="fwrite"
+Function fread_:Long( buf:Byte Ptr,size:Long,count:Long,c_stream:Byte Ptr )="fread"
+Function fwrite_:Long( buf:Byte Ptr,size:Long,count:Long,c_stream:Byte Ptr )="fwrite"
 Function fflush_( c_stream:Byte Ptr )="fflush"
-Function fseek_( c_stream:Byte Ptr,offset,origin )="fseek"
-Function ftell_( c_stream:Byte Ptr )="ftell"
+Function fseek_( c_stream:Byte Ptr,offset:Long,origin )'="fseek"
+Function ftell_:Long( c_stream:Byte Ptr )'="ftell"
 Function feof_( c_stream:Byte Ptr )="feof"
 Function fgetc_( c_stream:Byte Ptr )="fgetc"
 Function ungetc_( char,c_stream:Byte Ptr )="ungetc"
@@ -87,7 +91,7 @@ Function remove_( path$ )
 Function opendir_:Byte Ptr( path$ )
 Function closedir_( dir:Byte Ptr )
 Function readdir_$( dir:Byte Ptr )
-Function stat_( path$,st_mode Var,st_size Var,st_mtime Var,st_ctime Var )
+Function stat_( path$,st_mode Var,st_size:Long Var,st_mtime Var,st_ctime Var )
 Function system_( cmd$ )
 
 'misc

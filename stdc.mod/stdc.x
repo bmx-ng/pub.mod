@@ -1,9 +1,7 @@
 int fclose( FILE* ) !
-int fread( void* , size_t, int, FILE* ) !
-int fwrite( void* ,size_t, int, FILE* ) !
+size_t fread( void* , size_t, size_t, FILE* ) !
+size_t fwrite( void* ,size_t, size_t, FILE* ) !
 int fflush( FILE* ) !
-int fseek( FILE*, int , int ) !
-int ftell( FILE* ) !
 int feof( FILE* ) !
 int fgetc( FILE* ) !
 int ungetc( int,FILE* ) !

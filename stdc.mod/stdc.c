@@ -131,7 +131,7 @@ BBString *readdir_( void* dir ){
 	return t ? bbStringFromCString( t->d_name ) : &bbEmptyString;
 }
 
-int stat_( BBString *path,int *t_mode,int *t_size,int *t_mtime,int *t_ctime ){
+int stat_( BBString *path,int *t_mode,BBLONG *t_size,int *t_mtime,int *t_ctime ){
 	int i;
 	struct _stat st;
 	
@@ -187,6 +187,14 @@ int system_( BBString *cmd ){
 		}
 	}
 	return res;
+}
+
+int fseek_( FILE* stream, BBLONG offset, int origin ) {
+	return _fseeki64(stream, offset, origin);
+}
+
+BBLONG ftell_( FILE* stream ) {
+	return _ftelli64(stream);
 }
 
 #else
@@ -261,7 +269,7 @@ int closedir_( DIR* dir ){
 	return closedir( dir );
 }
 
-int stat_( BBString *path,int *t_mode,int *t_size,int *t_mtime,int *t_ctime ){
+int stat_( BBString *path,int *t_mode,BBLONG *t_size,int *t_mtime,int *t_ctime ){
 	struct stat st;
 	if( stat( bbTmpUTF8String(path),&st ) ) return -1;
 	*t_mode=st.st_mode;
@@ -275,6 +283,14 @@ int system_( BBString *cmd ){
 	return system( bbTmpUTF8String(cmd) );
 }
 
+int fseek_( FILE* stream, BBLONG offset, int origin ) {
+	return fseeko(stream, offset, origin);
+}
+
+BBLONG ftell_( FILE* stream ) {
+	return ftello(stream);
+}
+
 #endif
 
 int fclose_( FILE* stream ) {
@@ -285,20 +301,8 @@ int feof_(FILE* stream) {
 	return feof(stream);
 }
 
-int fread_( void * ptr, int size, int count, FILE* stream ) {
-	return (int)fread(ptr, size, count, stream);
-}
-
-int fwrite_( void * ptr, int size, int count, FILE* stream ) {
-	return (int)fwrite(ptr, size, count, stream);
-}
-
 int fflush_( FILE* stream ) {
 	return fflush(stream);
-}
-
-int fseek_( FILE* stream, int offset, int origin ) {
-	return fseek(stream, offset, origin);
 }
 
 int htons_( int n ){
