@@ -51,4 +51,9 @@ void gluTessProperty (GLUtesselator* , GLenum , GLdouble )!
 void gluTessVertex (GLUtesselator* , GLdouble *, GLvoid* )!
 GLint gluUnProject (GLdouble , GLdouble , GLdouble , const GLdouble *, const GLdouble *, const GLint *, GLdouble* , GLdouble* , GLdouble* )!
 GLint gluUnProject4 (GLdouble , GLdouble , GLdouble , GLdouble , const GLdouble *, const GLdouble *, const GLint *, GLdouble , GLdouble , GLdouble* , GLdouble* , GLdouble* , GLdouble* )!
-
+BBINT gluBuild1DMipmapLevels(BBINT ,BBINT ,BBINT ,BBINT ,BBINT ,BBINT ,BBINT ,BBINT ,BBBYTE* )!
+BBINT gluBuild2DMipmapLevels(BBINT ,BBINT ,BBINT ,BBINT ,BBINT ,BBINT ,BBINT ,BBINT ,BBINT ,BBBYTE* )!
+BBINT gluBuild3DMipmapLevels(BBINT ,BBINT ,BBINT ,BBINT ,BBINT ,BBINT ,BBINT ,BBINT ,BBINT ,BBINT ,BBBYTE* )!
+BBINT gluBuild3DMipmaps(BBINT ,BBINT ,BBINT ,BBINT ,BBINT ,BBINT ,BBINT ,BBBYTE* )!
+BBINT gluNurbsCallbackData(BBBYTE* ,BBBYTE* )!
+BBINT gluNurbsCallbackDataEXT(BBBYTE* ,BBBYTE* )!
