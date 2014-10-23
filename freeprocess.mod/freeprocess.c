@@ -13,8 +13,8 @@
 #include <sys/wait.h>
 
 int fdClose(int fd) {return close(fd);}
-int fdRead(int fd,char *buffer,int count) {return read(fd,buffer,count);}
-int fdWrite(int fd,char *buffer,int count) {return write(fd,buffer,count);}
+BBLONG fdRead(int fd,char *buffer,BBLONG count) {return read(fd,buffer,count);}
+BBLONG fdWrite(int fd,char *buffer,BBLONG count) {return write(fd,buffer,count);}
 int fdAvail(int fd) {int avail;if (ioctl(fd,FIONREAD,&avail)) avail=avail;return avail;}
 int fdFlush(int fd) {}//flush(fd);}
 
@@ -189,7 +189,7 @@ int fdClose(int fd)
 	return CloseHandle((HANDLE)fd);
 }
 
-int fdRead(int fd,char *buffer,int bytes)
+BBLONG fdRead(int fd,char *buffer,BBLONG bytes)
 {
 	int		res; 
 	long	count;
@@ -198,7 +198,7 @@ int fdRead(int fd,char *buffer,int bytes)
 	return 0;
 }
 
-int fdWrite(int fd,char *buffer,int bytes)
+BBLONG fdWrite(int fd,char *buffer,BBLONG bytes)
 {
 	int		res;
 	long	count;

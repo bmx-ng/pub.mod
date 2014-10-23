@@ -32,8 +32,8 @@ Import "freeprocess.c"
 'again.
 Extern
 Function fdClose(fd)
-Function fdRead(fd,buffer:Byte Ptr,count)
-Function fdWrite(fd,buffer:Byte Ptr,count)
+Function fdRead:Long(fd,buffer:Byte Ptr,count:Long)
+Function fdWrite:Long(fd,buffer:Byte Ptr,count:Long)
 Function fdFlush(fd)
 Function fdAvail(fd)
 Function fdProcess(exe$,in_fd Ptr,out_fd Ptr,err_fd Ptr,flags)="fdProcess"
@@ -46,7 +46,7 @@ Const HIDECONSOLE=1
 Type TPipeStream Extends TStream
 
 	Field	readbuffer:Byte[4096]
-	Field	bufferpos
+	Field	bufferpos:Long
 	Field	readhandle,writehandle
 
 	Method Close()
@@ -60,11 +60,11 @@ Type TPipeStream Extends TStream
 		EndIf
 	End Method
 
-	Method Read( buf:Byte Ptr,count )
+	Method Read:Long( buf:Byte Ptr,count:Long )
 		Return fdRead(readhandle,buf,count)
 	End Method
 
-	Method Write( buf:Byte Ptr,count )
+	Method Write:Long( buf:Byte Ptr,count:Long )
 		Return fdWrite(writehandle,buf,count)
 	End Method
 	
@@ -87,7 +87,7 @@ Type TPipeStream Extends TStream
 	End Method
 	
 	Method ReadLine$()	'nonblocking - returns empty string if no data available
-		Local	n,r,p0,p1,line$
+		Local	n:Long,r:Long,p0,p1,line$
 		n=ReadAvail()
 		If n
 			If bufferpos+n>4096 n=4096-bufferpos
