@@ -31,5 +31,5 @@ Import "d3d.bmx"
 Import "d3d7.bmx"
 Import "d3d9.bmx"
 Import "d3d9x.bmx"
-Import "dsound.bmx"
 ?
+Import "dsound.bmx"

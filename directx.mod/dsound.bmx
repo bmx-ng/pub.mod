@@ -3,6 +3,8 @@ Strict
 
 Import Pub.Win32
 
+Import "dsound.cpp"
+
 Const DIRECTSOUND_VERSION=$0700
 
 Const DSSCL_NORMAL=$00000001
@@ -64,7 +66,7 @@ Const DSBSTATUS_TERMINATED=$00000020
 
 Const DSBLOCK_FROMWRITECURSOR=$00000001
 Const DSBLOCK_ENTIREBUFFER=$00000002
-
+?disabled
 Type DSCAPS
 	Field dwSize
 	Field dwFlags
@@ -157,6 +159,27 @@ Type IDirectSoundBuffer Extends IUnknown
 End Type
 
 End Extern
+?
+
+Extern
+	Function bmx_directsound_IDirectSound_release:Int(handle:Byte Ptr)
+	Function bmx_directsound_IDirectSound_create:Int(dsound:Byte Ptr Ptr)
+	Function bmx_directsound_IDirectSound_setcooperativeLevel:Int(handle:Byte Ptr, hwnd:Byte Ptr, flags:Int)
+	Function bmx_directsound_IDirectSound_duplicatesoundbuffer:Int(handle:Byte Ptr, buffer:Byte Ptr, buf:Byte Ptr Ptr)
+	Function bmx_directsound_IDirectSound_createsoundbuffer:Int(handle:Byte Ptr, buf:Byte Ptr Ptr, length:Int, hertz:Int, format:Int, chans:Int, bps:Int, size:Int, flags:Int, _mode:Int)
+
+	Function bmx_directsound_IDirectSoundBuffer_release:Int(handle:Byte Ptr)
+	Function bmx_directsound_IDirectSoundBuffer_stop:Int(handle:Byte Ptr)
+	Function bmx_directsound_IDirectSoundBuffer_play:Int(handle:Byte Ptr, res:Int, priority:Int, flags:Int)
+	Function bmx_directsound_IDirectSoundBuffer_setvolume:Int(handle:Byte Ptr, volume:Int)
+	Function bmx_directsound_IDirectSoundBuffer_setpan:Int(handle:Byte Ptr, pan:Int)
+	Function bmx_directsound_IDirectSoundBuffer_setfrequency:Int(handle:Byte Ptr, freq:Int)
+	Function bmx_directsound_IDirectSoundBuffer_setcurrentposition:Int(handle:Byte Ptr, pos:Int)
+	Function bmx_directsound_IDirectSoundBuffer_lock:Int(handle:Byte Ptr, offset:Int, size:Int, ptr1:Byte Ptr Ptr, bytes1:Int Ptr, ptr2:Byte Ptr Ptr, bytes2:Int Ptr, flags:Int )
+	Function bmx_directsound_IDirectSoundBuffer_unlock:Int(handle:Byte Ptr, ptr1:Byte Ptr,bytes1:Int,ptr2:Byte Ptr,bytes2:Int)
+	Function bmx_directsound_IDirectSoundBuffer_getstatus:Int(handle:Byte Ptr, status:Int Ptr)
+	
+End Extern
 
 Private
 
@@ -164,4 +187,4 @@ Global _ds=LoadLibraryA( "dsound" )
 
 Public
 
-Global DirectSoundCreate( guid:Byte Ptr,dsound:IDirectSound Var,unk:Byte Ptr )"win32"=GetProcAddress( _ds,"DirectSoundCreate" )
+Global DirectSoundCreate( guid:Byte Ptr,dsound:Byte Ptr,unk:Byte Ptr )"win32"=GetProcAddress( _ds,"DirectSoundCreate" )
