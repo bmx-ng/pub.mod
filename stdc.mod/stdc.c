@@ -190,11 +190,15 @@ int system_( BBString *cmd ){
 }
 
 int fseek_( FILE* stream, BBLONG offset, int origin ) {
+	// flush stream when using _fileno
+	fflush(stream);
 	int f = _fileno(stream);
 	return (_lseeki64(f, offset, origin) >= 0) ? 0 : 1;
 }
 
 BBLONG ftell_( FILE* stream ) {
+	// flush stream when using _fileno
+	fflush(stream);
 	int f = _fileno(stream);
 	return _telli64(f);
 }
