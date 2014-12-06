@@ -65,15 +65,27 @@ Import "coreaudiodevice.cpp"
 Extern
 Function OpenCoreAudioDevice:Byte Ptr()
 End Extern
-?Linux
+?Linuxx86
 Import "-ldl"
-'Import "-lpulse-simple"
-'Import "-lasound"
 Import "alsadevice.cpp"
 Import "pulseaudiodevice.cpp"
-'Import "ossdevice.cpp"
 Extern "C"
-'Function OpenOSSDevice()
+Function OpenALSADevice:Byte Ptr()
+Function OpenPulseAudioDevice:Byte Ptr()
+End Extern
+?Linuxx64
+Import "-ldl"
+Import "alsadevice.cpp"
+Import "pulseaudiodevice.cpp"
+Extern "C"
+Function OpenALSADevice:Byte Ptr()
+Function OpenPulseAudioDevice:Byte Ptr()
+End Extern
+?raspberrypi
+Import "-ldl"
+Import "alsadevice.cpp"
+Import "pulseaudiodevice.cpp"
+Extern "C"
 Function OpenALSADevice:Byte Ptr()
 Function OpenPulseAudioDevice:Byte Ptr()
 End Extern
@@ -117,14 +129,26 @@ Function fa_Init( deviceid )
 '	Else
 		device=OpenMultiMediaDevice()
 '	EndIf
-?Linux
+?Linuxx86
 	Select deviceid
 		Case 0
 			device=OpenPulseAudioDevice()
 		Case 1
 			device=OpenALSADevice()
-'		Case 2
-'			device=OpenOSSDevice()
+	EndSelect
+?Linuxx64
+	Select deviceid
+		Case 0
+			device=OpenPulseAudioDevice()
+		Case 1
+			device=OpenALSADevice()
+	EndSelect
+?raspberrypi
+	Select deviceid
+		Case 0
+			device=OpenPulseAudioDevice()
+		Case 1
+			device=OpenALSADevice()
 	EndSelect
 ?MacOS
 	device=OpenCoreAudioDevice()
