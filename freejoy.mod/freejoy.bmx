@@ -33,10 +33,15 @@ Import "freejoy.macosx.c"
 Import "-framework IOKit"
 ?Win32
 Import "freejoy.win32.c"
-?Linux
+?Linuxx86
+Import "freejoy.linux.c"
+?Linuxx64
+Import "freejoy.linux.c"
+?raspberrypi
 Import "freejoy.linux.c"
 ?
 
+?Not android
 Extern
 
 	Function freejoy_JoyCount:Int() = "JoyCount"
@@ -222,3 +227,5 @@ New TFreeJoyDriver
 
 ' make ourself the default
 GetJoystickDriver("FreeJoy")
+
+?

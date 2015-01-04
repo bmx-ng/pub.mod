@@ -16,16 +16,22 @@ ModuleInfo "History: Restored GLU"
 ?MacOS
 Import "-framework AGL"
 Import "-framework OpenGL"
+Import "glu.bmx"
 ?Win32
 Import "GL/gl.h"
 Import "-lglu32"
 Import "-lopengl32"
-?Linux
+Import "glu.bmx"
+?Linuxx86
 Import "-lGL"
 Import "-lGLU"
+Import "glu.bmx"
+?Linuxx64
+Import "-lGL"
+Import "-lGLU"
+Import "glu.bmx"
 ?
 
-Import "glu.bmx"
 
 Extern "Os"
 
