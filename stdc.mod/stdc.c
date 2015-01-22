@@ -503,7 +503,7 @@ static void CleanupWSA(){
 
 #endif
 
-void bb_stdc_Startup(){
+int bb_stdc_Startup(){
 
 #if _WIN32
 
