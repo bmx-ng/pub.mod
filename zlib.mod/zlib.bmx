@@ -33,6 +33,12 @@ Import "trees.c"
 Import "uncompr.c"
 Import "zutil.c"
 
+'
+' Build notes:
+'  gzguts.h
+'    Added unistd.h include for emscripten target
+'
+
 Extern
 
 Rem
