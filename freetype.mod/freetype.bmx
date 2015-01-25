@@ -60,6 +60,10 @@ Import "include/*.h"
 ModuleInfo "CC_OPTS: -DFT2_BUILD_LIBRARY"
 Import "source.bmx"
 Import "include/*.h"
+?emscripten
+ModuleInfo "CC_OPTS: -DFT2_BUILD_LIBRARY"
+Import "source.bmx"
+Import "include/*.h"
 ?
 
 Import "glue.c"
