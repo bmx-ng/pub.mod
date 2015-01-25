@@ -30,8 +30,16 @@ ModuleInfo "License: MIT"
 
 ModuleInfo "History: 1.00 Initial Release"
 
-?LinuxARM
+?android
 Import "-lGLESv2"
+
+Import "extern.bmx"
+?raspberrypi
+Import "-lGLESv2"
+
+Import "extern.bmx"
+?emscripten
+'Import "-lGL"
 
 Import "extern.bmx"
 ?
