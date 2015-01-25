@@ -1,3 +1,4 @@
+SuperStrict
 
 Module Pub.LibPNG
 
@@ -35,41 +36,41 @@ Import "pngwutil.c"
 
 Extern
 
-Const PNG_COLOR_MASK_PALETTE=		1
-Const PNG_COLOR_MASK_COLOR=			2
-Const PNG_COLOR_MASK_ALPHA=			4
+Const PNG_COLOR_MASK_PALETTE:Int=		1
+Const PNG_COLOR_MASK_COLOR:Int=			2
+Const PNG_COLOR_MASK_ALPHA:Int=			4
 
-Const PNG_COLOR_TYPE_GRAY=			0
-Const PNG_COLOR_TYPE_PALETTE=		(PNG_COLOR_MASK_COLOR | PNG_COLOR_MASK_PALETTE)
-Const PNG_COLOR_TYPE_RGB=			(PNG_COLOR_MASK_COLOR)
-Const PNG_COLOR_TYPE_RGB_ALPHA=		(PNG_COLOR_MASK_COLOR | PNG_COLOR_MASK_ALPHA)
-Const PNG_COLOR_TYPE_GRAY_ALPHA=	(PNG_COLOR_MASK_ALPHA)
-Const PNG_COLOR_TYPE_RGBA=			PNG_COLOR_TYPE_RGB_ALPHA
-Const PNG_COLOR_TYPE_GA=			PNG_COLOR_TYPE_GRAY_ALPHA
+Const PNG_COLOR_TYPE_GRAY:Int=			0
+Const PNG_COLOR_TYPE_PALETTE:Int=		(PNG_COLOR_MASK_COLOR | PNG_COLOR_MASK_PALETTE)
+Const PNG_COLOR_TYPE_RGB:Int=			(PNG_COLOR_MASK_COLOR)
+Const PNG_COLOR_TYPE_RGB_ALPHA:Int=		(PNG_COLOR_MASK_COLOR | PNG_COLOR_MASK_ALPHA)
+Const PNG_COLOR_TYPE_GRAY_ALPHA:Int=	(PNG_COLOR_MASK_ALPHA)
+Const PNG_COLOR_TYPE_RGBA:Int=			PNG_COLOR_TYPE_RGB_ALPHA
+Const PNG_COLOR_TYPE_GA:Int=			PNG_COLOR_TYPE_GRAY_ALPHA
 
-Const PNG_TRANSFORM_IDENTITY=		$0000		'read and write
-Const PNG_TRANSFORM_STRIP_16=		$0001		'read only
-Const PNG_TRANSFORM_STRIP_ALPHA=	$0002		'read only
-Const PNG_TRANSFORM_PACKING=		$0004		'read and write
-Const PNG_TRANSFORM_PACKSWAP=		$0008		'read and write
-Const PNG_TRANSFORM_EXPAND=			$0010		'read only
-Const PNG_TRANSFORM_INVERT_MONO=	$0020		'read and write
-Const PNG_TRANSFORM_SHIFT=			$0040		'read and write
-Const PNG_TRANSFORM_BGR=			$0080		'read and write
-Const PNG_TRANSFORM_SWAP_ALPHA=		$0100		'read and write
-Const PNG_TRANSFORM_SWAP_ENDIAN=	$0200		'read and write
-Const PNG_TRANSFORM_INVERT_ALPHA=   $0400		'read and write
-Const PNG_TRANSFORM_STRIP_FILLER=   $0800		'write only
+Const PNG_TRANSFORM_IDENTITY:Int=		$0000		'read and write
+Const PNG_TRANSFORM_STRIP_16:Int=		$0001		'read only
+Const PNG_TRANSFORM_STRIP_ALPHA:Int=	$0002		'read only
+Const PNG_TRANSFORM_PACKING:Int=		$0004		'read and write
+Const PNG_TRANSFORM_PACKSWAP:Int=		$0008		'read and write
+Const PNG_TRANSFORM_EXPAND:Int=			$0010		'read only
+Const PNG_TRANSFORM_INVERT_MONO:Int=	$0020		'read and write
+Const PNG_TRANSFORM_SHIFT:Int=			$0040		'read and write
+Const PNG_TRANSFORM_BGR:Int=			$0080		'read and write
+Const PNG_TRANSFORM_SWAP_ALPHA:Int=		$0100		'read and write
+Const PNG_TRANSFORM_SWAP_ENDIAN:Int=	$0200		'read and write
+Const PNG_TRANSFORM_INVERT_ALPHA:Int=   $0400		'read and write
+Const PNG_TRANSFORM_STRIP_FILLER:Int=   $0800		'write only
 
-Const PNG_COMPRESSION_TYPE_DEFAULT=	0
+Const PNG_COMPRESSION_TYPE_DEFAULT:Int=	0
 
-Const PNG_FILTER_TYPE_DEFAULT=		0
-Const PNG_INTRAPIXEL_DIFFERENCING=	64
+Const PNG_FILTER_TYPE_DEFAULT:Int=		0
+Const PNG_INTRAPIXEL_DIFFERENCING:Int=	64
 
-Const PNG_INTERLACE_NONE=			0
-Const PNG_INTERLACE_ADAM7=			1
+Const PNG_INTERLACE_NONE:Int=			0
+Const PNG_INTERLACE_ADAM7:Int=			1
 
-Function png_sig_cmp( buf:Byte Ptr,start,count ) = "bmx_png_sig_cmp"
+Function png_sig_cmp:Int( buf:Byte Ptr,start:Int,count:Int ) = "bmx_png_sig_cmp"
 
 Function png_create_read_struct:Byte Ptr( ver_string$z,user_error_ptr:Byte Ptr,user_error_fn:Byte Ptr,user_warning_fn:Byte Ptr) = "bmx_png_create_read_struct"
 Function png_create_write_struct:Byte Ptr( ver_string$z,user_error_ptr:Byte Ptr,user_error_fn:Byte Ptr,user_warning_fn:Byte Ptr) = "bmx_png_create_write_struct"
@@ -80,25 +81,25 @@ Function png_destroy_write_struct( png_ptr:Byte Ptr,info_ptr1:Byte Ptr,info_ptr2
 Function png_create_info_struct:Byte Ptr( png_ptr:Byte Ptr ) = "bmx_png_create_info_struct"
 
 Function png_init_io( png_ptr:Byte Ptr,c_stream:Byte Ptr ) = "bmx_png_init_io"
-Function png_set_sig_bytes( png_ptr:Byte Ptr,number ) = "bmx_png_set_sig_bytes"
+Function png_set_sig_bytes( png_ptr:Byte Ptr,number:Int ) = "bmx_png_set_sig_bytes"
 
-Function png_set_read_fn( png_ptr:Byte Ptr,user:Byte Ptr,read_fn(png_ptr:Byte Ptr,buf:Byte Ptr,size) ) = "bmx_png_set_read_fn"
-Function png_set_write_fn( png_ptr:Byte Ptr,user:Byte Ptr,write_fn(png_ptr:Byte Ptr,buf:Byte Ptr,size),flush_fn(png_ptr:Byte Ptr) ) = "bmx_png_set_write_fn"
+Function png_set_read_fn( png_ptr:Byte Ptr,user:Byte Ptr,read_fn(png_ptr:Byte Ptr,buf:Byte Ptr,size:Int) ) = "bmx_png_set_read_fn"
+Function png_set_write_fn( png_ptr:Byte Ptr,user:Byte Ptr,write_fn(png_ptr:Byte Ptr,buf:Byte Ptr,size:Int),flush_fn(png_ptr:Byte Ptr) ) = "bmx_png_set_write_fn"
 
 Function png_set_expand( png_ptr:Byte Ptr ) = "bmx_png_set_expand"
 Function png_set_strip_16( png_ptr:Byte Ptr ) = "bmx_png_set_strip_16"
 Function png_set_gray_to_rgb( png_ptr:Byte Ptr ) = "bmx_png_set_gray_to_rgb"
 
-Function png_set_compression_level( png_ptr:Byte Ptr,level ) = "bmx_png_set_compression_level"
-Function png_set_compression_strategy( png_ptr:Byte Ptr,strategy ) = "bmx_png_set_compression_strategy"
+Function png_set_compression_level( png_ptr:Byte Ptr,level:Int ) = "bmx_png_set_compression_level"
+Function png_set_compression_strategy( png_ptr:Byte Ptr,strategy:Int ) = "bmx_png_set_compression_strategy"
 
-Function png_read_png( png_ptr:Byte Ptr,info_ptr:Byte Ptr,png_transforms,reserved:Byte Ptr ) = "bmx_png_read_png"
-Function png_write_png( png_ptr:Byte Ptr,info_ptr:Byte Ptr,png_transforms,reserved:Byte Ptr ) = "bmx_png_write_png"
+Function png_read_png( png_ptr:Byte Ptr,info_ptr:Byte Ptr,png_transforms:Int,reserved:Byte Ptr ) = "bmx_png_read_png"
+Function png_write_png( png_ptr:Byte Ptr,info_ptr:Byte Ptr,png_transforms:Int,reserved:Byte Ptr ) = "bmx_png_write_png"
 
 Function png_get_rows:Byte Ptr Ptr( png_ptr:Byte Ptr,info_ptr:Byte Ptr ) = "bmx_png_get_rows"
 Function png_set_rows( png_ptr:Byte Ptr,info_ptr:Byte Ptr,rows:Byte Ptr ) = "bmx_png_set_rows"
 
-Function png_get_IHDR( png_ptr:Byte Ptr,info_ptr:Byte Ptr,width Var,height Var,bit_depth Var,color_type Var,interlace_type Var,compression_type Var,filter_method Var ) = "bmx_png_get_IHDR"
-Function png_set_IHDR( png_ptr:Byte Ptr,info_ptr:Byte Ptr,width,height,bit_depth,color_type,interlace_type,compression_type,filter_method ) = "bmx_png_set_IHDR"
+Function png_get_IHDR:Int( png_ptr:Byte Ptr,info_ptr:Byte Ptr,width:Int Var,height:Int Var,bit_depth:Int Var,color_type:Int Var,interlace_type:Int Var,compression_type:Int Var,filter_method:Int Var ) = "bmx_png_get_IHDR"
+Function png_set_IHDR( png_ptr:Byte Ptr,info_ptr:Byte Ptr,width:Int,height:Int,bit_depth:Int,color_type:Int,interlace_type:Int,compression_type:Int,filter_method:Int ) = "bmx_png_set_IHDR"
 
 End Extern
