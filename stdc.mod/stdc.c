@@ -217,7 +217,9 @@ int putenv_( BBString *str ){
 	char *t=bbTmpUTF8String( str );
 	char *p=(char*)malloc( strlen(t)+1 );
 	strcpy( p,t );
-	return putenv( p );
+	int res = putenv( p );
+	free(p);
+	return res;
 }
 
 BBString *getenv_( BBString *str ){
