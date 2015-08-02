@@ -483,7 +483,7 @@ Function wglCreateContext( hdc:Byte Ptr )
 Function wglDeleteContext( hglrc )
 Function wglMakeCurrent( hdc:Byte Ptr,hglrc )
 
-Function BitBlt(hdc:Byte Ptr,x,y,w,h,src_dc,src_x,src_y,dwrop)
+Function BitBlt(hdc:Byte Ptr,x,y,w,h,src_dc:Byte Ptr,src_x,src_y,dwrop)
 
 Function GetDeviceCaps(hdc:Byte Ptr,indec)
 

@@ -1,7 +1,12 @@
 
 Strict
 
+Import brl.standardio
 Import Pub.Win32
+Import "d3d.bmx"
+
+Import "include/*.h"
+Import "d3d9.cpp"
 
 Const DIRECT3D_VERSION9=$900
 
@@ -14,7 +19,26 @@ Type D3DDEVTYPE
 	Const D3DDEVTYPE_FORCE_DWORD = $7fffffff
 End Type
 
+
+Extern
+	Function bmx_directx_d3d9_D3DCAPS9_new:Byte Ptr()
+	Function bmx_directx_d3d9_D3DCAPS9_free(handle:Byte Ptr)
+End Extern
+
 Type D3DCAPS9
+	Field capsPtr:Byte Ptr
+	
+	Method New()
+		capsPtr = bmx_directx_d3d9_D3DCAPS9_new()
+	End Method
+	
+	Method Delete()
+		If capsPtr Then
+			bmx_directx_d3d9_D3DCAPS9_free(capsPtr)
+			capsPtr = Null
+		End If
+	End Method
+Rem 
 	Field DeviceType	'D3DDEVTYPE
 	Field AdapterOrdinal;
 	Field Caps;
@@ -93,6 +117,7 @@ Type D3DCAPS9
 	Field MaxPShaderInstructionsExecuted;
 	Field MaxVertexShader30InstructionSlots;
 	Field MaxPixelShader30InstructionSlots;
+End Rem
 End Type
 
 Type D3DCLIPSTATUS9
@@ -100,13 +125,62 @@ Type D3DCLIPSTATUS9
 	Field ClipIntersection
 End Type
 
+Extern
+	Function bmx_directx_d3d9_D3DVIEWPORT9_new:Byte Ptr()
+	Function bmx_directx_d3d9_D3DVIEWPORT9_free(handle:Byte Ptr)
+	Function bmx_directx_d3d9_D3DVIEWPORT9_SetX(handle:Byte Ptr, X:Int)
+	Function bmx_directx_d3d9_D3DVIEWPORT9_SetY(handle:Byte Ptr, Y:Int)
+	Function bmx_directx_d3d9_D3DVIEWPORT9_SetWidth(handle:Byte Ptr, Width:Int)
+	Function bmx_directx_d3d9_D3DVIEWPORT9_SetHeight(handle:Byte Ptr, Height:Int)
+	Function bmx_directx_d3d9_D3DVIEWPORT9_SetMinZ(handle:Byte Ptr, MinZ:Float)
+	Function bmx_directx_d3d9_D3DVIEWPORT9_SetMaxZ(handle:Byte Ptr, MaxZ:Float)
+End Extern
+
 Type D3DVIEWPORT9
+	Field vpPtr:Byte Ptr
+	
+	Method New()
+		vpPtr = bmx_directx_d3d9_D3DVIEWPORT9_new()
+	End Method
+	
+	Method Delete()
+		If vpPtr Then
+			bmx_directx_d3d9_D3DVIEWPORT9_free(vpPtr)
+			vpPtr = Null
+		End If
+	End Method
+	
+	Method SetX(X:Int)
+		bmx_directx_d3d9_D3DVIEWPORT9_SetX(vpPtr, X)
+	End Method
+	
+	Method SetY(Y:Int)
+		bmx_directx_d3d9_D3DVIEWPORT9_SetY(vpPtr, Y)
+	End Method
+	
+	Method SetWidth(Width:Int)
+		bmx_directx_d3d9_D3DVIEWPORT9_SetWidth(vpPtr, Width)
+	End Method
+	
+	Method SetHeight(Height:Int)
+		bmx_directx_d3d9_D3DVIEWPORT9_SetHeight(vpPtr, Height)
+	End Method
+	
+	Method SetMinZ(MinZ:Float)
+		bmx_directx_d3d9_D3DVIEWPORT9_SetMinZ(vpPtr, MinZ)
+	End Method
+	
+	Method SetMaxZ(MaxZ:Float)
+		bmx_directx_d3d9_D3DVIEWPORT9_SetMaxZ(vpPtr, MaxZ)
+	End Method
+Rem
 	Field X
 	Field Y
 	Field Width
 	Field Height
 	Field MinZ#
 	Field MaxZ#
+End Rem
 End Type
 
 Type D3DMATERIAL9
@@ -194,15 +268,32 @@ Type D3DADAPTER_IDENTIFIER9
 	End Method	
 End Type
 
-Extern "win32"
+'Extern "win32"
+
+Extern
+	Function bmx_directx_d3d9_IDirect3DQuery9_Issue:Int(handle:Byte Ptr, dwIssueFlags:Int)
+	Function bmx_directx_d3d9_IDirect3DQuery9_GetData:Int(handle:Byte Ptr, pData:Byte Ptr, dwSize:Int, dwGetDataFlags:Int)
+End Extern
 
 Type IDirect3DQuery9 Extends IUnknown
 
 	Method GetDevice( ppDevice:IDirect3DDevice9 Var )
+	End Method
+	
 	Method GetType()
+	End Method
+
 	Method GetDataSize()
-	Method Issue( dwIssueFlags )
+	End Method
+
+	Method Issue( dwIssueFlags:Int )
+		Return bmx_directx_d3d9_IDirect3DQuery9_Issue(unknownPtr, dwIssueFlags)
+	End Method
+
 	Method GetData( pData:Byte Ptr,dwSize,dwGetDataFlags )
+		Return bmx_directx_d3d9_IDirect3DQuery9_GetData(unknownPtr, pData, dwSize, dwGetDataFlags)
+	End Method
+
 Rem
 	STDMETHOD(GetDevice)(THIS_ IDirect3DDevice9** ppDevice) PURE;
 	STDMETHOD_(D3DQUERYTYPE, GetType)(THIS) PURE;
@@ -214,9 +305,15 @@ End Rem
 End Type
 
 Type IDirect3DStateBlock9 Extends IUnknown
-	Method GetDevice(ppDevice: IDirect3DDevice9 Var)
+	Method GetDevice(ppDevice:IDirect3DDevice9)
+	End Method
+
 	Method Capture()
+	End Method
+
 	Method Apply()
+	End Method
+
 
 Rem
 	STDMETHOD(GetDevice)(THIS_ IDirect3DDevice9** ppDevice) PURE;
@@ -253,22 +350,63 @@ End Rem
 
 End Type
 
-Type IDirect3D9 Extends IUnknown
+Extern
+	Function bmx_directx_d3d9_IDirect3D9_CreateDevice:Int(handle:Byte Ptr, Adapter:Int,DeviceType:Int,hFocusWindow:Byte Ptr,BehaviorFlags:Int, pPresentationParameters:Byte Ptr, ppReturnedDeviceInterface:Byte Ptr Ptr)
+	Function bmx_directx_d3d9_IDirect3D9_GetDeviceCaps:Int(handle:Byte Ptr, Adapter:Int,DeviceType:Int, pCaps:Byte Ptr)
+	Function bmx_directx_d3d9_IDirect3D9_GetAdapterModeCount:Int(handle:Byte Ptr, Adapter:Int, Format:Int)
+	Function bmx_directx_d3d9_IDirect3D9_EnumAdapterModes:Int(handle:Byte Ptr, Adapter:Int, Format:Int, Mode:Int, pMode:Byte Ptr)
+	Function bmx_directx_d3d9_IDirect3D9_CheckDeviceFormat:Int(handle:Byte Ptr, Adapter:Int, DeviceType:Int, AdapterFormat:Int, Usage:Int, RType:Int, CheckFormat:Int)
+End Extern
 
+Type IDirect3D9 Extends IUnknown
+Rem
 	Method RegisterSoftwareDevice( pInitializeFunction() )
+	End Method
+
 	Method GetAdapterCount()
+	End Method
+
 	Method GetAdapterIdentifier( Adapter,Flags,pIdentifier:Byte Ptr )
+	End Method
+End Rem
 	Method GetAdapterModeCount( Adapter,Format )
-	Method EnumAdapterModes( Adapter,Format,Mode,pMode:Byte Ptr )
+		Return bmx_directx_d3d9_IDirect3D9_GetAdapterModeCount(unknownPtr, Adapter, Format)
+	End Method
+
+	Method EnumAdapterModes( Adapter,Format,Mode,pMode:D3DDISPLAYMODE)
+		Return bmx_directx_d3d9_IDirect3D9_EnumAdapterModes(unknownPtr, Adapter, Format, Mode, pMode.modePtr)
+	End Method
+Rem
 	Method GetAdapterDisplayMode( Adapter,pMode:Byte Ptr )
+	End Method
+
 	Method CheckDeviceType( iAdapter,DevType,DisplayFormat,BackBufferFormat,bWindowed )
+	End Method
+End Rem
 	Method CheckDeviceFormat( Adapter,DeviceType,AdapterFormat,Usage,RType,CheckFormat )
+		Return bmx_directx_d3d9_IDirect3D9_CheckDeviceFormat(unknownPtr, Adapter, DeviceType, AdapterFormat, Usage, RType, CheckFormat)
+	End Method
+Rem
 	Method CheckDeviceMultiSampleType( Adapter,DeviceType,SurfaceFormat,Windowed,MultiSampleType,pQualityLevels:Int Ptr )
+	End Method
+
 	Method CheckDepthStencilMatch( Adapter,DeviceType,AdapterFormat,RenderTargetFormat,DepthStencilFormat )
+	End Method
+
 	Method CheckDeviceFormatConversion( Adapter,DeviceType,SourceFormat,TargetFormat )
-	Method GetDeviceCaps( Adapter,DeviceType,pCaps:Byte Ptr ) 
-	Method GetAdapterMonitor( Adapter )
-	Method CreateDevice( Adapter,DeviceType,hFocusWindow,BehaviorFlags,pPresentationParameters:Byte Ptr,ppReturnedDeviceInterface:IDirect3DDevice9 Var )
+	End Method
+End Rem
+	Method GetDeviceCaps( Adapter,DeviceType,pCaps:D3DCAPS9)
+		Return bmx_directx_d3d9_IDirect3D9_GetDeviceCaps(unknownPtr, Adapter, DeviceType, pCaps.capsPtr)
+	End Method
+
+'	Method GetAdapterMonitor( Adapter )
+'	End Method
+
+	Method CreateDevice( Adapter:Int,DeviceType:Int,hFocusWindow:Byte Ptr,BehaviorFlags:Int, pPresentationParameters:D3DPRESENT_PARAMETERS,ppReturnedDeviceInterface:IDirect3DDevice9)
+		Return bmx_directx_d3d9_IDirect3D9_CreateDevice(unknownPtr, Adapter, DeviceType, hFocusWindow, BehaviorFlags, pPresentationParameters.paramPtr, Varptr ppReturnedDeviceInterface.unknownPtr)
+	End Method
+
 Rem
 	STDMETHOD(RegisterSoftwareDevice)(THIS_ void* pInitializeFunction) PURE;
 	STDMETHOD_(UINT, GetAdapterCount)(THIS) PURE;
@@ -288,9 +426,34 @@ End Rem
 
 End Type
 
+Extern
+	Function bmx_directx_d3d9_IDirect3DDevice9_CreateQuery:Int(handle:Byte Ptr, Type_:Int, ppQuery:Byte Ptr Ptr)
+	Function bmx_directx_d3d9_IDirect3DDevice9_TestCooperativeLevel:Int(handle:Byte Ptr)
+	Function bmx_directx_d3d9_IDirect3DDevice9_Reset:Int(handle:Byte Ptr, pPresentationParameters:Byte Ptr)
+	Function bmx_directx_d3d9_IDirect3DDevice9_Present:Int(handle:Byte Ptr, pSourceRect:Byte Ptr, pDestRect:Byte Ptr, hDestWindowOverride:Byte Ptr, pDirtyRegion:Byte Ptr)
+	Function bmx_directx_d3d9_IDirect3DDevice9_CreateTexture:Int(handle:Byte Ptr, Width:Int, Height:Int, Levels:Int, Usage:Int, Format:Int, Pool:Int, ppTexture:Byte Ptr Ptr, pSharedHandle:Byte Ptr)
+	Function bmx_directx_d3d9_IDirect3DDevice9_CreateOffscreenPlainSurface:Int(handle:Byte Ptr, Width:Int, Height:Int, Format:Int, Pool:Int, ppSurface:Byte Ptr Ptr, pSharedHandle:Byte Ptr)
+	Function bmx_directx_d3d9_IDirect3DDevice9_GetRenderTarget:Int(handle:Byte Ptr, RenderTargetIndex:Int, pRenderTarget:Byte Ptr Ptr)
+	Function bmx_directx_d3d9_IDirect3DDevice9_BeginScene:Int(handle:Byte Ptr)
+	Function bmx_directx_d3d9_IDirect3DDevice9_EndScene:Int(handle:Byte Ptr)
+	Function bmx_directx_d3d9_IDirect3DDevice9_Clear:Int(handle:Byte Ptr, Count:Int, pRects:Byte Ptr, Flags:Int, Color:Int, Z:Float, Stencil:Int)
+	Function bmx_directx_d3d9_IDirect3DDevice9_SetTransform:Int(handle:Byte Ptr, State:Int, pMatrix:Float Ptr)
+	Function bmx_directx_d3d9_IDirect3DDevice9_SetViewport:Int(handle:Byte Ptr, pViewport:Byte Ptr)
+	Function bmx_directx_d3d9_IDirect3DDevice9_SetRenderState:Int(handle:Byte Ptr, State:Int, Value:Int)
+	Function bmx_directx_d3d9_IDirect3DDevice9_SetTexture:Int(handle:Byte Ptr, Stage:Int, pTexture:Byte Ptr)
+	Function bmx_directx_d3d9_IDirect3DDevice9_SetTextureStageState:Int(handle:Byte Ptr, Stage:Int, Type_:Int, Value:Int)
+	Function bmx_directx_d3d9_IDirect3DDevice9_SetScissorRect:Int(handle:Byte Ptr, pRect:Byte Ptr)
+	Function bmx_directx_d3d9_IDirect3DDevice9_DrawPrimitiveUP:Int(handle:Byte Ptr, PrimitiveType:Int, PrimitiveCount:Int, pVertexStreamZeroData:Byte Ptr, VertexStreamZeroStride:Int)
+	Function bmx_directx_d3d9_IDirect3DDevice9_SetFVF:Int(handle:Byte Ptr, FVF:Int)
+
+End Extern
+
 Type IDirect3DDevice9 Extends IUnknown
 
 	Method TestCooperativeLevel()
+		Return bmx_directx_d3d9_IDirect3DDevice9_TestCooperativeLevel(unknownPtr)
+	End Method
+Rem
 	Method GetAvailableTextureMem()
 	Method EvictManagedResources()
 	Method GetDirect3D( ppD3D9:IDirect3D9 Var )
@@ -303,14 +466,25 @@ Type IDirect3DDevice9 Extends IUnknown
 	Method CreateAdditionalSwapChain( pPresentationParameters:Byte Ptr,pSwapChain:IDirect3DSwapChain9 Var )
 	Method GetSwapChain( iSwapChain,pSwapChain:IDirect3DSwapChain9 Var )
 	Method GetNumberOfSwapChains()
-	Method Reset( pPresentationParameters:Byte Ptr )
-	Method Present( pSourceRect:Byte Ptr,pDestRect:Byte Ptr,hDestWindowOverride,pDirtyRegion:Byte Ptr )
+End Rem
+	Method Reset( pPresentationParameters:D3DPRESENT_PARAMETERS)
+		Return bmx_directx_d3d9_IDirect3DDevice9_Reset(unknownPtr, pPresentationParameters.paramPtr)
+	End Method
+
+	Method Present( pSourceRect:Byte Ptr,pDestRect:Byte Ptr,hDestWindowOverride:Byte Ptr,pDirtyRegion:Byte Ptr )
+		Return bmx_directx_d3d9_IDirect3DDevice9_Present(unknownPtr, pSourceRect, pDestRect, hDestWindowOverride, pDirtyRegion)
+	End Method
+Rem
 	Method GetBackBuffer( iSwapChain,iBackBuffer,bType,ppBackBuffer:IDirect3DSurface9 Var )
 	Method GetRasterStatus( iSwapChain,pRasterStatus:Byte Ptr )
 	Method SetDialogBoxMode( bEnableDialogs )
 	Method SetGammaRamp( iSwapChain,Flags,pRamp:Short Ptr )
 	Method GetGammaRamp( iSwapChain,pRamp:Short Ptr )
-	Method CreateTexture( Width,Height,Levels,Usage,Format,Pool,ppTexture:IDirect3DTexture9 Var,pSharedHandle:Byte Ptr )
+End Rem
+	Method CreateTexture( Width,Height,Levels,Usage,Format,Pool,ppTexture:IDirect3DTexture9,pSharedHandle:Byte Ptr )
+		Return bmx_directx_d3d9_IDirect3DDevice9_CreateTexture(unknownPtr, Width, Height, Levels, Usage, Format, Pool, Varptr ppTexture.unknownPtr, pSharedHandle)
+	End Method
+Rem
 	Method CreateVolumeTexture( Width,Height,Depth,Levels,Usage,Format,Pool,ppVolumeTexture:IDirect3DVolumeTexture9,pSharedHandle:Byte Ptr )
 	Method CreateCubeTexture( EdgeLength,Levels,Usage,Format,Pool,ppTexture:IDirect3DCubeTexture9 Var,pSharedHandle:Byte Ptr )
 	Method CreateVertexBuffer( Length,Usage,FVF,Pool,ppVertexBuffer:IDirect3DVertexBuffer9 Var,pSharedHandle:Byte Ptr )
@@ -323,18 +497,44 @@ Type IDirect3DDevice9 Extends IUnknown
 	Method GetFrontBufferData( iSwapChain,pDestSurface:IDirect3DSurface9 )
 	Method StretchRect( pSourceSurface:IDirect3DSurface9,pSourceRect:Byte Ptr,pDestSurface:IDirect3DSurface9,pDestRect:Byte Ptr,Filter )
 	Method ColorFill( pSurface:IDirect3DSurface9,pRect:Byte Ptr,color )
-	Method CreateOffscreenPlainSurface( Width,Height,Format,Pool,ppSurface:IDirect3DSurface9 Var,pSharedHandle:Byte Ptr )
+End Rem
+	Method CreateOffscreenPlainSurface( Width,Height,Format,Pool,ppSurface:IDirect3DSurface9,pSharedHandle:Byte Ptr )
+		Return bmx_directx_d3d9_IDirect3DDevice9_CreateOffscreenPlainSurface(unknownPtr, Width, Height, Format, Pool, Varptr ppSurface.unknownPtr, pSharedHandle)
+	End Method
+Rem
 	Method SetRenderTarget( RenderTargetIndex,pRenderTarget:IDirect3DSurface9 )
-	Method GetRenderTarget( RenderTargetIndex,pRenderTarget:IDirect3DSurface9 Var )
+	End Method
+End Rem
+	Method GetRenderTarget( RenderTargetIndex,pRenderTarget:IDirect3DSurface9)
+		Return bmx_directx_d3d9_IDirect3DDevice9_GetRenderTarget(unknownPtr, RenderTargetIndex, Varptr pRenderTarget.unknownPtr)
+	End Method
+Rem
 	Method SetDepthStencilSurface( pNewZStencil:IDirect3DSurface9 )
 	Method GetDepthStencilSurface( ppZStencilSurface:IDirect3DSurface9 Var )
+End Rem
 	Method BeginScene()
+		Return bmx_directx_d3d9_IDirect3DDevice9_BeginScene(unknownPtr)
+	End Method
+	
 	Method EndScene()
+		Return bmx_directx_d3d9_IDirect3DDevice9_EndScene(unknownPtr)
+	End Method
+	
 	Method Clear( Count,pRects:Byte Ptr,Flags,Color,Z#,Stencil )
+		Return bmx_directx_d3d9_IDirect3DDevice9_Clear(unknownPtr, Count, pRects, Flags, Color, Z, Stencil)
+	End Method
+
 	Method SetTransform( State,pMatrix:Float Ptr )
+		Return bmx_directx_d3d9_IDirect3DDevice9_SetTransform(unknownPtr, State, pMatrix)
+	End Method
+Rem
 	Method GetTransform( State,pMatrix:Float Ptr )
 	Method MultiplyTransform( State,pMatrix:Float Ptr )
-	Method SetViewport( pViewport:Byte Ptr )
+End Rem
+	Method SetViewport( pViewport:D3DVIEWPORT9 )
+		Return bmx_directx_d3d9_IDirect3DDevice9_SetViewport(unknownPtr, pViewport.vpPtr)
+	End Method
+Rem
 	Method GetViewport( pViewport:Byte Ptr )
 	Method SetMaterial( pMaterial:Byte Ptr )
 	Method GetMaterial( pMaterial:Byte Ptr )
@@ -344,7 +544,11 @@ Type IDirect3DDevice9 Extends IUnknown
 	Method GetLightEnable( Index,Enable:Int Ptr )
 	Method SetClipPlane( Index,pPlane:Float Ptr )
 	Method GetClipPlane( Index,pPlane:Float Ptr )
+End Rem
 	Method SetRenderState( State,Value )
+		Return bmx_directx_d3d9_IDirect3DDevice9_SetRenderState(unknownPtr, State, Value)
+	End Method
+Rem
 	Method GetRenderState( State,Value Var )
 	Method CreateStateBlock( Type_,ppSB:IDirect3DStateBlock9 Var )
 	Method BeginStateBlock()
@@ -352,9 +556,17 @@ Type IDirect3DDevice9 Extends IUnknown
 	Method SetClipStatus( pClipStatus:Byte Ptr )
 	Method GetClipStatus( pClipStatus:Byte Ptr )
 	Method GetTexture( Stage,ppTexture:IDirect3DBaseTexture9 Var )
+End Rem
 	Method SetTexture( Stage,pTexture:IDirect3DBaseTexture9 )
+		Return bmx_directx_d3d9_IDirect3DDevice9_SetTexture(unknownPtr, Stage, pTexture.unknownPtr)
+	End Method
+Rem
 	Method GetTextureStageState( Stage,Type_,pValue Var )
+End Rem
 	Method SetTextureStageState( Stage,Type_,Value )
+		Return bmx_directx_d3d9_IDirect3DDevice9_SetTextureStageState(unknownPtr, Stage, Type_, Value)
+	End Method
+Rem
 	Method GetSamplerState( Sampler,Type_,pValue Var )
 	Method SetSamplerState( Sampler,Type_,Value )
 	Method ValidateDevice( pNumPasses:Int Ptr )
@@ -362,7 +574,11 @@ Type IDirect3DDevice9 Extends IUnknown
 	Method GetPaletteEntries( PaletteNumber,pEntries:Byte Ptr )
 	Method SetCurrentTexturePalette( PaletteNumber )
 	Method GetCurrentTexturePalette( PaletteNumber Var )
+End Rem
 	Method SetScissorRect( pRect:Byte Ptr )
+		Return bmx_directx_d3d9_IDirect3DDevice9_SetScissorRect(unknownPtr, pRect)
+	End Method
+Rem
 	Method GetScissorRect( pRect:Byte Ptr )
 	Method SetSoftwareVertexProcessing( bSoftware )
 	Method GetSoftwareVertexProcessing()
@@ -370,13 +586,21 @@ Type IDirect3DDevice9 Extends IUnknown
 	Method GetNPatchMode#()
 	Method DrawPrimitive( PrimitiveType,StartVertex,PrimitiveCount )
 	Method DrawIndexedPrimitive( PrimitiveType,BaseVertexIndex,MinVertexIndex,NumVertices,startIndex,primCount )
+End Rem
 	Method DrawPrimitiveUP( PrimitiveType,PrimitiveCount,pVertexStreamZeroData:Byte Ptr,VertexStreamZeroStride )
+		Return bmx_directx_d3d9_IDirect3DDevice9_DrawPrimitiveUP(unknownPtr, PrimitiveType, PrimitiveCount, pVertexStreamZeroData, VertexStreamZeroStride)
+	End Method
+Rem
 	Method DrawIndexedPrimitiveUP( PrimitiveType,MinVertexIndex,NumVertices,PrimitiveCount,pIndexData:Byte Ptr,IndexDataFormat,pVertexStreamZeroData:Byte Ptr,VertexStreamZeroStride )
 	Method ProcessVertices( SrcStartIndex,DestIndex,VertexCount,pDestBuffer:IDirect3DVertexBuffer9,pVertexDecl:IDirect3DVertexDeclaration9,Flags )
 	Method CreateVertexDeclaration( pVertexElements:Byte Ptr,ppDecl:IDirect3DVertexDeclaration9 Var )
 	Method SetVertexDeclaration( pDecl:IDirect3DVertexDeclaration9 )
 	Method GetVertexDeclaration( ppDecl:IDirect3DVertexDeclaration9 Var )
+End Rem
 	Method SetFVF( FVF )
+		Return bmx_directx_d3d9_IDirect3DDevice9_SetFVF(unknownPtr, FVF)
+	End Method
+Rem
 	Method GetFVF( FVF Var )
 	Method CreateVertexShader( pFunction:Byte Ptr,ppShader:IDirect3DVertexShader9 Var )
 	Method SetVertexShader( pShader:IDirect3DVertexShader9 )
@@ -405,8 +629,12 @@ Type IDirect3DDevice9 Extends IUnknown
 	Method DrawRectPatch( Handle,pNumSegs:Float Ptr,pRectPathInfo:Byte Ptr )
 	Method DrawTriPatch( Handle,pNumSegs:Float Ptr,pTriPatchInfo:Byte Ptr )
 	Method DeletePatch( Handle )
-	Method CreateQuery( Type_,ppQuery:IDirect3DQuery9 Var )
+End Rem
+	Method CreateQuery(Type_:Int, ppQuery:IDirect3DQuery9)
+		Return bmx_directx_d3d9_IDirect3DDevice9_CreateQuery(unknownPtr, Type_, Varptr ppQuery.unknownPtr)
+	End Method
 Rem
+'Rem
 	STDMETHOD(TestCooperativeLevel)(THIS) PURE;
 	STDMETHOD_(UINT, GetAvailableTextureMem)(THIS) PURE;
 	STDMETHOD(EvictManagedResources)(THIS) PURE;
@@ -523,6 +751,7 @@ Rem
 	STDMETHOD(DrawTriPatch)(THIS_ UINT Handle,Const Float* pNumSegs,Const D3DTRIPATCH_INFO* pTriPatchInfo) PURE;
 	STDMETHOD(DeletePatch)(THIS_ UINT Handle) PURE;
 	STDMETHOD(CreateQuery)(THIS_ D3DQUERYTYPE Type,IDirect3DQuery9** ppQuery) PURE;
+'End Rem
 End Rem
 
 End Type
@@ -530,9 +759,17 @@ End Type
 Type IDirect3DSwapChain9 Extends IUnknown
 
 	Method Present( pSourceRect:Byte Ptr,pDestRect:Byte Ptr,hDestWindowOverride,pDirtyRegion:Byte Ptr,Flags )
+	End Method
+
 	Method GetFrontBufferData(pDestSurface:IDirect3DSurface9) 
+	End Method
+
 	Method GetBackBuffer(iBackBuffer:Int, Type_:Int,ppBackBuffer:IDirect3DSurface9 Var)
+	End Method
+
 	Method GetRasterStatus(pRasterStatus:Byte Ptr)
+	End Method
+
 Rem
 	STDMETHOD(Present)(THIS_ Const RECT* pSourceRect,Const RECT* pDestRect,HWND hDestWindowOverride,Const RGNDATA* pDirtyRegion,DWORD dwFlags) PURE;
 	STDMETHOD(GetFrontBufferData)(THIS_ IDirect3DSurface9* pDestSurface) PURE;
@@ -548,13 +785,37 @@ End Type
 Type IDirect3DResource9 Extends IUnknown
 
 	Method GetDevice( ppDevice:IDirect3DDevice9 Var )
+Print "TODO - IDirect3DResource9::GetDevice"
+	End Method
+
 	Method SetPrivateData( refguid:Byte Ptr,pData:Byte Ptr,SizeOfData,Flags )
+Print "TODO - IDirect3DResource9::SetPrivateData"
+	End Method
+
 	Method GetPrivateData( refguid:Byte Ptr,pData:Byte Ptr,pSizeOfData )
+Print "TODO - IDirect3DResource9::GetPrivateData"
+	End Method
+
 	Method FreePrivateData( refguid:Byte Ptr )
+Print "TODO - IDirect3DResource9::FreePrivateData"
+	End Method
+
 	Method SetPriority( PriorityNew )
+Print "TODO - IDirect3DResource9::SetPriority"
+	End Method
+
 	Method GetPriority()
+Print "TODO - IDirect3DResource9::GetPriority"
+	End Method
+
 	Method PreLoad()
+Print "TODO - IDirect3DResource9::PreLoad"
+	End Method
+
 	Method GetType()
+Print "TODO - IDirect3DResource9::GetType"
+	End Method
+
 Rem
 	STDMETHOD(GetDevice)(THIS_ IDirect3DDevice9** ppDevice) PURE;
 	STDMETHOD(SetPrivateData)(THIS_ REFGUID refguid,Const void* pData,DWORD SizeOfData,DWORD Flags) PURE;
@@ -568,14 +829,40 @@ End Rem
 
 End Type
 
+Extern
+	Function bmx_directx_d3d9_IDirect3DSurface9_LockRect:Int(handle:Byte Ptr, pLockedRect:Byte Ptr, pRect:Byte Ptr, Flags:Int)
+	Function bmx_directx_d3d9_IDirect3DSurface9_UnlockRect:Int(handle:Byte Ptr)
+	Function bmx_directx_d3d9_IDirect3DSurface9_GetDC:Int(handle:Byte Ptr, phdc:Byte Ptr Ptr)
+	Function bmx_directx_d3d9_IDirect3DSurface9_ReleaseDC:Int(handle:Byte Ptr, hdc:Byte Ptr)
+	Function bmx_directx_d3d9_IDirect3DSurface9_GetDesc:Int(handle:Byte Ptr, pDesc:Byte Ptr)
+End Extern
+
 Type IDirect3DSurface9 Extends IDirect3dResource9
 
 	Method GetContainer( riid:Byte Ptr,ppContainer:Byte Ptr Var )
-	Method GetDesc( pDesc:Byte Ptr )
+Print "TODO - IDirect3DSurface9::GetContainer"
+	End Method
+
+	Method GetDesc( pDesc:D3DSURFACE_DESC )
+		Return bmx_directx_d3d9_IDirect3DSurface9_GetDesc(unknownPtr, pDesc.descPtr)
+	End Method
+
 	Method LockRect( pLockedRect:Byte Ptr,pRect:Byte Ptr,Flags )
+		Return bmx_directx_d3d9_IDirect3DSurface9_LockRect(unknownPtr, pLockedRect, pRect, Flags)
+	End Method
+
 	Method UnlockRect()
+		Return bmx_directx_d3d9_IDirect3DSurface9_UnlockRect(unknownPtr)
+	End Method
+
 	Method GetDC( phdc:Byte Ptr Var )
+		Return bmx_directx_d3d9_IDirect3DSurface9_GetDC(unknownPtr, Varptr phdc)
+	End Method
+
 	Method ReleaseDC( hdc:Byte Ptr )
+		Return bmx_directx_d3d9_IDirect3DSurface9_ReleaseDC(unknownPtr, hdc)
+	End Method
+
 Rem
 	STDMETHOD(GetContainer)(THIS_ REFIID riid,void** ppContainer) PURE;
 	STDMETHOD(GetDesc)(THIS_ D3DSURFACE_DESC *pDesc) PURE;
@@ -590,7 +877,13 @@ End Type
 Type IDirect3DVertexBuffer9 Extends IDirect3DResource9
 
 	Method Lock( OffsetToLock,SizeToLock,ppbData:Byte Ptr Var,Flags )
+Print "TODO - IDirect3DVertexBuffer9::Lock"
+	End Method
+
 	Method Unlock()
+Print "TODO - IDirect3DVertexBuffer9::Unlock"
+	End Method
+
 Rem
 	STDMETHOD(Lock)(THIS_ UINT OffsetToLock,UINT SizeToLock,void** ppbData,DWORD Flags) PURE;
 	STDMETHOD(Unlock)(THIS) PURE;
@@ -602,7 +895,13 @@ End Type
 Type IDirect3DIndexBuffer9 Extends IDirect3DResource9
 
 	Method Lock( OffsetToLock,SizeToLock,ppbData:Byte Ptr Var,Flags )
+Print "TODO - IDirect3DIndexBuffer9::Lock"
+	End Method
+
 	Method Unlock()
+Print "TODO - IDirect3DIndexBuffer9::Unlock"
+	End Method
+
 Rem
 	STDMETHOD(Lock)(THIS_ UINT OffsetToLock,UINT SizeToLock,void** ppbData,DWORD Flags) PURE;
 	STDMETHOD(Unlock)(THIS) PURE;
@@ -614,11 +913,29 @@ End Type
 Type IDirect3DBaseTexture9 Extends IDirect3DResource9
 
 	Method SetLOD( LODNew )
+Print "TODO - IDirect3DBaseTexture9::SetLOD"
+	End Method
+
 	Method GetLOD()
+Print "TODO - IDirect3DBaseTexture9::GetLOD"
+	End Method
+
 	Method GetLevelCount()
+Print "TODO - IDirect3DBaseTexture9::GetLevelCount"
+	End Method
+
 	Method SetAutoGenFilterType( FilterType )
+Print "TODO - IDirect3DBaseTexture9::SetAutoGenFilterType"
+	End Method
+
 	Method GetAutoGenFilterType()
+Print "TODO - IDirect3DBaseTexture9::GetAutoGenFilterType"
+	End Method
+
 	Method GenerateMipSubLevels()
+Print "TODO - IDirect3DBaseTexture9::GenerateMipSubLevels"
+	End Method
+
 Rem
 	STDMETHOD_(DWORD, SetLOD)(THIS_ DWORD LODNew) PURE;
 	STDMETHOD_(DWORD, GetLOD)(THIS) PURE;
@@ -630,13 +947,33 @@ End Rem
 
 End Type
 
+Extern
+	Function bmx_directx_d3d9_IDirect3DTexture9_GetSurfaceLevel:Int(handle:Byte Ptr, Level:Int, ppSurfaceLevel:Byte Ptr Ptr)
+	Function bmx_directx_d3d9_IDirect3DTexture9_LockRect:Int(handle:Byte Ptr, Level:Int, pLockedRect:Byte Ptr, pRect:Byte Ptr, Flags:Int)
+End Extern
+
 Type IDirect3DTexture9 Extends IDirect3DBaseTexture9
 
 	Method GetLevelDesc( Level,pDesc:Byte Ptr )
-	Method GetSurfaceLevel( Level,ppSurfaceLevel:IDirect3DSurface9 Var )
+Print "TODO - IDirect3DTexture9::GetLevelDesc"
+	End Method
+
+	Method GetSurfaceLevel( Level,ppSurfaceLevel:IDirect3DSurface9)
+		Return bmx_directx_d3d9_IDirect3DTexture9_GetSurfaceLevel(unknownPtr, Level, Varptr ppSurfaceLevel.unknownPtr)
+	End Method
+
 	Method LockRect( Level,pLockedRect:Byte Ptr,pRect:Byte Ptr,Flags )
+		Return bmx_directx_d3d9_IDirect3DTexture9_LockRect:Int(unknownPtr, Level, pLockedRect, pRect, Flags)
+	End Method
+
 	Method UnlockRect( Level )
+Print "TODO - IDirect3DTexture9::UnlockRect"
+	End Method
+
 	Method AddDirtyRect( pDirtyRect:Byte Ptr )
+Print "TODO - IDirect3DTexture9::AddDirtyRect"
+	End Method
+
 Rem
 	STDMETHOD(GetLevelDesc)(THIS_ UINT Level,D3DSURFACE_DESC *pDesc) PURE;
 	STDMETHOD(GetSurfaceLevel)(THIS_ UINT Level,IDirect3DSurface9** ppSurfaceLevel) PURE;
@@ -650,10 +987,20 @@ End Type
 Type IDirect3DCubeTexture9 Extends IDirect3DBaseTexture9
 
 	Method GetLevelDesc( Level,pDesc:Byte Ptr )
+	End Method
+
 	Method GetCubeMapSurface( FaceType,Level,ppCubeMapSurface:IDirect3DSurface9 Var )
+	End Method
+
 	Method LockRect( FaceType,Level,pLockedRect:Byte Ptr,pRect:Byte Ptr,Flags )
+	End Method
+
 	Method UnlockRect( FaceType,Level )
+	End Method
+
 	Method AddDirtyRect( FaceType,pDirtyRect:Byte Ptr )
+	End Method
+
 Rem
 	STDMETHOD(GetLevelDesc)(THIS_ UINT Level,D3DSURFACE_DESC *pDesc) PURE;
 	STDMETHOD(GetCubeMapSurface)(THIS_ D3DCUBEMAP_FACES FaceType,UINT Level,IDirect3DSurface9** ppCubeMapSurface) PURE;
@@ -681,10 +1028,21 @@ End Rem
 
 End Type
 
+'End Extern
+Extern
+	Function bmx_directx_d3d9_Direct3DCreate9:Byte Ptr(SDKVersion:Int)
 End Extern
 
-Global d3d9Lib=LoadLibraryA( "d3d9" )
+Function Direct3DCreate9:IDirect3D9(SDKVersion:Int)
+	Local id:IDirect3D9 = New IDirect3D9
+	id.unknownPtr = bmx_directx_d3d9_Direct3DCreate9(SDKVersion)
+	If id.unknownPtr Then
+		Return id
+	End If
+End Function
 
-If Not d3d9Lib Return
+'Global d3d9Lib:Byte Ptr=LoadLibraryA( "d3d9" )
 
-Global Direct3DCreate9:IDirect3D9( SDKVersion )"win32" = GetProcAddress( d3d9Lib,"Direct3DCreate9" )
+'If Not d3d9Lib Return
+
+'Global Direct3DCreate9:IDirect3D9( SDKVersion )"win32" = GetProcAddress( d3d9Lib,"Direct3DCreate9" )

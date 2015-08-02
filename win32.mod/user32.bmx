@@ -1,5 +1,7 @@
 Strict
 
+Import "user32.cpp"
+
 Const MAX_PATH=260
 
 Const DLGWINDOWEXTRA=30
@@ -643,17 +645,55 @@ Type WNDCLASS
 	Field lpszClassName:Byte Ptr
 End Type
 
+Extern
+	Function bmx_win32_WNDCLASSW_new:Byte Ptr()
+	Function bmx_win32_WNDCLASSW_free(handle:Byte Ptr)
+	Function bmx_win32_WNDCLASSW_SetlpfnWndProc(handle:Byte Ptr, lpfnWndProc:Byte Ptr)
+	Function bmx_win32_WNDCLASSW_SethInstance(handle:Byte Ptr, hInstance:Byte Ptr)
+	Function bmx_win32_WNDCLASSW_SethCursor(handle:Byte Ptr, hCursor:Byte Ptr)
+	Function bmx_win32_WNDCLASSW_SetlpszClassName(handle:Byte Ptr, lpszClassName:Short Ptr)
+End Extern
+
 Type WNDCLASSW
-	Field style
-	Field lpfnWndProc:Byte Ptr
-	Field cbClsExtra
-	Field cbWndExtra
-	Field hInstance:Byte Ptr
-	Field hIcon
-	Field hCursor
-	Field hbrBackground
-	Field lpszMenuName:Short Ptr
-	Field lpszClassName:Short Ptr
+	Field classPtr:Byte Ptr
+	
+	Method New()
+		classPtr = bmx_win32_WNDCLASSW_new()
+	End Method
+	
+	Method Free()
+		If classPtr Then
+			bmx_win32_WNDCLASSW_free(classPtr)
+			classPtr = Null
+		End If
+	End Method
+	
+	Method SetlpfnWndProc(lpfnWndProc:Byte Ptr)
+		bmx_win32_WNDCLASSW_SetlpfnWndProc(classPtr, lpfnWndProc)
+	End Method
+	
+	Method SethInstance(hInstance:Byte Ptr)
+		bmx_win32_WNDCLASSW_SethInstance(classPtr, hInstance)
+	End Method
+	
+	Method SethCursor(hCursor:Byte Ptr)
+		bmx_win32_WNDCLASSW_SethCursor(classPtr, hCursor)
+	End Method
+	
+	Method SetlpszClassName(lpszClassName:Short Ptr)
+		bmx_win32_WNDCLASSW_SetlpszClassName(classPtr, lpszClassName)
+	End Method
+	
+'	Field style
+'	Field lpfnWndProc:Byte Ptr
+'	Field cbClsExtra
+'	Field cbWndExtra
+'	Field hInstance:Byte Ptr
+'	Field hIcon
+'	Field hCursor
+'	Field hbrBackground
+'	Field lpszMenuName:Short Ptr
+'	Field lpszClassName:Short Ptr
 End Type
 
 Type MINMAXINFO
@@ -707,8 +747,8 @@ Function RegisterClassA( lpWndClass:Byte Ptr )
 Function RegisterClassW( lpWndClass:Byte Ptr )
 Function CreateWindowExA:Byte Ptr( dwExStyle,lpClassName:Byte Ptr,lpWindowName:Byte Ptr,dwStyle,x,y,nWidth,nHeight,hWndParent,hmenu:Byte Ptr,hInstance:Byte Ptr,lpParam:Byte Ptr )
 Function CreateWindowExW:Byte Ptr( dwExStyle,lpClassName$w,lpWindowName$w,dwStyle,x,y,nWidth,nHeight,hWndParent,hmenu:Byte Ptr,hInstance:Byte Ptr,lpParam:Byte Ptr )
-Function DefWindowProcA( hWnd:Byte Ptr,MSG,wParam,lParam )
-Function DefWindowProcW( hWnd:Byte Ptr,MSG,wParam,lParam )
+Function DefWindowProcA( hWnd:Byte Ptr,MSG,wParam:Byte Ptr,lParam:Byte Ptr )
+Function DefWindowProcW( hWnd:Byte Ptr,MSG,wParam:Byte Ptr,lParam:Byte Ptr )
 Function DispatchMessageA( lpMsg:Byte Ptr )
 Function DispatchMessageW( lpMsg:Byte Ptr )
 Function GetMessageA( lpMsg:Byte Ptr,hWnd:Byte Ptr,wMsgFilterMin,wMsgFilterMax )

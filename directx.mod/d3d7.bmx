@@ -27,7 +27,7 @@ Const D3DVBCAPS_SYSTEMMEMORY=$800
 Const D3DVBCAPS_WRITEONLY=$10000
 Const D3DVBCAPS_OPTIMIZED=$80000000
 Const D3DVBCAPS_DONOTCLIP=$1
-
+Rem
 Type D3DMATERIAL7
 	Field	diffuse_r#,diffuse_g#,diffuse_b#,diffuse_a#
 	Field 	ambient_r#,ambient_g#,ambient_b#,ambient_a#
@@ -45,14 +45,19 @@ Type D3DVERTEXBUFFERDESC
 	Field	dwSize,dwCaps,dwFVF,dwNumVertices
 End Type
 
-Extern "win32"
+'Extern "win32"
 
 Type IDirect3D7 Extends IUnknown
 	Method EnumDevices(callback(desc:Byte Ptr,name:Byte Ptr,d3ddevice:Byte Ptr,context:Object),user:Object)
+	End Method
 	Method CreateDevice(clsid:Byte Ptr,ddsurface7:Byte Ptr,d3ddevice7:Byte Ptr)
+	End Method
 	Method CreateVertexBuffer(lpVBDesc:Byte Ptr,lplpD3DVertexBuffer:Byte Ptr,dwFlags)
+	End Method
 	Method EnumZBufferFormats(clsid,d3dpfcallback,void)
+	End Method
 	Method EvictManagedTextures()
+	End Method
 '    /*** IDirect3D7 methods ***/
 '    STDMETHOD(EnumDevices)(THIS_ LPD3DENUMDEVICESCALLBACK7,LPVOID) PURE;
 '    STDMETHOD(CreateDevice)(THIS_ REFCLSID,LPDIRECTDRAWSURFACE7,LPDIRECT3DDEVICE7*) PURE;
@@ -164,7 +169,7 @@ Rem
     STDMETHOD(SetClipPlane)(THIS_ DWORD,D3DVALUE*) PURE;
     STDMETHOD(GetClipPlane)(THIS_ DWORD,D3DVALUE*) PURE;
     STDMETHOD(GetInfo)(THIS_ DWORD,LPVOID,DWORD) PURE;
-EndRem
+'EndRem
 End Type
 
 Type IDirect3DVertexBuffer7 Extends IUnknown
@@ -175,7 +180,7 @@ Type IDirect3DVertexBuffer7 Extends IUnknown
 	Method Optimize(lpD3DDevice:Byte Ptr,dwFlags)
 	Method ProcessVerticesStrided(dwVertexOp,dwDestIndex,dwCount,lpVertexArray:Byte Ptr,dwSrcIndex,lpD3DDevice:Byte Ptr,dwFlags)	
 '    /*** IDirect3DVertexBuffer7 methods ***/
-Rem
+'Rem
     STDMETHOD(Lock)(THIS_ DWORD,LPVOID*,LPDWORD) PURE;
     STDMETHOD(Unlock)(THIS) PURE;
     STDMETHOD(ProcessVertices)(THIS_ DWORD,DWORD,DWORD,LPDIRECT3DVERTEXBUFFER7,DWORD,LPDIRECT3DDEVICE7,DWORD) PURE;
@@ -183,9 +188,9 @@ Rem
     STDMETHOD(Optimize)(THIS_ LPDIRECT3DDEVICE7,DWORD) PURE;
     STDMETHOD(ProcessVerticesStrided)(THIS_ DWORD,DWORD,DWORD,LPD3DDRAWPRIMITIVESTRIDEDDATA,DWORD,LPDIRECT3DDEVICE7,DWORD) PURE;
 EndRem
-End Type
+'End Type
 
-End Extern
+'End Extern
 
 Global IID_IDirect3D7[]=[$f5049e77,$11d24861,$a00007a4,$a82906c9]
 Global IID_IDirect3DHALDevice[]=[$84e63de0,$11cf46aa,$00006f81,$6e1520c0]

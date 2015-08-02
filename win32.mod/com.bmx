@@ -1,24 +1,44 @@
 
 Strict
 
+Import "com.cpp"
+
 Extern "win32"
 
 Function CLSIDFromProgID(code$w,clsid:Byte Ptr)
 Function CoCreateInstance(rclsid:Byte Ptr,pUnkOuter:Byte Ptr,dwClsContext,riid:Byte Ptr,ppv:Byte Ptr Ptr)
 Function IIDFromString(lpsz$w,riid:Byte Ptr)
+End Extern
 
-Type IUnknown 
-	Method QueryInterface( riid:Byte Ptr,ppvObj:Byte Ptr )="IUnknown_QueryInterface"
-	Method AddRef()="IUnknown_AddRef"
-	Method Release_()="IUnknown_Release"
+Extern
+	Function bmx_win32_com_IUnknown_QueryInterface:Int(handle:Byte Ptr, riid:Byte Ptr, ppvObj:Byte Ptr)
+	Function bmx_win32_com_IUnknown_AddRef:Int(handle:Byte Ptr)
+	Function bmx_win32_com_IUnknown_Release:Int(handle:Byte Ptr)
+End Extern
+
+Type IUnknown
+	Field unknownPtr:Byte Ptr
+	
+	Method QueryInterface:Int( riid:Byte Ptr,ppvObj:Byte Ptr )'="IUnknown_QueryInterface"
+		Return bmx_win32_com_IUnknown_QueryInterface(unknownPtr, riid, ppvObj)
+	End Method
+	
+	Method AddRef:Int()'="IUnknown_AddRef"
+		Return bmx_win32_com_IUnknown_AddRef(unknownPtr)
+	End Method
+	
+	Method Release_:Int()'="IUnknown_Release"
+		Return bmx_win32_com_IUnknown_Release(unknownPtr)
+	End Method
 End Type
 
 
 ' oleautomation
-
+Extern 
 Function SysAllocStringLen:Short Ptr(bstr:Short Ptr,length)
 Function SysFreeString(bstr:Short Ptr)
-
+End Extern
+Rem
 Type IDispatch Extends IUnknown
 	Method QueryInterface( riid:Byte Ptr,ppvObj:Byte Ptr )="IDispatch_QueryInterface"
 	Method AddRef()="IDispatch_AddRef"
@@ -292,8 +312,8 @@ Type IHTMLDocument2 Extends IDispatch
 	Method createStyleSheet(_bstr:Short Ptr,_int,LPHTMLSTYLESHEET:Byte Ptr)
 End Type
 
-
 End Extern 
+End Rem
 
 Const IUnknown_UUID$="{00000000-0000-0000-C000-000000000046}"
 Const IDispatch_UUID$="{00020400-0000-0000-C000-000000000046}"

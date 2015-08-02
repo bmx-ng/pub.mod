@@ -25,12 +25,11 @@ ModuleInfo "History: 1.01 Release"
 ModuleInfo "History: Updated"
 ModuleInfo "History: 1.00 Release"
 
-?disabled
+?win32
 Import "dd.bmx"
 Import "d3d.bmx"
 Import "d3d7.bmx"
 Import "d3d9.bmx"
 Import "d3d9x.bmx"
-?win32
 Import "dsound.bmx"
 ?
