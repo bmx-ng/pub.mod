@@ -3,7 +3,7 @@
 #define PUB_MACOS_MACOS_H
 
 #include <brl.mod/blitz.mod/blitz.h>
-#include <AppKit/AppKit.h>
+#include <Foundation/Foundation.h>
 
 #include <errno.h>
 #include <stdio.h>
