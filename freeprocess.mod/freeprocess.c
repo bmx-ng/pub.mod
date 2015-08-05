@@ -11,6 +11,7 @@
 #include <sys/ioctl.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <signal.h>
 
 int fdClose(int fd) {return close(fd);}
 BBLONG fdRead(int fd,char *buffer,BBLONG count) {return read(fd,buffer,count);}
