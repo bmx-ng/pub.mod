@@ -28,7 +28,7 @@ ModuleInfo "History: Fixed C Compiler warnings"
 
 Import Pub.Joystick
 
-?MacOS
+?osx
 Import "freejoy.macosx.c"
 Import "-framework IOKit"
 ?Win32

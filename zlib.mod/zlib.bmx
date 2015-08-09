@@ -15,6 +15,10 @@ ModuleInfo "History: Updated zlib to 1.2.8"
 ModuleInfo "History: 1.02"
 ModuleInfo "History: Updated zlib to 1.2.3"
 
+?ios
+ModuleInfo "CC_OPTS: -DHAVE_UNISTD_H"
+?
+
 Import "adler32.c"
 Import "compress.c"
 Import "crc32.c"

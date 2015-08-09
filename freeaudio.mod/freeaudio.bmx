@@ -58,7 +58,7 @@ Extern "C"
 Function OpenMultiMediaDevice:Byte Ptr()
 'Function OpenDirectSoundDevice:Byte Ptr()
 End Extern
-?MacOS
+?osx
 Import "-framework AudioUnit"
 Import "-framework AudioToolbox"
 Import "coreaudiodevice.cpp"
@@ -150,7 +150,7 @@ Function fa_Init( deviceid )
 		Case 1
 			device=OpenALSADevice()
 	EndSelect
-?MacOS
+?osx
 	device=OpenCoreAudioDevice()
 ?
 	Local res=-1

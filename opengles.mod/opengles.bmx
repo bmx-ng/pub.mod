@@ -42,4 +42,7 @@ Import "extern.bmx"
 'Import "-lGL"
 
 Import "extern.bmx"
+?ios
+
+Import "extern.bmx"
 ?

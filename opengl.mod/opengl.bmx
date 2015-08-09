@@ -13,7 +13,7 @@ ModuleInfo "Modserver: BRL"
 ModuleInfo "History: 1.02 Release"
 ModuleInfo "History: Restored GLU"
 
-?MacOS
+?osx
 Import "-framework AGL"
 Import "-framework OpenGL"
 Import "glu.bmx"

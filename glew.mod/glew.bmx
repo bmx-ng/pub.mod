@@ -25,7 +25,7 @@ ModuleInfo "History: Updated To glew 1.3.4"
 ModuleInfo "History: 1.03 Release"
 ModuleInfo "History: Updated To GL2.0 compatible version 1.3.3"
 
-?Not linuxarm
+?Not opengles
 
 ' directly import glew header
 Import "GL/glew.h"
