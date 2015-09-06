@@ -5,12 +5,14 @@ bbdoc: Lua Core
 end rem
 Module Pub.Lua
 
-ModuleInfo "Version: 1.27"
+ModuleInfo "Version: 1.28"
 ModuleInfo "Author: Tecgraf,PUC-Rio"
 ModuleInfo "License: MIT License"
 ModuleInfo "Modserver: BRL"
 ModuleInfo "Credit: Adapted for BlitzMax by Thomas Mayer, Noel Cower, Andreas Rozek and Simon Armstrong"
 
+ModuleInfo "History: 1.28"
+ModuleInfo "History: Updated for 64-bit."
 ModuleInfo "History: 1.27"
 ModuleInfo "History: Modified luaconf.h (line 14) to autodetect LUA_USE_LINUX and LUA_USE_MACOSX"
 ModuleInfo "History: 1.26"
@@ -218,8 +220,12 @@ end rem
   Function lua_createtable (lua_state:Byte Ptr, narr:Int, nrec:Int)
 Rem
 bbdoc: see <a href="../lua-5.1.4/doc/manual.html#lua_dump">Lua Reference Manual</a>
-end rem
+End Rem
+?ptr64
+  Function lua_dump:Int (lua_state:Byte Ptr, writer:Int(ls:Byte Ptr,p:Byte Ptr,sz:Long,ud:Byte Ptr), data:Byte Ptr)
+?Not ptr64
   Function lua_dump:Int (lua_state:Byte Ptr, writer:Int(ls:Byte Ptr,p:Byte Ptr,sz:Int,ud:Byte Ptr), data:Byte Ptr)
+?
 Rem
 bbdoc: see <a href="../lua-5.1.4/doc/manual.html#lua_equal">Lua Reference Manual</a>
 end rem
@@ -310,28 +316,44 @@ end rem
   Function lua_lessthan:Int (lua_state:Byte Ptr, index1:Int, index2:Int)
 Rem
 bbdoc: see <a href="../lua-5.1.4/doc/manual.html#lua_load">Lua Reference Manual</a>
-end rem
+End Rem
+?ptr64
+  Function lua_load:Int (lua_state:Byte Ptr, reader:Byte Ptr(ls:Byte Ptr,data:Byte Ptr,sz:Long Ptr), data:Byte Ptr, chunkname$z) ' no ~0 expected
+?Not ptr64
   Function lua_load:Int (lua_state:Byte Ptr, reader:Byte Ptr(ls:Byte Ptr,data:Byte Ptr,sz:Int Ptr), data:Byte Ptr, chunkname$z) ' no ~0 expected
+?
 Rem
 bbdoc: see <a href="../lua-5.1.4/doc/manual.html#lua_newstate">Lua Reference Manual</a>
-end rem
+End Rem
+?ptr64
+  Function lua_newstate:Byte Ptr (f:Byte Ptr(ud:Byte Ptr, p:Byte Ptr, osize:Long, nsize:Long), ud:Byte Ptr)
+?Not ptr64
   Function lua_newstate:Byte Ptr (f:Byte Ptr(ud:Byte Ptr, p:Byte Ptr, osize:Int, nsize:Int), ud:Byte Ptr)
+?
 Rem
 bbdoc: see <a href="../lua-5.1.4/doc/manual.html#lua_newthread">Lua Reference Manual</a>
 end rem
   Function lua_newthread:Byte Ptr (lua_state:Byte Ptr)
 Rem
 bbdoc: see <a href="../lua-5.1.4/doc/manual.html#lua_newuserdata">Lua Reference Manual</a>
-end rem
+End Rem
+?ptr64
+  Function lua_newuserdata:Byte Ptr (lua_state:Byte Ptr, size:Long)
+?Not ptr64
   Function lua_newuserdata:Byte Ptr (lua_state:Byte Ptr, size:Int)
+?
 Rem
 bbdoc: see <a href="../lua-5.1.4/doc/manual.html#lua_next">Lua Reference Manual</a>
 end rem
   Function lua_next:Int (lua_state:Byte Ptr, index:Int)
 Rem
 bbdoc: see <a href="../lua-5.1.4/doc/manual.html#lua_objlen">Lua Reference Manual</a>
-end rem
+End Rem
+?ptr64
+  Function lua_objlen:Long(lua_state:Byte Ptr, index:Int)
+?Not ptr64
   Function lua_objlen:Int (lua_state:Byte Ptr, index:Int)
+?
 Rem
 bbdoc: see <a href="../lua-5.1.4/doc/manual.html#lua_pcall">Lua Reference Manual</a>
 end rem
@@ -355,8 +377,12 @@ end rem
   Function lua_pushlightuserdata (lua_state:Byte Ptr, p:Byte Ptr)
 Rem
 bbdoc: see <a href="../lua-5.1.4/doc/manual.html#lua_pushlstring">Lua Reference Manual</a>
-end rem
+End Rem
+?ptr64
+  Function lua_pushlstring (lua_state:Byte Ptr, s:Byte Ptr, size:Long)    ' without any conversion!
+?Not ptr64
   Function lua_pushlstring (lua_state:Byte Ptr, s:Byte Ptr, size:Int)    ' without any conversion!
+?
 Rem
 bbdoc: see <a href="../lua-5.1.4/doc/manual.html#lua_pushnil">Lua Reference Manual</a>
 end rem
@@ -412,8 +438,12 @@ end rem
   Function lua_resume:Int (lua_state:Byte Ptr, narg:Int)
 Rem
 bbdoc: see <a href="../lua-5.1.4/doc/manual.html#lua_setallocf">Lua Reference Manual</a>
-end rem
+End Rem
+?ptr64
+  Function lua_setallocf (lua_state:Byte Ptr, f:Byte Ptr(ud:Byte Ptr, p:Byte Ptr, osize:Long, nsize:Long), ud:Byte Ptr)
+?Not ptr64
   Function lua_setallocf (lua_state:Byte Ptr, f:Byte Ptr(ud:Byte Ptr, p:Byte Ptr, osize:Int, nsize:Int), ud:Byte Ptr)
+?
 Rem
 bbdoc: see <a href="../lua-5.1.4/doc/manual.html#lua_setfenv">Lua Reference Manual</a>
 end rem
@@ -464,8 +494,12 @@ end rem
   Function lua_tointeger:Int (lua_state:Byte Ptr, index:Int)
 Rem
 bbdoc: see <a href="../lua-5.1.4/doc/manual.html#lua_tolstring">Lua Reference Manual</a>
-end rem
+End Rem
+?ptr64
+  Function lua_tolstring:Byte Ptr (lua_state:Byte Ptr, index:Int, size:Long Ptr) ' without any conversion!
+?Not ptr64
   Function lua_tolstring:Byte Ptr (lua_state:Byte Ptr, index:Int, size:Int Ptr) ' without any conversion!
+?
 Rem
 bbdoc: see <a href="../lua-5.1.4/doc/manual.html#lua_tonumber">Lua Reference Manual</a>
 end rem
@@ -610,7 +644,11 @@ end rem
   End Function
 
   Function lua_tobytearray:Byte[] (lua_state:Byte Ptr, index:Int)
-    Local Length:Int
+?ptr64
+    Local Length:Long
+?Not ptr64
+   	Local Length:Int
+?
     Local DataPtr:Byte Ptr = lua_tolstring(lua_state, index, Varptr Length)
     If (DataPtr = Null) Then
       Return Null
@@ -623,15 +661,23 @@ end rem
 
 Rem
 bbdoc: see <a href="../lua-5.1.4/doc/manual.html#lua_tostring">Lua Reference Manual</a>
-end rem
+End Rem
   Function lua_tostring:String (lua_state:Byte Ptr, index:Int)
-    Local Length:Int
-    Local StringPtr:Byte Ptr = lua_tolstring(lua_state, index, Varptr Length)
-    If (StringPtr = Null) Then
-      Return Null
-    Else
-      Return String.fromBytes(StringPtr,Length)
-    End If
+	If lua_type(lua_state,index) = LUA_TSTRING Then
+?ptr64
+	    Local Length:Long
+?Not ptr64
+    	Local Length:Int
+?
+	    Local StringPtr:Byte Ptr = lua_tolstring(lua_state, index, Varptr Length)
+    	If (StringPtr = Null) Then
+	      Return Null
+	    Else
+    	  Return String.fromBytes(StringPtr,Length)
+	    End If
+	Else
+		Return Null
+	End If
   End Function
 
 ' ******************************************************************************
@@ -928,6 +974,12 @@ End Extern
     Return luaL_dostring(lua_state,str)
   End Function
 
+?ptr64
+  Function lua_strlen:Long(lua_state:Byte Ptr, index:Int)
+    Return lua_objlen(lua_state,index)
+  End Function
+?Not ptr64
   Function lua_strlen:Int (lua_state:Byte Ptr, index:Int)
     Return lua_objlen(lua_state,index)
   End Function
+?
