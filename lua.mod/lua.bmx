@@ -663,21 +663,17 @@ Rem
 bbdoc: see <a href="../lua-5.1.4/doc/manual.html#lua_tostring">Lua Reference Manual</a>
 End Rem
   Function lua_tostring:String (lua_state:Byte Ptr, index:Int)
-	If lua_type(lua_state,index) = LUA_TSTRING Then
 ?ptr64
-	    Local Length:Long
+    Local Length:Long
 ?Not ptr64
-    	Local Length:Int
+   	Local Length:Int
 ?
-	    Local StringPtr:Byte Ptr = lua_tolstring(lua_state, index, Varptr Length)
+    Local StringPtr:Byte Ptr = lua_tolstring(lua_state, index, Varptr Length)
     	If (StringPtr = Null) Then
-	      Return Null
-	    Else
+      Return Null
+    Else
     	  Return String.fromBytes(StringPtr,Length)
-	    End If
-	Else
-		Return Null
-	End If
+    End If
   End Function
 
 ' ******************************************************************************
