@@ -338,7 +338,7 @@ Extern
 	Function glBlendFuncSeparate(sfactorRGB_:Int, dfactorRGB_:Int, sfactorAlpha_:Int, dfactorAlpha_:Int)
 	Function glBufferData(target_:Int, size_:Int Ptr, data_:Byte Ptr, usage_:Int)
 	Function glBufferSubData(target_:Int, offset_:Int Ptr, size_:Int Ptr, data_:Byte Ptr)
-	Function glCheckFramebufferStatus_:Int (target_:Int)
+	Function glCheckFramebufferStatus:Int(target_:Int)
 	Function glClear(mask_:Int)
 	Function glClearColor(red_:Float, green_:Float, blue_:Float, alpha_:Float)
 	Function glClearDepthf(d_:Float)
