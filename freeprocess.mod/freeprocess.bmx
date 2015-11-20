@@ -1,5 +1,5 @@
 Rem
-bbdoc: Process Management
+bbdoc: System/Execute Processes
 End Rem
 Module PUB.FreeProcess
 
@@ -209,7 +209,7 @@ End Type
 
 Rem
 bbdoc: Creates a process
-returns: TProcess value
+returns: TProcess object that is linked to the process you have started
 End Rem
 Function CreateProcess:TProcess(cmd$,flags=0)
 	Return TProcess.Create(cmd,flags)
@@ -217,33 +217,31 @@ End Function
 
 Rem
 bbdoc: Checks status of program
-returns: 1 - still running, 0 - no longer running
+returns: 1 if program is still running and 0 otherwise.
 End Rem
-Function ProcessStatus(process:TProcess)
+Function ProcessStatus:Int(process:TProcess)
 	Return process.Status()
 End Function
 
 Rem
 bbdoc: Detaches a process from program
-returns: 1
 End Rem
-Function ProcessDetach(process:TProcess)
+Function DetachProcess:Int(process:TProcess)
 	Return process.Detach()
 End Function
 
 Rem
 bbdoc: Reattaches a process from program
-returns: 1
 End Rem
-Function ProcessAttach(process:TProcess)
+Function AttachProcess:Int(process:TProcess)
 	Return process.Attach()
 End Function
 
 Rem
 bbdoc: End Process
-returns: 1 - successful, 0 - failed
+returns: 1 if termination of program was successful and 0 otherwise.
 End Rem
-Function TerminateProcess(process:TProcess)
+Function TerminateProcess:Int(process:TProcess)
 	Return process.Terminate()
 End Function
 
