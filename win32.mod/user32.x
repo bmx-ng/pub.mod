@@ -75,7 +75,7 @@ BBINT CallWindowProcA(BBBYTE * ,BBINT ,BBINT ,BBINT ,BBINT )!
 BBINT CallWindowProcW(BBBYTE * ,BBINT ,BBINT ,BBINT ,BBINT )!
 BBINT OleInitialize(BBBYTE * )!
 BBINT OleUninitialize()!
-BBINT InitCommonControlsEx(BBBYTE * )!
+BBINT InitCommonControlsEx(const INITCOMMONCONTROLSEX *)!
 BBINT SetScrollPos(BBINT ,BBINT ,BBINT ,BBINT )!
 BBINT GetScrollPos(BBINT ,BBINT )!
 BBINT SetScrollRange(BBINT ,BBINT ,BBINT ,BBINT ,BBINT )!
@@ -117,4 +117,4 @@ BBINT DragAcceptFiles(BBINT ,BBINT )!
 BBINT DragQueryPoint(BBINT ,BBINT * )!
 BBINT DragQueryFileW(BBINT ,BBINT ,BBSHORT * ,BBINT )!
 BBINT DragFinish(BBINT )!
-
+WINBOOL __stdcall _TrackMouseEvent(LPTRACKMOUSEEVENT )!

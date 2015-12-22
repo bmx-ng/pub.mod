@@ -626,8 +626,8 @@ Const WA_CLICKACTIVE=2
 Type MSG
 	Field hWnd:Byte Ptr
 	Field message
-	Field wParam
-	Field lParam
+	Field wParam:Byte Ptr
+	Field lParam:Byte Ptr
 	Field time
 	Field pt_x,pt_y
 End Type
@@ -779,12 +779,12 @@ Function GetMessageA( lpMsg:Byte Ptr,hWnd:Byte Ptr,wMsgFilterMin,wMsgFilterMax )
 Function GetMessageW( lpMsg:Byte Ptr,hWnd:Byte Ptr,wMsgFilterMin,wMsgFilterMax )
 Function PeekMessageA( lpMsg:Byte Ptr,hWnd:Byte Ptr,wMsgFilterMin,wMsgFilterMax,wRemoveMsg )
 Function PeekMessageW( lpMsg:Byte Ptr,hWnd:Byte Ptr,wMsgFilterMin,wMsgFilterMax,wRemoveMsg )
-Function PostMessageA( hWnd:Byte Ptr,MSG,wParam,lParam )
-Function PostMessageW( hWnd:Byte Ptr,MSG,wParam,lParam )
-Function SendMessageA( hWnd:Byte Ptr,MSG,wParam,lParam )
-Function SendMessageW( hWnd:Byte Ptr,MSG,wParam,lParam )
-Function PostThreadMessageA( idThread,Msg,wParam,lParam )
-Function PostThreadMessageW( idThread,Msg,wParam,lParam )
+Function PostMessageA( hWnd:Byte Ptr,MSG,wParam:Byte Ptr,lParam:Byte Ptr )
+Function PostMessageW( hWnd:Byte Ptr,MSG,wParam:Byte Ptr,lParam:Byte Ptr )
+Function SendMessageA( hWnd:Byte Ptr,MSG,wParam:Byte Ptr,lParam:Byte Ptr )
+Function SendMessageW( hWnd:Byte Ptr,MSG:UInt,wParam:Byte Ptr,lParam:Byte Ptr )
+Function PostThreadMessageA( idThread,Msg,wParam:Byte Ptr,lParam:Byte Ptr )
+Function PostThreadMessageW( idThread,Msg,wParam:Byte Ptr,lParam:Byte Ptr )
 Function GetDC:Byte Ptr( hWnd:Byte Ptr )
 Function PostQuitMessage( nExitCode )
 Function TranslateMessage( lpMsg:Byte Ptr )
@@ -866,9 +866,9 @@ Function SetParent_:Byte Ptr( hWnd:Byte Ptr,hWnd2:Byte Ptr )="SetParent" '"SetPa
 Function WindowFromPoint:Byte Ptr( point:Int Ptr )
 Function GetKeyState(vkey)
 
-Function SetWindowsHookExW(idHook,lpfn:Byte Ptr,hmod,dwThreadId)
-Function CallNextHookEx(hhk,ncode,wparam,lparam)
-Function UnhookWindowsHookEx(hhk)
+Function SetWindowsHookExW:Byte Ptr(idHook,lpfn:Byte Ptr,hmod:Byte Ptr,dwThreadId)
+Function CallNextHookEx(hhk:Byte Ptr,ncode,wparam:Byte Ptr,lparam:Byte Ptr)
+Function UnhookWindowsHookEx(hhk:Byte Ptr)
 
 Function EnableWindow( hWnd:Byte Ptr,enable )
 Function IsWindowEnabled( hWnd:Byte Ptr )
@@ -885,7 +885,7 @@ Function GetClipboardData(uFormat)
 Function EmptyClipboard()
 Function IsClipboardFormatAvailable(format)
 
-Function DefDlgProcW(hDlg,Msg,wParam,lParam)
+Function DefDlgProcW(hDlg:Byte Ptr,Msg:UInt,wParam:Byte Ptr,lParam:Byte Ptr)
 
 'shellapi
 
@@ -893,5 +893,7 @@ Function DragAcceptFiles(hWnd:Byte Ptr,fAccept)
 Function DragQueryPoint(hDrop,lpPoint:Int Ptr)
 Function DragQueryFileW(hDrop,iFile,lpszFile:Short Ptr,cch)
 Function DragFinish(hDrop)
+
+Function _TrackMouseEvent( trackmouseeventstrunct:Byte Ptr )
 
 End Extern

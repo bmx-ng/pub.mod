@@ -2,6 +2,8 @@
 
 Import "user32.bmx"
 
+Import "commctrl.cpp"
+
 Strict
 
 Const BS_PUSHBUTTON=0
@@ -666,9 +668,36 @@ Const ICC_NATIVEFNTCTL_CLASS=$2000   ' native font control
 Const ICC_STANDARD_CLASSES=$4000
 Const ICC_LINK_CLASS=$8000
 
+Extern
+	Function bmx_win32_TINITCOMMONCONTROLSEX_new:Byte Ptr()
+	Function bmx_win32_TINITCOMMONCONTROLSEX_free(handle:Byte Ptr)
+	Function bmx_win32_TINITCOMMONCONTROLSEX_SetdwICC(handle:Byte Ptr, dwICC:Int)
+End Extern
+
 Type TINITCOMMONCONTROLSEX
-	Field	dwSize
-	Field	dwICC
+	Field controlPtr:Byte Ptr
+	
+	Method New()
+		controlPtr = bmx_win32_TINITCOMMONCONTROLSEX_new()
+	End Method
+	
+	Method Delete()
+		Free()
+	End Method
+	
+	Method Free()
+		If controlPtr Then
+			bmx_win32_TINITCOMMONCONTROLSEX_free(controlPtr)
+			controlPtr = Null
+		End If
+	End Method
+	
+	Method SetdwICC(dwICC:Int)
+		bmx_win32_TINITCOMMONCONTROLSEX_SetdwICC(controlPtr, dwICC)
+	End Method
+
+	'Field	dwSize
+	'Field	dwICC
 End Type
 
 
@@ -771,15 +800,54 @@ Const TVM_SETSCROLLTIME=TV_FIRST+33
 Const TVM_GETSCROLLTIME=TV_FIRST+34
 Const TVM_SETINSERTMARKCOLOR=TV_FIRST+37
 
+
+Extern
+	Function bmx_win32_TOOLINFOW_new:Byte Ptr()
+	Function bmx_win32_TOOLINFOW_free(handle:Byte Ptr)
+End Extern
+
 Type TOOLINFOW
-	Field cbSize
-	Field uFlags
-	Field hwnd
-	Field uId
-	Field rect_left,rect_top,rect_right,rect_bottom
-	Field hinst
-	Field lpszText:Short Ptr
-	Field lParam
+
+	Field infoPtr:Byte Ptr
+	
+	Method New()
+		infoPtr = bmx_win32_TOOLINFOW_new()
+	End Method
+	
+	Method Delete()
+		Free()
+	End Method
+	
+	Method Free()
+		If infoPtr Then
+			bmx_win32_TOOLINFOW_free(infoPtr)
+			infoPtr = Null
+		End If
+	End Method
+	
+	Method SetuFlags(uFlags:Int)
+	End Method
+	
+	Method Sethwnd(hwnd:Byte Ptr)
+	End Method
+	
+	Method SetuId(uId:Byte Ptr)
+	End Method
+	
+	Method Sethinst(hinst:Byte Ptr)
+	End Method
+	
+	Method SetlpszText(lpszText:Short Ptr)
+	End Method
+	
+'	Field cbSize
+'	Field uFlags
+'	Field hwnd
+'	Field uId
+'	Field rect_left,rect_top,rect_right,rect_bottom
+'	Field hinst
+'	Field lpszText:Short Ptr
+'	Field lParam
 End Type
 
 Const TTM_ACTIVATE=WM_USER+1
@@ -1577,7 +1645,10 @@ Const CMB_MASKED              =$02
 
 Extern "Win32"
 
-Function ImageList_Create(cx,cy,flags,cInitial,cGrow)
-Function ImageList_AddMasked(himl,hbmImage,crMask)
+Function ImageList_Create:Byte Ptr(cx,cy,flags:UInt,cInitial,cGrow)
+Function ImageList_AddMasked(himl:Byte Ptr,hbmImage:Byte Ptr,crMask)
+Function ImageList_Add(himl:Byte Ptr,hbmImage:Byte Ptr,crMask)
+Function ImageList_Destroy( hImageList:Byte Ptr )
+Function ImageList_GetImageCount( hImageList:Byte Ptr )
 
 End Extern
