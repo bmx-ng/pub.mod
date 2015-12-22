@@ -55,3 +55,8 @@ void bmx_win32_WNDCLASSW_SethIcon(WNDCLASSW * clas, HICON hIcon) {
 void bmx_win32_WNDCLASSW_SethbrBackground(WNDCLASSW * clas, int hbrBackground) {
 	clas->hbrBackground = (HBRUSH)hbrBackground;
 }
+
+void bmx_win32_WNDCLASSW_SetcbWndExtra(WNDCLASSW * clas, int cbWndExtra) {
+	clas->cbWndExtra = cbWndExtra;
+}
+
