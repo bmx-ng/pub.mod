@@ -652,6 +652,10 @@ Extern
 	Function bmx_win32_WNDCLASSW_SethInstance(handle:Byte Ptr, hInstance:Byte Ptr)
 	Function bmx_win32_WNDCLASSW_SethCursor(handle:Byte Ptr, hCursor:Byte Ptr)
 	Function bmx_win32_WNDCLASSW_SetlpszClassName(handle:Byte Ptr, lpszClassName:Short Ptr)
+	Function bmx_win32_WNDCLASSW_Setstyle(handle:Byte Ptr, style:Int)
+	Function bmx_win32_WNDCLASSW_SethIcon(handle:Byte Ptr, hIcon:Byte Ptr)
+	Function bmx_win32_WNDCLASSW_SethbrBackground(handle:Byte Ptr, hbrBackground:Int)
+	Function bmx_win32_WNDCLASSW_SetcbWndExtra(handle:Byte Ptr, cbWndExtra:Int)
 End Extern
 
 Type WNDCLASSW
@@ -659,6 +663,10 @@ Type WNDCLASSW
 	
 	Method New()
 		classPtr = bmx_win32_WNDCLASSW_new()
+	End Method
+	
+	Method Delete()
+		Free()
 	End Method
 	
 	Method Free()
@@ -682,6 +690,22 @@ Type WNDCLASSW
 	
 	Method SetlpszClassName(lpszClassName:Short Ptr)
 		bmx_win32_WNDCLASSW_SetlpszClassName(classPtr, lpszClassName)
+	End Method
+	
+	Method Setstyle(style:Int)
+		bmx_win32_WNDCLASSW_Setstyle(classPtr, style)
+	End Method
+
+	Method SethIcon(hIcon:Byte Ptr)
+		bmx_win32_WNDCLASSW_SethIcon(classPtr, hIcon)
+	End Method
+	
+	Method SethbrBackground(hbrBackground:Int)
+		bmx_win32_WNDCLASSW_SethbrBackground(classPtr, hbrBackground)
+	End Method
+	
+	Method SetcbWndExtra(cbWndExtra:Int)
+		bmx_win32_WNDCLASSW_SetcbWndExtra(classPtr, cbWndExtra)
 	End Method
 	
 '	Field style

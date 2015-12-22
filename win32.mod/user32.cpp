@@ -11,7 +11,10 @@ extern "C" {
 	void bmx_win32_WNDCLASSW_SethInstance(WNDCLASSW * clas, HINSTANCE hInstance);
 	void bmx_win32_WNDCLASSW_SethCursor(WNDCLASSW * clas, HCURSOR hCursor);
 	void bmx_win32_WNDCLASSW_SetlpszClassName(WNDCLASSW * clas, LPCWSTR lpszClassName);
-
+	void bmx_win32_WNDCLASSW_Setstyle(WNDCLASSW * clas, int style);
+	void bmx_win32_WNDCLASSW_SethIcon(WNDCLASSW * clas, HICON hIcon);
+	void bmx_win32_WNDCLASSW_SethbrBackground(WNDCLASSW * clas, int hbrBackground);
+	void bmx_win32_WNDCLASSW_SetcbWndExtra(WNDCLASSW * clas, int cbWndExtra);
 }
 
 
@@ -41,3 +44,14 @@ void bmx_win32_WNDCLASSW_SetlpszClassName(WNDCLASSW * clas, LPCWSTR lpszClassNam
 	clas->lpszClassName = lpszClassName;
 }
 
+void bmx_win32_WNDCLASSW_Setstyle(WNDCLASSW * clas, int style) {
+	clas->style = style;
+}
+
+void bmx_win32_WNDCLASSW_SethIcon(WNDCLASSW * clas, HICON hIcon) {
+	clas->hIcon = hIcon;
+}
+
+void bmx_win32_WNDCLASSW_SethbrBackground(WNDCLASSW * clas, int hbrBackground) {
+	clas->hbrBackground = (HBRUSH)hbrBackground;
+}
