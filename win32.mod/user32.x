@@ -118,3 +118,4 @@ BBINT DragQueryPoint(BBINT ,BBINT * )!
 BBINT DragQueryFileW(BBINT ,BBINT ,BBSHORT * ,BBINT )!
 BBINT DragFinish(BBINT )!
 WINBOOL __stdcall _TrackMouseEvent(LPTRACKMOUSEEVENT )!
+LONG_PTR __stdcall SetWindowLongPtrW(HWND ,int ,LONG_PTR )!

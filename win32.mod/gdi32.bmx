@@ -494,7 +494,7 @@ Function CreateFontA(cHeight,cWidth,cEscapement,cOrientation,cWeight,bItalic,bUn
 Function CreateFontW(cHeight,cWidth,cEscapement,cOrientation,cWeight,bItalic,bUnderline,bStrikeOut,..
 	iCharSet,iOutPrecision,iClipPrecision,iQuality,iPitchAndFamily,pszFaceName:Short Ptr)
 
-Function SelectObject(hdc:Byte Ptr,obj)
+Function SelectObject:Byte Ptr(hdc:Byte Ptr,obj:Byte Ptr)
 
 Function DeleteObject( hObject:Byte Ptr )
 

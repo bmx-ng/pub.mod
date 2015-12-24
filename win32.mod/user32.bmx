@@ -439,14 +439,79 @@ Const SIF_DISABLENOSCROLL=$0008
 Const SIF_TRACKPOS=$0010
 Const SIF_ALL=(SIF_RANGE|SIF_PAGE|SIF_POS|SIF_TRACKPOS)
 
+Extern
+	Function bmx_win32_SCROLLINFO_new:Byte Ptr()
+	Function bmx_win32_SCROLLINFO_free(handle:Byte Ptr)
+	Function bmx_win32_SCROLLINFO_SetfMask(handle:Byte Ptr, fMask:UInt)
+	Function bmx_win32_SCROLLINFO_SetnMin(handle:Byte Ptr, nMin:Int)
+	Function bmx_win32_SCROLLINFO_SetnMax(handle:Byte Ptr, nMax:Int)
+	Function bmx_win32_SCROLLINFO_SetnPage(handle:Byte Ptr, nPage:UInt)
+	Function bmx_win32_SCROLLINFO_SetnPos(handle:Byte Ptr, nPos:Int)
+	Function bmx_win32_SCROLLINFO_SetnTrackPos(handle:Byte Ptr, nTrackPos:Int)
+	Function bmx_win32_SCROLLINFO_nPage:UInt(handle:Byte Ptr)
+	Function bmx_win32_SCROLLINFO_nPos:Int(handle:Byte Ptr)
+	Function bmx_win32_SCROLLINFO_nTrackPos:Int(handle:Byte Ptr)
+End Extern
 Type SCROLLINFO
-	Field cbSize
-	Field fMask
-	Field nMin
-	Field nMax
-	Field nPage
-	Field nPos
-	Field nTrackPos
+	Field infoPtr:Byte Ptr
+	
+	Method New()
+		infoPtr = bmx_win32_SCROLLINFO_new()
+	End Method
+
+	Method Delete()
+		Free()
+	End Method
+	
+	Method Free()
+		If infoPtr Then
+			bmx_win32_SCROLLINFO_free(infoPtr)
+			infoPtr = Null
+		End If
+	End Method
+	
+	Method SetfMask(fMask:UInt)
+		bmx_win32_SCROLLINFO_SetfMask(infoPtr, fMask)
+	End Method
+	
+	Method SetnMin(nMin:Int)
+		bmx_win32_SCROLLINFO_SetnMin(infoPtr, nMin)
+	End Method
+	
+	Method SetnMax(nMax:Int)
+		bmx_win32_SCROLLINFO_SetnMax(infoPtr, nMax)
+	End Method
+	
+	Method SetnPage(nPage:UInt)
+		bmx_win32_SCROLLINFO_SetnPage(infoPtr, nPage)
+	End Method
+	
+	Method SetnPos(nPos:Int)
+		bmx_win32_SCROLLINFO_SetnPos(infoPtr, nPos)
+	End Method
+	
+	Method SetnTrackPos(nTrackPos:Int)
+		bmx_win32_SCROLLINFO_SetnTrackPos(infoPtr, nTrackPos)
+	End Method
+	
+	Method nPage:UInt()
+		Return bmx_win32_SCROLLINFO_nPage(infoPtr)
+	End Method
+	
+	Method nPos:Int()
+		Return bmx_win32_SCROLLINFO_nPos(infoPtr)
+	End Method
+	
+	Method nTrackPos:Int()
+		Return bmx_win32_SCROLLINFO_nTrackPos(infoPtr)
+	End Method
+'	Field cbSize
+'	Field fMask
+'	Field nMin
+'	Field nMax
+'	Field nPage
+'	Field nPos
+'	Field nTrackPos
 End Type
 
 ' loadcursor consts
@@ -590,13 +655,73 @@ Const MIIM_STRING=$40
 Const MIIM_BITMAP=$80
 Const MIIM_FTYPE=$100
 
+Extern
+	Function bmx_win32_MENUITEMINFOW_new:Byte Ptr()
+	Function bmx_win32_MENUITEMINFOW_free(handle:Byte Ptr)
+	Function bmx_win32_MENUITEMINFOW_SetfMask(handle:Byte Ptr, fMask:UInt)
+	Function bmx_win32_MENUITEMINFOW_SetfType(handle:Byte Ptr, fType:UInt)
+	Function bmx_win32_MENUITEMINFOW_SetfState(handle:Byte Ptr, fState:UInt)
+	Function bmx_win32_MENUITEMINFOW_SetwID(handle:Byte Ptr, wID:UInt)
+	Function bmx_win32_MENUITEMINFOW_SethSubMenu(handle:Byte Ptr, hSubMenu:Byte Ptr)
+	Function bmx_win32_MENUITEMINFOW_SetdwItemData(handle:Byte Ptr, dwItemData:Byte Ptr)
+	Function bmx_win32_MENUITEMINFOW_SetdwTypeData(handle:Byte Ptr, dwTypeData:Short Ptr)
+	Function bmx_win32_MENUITEMINFOW_dwTypeData:Short Ptr(handle:Byte Ptr)
+End Extern
 Type MENUITEMINFOW
-	Field	cbSize,fMask,fType,fState,wID
-	Field	hSubMenu,hbmpChecked,hbmpUnchecked
-	Field	dwItemData:Int Ptr
-	Field	dwTypeData:Short Ptr
-	Field	cch
-	Field	hbmpItem
+	Field infoPtr:Byte Ptr
+
+	Method New()
+		infoPtr = bmx_win32_MENUITEMINFOW_new()
+	End Method
+	
+	Method Delete()
+		Free()
+	End Method
+	
+	Method Free()
+		If infoPtr Then
+			bmx_win32_MENUITEMINFOW_free(infoPtr)
+			infoPtr = Null
+		End If
+	End Method
+
+	Method SetfMask(fMask:UInt)
+		bmx_win32_MENUITEMINFOW_SetfMask(infoPtr, fMask)
+	End Method
+	
+	Method SetfType(fType:UInt)
+		bmx_win32_MENUITEMINFOW_SetfType(infoPtr, fType)
+	End Method
+	
+	Method SetfState(fState:UInt)
+		bmx_win32_MENUITEMINFOW_SetfState(infoPtr, fState)
+	End Method
+
+	Method SetwID(wID:UInt)
+		bmx_win32_MENUITEMINFOW_SetwID(infoPtr, wID)
+	End Method
+
+	Method SethSubMenu(hSubMenu:Byte Ptr)
+		bmx_win32_MENUITEMINFOW_SethSubMenu(infoPtr, hSubMenu)
+	End Method
+	
+	Method SetdwItemData(dwItemData:Byte Ptr)
+		bmx_win32_MENUITEMINFOW_SetdwItemData(infoPtr, dwItemData)
+	End Method
+	
+	Method SetdwTypeData(dwTypeData:Byte Ptr)
+		bmx_win32_MENUITEMINFOW_SetdwTypeData(infoPtr, dwTypeData)
+	End Method
+	
+	Method dwTypeData:Byte Ptr()
+		Return bmx_win32_MENUITEMINFOW_dwTypeData(infoPtr)
+	End Method
+'	Field	cbSize,fMask,fType,fState,wID
+'	Field	hSubMenu,hbmpChecked,hbmpUnchecked
+'	Field	dwItemData:Int Ptr
+'	Field	dwTypeData:Short Ptr
+'	Field	cch
+'	Field	hbmpItem
 End Type
 
 Const GWL_WNDPROC=-4
@@ -762,6 +887,136 @@ Const RECT_BOTTOM=3
 Const POINT_X=0
 Const POINT_Y=1
 
+
+'Button Image Constants
+Const IMAGE_BITMAP = 0
+Const IMAGE_ICON = 1
+
+Extern
+	Function bmx_win32_MENUINFO_new:Byte Ptr()
+	Function bmx_win32_MENUINFO_free(handle:Byte Ptr)
+	Function bmx_win32_MENUINFO_SetfMask(handle:Byte Ptr, fMask:Int)
+	Function bmx_win32_MENUINFO_SetdwStyle(handle:Byte Ptr, dwStyle:Int)
+	Function bmx_win32_MENUINFO_SetcyMax(handle:Byte Ptr, cyMax:UInt)
+	Function bmx_win32_MENUINFO_SethbrBack(handle:Byte Ptr, hbrBack:Byte Ptr)
+	Function bmx_win32_MENUINFO_SetdwContextHelpID(handle:Byte Ptr, dwContextHelpID:Int)
+	Function bmx_win32_MENUINFO_SetdwMenuData(handle:Byte Ptr, dwMenuData:Byte Ptr)
+End Extern
+'Menu Info
+Type MENUINFO
+	Field infoPtr:Byte Ptr
+	
+	Method New()
+		infoPtr = bmx_win32_MENUINFO_new()
+	End Method
+
+	Method Delete()
+		Free()
+	End Method
+	
+	Method Free()
+		If infoPtr Then
+			bmx_win32_MENUINFO_free(infoPtr)
+			infoPtr = Null
+		End If
+	End Method
+	
+	Method SetfMask(fMask:Int)
+		bmx_win32_MENUINFO_SetfMask(infoPtr, fMask)
+	End Method
+
+	Method SetdwStyle(dwStyle:Int)
+		bmx_win32_MENUINFO_SetdwStyle(infoPtr, dwStyle)
+	End Method
+
+	Method SetcyMax(cyMax:UInt)
+		bmx_win32_MENUINFO_SetcyMax(infoPtr, cyMax)
+	End Method
+
+	Method SethbrBack(hbrBack:Byte Ptr)
+		bmx_win32_MENUINFO_SethbrBack(infoPtr, hbrBack)
+	End Method
+
+	Method SetdwContextHelpID(dwContextHelpID:Int)
+		bmx_win32_MENUINFO_SetdwContextHelpID(infoPtr, dwContextHelpID)
+	End Method
+
+	Method SetdwMenuData(dwMenuData:Byte Ptr)
+		bmx_win32_MENUINFO_SetdwMenuData(infoPtr, dwMenuData)
+	End Method
+	
+'	Field cbSize% = SizeOf(Self)
+'	Field fMask%
+'	Field dwStyle%
+'	Field cyMax%
+'	Field hbrBack%
+'	Field dwContextHelpID%
+'	Field dwMenuData:Int Ptr
+EndType
+
+Const MIM_MAXHEIGHT = $1
+Const MIM_BACKGROUND = $2
+Const MIM_HELPID = $4
+Const MIM_MENUDATA = $8
+Const MIM_STYLE = $10
+Const MIM_APPLYTOSUBMENUS = $80000000
+
+Const MNS_NOCHECK = $80000000
+Const MNS_MODELESS = $40000000
+Const MNS_DRAGDROP = $20000000
+Const MNS_AUTODISMISS = $10000000
+Const MNS_NOTIFYBYPOS = $8000000
+Const MNS_CHECKORBMP = $4000000
+
+
+'Icon Stuff
+Const LR_DEFAULTSIZE = $40
+
+Extern
+	Function bmx_win32_ICONINFO_new:Byte Ptr()
+	Function bmx_win32_ICONINFO_free(handle:Byte Ptr)
+	Function bmx_win32_ICONINFO_SetfIcon(handle:Byte Ptr, fIcon:Int)
+	Function bmx_win32_ICONINFO_SethbmMask(handle:Byte Ptr, hbmMask:Byte Ptr)
+	Function bmx_win32_ICONINFO_SethbmColor(handle:Byte Ptr, hbmColor:Byte Ptr)
+End Extern
+
+Type ICONINFO
+	Field infoPtr:Byte Ptr
+	
+	Method New()
+		infoPtr = bmx_win32_ICONINFO_new()
+	End Method
+
+	Method Delete()
+		Free()
+	End Method
+	
+	Method Free()
+		If infoPtr Then
+			bmx_win32_ICONINFO_free(infoPtr)
+			infoPtr = Null
+		End If
+	End Method
+	
+	Method SetfIcon(fIcon:Int)
+		bmx_win32_ICONINFO_SetfIcon(infoPtr, fIcon)
+	End Method
+	
+	Method SethbmMask(hbmMask:Byte Ptr)
+		bmx_win32_ICONINFO_SethbmMask(infoPtr, hbmMask)
+	End Method
+	
+	Method SethbmColor(hbmColor:Byte Ptr)
+		bmx_win32_ICONINFO_SethbmColor(infoPtr, hbmColor)
+	End Method
+'    Field fIcon
+'    Field xHotspot
+'    Field yHotspot
+'    Field hbmMask
+'    Field hbmColor
+EndType
+
+
 Extern "Win32"
 
 Function SetCapture( hWnd:Byte Ptr )
@@ -806,7 +1061,7 @@ Function GetClientRect( hWnd:Byte Ptr,lpRect:Int Ptr )
 Function GetWindowRect( hWnd:Byte Ptr,lpRect:Int Ptr )
 Function GetDesktopWindow()
 Function AdjustWindowRect( rect:Int Ptr,style,menu )
-Function AdjustWindowRectEx( rect:Int Ptr,style,menu,exstyle )
+Function AdjustWindowRectEx( rect:Int Ptr,style,menu:Byte Ptr,exstyle )
 Function ClientToScreen( hWnd:Byte Ptr,point:Byte Ptr )
 Function ShowWindow( hWnd:Byte Ptr,nCmdShow )
 Function SetMenu( hWnd:Byte Ptr,hmenu:Byte Ptr )
@@ -834,6 +1089,7 @@ Function GetWindowLongA( hWnd:Byte Ptr,index )
 Function SetWindowLongA( hWnd:Byte Ptr,index,newlong )
 Function GetWindowLongW( hWnd:Byte Ptr,index )
 Function SetWindowLongW( hWnd:Byte Ptr,index,newlong )
+Function SetWindowLongPtrW:Byte Ptr( hWnd:Byte Ptr,index,newlong:Byte Ptr)
 Function GetClassLongA( hWnd:Byte Ptr,index )
 Function SetClassLongA( hWnd:Byte Ptr,index,newlong )
 Function GetClassLongW( hWnd:Byte Ptr,index )
@@ -850,12 +1106,12 @@ Function SetScrollRange( hWnd:Byte Ptr,nBar,nMinPos,nMaxPos,bRedraw )
 Function GetScrollRange( hWnd:Byte Ptr,nBar,lpMinPos:Int Ptr,lpMaxPos:Int Ptr )
 Function ShowScrollBar( hWnd:Byte Ptr,wBar,bShow )
 Function EnableScrollBar( hWnd:Byte Ptr,wSBflags,wArrows )
-Function SetScrollInfo( hWnd:Byte Ptr,nBar,lpsi:SCROLLINFO,redraw )
-Function GetScrollInfo( hWnd:Byte Ptr,nBar,lpsi:SCROLLINFO )
+Function SetScrollInfo( hWnd:Byte Ptr,nBar,lpsi:Byte Ptr,redraw )
+Function GetScrollInfo( hWnd:Byte Ptr,nBar,lpsi:Byte Ptr)
 Function InvalidateRect( hWnd:Byte Ptr,lpRect:Int Ptr,bErase )
 Function ValidateRect( hWnd:Byte Ptr,lpRect:Int Ptr )
 Function BeginPaint( hWnd:Byte Ptr,lpPaint:Byte Ptr )
-Function FillRect( hdc,lpRect:Int Ptr,hbr )
+Function FillRect( hdc:Byte Ptr,lpRect:Int Ptr,hbr:Byte Ptr )
 Function EndPaint( hWnd:Byte Ptr,lpPaint:Byte Ptr )
 Function SetFocus:Byte Ptr( hWnd:Byte Ptr )
 Function GetFocus:Byte Ptr()
@@ -890,9 +1146,9 @@ Function DefDlgProcW(hDlg:Byte Ptr,Msg:UInt,wParam:Byte Ptr,lParam:Byte Ptr)
 'shellapi
 
 Function DragAcceptFiles(hWnd:Byte Ptr,fAccept)
-Function DragQueryPoint(hDrop,lpPoint:Int Ptr)
-Function DragQueryFileW(hDrop,iFile,lpszFile:Short Ptr,cch)
-Function DragFinish(hDrop)
+Function DragQueryPoint(hDrop:Byte Ptr,lpPoint:Int Ptr)
+Function DragQueryFileW(hDrop:Byte Ptr,iFile:UInt,lpszFile:Short Ptr,cch:Uint)
+Function DragFinish(hDrop:Byte Ptr)
 
 Function _TrackMouseEvent( trackmouseeventstrunct:Byte Ptr )
 

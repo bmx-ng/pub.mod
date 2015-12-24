@@ -117,17 +117,71 @@ Const WB_RIGHT=1
 Const WB_ISDELIMITER=2
 
 'ComboBoxstyles
-
+Extern
+	Function bmx_win32_COMBOBOXEXITEMW_new:Byte Ptr()
+	Function bmx_win32_COMBOBOXEXITEMW_free(handle:Byte Ptr)
+	Function bmx_win32_COMBOBOXEXITEMW_Setmask(handle:Byte Ptr, mask:UInt)
+	Function bmx_win32_COMBOBOXEXITEMW_SetiItem(handle:Byte Ptr, iItem:Byte Ptr)
+	Function bmx_win32_COMBOBOXEXITEMW_SetpszText(handle:Byte Ptr, pszText:Short Ptr)
+	Function bmx_win32_COMBOBOXEXITEMW_SetiImage(handle:Byte Ptr, iImage:Int)
+	Function bmx_win32_COMBOBOXEXITEMW_SetiSelectedImage(handle:Byte Ptr, iSelectedImage:Int)
+	Function bmx_win32_COMBOBOXEXITEMW_mask:UInt(handle:Byte Ptr)
+	Function bmx_win32_COMBOBOXEXITEMW_pszText:Short Ptr(handle:Byte Ptr)
+End Extern
 Type COMBOBOXEXITEMW
-	Field mask
-	Field iItem
-	Field pszText:Short Ptr
-	Field cchTextMax
-	Field iImage
-	Field iSelectedImage
-	Field iOverlay
-	Field iIndent
-	Field lParam
+	Field itemPtr:Byte Ptr
+	
+	Method New()
+		itemPtr = bmx_win32_COMBOBOXEXITEMW_new()
+	End Method
+
+	Method Delete()
+		Free()
+	End Method
+	
+	Method Free()
+		If itemPtr Then
+			bmx_win32_COMBOBOXEXITEMW_free(itemPtr)
+			itemPtr = Null
+		End If
+	End Method
+	
+	Method Setmask(mask:UInt)
+		bmx_win32_COMBOBOXEXITEMW_Setmask(itemPtr, mask)
+	End Method
+	
+	Method SetiItem(iItem:Byte Ptr)
+		bmx_win32_COMBOBOXEXITEMW_SetiItem(itemPtr, iItem)
+	End Method
+	
+	Method SetpszText(pszText:Short Ptr)
+		bmx_win32_COMBOBOXEXITEMW_SetpszText(itemPtr, pszText)
+	End Method
+	
+	Method SetiImage(iImage:Int)
+		bmx_win32_COMBOBOXEXITEMW_SetiImage(itemPtr, iImage)
+	End Method
+	
+	Method SetiSelectedImage(iSelectedImage:Int)
+		bmx_win32_COMBOBOXEXITEMW_SetiSelectedImage(itemPtr, iSelectedImage)
+	End Method
+	
+	Method mask:UInt()
+		Return bmx_win32_COMBOBOXEXITEMW_mask(itemPtr)
+	End Method
+	
+	Method pszText:Short Ptr()
+		Return bmx_win32_COMBOBOXEXITEMW_pszText(itemPtr)
+	End Method
+'	Field mask
+'	Field iItem
+'	Field pszText:Short Ptr
+'	Field cchTextMax
+'	Field iImage
+'	Field iSelectedImage
+'	Field iOverlay
+'	Field iIndent
+'	Field lParam
 End Type
 
 Const CBS_SIMPLE=$0001
@@ -1277,20 +1331,86 @@ Const LVIS_ACTIVATING         =$0020
 Const LVIS_OVERLAYMASK        =$0F00
 Const LVIS_STATEIMAGEMASK     =$F000
 
+Extern
+	Function bmx_win32_LVITEMW_new:Byte Ptr()
+	Function bmx_win32_LVITEMW_free(handle:Byte Ptr)
+	Function bmx_win32_LVITEMW_Setmask(handle:Byte Ptr, mask:UInt)
+	Function bmx_win32_LVITEMW_SetiItem(handle:Byte Ptr, iItem:Int)
+	Function bmx_win32_LVITEMW_Setstate(handle:Byte Ptr, state:UInt)
+	Function bmx_win32_LVITEMW_SetstateMask(handle:Byte Ptr, stateMask:UInt)
+	Function bmx_win32_LVITEMW_SetpszText(handle:Byte Ptr, pszText:Short Ptr)
+	Function bmx_win32_LVITEMW_SetiImage(handle:Byte Ptr, iImage:Int)
+	Function bmx_win32_LVITEMW_mask:UInt(handle:Byte Ptr)
+	Function bmx_win32_LVITEMW_state:UInt(handle:Byte Ptr)
+	Function bmx_win32_LVITEMW_pszText:Short Ptr(handle:Byte Ptr)
+End Extern
 Type LVITEMW
-	Field	mask
-	Field	iItem
-	Field	iSubItem
-	Field	state
-	Field	stateMask
-	Field	pszText:Short Ptr
-	Field	cchTextMax
-	Field	iImage
-    Field	lParam
-	Field	iIndent
-	Field	iGroupId
-	Field	cColumns
-	Field	puColumns:Int Ptr
+	Field itemPtr:Byte Ptr
+	
+	Method New()
+		itemPtr = bmx_win32_LVITEMW_new()
+	End Method
+
+	Method Delete()
+		Free()
+	End Method
+	
+	Method Free()
+		If itemPtr Then
+			bmx_win32_LVITEMW_free(itemPtr)
+			itemPtr = Null
+		End If
+	End Method
+	
+	Method Setmask(mask:UInt)
+		bmx_win32_LVITEMW_Setmask(itemPtr, mask)
+	End Method
+	
+	Method SetiItem(iItem:Int)
+		bmx_win32_LVITEMW_SetiItem(itemPtr, iItem)
+	End Method
+	
+	Method Setstate(state:UInt)
+		bmx_win32_LVITEMW_Setstate(itemPtr, state)
+	End Method
+
+	Method SetstateMask(stateMask:UInt)
+		bmx_win32_LVITEMW_SetstateMask(itemPtr, stateMask)
+	End Method
+	
+	Method SetpszText(pszText:Short Ptr)
+		bmx_win32_LVITEMW_SetpszText(itemPtr, pszText)
+	End Method
+	
+	Method SetiImage(iImage:Int)
+		bmx_win32_LVITEMW_SetiImage(itemPtr, iImage)
+	End Method
+	
+	Method mask:UInt()
+		Return bmx_win32_LVITEMW_mask(itemPtr)
+	End Method
+	
+	Method state:UInt()
+		Return bmx_win32_LVITEMW_state(itemPtr)
+	End Method
+	
+	Method pszText:Short Ptr()
+		Return bmx_win32_LVITEMW_pszText(itemPtr)
+	End Method
+	
+'	Field	mask
+'	Field	iItem
+'	Field	iSubItem
+'	Field	state
+'	Field	stateMask
+'	Field	pszText:Short Ptr
+'	Field	cchTextMax
+'	Field	iImage
+'   Field	lParam
+'	Field	iIndent
+'	Field	iGroupId
+'	Field	cColumns
+'	Field	puColumns:Int Ptr
 End Type
 
 Const I_IMAGECALLBACK         =(-1)
@@ -1386,15 +1506,36 @@ Const LVM_EDITLABELA          =(LVM_FIRST + 23)
 Const LVM_EDITLABELW          =(LVM_FIRST + 118)
 Const LVM_GETEDITCONTROL      =(LVM_FIRST + 24)
 
+Extern
+	Function bmx_win32_LVCOLUMNW_new:Byte Ptr()
+	Function bmx_win32_LVCOLUMNW_free(handle:Byte Ptr)
+End Extern
 Type LVCOLUMNW
-	Field	mask
-	Field	fmt
-	Field	cx
-	Field	pszText:Short Ptr
-	Field	cchTextMax
-	Field	iSubItem
-	Field	iImage
-	Field	iOrder
+	Field colPtr:Byte Ptr
+	
+	Method New()
+		colPtr = bmx_win32_LVCOLUMNW_new()
+	End Method
+	
+	Method Delete()
+		Free()
+	End Method
+	
+	Method Free()
+		If colPtr Then
+			bmx_win32_LVCOLUMNW_free(colPtr)
+			colPtr = Null
+		End If
+	End Method
+
+'	Field	mask
+'	Field	fmt
+'	Field	cx
+'	Field	pszText:Short Ptr
+'	Field	cchTextMax
+'	Field	iSubItem
+'	Field	iImage
+'	Field	iOrder
 End Type
 
 Const LVCF_FMT                =$0001
@@ -1646,9 +1787,31 @@ Const CMB_MASKED              =$02
 Extern "Win32"
 
 Function ImageList_Create:Byte Ptr(cx,cy,flags:UInt,cInitial,cGrow)
-Function ImageList_AddMasked(himl:Byte Ptr,hbmImage:Byte Ptr,crMask)
-Function ImageList_Add(himl:Byte Ptr,hbmImage:Byte Ptr,crMask)
+Function ImageList_AddMasked(himl:Byte Ptr,hbmImage:Byte Ptr,crMask:Byte Ptr)
+Function ImageList_Add(himl:Byte Ptr,hbmImage:Byte Ptr,crMask:Byte Ptr)
 Function ImageList_Destroy( hImageList:Byte Ptr )
 Function ImageList_GetImageCount( hImageList:Byte Ptr )
 
+End Extern
+
+Extern
+	Function bmx_win32_BUTTON_IMAGELIST_new:Byte Ptr()
+	Function bmx_win32_BUTTON_IMAGELIST_free(handle:Byte Ptr)
+	Function bmx_win32_BUTTON_IMAGELIST_Sethiml(handle:Byte Ptr, himl:Byte Ptr)
+	Function bmx_win32_BUTTON_IMAGELIST_SetuAlign(handle:Byte Ptr, uAlign:UInt)
+	Function bmx_win32_BUTTON_IMAGELIST_himl:Byte Ptr(handle:Byte Ptr)
+	
+	Function bmx_win32_NMHDR_hwndFrom:Byte Ptr(handle:Byte Ptr)
+	Function bmx_win32_NMHDR_code:UInt(handle:Byte Ptr)
+	
+	Function bmx_win32_NMTTDISPINFOW_SetlpszText(handle:Byte Ptr, lpszText:Short Ptr)
+	
+	Function bmx_win32_NMLVGETINFOTIPW_pszText:Short Ptr(handle:Byte Ptr)
+	Function bmx_win32_NMLVGETINFOTIPW_cchTextMax:Int(handle:Byte Ptr)
+	Function bmx_win32_NMLVGETINFOTIPW_iItem:Int(handle:Byte Ptr)
+	
+	Function bmx_win32_NMLISTVIEW_uChanged:UInt(handle:Byte Ptr)
+	
+	Function bmx_win32_NMITEMACTIVATE_iItem:Int(handle:Byte Ptr)
+	
 End Extern
