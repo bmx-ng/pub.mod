@@ -386,18 +386,64 @@ Type PIXELFORMATDESCRIPTOR
 	Field dwDamageMask 
 End Type
 
+Extern
+	Function bmx_win32_BITMAPINFOHEADER_new:Byte Ptr()
+	Function bmx_win32_BITMAPINFOHEADER_free(handle:Byte Ptr)
+	Function bmx_win32_BITMAPINFOHEADER_SetbiWidth(handle:Byte Ptr, biWidth:Int)
+	Function bmx_win32_BITMAPINFOHEADER_SetbiHeight(handle:Byte Ptr, biHeight:Int)
+	Function bmx_win32_BITMAPINFOHEADER_SetbiPlanes(handle:Byte Ptr, biPlanes:Int)
+	Function bmx_win32_BITMAPINFOHEADER_SetbiBitCount(handle:Byte Ptr, biBitCount:Int)
+	Function bmx_win32_BITMAPINFOHEADER_SetbiCompression(handle:Byte Ptr, biCompression:Int)
+End Extern
 Type BITMAPINFOHEADER
-	Field biSize
-	Field biWidth
-	Field biHeight
-	Field biPlanes:Short
-	Field biBitCount:Short
-	Field biCompression
-	Field biSizeImage
-	Field biXPelsPerMeter
-	Field biYPelsPerMeter
-	Field biClrUsed
-	Field biClrImportant
+	Field infoPtr:Byte Ptr
+	
+	Method New()
+		infoPtr = bmx_win32_BITMAPINFOHEADER_new()
+	End Method
+
+	Method Delete()
+		Free()
+	End Method
+	
+	Method Free()
+		If infoPtr Then
+			bmx_win32_BITMAPINFOHEADER_free(infoPtr)
+		End If
+		infoPtr = Null
+	End Method
+	
+	Method SetbiWidth(biWidth:Int)
+		bmx_win32_BITMAPINFOHEADER_SetbiWidth(infoPtr, biWidth)
+	End Method
+	
+	Method SetbiHeight(biHeight:Int)
+		bmx_win32_BITMAPINFOHEADER_SetbiHeight(infoPtr, biHeight)
+	End Method
+	
+	Method SetbiPlanes(biPlanes:Int)
+		bmx_win32_BITMAPINFOHEADER_SetbiPlanes(infoPtr, biPlanes)
+	End Method
+	
+	Method SetbiBitCount(biBitCount:Int)
+		bmx_win32_BITMAPINFOHEADER_SetbiBitCount(infoPtr, biBitCount)
+	End Method
+	
+	Method SetbiCompression(biCompression:Int)
+		bmx_win32_BITMAPINFOHEADER_SetbiCompression(infoPtr, biCompression)
+	End Method
+	
+'	Field biSize
+'	Field biWidth
+'	Field biHeight
+'	Field biPlanes:Short
+'	Field biBitCount:Short
+'	Field biCompression
+'	Field biSizeImage
+'	Field biXPelsPerMeter
+'	Field biYPelsPerMeter
+'	Field biClrUsed
+'	Field biClrImportant
 End Type
 
 Extern
@@ -665,7 +711,7 @@ Function CreateSolidBrush:Byte Ptr( crColor )
 Function CreateCompatibleDC:Byte Ptr( hdc:Byte Ptr )
 Function CreateCompatibleBitmap:Byte Ptr( hdc:Byte Ptr,nWidth,nHeight )
 
-Function SetDIBits( hdc:Byte Ptr,hbmp,uStartScan,cScanLines,lpvBits:Byte Ptr,lpbmi:Byte Ptr,fuColorUse )
+Function SetDIBits( hdc:Byte Ptr,hbmp:Byte Ptr,uStartScan:UInt,cScanLines:UInt,lpvBits:Byte Ptr,lpbmi:Byte Ptr,fuColorUse:UInt )
 Function DeleteDC( hdc:Byte Ptr )
 
 Function SetStretchBltMode( hdc:Byte Ptr,iStretchMode )

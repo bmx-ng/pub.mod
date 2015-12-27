@@ -28,6 +28,14 @@ extern "C" {
 	TEXTMETRIC * bmx_win32_TEXTMETRIC_new();
 	void bmx_win32_TEXTMETRIC_free(TEXTMETRIC * metric);
 	int bmx_win32_TEXTMETRIC_tmAveCharWidth(TEXTMETRIC * metric);
+
+	BITMAPINFOHEADER * bmx_win32_BITMAPINFOHEADER_new();
+	void bmx_win32_BITMAPINFOHEADER_free(BITMAPINFOHEADER * hdr);
+	void bmx_win32_BITMAPINFOHEADER_SetbiWidth(BITMAPINFOHEADER * hdr, int biWidth);
+	void bmx_win32_BITMAPINFOHEADER_SetbiHeight(BITMAPINFOHEADER * hdr, int biHeight);
+	void bmx_win32_BITMAPINFOHEADER_SetbiPlanes(BITMAPINFOHEADER * hdr, int biPlanes);
+	void bmx_win32_BITMAPINFOHEADER_SetbiBitCount(BITMAPINFOHEADER * hdr, int biBitCount);
+	void bmx_win32_BITMAPINFOHEADER_SetbiCompression(BITMAPINFOHEADER * hdr, int biCompression);
 }
 
 // ********************************************************
@@ -132,5 +140,37 @@ void bmx_win32_TEXTMETRIC_free(TEXTMETRIC * metric) {
 
 int bmx_win32_TEXTMETRIC_tmAveCharWidth(TEXTMETRIC * metric) {
 	return metric->tmAveCharWidth;
+}
+
+// ********************************************************
+
+BITMAPINFOHEADER * bmx_win32_BITMAPINFOHEADER_new() {
+	BITMAPINFOHEADER * hdr = (BITMAPINFOHEADER *)calloc(1, sizeof(BITMAPINFOHEADER));
+	hdr->biSize = sizeof(BITMAPINFOHEADER);
+	return hdr;
+}
+
+void bmx_win32_BITMAPINFOHEADER_free(BITMAPINFOHEADER * hdr) {
+	free(hdr);
+}
+
+void bmx_win32_BITMAPINFOHEADER_SetbiWidth(BITMAPINFOHEADER * hdr, int biWidth) {
+	hdr->biWidth = biWidth;
+}
+
+void bmx_win32_BITMAPINFOHEADER_SetbiHeight(BITMAPINFOHEADER * hdr, int biHeight) {
+	hdr->biHeight = biHeight;
+}
+
+void bmx_win32_BITMAPINFOHEADER_SetbiPlanes(BITMAPINFOHEADER * hdr, int biPlanes) {
+	hdr->biPlanes = biPlanes;
+}
+
+void bmx_win32_BITMAPINFOHEADER_SetbiBitCount(BITMAPINFOHEADER * hdr, int biBitCount) {
+	hdr->biBitCount = biBitCount;
+}
+
+void bmx_win32_BITMAPINFOHEADER_SetbiCompression(BITMAPINFOHEADER * hdr, int biCompression) {
+	hdr->biCompression = biCompression;
 }
 

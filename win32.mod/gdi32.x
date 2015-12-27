@@ -1,4 +1,4 @@
-int SetDIBits(HDC,HBITMAP,UINT,UINT,PCVOID,const BITMAPINFO*,UINT)!
+int SetDIBits(HDC,HBITMAP,UINT,UINT,VOID *,const BITMAPINFO*,UINT)!
 BOOL DeleteDC(HDC)!
 BOOL StretchBlt(HDC,int,int,int,int,HDC,int,int,int,int,DWORD)!
 HFONT CreateFontIndirectW(const LOGFONTW*)!

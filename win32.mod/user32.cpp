@@ -58,6 +58,18 @@ extern "C" {
 	void bmx_win32_WINDOWINFO_free(WINDOWINFO * info);
 	int bmx_win32_WINDOWINFO_dwStyle(WINDOWINFO * info);
 
+	TRACKMOUSEEVENT * bmx_win32_TRACKMOUSEEVENT_new();
+	void bmx_win32_TRACKMOUSEEVENT_free(TRACKMOUSEEVENT * event);
+	void bmx_win32_TRACKMOUSEEVENT_SetdwFlags(TRACKMOUSEEVENT * event, int dwFlags);
+	void bmx_win32_TRACKMOUSEEVENT_SethwndTrack(TRACKMOUSEEVENT * event, HWND hwndTrack);
+
+	MINMAXINFO * bmx_win32_MINMAXINFO_new();
+	void bmx_win32_MINMAXINFO_free(MINMAXINFO * info);
+	void bmx_win32_MINMAXINFO_SetminTrackSizeX(MINMAXINFO * info, int x);
+	void bmx_win32_MINMAXINFO_SetminTrackSizeY(MINMAXINFO * info, int y);
+	void bmx_win32_MINMAXINFO_SetmaxTrackSizeX(MINMAXINFO * info, int x);
+	void bmx_win32_MINMAXINFO_SetmaxTrackSizeY(MINMAXINFO * info, int y);
+
 }
 
 // ********************************************************
@@ -266,5 +278,51 @@ void bmx_win32_WINDOWINFO_free(WINDOWINFO * info) {
 
 int bmx_win32_WINDOWINFO_dwStyle(WINDOWINFO * info) {
 	return info->dwStyle;
+}
+
+// ********************************************************
+
+TRACKMOUSEEVENT * bmx_win32_TRACKMOUSEEVENT_new() {
+	TRACKMOUSEEVENT * event = (TRACKMOUSEEVENT *)calloc(1, sizeof(TRACKMOUSEEVENT));
+	event->cbSize = sizeof(TRACKMOUSEEVENT);
+	return event;
+}
+
+void bmx_win32_TRACKMOUSEEVENT_free(TRACKMOUSEEVENT * event) {
+	free(event);
+}
+
+void bmx_win32_TRACKMOUSEEVENT_SetdwFlags(TRACKMOUSEEVENT * event, int dwFlags) {
+	event->dwFlags = dwFlags;
+}
+
+void bmx_win32_TRACKMOUSEEVENT_SethwndTrack(TRACKMOUSEEVENT * event, HWND hwndTrack) {
+	event->hwndTrack = hwndTrack;
+}
+
+// ********************************************************
+
+MINMAXINFO * bmx_win32_MINMAXINFO_new() {
+	return (MINMAXINFO *)calloc(1, sizeof(MINMAXINFO));
+}
+
+void bmx_win32_MINMAXINFO_free(MINMAXINFO * info) {
+	free(info);
+}
+
+void bmx_win32_MINMAXINFO_SetminTrackSizeX(MINMAXINFO * info, int x) {
+	info->ptMinTrackSize.x = x;
+}
+
+void bmx_win32_MINMAXINFO_SetminTrackSizeY(MINMAXINFO * info, int y) {
+	info->ptMinTrackSize.y = y;
+}
+
+void bmx_win32_MINMAXINFO_SetmaxTrackSizeX(MINMAXINFO * info, int x) {
+	info->ptMaxTrackSize.x = x;
+}
+
+void bmx_win32_MINMAXINFO_SetmaxTrackSizeY(MINMAXINFO * info, int y) {
+	info->ptMaxTrackSize.y = y;
 }
 

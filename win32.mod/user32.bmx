@@ -845,12 +845,63 @@ Type WNDCLASSW
 '	Field lpszClassName:Short Ptr
 End Type
 
+Extern
+	Function bmx_win32_MINMAXINFO_new:Byte Ptr()
+	Function bmx_win32_MINMAXINFO_free(handle:Byte Ptr)
+	Function bmx_win32_MINMAXINFO_SetminTrackSizeX(handle:Byte Ptr, x:Int)
+	Function bmx_win32_MINMAXINFO_SetminTrackSizeY(handle:Byte Ptr, y:Int)
+	Function bmx_win32_MINMAXINFO_SetmaxTrackSizeX(handle:Byte Ptr, x:Int)
+	Function bmx_win32_MINMAXINFO_SetmaxTrackSizeY(handle:Byte Ptr, y:Int)
+End Extern
 Type MINMAXINFO
-	Field reserved0,reserved1
-	Field maxw,maxh
-	Field maxx,maxy
-	Field minw,minh
-	Field minx,miny
+	Field infoPtr:Byte Ptr
+
+	Field _owner:Int = True
+
+	Method New()
+		infoPtr = bmx_win32_MINMAXINFO_new()
+	End Method
+
+	Method Delete()
+		Free()
+	End Method
+	
+	Method Free()
+		If infoPtr And _owner Then
+			bmx_win32_MINMAXINFO_free(infoPtr)
+		End If
+		infoPtr = Null
+	End Method
+
+	Function _create:MINMAXINFO(infoPtr:Byte Ptr)
+		Local this:MINMAXINFO = New MINMAXINFO
+		this.Free()
+		this.infoPtr = infoPtr
+		this._owner = False
+		Return this
+	End Function
+	
+	Method SetminTrackSizeX(x:Int)
+		bmx_win32_MINMAXINFO_SetminTrackSizeX(infoPtr, x)
+	End Method
+
+	Method SetminTrackSizeY(y:Int)
+		bmx_win32_MINMAXINFO_SetminTrackSizeY(infoPtr, y)
+	End Method
+
+	Method SetmaxTrackSizeX(x:Int)
+		bmx_win32_MINMAXINFO_SetmaxTrackSizeX(infoPtr, x)
+	End Method
+
+	Method SetmaxTrackSizeY(y:Int)
+		bmx_win32_MINMAXINFO_SetmaxTrackSizeY(infoPtr, y)
+	End Method	
+
+'	Field reserved0,reserved1
+'	Field maxw,maxh
+'	Field maxx,maxy
+'	Field minw,minh
+'	Field minx,miny
 End Type
 
 Extern
@@ -1041,6 +1092,41 @@ Type ICONINFO
 '    Field hbmMask
 '    Field hbmColor
 EndType
+
+Extern
+	Function bmx_win32_TRACKMOUSEEVENT_new:Byte Ptr()
+	Function bmx_win32_TRACKMOUSEEVENT_free(handle:Byte Ptr)
+	Function bmx_win32_TRACKMOUSEEVENT_SetdwFlags(handle:Byte Ptr, dwFlags:Int)
+	Function bmx_win32_TRACKMOUSEEVENT_SethwndTrack(handle:Byte Ptr, hwndTrack:Byte Ptr)
+End Extern
+Type TRACKMOUSEEVENT
+	Field eventPtr:Byte Ptr
+	
+	Method New()
+		eventPtr = bmx_win32_TRACKMOUSEEVENT_new()
+	End Method
+
+	Method Delete()
+		Free()
+	End Method
+	
+	Method Free()
+		If eventPtr Then
+			bmx_win32_TRACKMOUSEEVENT_free(eventPtr)
+			eventPtr = Null
+		End If
+	End Method
+
+	Method SetdwFlags(dwFlags:Int)
+		bmx_win32_TRACKMOUSEEVENT_SetdwFlags(eventPtr, dwFlags)
+	End Method
+	
+	Method SethwndTrack(hwndTrack:Byte Ptr)
+		bmx_win32_TRACKMOUSEEVENT_SethwndTrack(eventPtr, hwndTrack)
+	End Method
+	
+End Type
+
 
 Extern "Win32"
 
