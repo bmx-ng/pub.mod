@@ -1752,7 +1752,7 @@ End Type
 
 End Extern
 
-Global ddLib=LoadLibraryA( "ddraw" )
+Global ddLib:Byte Ptr=LoadLibraryA( "ddraw" )
 
 If Not ddLib Return
 

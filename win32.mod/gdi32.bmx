@@ -1,3 +1,6 @@
+Strict
+
+Import "gdi32.cpp"
 
 Const OUT_DEFAULT_PRECIS=0
 Const OUT_STRING_PRECIS=1
@@ -397,7 +400,138 @@ Type BITMAPINFOHEADER
 	Field biClrImportant
 End Type
 
+Extern
+	Function bmx_win32_LOGFONTW_new:Byte Ptr()
+	Function bmx_win32_LOGFONTW_free(handle:Byte Ptr)
+	Function bmx_win32_LOGFONTW_SetlfHeight(handle:Byte Ptr, lfHeight:Int)
+	Function bmx_win32_LOGFONTW_SetlfWidth(handle:Byte Ptr, lfWidth:Int)
+	Function bmx_win32_LOGFONTW_SetlfWeight(handle:Byte Ptr, lfWeight:Int)
+	Function bmx_win32_LOGFONTW_SetlfItalic(handle:Byte Ptr, lfItalic:Int)
+	Function bmx_win32_LOGFONTW_SetlfUnderline(handle:Byte Ptr, lfUnderline:Int)
+	Function bmx_win32_LOGFONTW_SetlfStrikeOut(handle:Byte Ptr, lfStrikeOut:Int)
+	Function bmx_win32_LOGFONTW_lfHeight:Int(handle:Byte Ptr)
+	Function bmx_win32_LOGFONTW_lfWidth:Int(handle:Byte Ptr)
+	Function bmx_win32_LOGFONTW_lfEscapement:Int(handle:Byte Ptr)
+	Function bmx_win32_LOGFONTW_lfOrientation:Int(handle:Byte Ptr)
+	Function bmx_win32_LOGFONTW_lfWeight:Int(handle:Byte Ptr)
+	Function bmx_win32_LOGFONTW_lfItalic:Int(handle:Byte Ptr)
+	Function bmx_win32_LOGFONTW_lfUnderline:Int(handle:Byte Ptr)
+	Function bmx_win32_LOGFONTW_lfStrikeOut:Int(handle:Byte Ptr)
+	Function bmx_win32_LOGFONTW_lfCharSet:Int(handle:Byte Ptr)
+	Function bmx_win32_LOGFONTW_lfOutPrecision:Int(handle:Byte Ptr)
+	Function bmx_win32_LOGFONTW_lfClipPrecision:Int(handle:Byte Ptr)
+	Function bmx_win32_LOGFONTW_lfQuality:Int(handle:Byte Ptr)
+	Function bmx_win32_LOGFONTW_lfPitchAndFamily:Int(handle:Byte Ptr)
+	Function bmx_win32_LOGFONTW_lfFaceName:Int(handle:Byte Ptr)
+End Extern
 Type LOGFONTW
+	Field fontPtr:Byte Ptr
+	
+	Field _owner:Int = True
+	
+	Method New()
+		fontPtr = bmx_win32_LOGFONTW_new()
+	End Method
+
+	Method Delete()
+		Free()
+	End Method
+	
+	Method Free()
+		If fontPtr And _owner Then
+			bmx_win32_LOGFONTW_free(fontPtr)
+		End If
+		fontPtr = Null
+	End Method
+	
+	Function _create:LOGFONTW(fontPtr:Byte Ptr)
+		Local this:LOGFONTW = New LOGFONTW
+		this.Free()
+		this.fontPtr = fontPtr
+		this._owner = False
+		Return this
+	End Function
+	
+	Method SetlfHeight(lfHeight:Int)
+		bmx_win32_LOGFONTW_SetlfHeight(fontPtr, lfHeight)
+	End Method
+	
+	Method SetlfWidth(lfWidth:Int)
+		bmx_win32_LOGFONTW_SetlfWidth(fontPtr, lfWidth)
+	End Method
+	
+	Method SetlfWeight(lfWeight:Int)
+		bmx_win32_LOGFONTW_SetlfWeight(fontPtr, lfWeight)
+	End Method
+	
+	Method SetlfItalic(lfItalic:Int)
+		bmx_win32_LOGFONTW_SetlfItalic(fontPtr, lfItalic)
+	End Method
+	
+	Method SetlfUnderline(lfUnderline:Int)
+		bmx_win32_LOGFONTW_SetlfUnderline(fontPtr, lfUnderline)
+	End Method
+	
+	Method SetlfStrikeOut(lfStrikeOut:Int)
+		bmx_win32_LOGFONTW_SetlfStrikeOut(fontPtr, lfStrikeOut)
+	End Method
+	
+	Method lfHeight:Int()
+		Return bmx_win32_LOGFONTW_lfHeight(fontPtr)
+	End Method
+	
+	Method lfWidth:Int()
+		Return bmx_win32_LOGFONTW_lfWidth(fontPtr)
+	End Method
+	
+	Method lfEscapement:Int()
+		Return bmx_win32_LOGFONTW_lfEscapement(fontPtr)
+	End Method
+	
+	Method lfOrientation:Int()
+		Return bmx_win32_LOGFONTW_lfOrientation(fontPtr)
+	End Method
+	
+	Method lfWeight:Int()
+		Return bmx_win32_LOGFONTW_lfWeight(fontPtr)
+	End Method
+	
+	Method lfItalic:Int()
+		Return bmx_win32_LOGFONTW_lfItalic(fontPtr)
+	End Method
+	
+	Method lfUnderline:Int()
+		Return bmx_win32_LOGFONTW_lfUnderline(fontPtr)
+	End Method
+	
+	Method lfStrikeOut:Int()
+		Return bmx_win32_LOGFONTW_lfStrikeOut(fontPtr)
+	End Method
+	
+	Method lfCharSet:Int()
+		Return bmx_win32_LOGFONTW_lfCharSet(fontPtr)
+	End Method
+	
+	Method lfOutPrecision:Int()
+		Return bmx_win32_LOGFONTW_lfOutPrecision(fontPtr)
+	End Method
+	
+	Method lfClipPrecision:Int()
+		Return bmx_win32_LOGFONTW_lfClipPrecision(fontPtr)
+	End Method
+	
+	Method lfQuality:Int()
+		Return bmx_win32_LOGFONTW_lfQuality(fontPtr)
+	End Method
+	
+	Method lfPitchAndFamily:Int()
+		Return bmx_win32_LOGFONTW_lfPitchAndFamily(fontPtr)
+	End Method
+	
+	Method lfFaceName:Short Ptr()
+		Return bmx_win32_LOGFONTW_lfFaceName(fontPtr)
+	End Method
+Rem
 	Field lfHeight
 	Field lfWidth
 	Field lfEscapement
@@ -443,9 +577,36 @@ Type LOGFONTW
 	Field lfFaceName1d:Short
 	Field lfFaceName1e:Short
 	Field lfFaceName1f:Short
+End Rem
 End Type
 
-Type TEXTMETRIC
+Extern
+	Function bmx_win32_TEXTMETRIC_new:Byte Ptr()
+	Function bmx_win32_TEXTMETRIC_free(handle:Byte Ptr)
+	Function bmx_win32_TEXTMETRIC_tmAveCharWidth:Int(handle:Byte Ptr)
+End Extern
+Type TEXTMETRICW
+	Field metricPtr:Byte Ptr
+	
+	Method New()
+		metricPtr = bmx_win32_TEXTMETRIC_new()
+	End Method
+
+	Method Delete()
+		Free()
+	End Method
+	
+	Method Free()
+		If metricPtr Then
+			bmx_win32_TEXTMETRIC_free(metricPtr)
+		End If
+		metricPtr = Null
+	End Method
+	
+	Method tmAveCharWidth:Int()
+		Return bmx_win32_TEXTMETRIC_tmAveCharWidth(metricPtr)
+	End Method
+Rem
 	Field tmHeight
 	Field tmAscent
 	Field tmDescent
@@ -469,6 +630,7 @@ Type TEXTMETRIC
 	Field pad0:Byte
 	Field pad1:Byte
 	Field pad2:Byte
+End Rem
 End Type
 
 
@@ -488,20 +650,20 @@ Function BitBlt(hdc:Byte Ptr,x,y,w,h,src_dc:Byte Ptr,src_x,src_y,dwrop)
 Function GetDeviceCaps(hdc:Byte Ptr,indec)
 
 
-Function CreateFontA(cHeight,cWidth,cEscapement,cOrientation,cWeight,bItalic,bUnderline,bStrikeOut,..
+Function CreateFontA:Byte Ptr(cHeight,cWidth,cEscapement,cOrientation,cWeight,bItalic,bUnderline,bStrikeOut,..
 	iCharSet,iOutPrecision,iClipPrecision,iQuality,iPitchAndFamily,pszFaceName:Byte Ptr)
 	
-Function CreateFontW(cHeight,cWidth,cEscapement,cOrientation,cWeight,bItalic,bUnderline,bStrikeOut,..
+Function CreateFontW:Byte Ptr(cHeight,cWidth,cEscapement,cOrientation,cWeight,bItalic,bUnderline,bStrikeOut,..
 	iCharSet,iOutPrecision,iClipPrecision,iQuality,iPitchAndFamily,pszFaceName:Short Ptr)
 
 Function SelectObject:Byte Ptr(hdc:Byte Ptr,obj:Byte Ptr)
 
 Function DeleteObject( hObject:Byte Ptr )
 
-Function CreateSolidBrush( crColor )
+Function CreateSolidBrush:Byte Ptr( crColor )
 
-Function CreateCompatibleDC( hdc:Byte Ptr )
-Function CreateCompatibleBitmap( hdc:Byte Ptr,nWidth,nHeight )
+Function CreateCompatibleDC:Byte Ptr( hdc:Byte Ptr )
+Function CreateCompatibleBitmap:Byte Ptr( hdc:Byte Ptr,nWidth,nHeight )
 
 Function SetDIBits( hdc:Byte Ptr,hbmp,uStartScan,cScanLines,lpvBits:Byte Ptr,lpbmi:Byte Ptr,fuColorUse )
 Function DeleteDC( hdc:Byte Ptr )

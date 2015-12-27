@@ -3,3 +3,4 @@ BBINT CoCreateInstance(BBBYTE * ,BBBYTE * ,BBINT ,BBBYTE * ,BBBYTE ** )!
 BBINT IIDFromString(BBSHORT * ,BBBYTE * )!
 BBSHORT * SysAllocStringLen(BBSHORT * ,BBINT )!
 BBINT SysFreeString(BBSHORT * )!
+HRESULT StringFromIID(REFIID, LPOLESTR *)!

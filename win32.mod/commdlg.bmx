@@ -1,4 +1,6 @@
+Strict
 
+Import "commdlg.cpp"
 
 Const CC_RGBINIT=1
 Const CC_FULLOPEN=2
@@ -52,29 +54,96 @@ Const CF_BOTH=CF_SCREENFONTS|CF_PRINTERFONTS
 Const CF_SCRIPTSONLY=CF_ANSIONLY
 Const CF_NOOEMFONTS=CF_NOVECTORFONTS
 
-Type CHOOSEFONT
-	Field lStructSize
-	Field hwndOwner
-	Field hDC
-	Field lpLogFont:Byte Ptr
-	Field iPointSize
-	Field Flags
-	Field rgbColors
-	Field lCustData
-	Field lpfnHook:Byte Ptr
-	Field lpTemplateName:Short Ptr
-	Field hInstance
-	Field lpszStyle:Short Ptr
-	Field nFontType:Short
-	Field _align_:Short
-	Field nSizeMin
-	Field nSizeMax
+Extern
+	Function bmx_win32_CHOOSEFONTW_new:Byte Ptr()
+	Function bmx_win32_CHOOSEFONTW_free(handle:Byte Ptr)
+	Function bmx_win32_CHOOSEFONTW_SethwndOwner(handle:Byte Ptr, hwndOwner:Byte Ptr)
+	Function bmx_win32_CHOOSEFONTW_SethDC(handle:Byte Ptr, hDC:Byte Ptr)
+	Function bmx_win32_CHOOSEFONTW_SetlpLogFont(handle:Byte Ptr, lpLogFont:Byte Ptr)
+	Function bmx_win32_CHOOSEFONTW_SetiPointSize(handle:Byte Ptr, iPointSize:Int)
+	Function bmx_win32_CHOOSEFONTW_SetFlags(handle:Byte Ptr, Flags:Int)
+	Function bmx_win32_CHOOSEFONTW_SetrgbColors(handle:Byte Ptr, rgbColors:Int)
+	Function bmx_win32_CHOOSEFONTW_iPointSize:Int(handle:Byte Ptr)
+	Function bmx_win32_CHOOSEFONTW_Flags:Int(handle:Byte Ptr)
+	Function bmx_win32_CHOOSEFONTW_nFontType:Int(handle:Byte Ptr)
+End Extern
+Type CHOOSEFONTW
+	Field fontPtr:Byte Ptr
+	
+	Method New()
+		fontPtr = bmx_win32_CHOOSEFONTW_new()
+	End Method
+
+	Method Delete()
+		Free()
+	End Method
+	
+	Method Free()
+		If fontPtr Then
+			bmx_win32_CHOOSEFONTW_free(fontPtr)
+			fontPtr = Null
+		End If
+	End Method
+	
+	Method SethwndOwner(hwndOwner:Byte Ptr)
+		bmx_win32_CHOOSEFONTW_SethwndOwner(fontPtr, hwndOwner)
+	End Method
+	
+	Method SethDC(hDC:Byte Ptr)
+		bmx_win32_CHOOSEFONTW_SethDC(fontPtr, hDC)
+	End Method
+	
+	Method SetlpLogFont(lpLogFont:Byte Ptr)
+		bmx_win32_CHOOSEFONTW_SetlpLogFont(fontPtr, lpLogFont)
+	End Method
+	
+	Method SetiPointSize(iPointSize:Int)
+		bmx_win32_CHOOSEFONTW_SetiPointSize(fontPtr, iPointSize)
+	End Method
+	
+	Method SetFlags(Flags:Int)
+		bmx_win32_CHOOSEFONTW_SetFlags(fontPtr, Flags)
+	End Method
+	
+	Method SetrgbColors(rgbColors:Int)
+		bmx_win32_CHOOSEFONTW_SetrgbColors(fontPtr, rgbColors)
+	End Method
+	
+	
+	Method iPointSize:Int()
+		Return bmx_win32_CHOOSEFONTW_iPointSize(fontPtr)
+	End Method
+	
+	Method Flags:Int()
+		Return bmx_win32_CHOOSEFONTW_Flags(fontPtr)
+	End Method
+	
+	Method nFontType:Int()
+		Return bmx_win32_CHOOSEFONTW_nFontType(fontPtr)
+	End Method
+
+'	Field lStructSize
+'	Field hwndOwner
+'	Field hDC
+'	Field lpLogFont:Byte Ptr
+'	Field iPointSize
+'	Field Flags
+'	Field rgbColors
+'	Field lCustData
+'	Field lpfnHook:Byte Ptr
+'	Field lpTemplateName:Short Ptr
+'	Field hInstance
+'	Field lpszStyle:Short Ptr
+'	Field nFontType:Short
+'	Field _align_:Short
+'	Field nSizeMin
+'	Field nSizeMax
 End Type
 
 Extern "Win32"
 
-Function ChooseColorW( lpcc:Byte Ptr )
-Function ChooseFontW( lpcc:Byte Ptr )
+Function ChooseColorW_( lpcc:Byte Ptr )="ChooseColorW"
+Function ChooseFontW_( lpcc:Byte Ptr )="ChooseFontW"
 
 
 End Extern

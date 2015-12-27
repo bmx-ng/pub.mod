@@ -183,7 +183,7 @@ End Extern
 
 Private
 
-Global _ds=LoadLibraryA( "dsound" )
+Global _ds:Byte Ptr=LoadLibraryA( "dsound" )
 
 Public
 

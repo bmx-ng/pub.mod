@@ -853,17 +853,43 @@ Type MINMAXINFO
 	Field minx,miny
 End Type
 
+Extern
+	Function bmx_win32_WINDOWINFO_new:Byte Ptr()
+	Function bmx_win32_WINDOWINFO_free(handle:Byte Ptr)
+	Function bmx_win32_WINDOWINFO_dwStyle:Int(handle:Byte Ptr)
+End Extern
 Type WINDOWINFO
-	Field cbSize
-	Field rcWindowl,rcWindowt,rcWindowr,rcWindowb
-	Field rcClientl,rcClientt,rcClientr,rcClientb	
-	Field dwStyle
-    Field dwExStyle
-    Field dwWindowStatus
-    Field cxWindowBorders
-    Field cyWindowBorders
-    Field atomWindowType
-    Field wCreatorVersion:Short	
+	Field infoPtr:Byte Ptr
+	
+	Method New()
+		infoPtr = bmx_win32_WINDOWINFO_new()
+	End Method
+	
+	Method Delete()
+		Free()
+	End Method
+	
+	Method Free()
+		If infoPtr Then
+			bmx_win32_WINDOWINFO_free(infoPtr)
+			infoPtr = Null
+		End If
+	End Method
+
+	Method dwStyle:Int()
+		Return bmx_win32_WINDOWINFO_dwStyle(infoPtr)
+	End Method
+	
+'	Field cbSize
+'	Field rcWindowl,rcWindowt,rcWindowr,rcWindowb
+'	Field rcClientl,rcClientt,rcClientr,rcClientb	
+'	Field dwStyle
+'    Field dwExStyle
+'    Field dwWindowStatus
+'    Field cxWindowBorders
+'    Field cyWindowBorders
+'    Field atomWindowType
+'    Field wCreatorVersion:Short	
 End Type
 
 Type PAINTSTRUCT
@@ -1016,7 +1042,6 @@ Type ICONINFO
 '    Field hbmColor
 EndType
 
-
 Extern "Win32"
 
 Function SetCapture( hWnd:Byte Ptr )
@@ -1026,8 +1051,8 @@ Function RegisterClassA( lpWndClass:Byte Ptr )
 Function RegisterClassW( lpWndClass:Byte Ptr )
 Function CreateWindowExA:Byte Ptr( dwExStyle,lpClassName:Byte Ptr,lpWindowName:Byte Ptr,dwStyle,x,y,nWidth,nHeight,hWndParent,hmenu:Byte Ptr,hInstance:Byte Ptr,lpParam:Byte Ptr )
 Function CreateWindowExW:Byte Ptr( dwExStyle,lpClassName$w,lpWindowName$w,dwStyle,x,y,nWidth,nHeight,hWndParent:Byte Ptr,hmenu:Byte Ptr,hInstance:Byte Ptr,lpParam:Byte Ptr )
-Function DefWindowProcA( hWnd:Byte Ptr,MSG,wParam:Byte Ptr,lParam:Byte Ptr )
-Function DefWindowProcW( hWnd:Byte Ptr,MSG,wParam:Byte Ptr,lParam:Byte Ptr )
+Function DefWindowProcA:Byte Ptr( hWnd:Byte Ptr,MSG,wParam:Byte Ptr,lParam:Byte Ptr )
+Function DefWindowProcW:Byte Ptr( hWnd:Byte Ptr,MSG,wParam:Byte Ptr,lParam:Byte Ptr )
 Function DispatchMessageA( lpMsg:Byte Ptr )
 Function DispatchMessageW( lpMsg:Byte Ptr )
 Function GetMessageA( lpMsg:Byte Ptr,hWnd:Byte Ptr,wMsgFilterMin,wMsgFilterMax )
@@ -1036,7 +1061,7 @@ Function PeekMessageA( lpMsg:Byte Ptr,hWnd:Byte Ptr,wMsgFilterMin,wMsgFilterMax,
 Function PeekMessageW( lpMsg:Byte Ptr,hWnd:Byte Ptr,wMsgFilterMin,wMsgFilterMax,wRemoveMsg )
 Function PostMessageA( hWnd:Byte Ptr,MSG,wParam:Byte Ptr,lParam:Byte Ptr )
 Function PostMessageW( hWnd:Byte Ptr,MSG,wParam:Byte Ptr,lParam:Byte Ptr )
-Function SendMessageA( hWnd:Byte Ptr,MSG,wParam:Byte Ptr,lParam:Byte Ptr )
+Function SendMessageA( hWnd:Byte Ptr,MSG:UInt,wParam:Byte Ptr,lParam:Byte Ptr )
 Function SendMessageW( hWnd:Byte Ptr,MSG:UInt,wParam:Byte Ptr,lParam:Byte Ptr )
 Function PostThreadMessageA( idThread,Msg,wParam:Byte Ptr,lParam:Byte Ptr )
 Function PostThreadMessageW( idThread,Msg,wParam:Byte Ptr,lParam:Byte Ptr )
@@ -1052,11 +1077,11 @@ Function LoadCursorA:Byte Ptr( hInstance:Byte Ptr,lpCursorName:Byte Ptr )
 Function LoadCursorW:Byte Ptr( hInstance:Byte Ptr,lpCursorName:Short Ptr )
 Function ShowCursor( visible )
 Function SetCursor( hCursor:Byte Ptr )
-Function LoadIconA:Byte Ptr( resourceid,lpIconName:Byte Ptr )
-Function LoadIconW:Byte Ptr( resourceid,lpIconName:Short Ptr )
-Function LoadLibraryA( dll$z )
+Function LoadIconA:Byte Ptr( resourceid:Byte Ptr,lpIconName:Byte Ptr )
+Function LoadIconW:Byte Ptr( resourceid:Byte Ptr,lpIconName:Short Ptr )
+Function LoadLibraryA:Byte Ptr( dll$z )
 Function GetProcAddress:Byte Ptr( libhandle:Byte Ptr,func$z )
-Function LoadLibraryW( dll$w )
+Function LoadLibraryW:Byte Ptr( dll$w )
 Function GetClientRect( hWnd:Byte Ptr,lpRect:Int Ptr )
 Function GetWindowRect( hWnd:Byte Ptr,lpRect:Int Ptr )
 Function GetDesktopWindow()
@@ -1080,7 +1105,7 @@ Function SetMenuItemInfoW( hmenu:Byte Ptr,item,fByPosition,info:Byte Ptr )
 Function GetMenuItemCount( hmenu:Byte Ptr )
 Function SetWindowTextA( hWnd:Byte Ptr,text$z )
 Function SetWindowTextW( hWnd:Byte Ptr,text$w )
-Function SetWindowPos( hWnd:Byte Ptr,hWndInsertAfter,x,y,cx,cy,uFlags )
+Function SetWindowPos( hWnd:Byte Ptr,hWndInsertAfter:Byte Ptr,x,y,cx,cy,uFlags )
 Function GetForegroundWindow()
 Function SetForegroundWindow(hWnd:Byte Ptr)
 Function IsIconic(hWnd:Byte Ptr)
@@ -1136,8 +1161,8 @@ Function EnumChildWindows( hWnd:Byte Ptr,lpfn:Byte Ptr,lp:Byte Ptr )
 
 Function OpenClipboard(hWnd:Byte Ptr)
 Function CloseClipboard()
-Function SetClipboardData(uFormat,hMem)
-Function GetClipboardData(uFormat)
+Function SetClipboardData:Byte Ptr(uFormat:UInt,hMem:Byte Ptr)
+Function GetClipboardData:Byte Ptr(uFormat:UInt)
 Function EmptyClipboard()
 Function IsClipboardFormatAvailable(format)
 

@@ -24,8 +24,8 @@ Const GMEM_ZEROINT=$40
 
 Function Sleep( dwMilliseconds )
 Function Beep( dwFreq,dwDuration )
-Function GetModuleHandleA( lpModuleName:Byte Ptr  )
-Function GetModuleHandleW( lpModuleName:Short Ptr )
+Function GetModuleHandleA:Byte Ptr( lpModuleName:Byte Ptr  )
+Function GetModuleHandleW:Byte Ptr( lpModuleName:Short Ptr )
 Function SetFileAttributesA( lpFileName$z,dwFileAttributes )
 Function SetFileAttributesW( lpFileName$z,dwFileAttributes )
 Function GetFileAttributesA( lpFileName$z )
@@ -33,11 +33,11 @@ Function GetFileAttributesW( lpFileName$z )
 
 Function GetCurrentThreadId()
 
-Function GlobalAlloc(uFlags,dwBytes)
-Function GlobalSize(hMem)
-Function GlobalFree(hMem)
-Function GlobalLock:Byte Ptr(hMem)
-Function GlobalUnlock(hMem)
+Function GlobalAlloc:Byte Ptr(uFlags,dwBytes)
+Function GlobalSize(hMem:Byte Ptr)
+Function GlobalFree(hMem:Byte Ptr)
+Function GlobalLock:Byte Ptr(hMem:Byte Ptr)
+Function GlobalUnlock(hMem:Byte Ptr)
 
 Const STD_INPUT_HANDLE=-10
 Const STD_OUTPUT_HANDLE=-11

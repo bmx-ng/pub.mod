@@ -54,6 +54,10 @@ extern "C" {
 	int bmx_win32_SCROLLINFO_nPos(SCROLLINFO * info);
 	int bmx_win32_SCROLLINFO_nTrackPos(SCROLLINFO * info);
 
+	WINDOWINFO * bmx_win32_WINDOWINFO_new();
+	void bmx_win32_WINDOWINFO_free(WINDOWINFO * info);
+	int bmx_win32_WINDOWINFO_dwStyle(WINDOWINFO * info);
+
 }
 
 // ********************************************************
@@ -250,4 +254,17 @@ int bmx_win32_SCROLLINFO_nTrackPos(SCROLLINFO * info) {
 	return info->nTrackPos;
 }
 
+// ********************************************************
+
+WINDOWINFO * bmx_win32_WINDOWINFO_new() {
+	return (WINDOWINFO *)calloc(1, sizeof(WINDOWINFO));
+}
+
+void bmx_win32_WINDOWINFO_free(WINDOWINFO * info) {
+	free(info);
+}
+
+int bmx_win32_WINDOWINFO_dwStyle(WINDOWINFO * info) {
+	return info->dwStyle;
+}
 

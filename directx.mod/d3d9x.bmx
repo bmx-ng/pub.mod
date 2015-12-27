@@ -18,7 +18,7 @@ End Type
 
 End Extern
 
-Global d3dx9Lib=LoadLibraryA( "d3dx9" )
+Global d3dx9Lib:Byte Ptr=LoadLibraryA( "d3dx9" )
 
 If Not d3dx9Lib Return
 

@@ -284,15 +284,55 @@ Const CBEIF_DI_SETITEM=$10000000
 'Const CBEM_SETWINDOWTHEME=CCM_SETWINDOWTHEME
 
 ' Tab Control
-
+Extern
+	Function bmx_win32_TCITEMW_new:Byte Ptr()
+	Function bmx_win32_TCITEMW_free(handle:Byte Ptr)
+	Function bmx_win32_TCITEMW_Setmask(handle:Byte Ptr, mask:UInt)
+	Function bmx_win32_TCITEMW_SetpszText(handle:Byte Ptr, pszText:Short Ptr)
+	Function bmx_win32_TCITEMW_SetiImage(handle:Byte Ptr, iImage:Int)
+	Function bmx_win32_TCITEMW_pszText:Short Ptr(handle:Byte Ptr)
+End Extern
 Type TCITEMW
-	Field mask
-	Field dwState
-	Field dwStateMask
-	Field pszText:Short Ptr
-	Field cchTextMax
-	Field iImage
-	Field lParam
+	Field itemPtr:Byte Ptr
+
+	Method New()
+		itemPtr = bmx_win32_TCITEMW_new()
+	End Method
+	
+	Method Delete()
+		Free()
+	End Method
+	
+	Method Free()
+		If itemPtr Then
+			bmx_win32_TCITEMW_free(itemPtr)
+			itemPtr = Null
+		End If
+	End Method
+	
+	Method Setmask(mask:Uint)
+		bmx_win32_TCITEMW_Setmask(itemPtr, mask)
+	End Method
+	
+	Method SetpszText(pszText:Short Ptr)
+		bmx_win32_TCITEMW_SetpszText(itemPtr, pszText)
+	End Method
+	
+	Method SetiImage(iImage:Int)
+		bmx_win32_TCITEMW_SetiImage(itemPtr, iImage)
+	End Method
+	
+	Method pszText:Short Ptr()
+		Return bmx_win32_TCITEMW_pszText(itemPtr)
+	End Method
+	
+'	Field mask
+'	Field dwState
+'	Field dwStateMask
+'	Field pszText:Short Ptr
+'	Field cchTextMax
+'	Field iImage
+'	Field lParam
 End Type
 
 ' TabberMessages
@@ -407,36 +447,231 @@ Const TCIF_PARAM=8
 Const TCIF_STATE=16
 
 'TreeView Control
-
+Extern
+	Function bmx_win32_TVITEMW_new:Byte Ptr()
+	Function bmx_win32_TVITEMW_free(handle:Byte Ptr)
+	Function bmx_win32_TVITEMW_Setmask(handle:Byte Ptr, mask:UInt)
+	Function bmx_win32_TVITEMW_SethItem(handle:Byte Ptr, hItem:Byte Ptr)
+	Function bmx_win32_TVITEMW_Setstate(handle:Byte Ptr, state:UInt)
+	Function bmx_win32_TVITEMW_SetstateMask(handle:Byte Ptr, stateMask:UInt)
+	Function bmx_win32_TVITEMW_SetpszText(handle:Byte Ptr, pszText:Short Ptr)
+	Function bmx_win32_TVITEMW_SetcchTextMax(handle:Byte Ptr, cchTextMax:Int)
+	Function bmx_win32_TVITEMW_SetiImage(handle:Byte Ptr, iImage:Int)
+	Function bmx_win32_TVITEMW_SetiSelectedImage(handle:Byte Ptr, iSelectedImage:Int)
+	Function bmx_win32_TVITEMW_SetcChildren(handle:Byte Ptr, cChildren:Int)
+	Function bmx_win32_TVITEMW_SetlParam(handle:Byte Ptr, lParam:Byte Ptr)
+	Function bmx_win32_TVITEMW_mask:Uint(handle:Byte Ptr)
+	Function bmx_win32_TVITEMW_hItem:Byte Ptr(handle:Byte Ptr)
+	Function bmx_win32_TVITEMW_pszText:Short Ptr(handle:Byte Ptr)
+	Function bmx_win32_TVITEMW_iImage:Int(handle:Byte Ptr)
+	Function bmx_win32_TVITEMW_lParam:Byte Ptr(handle:Byte Ptr)
+End Extern
 Type TVITEMW
-	Field mask
-	Field hItem
-	Field state
-	Field stateMask
-	Field pszText:Short Ptr
-	Field cchTextMax
-	Field iImage
-	Field iSelectedImage
-	Field cChildren
-	Field lParam
-	Field iIntegral
+	Field itemPtr:Byte Ptr
+	
+	Method New()
+		itemPtr = bmx_win32_TVITEMW_new()
+	End Method
+
+	Method Delete()
+		Free()
+	End Method
+	
+	Method Free()
+		If itemPtr Then
+			bmx_win32_TVITEMW_free(itemPtr)
+			itemPtr = Null
+		End If
+	End Method
+	
+	Method Setmask(mask:UInt)
+		bmx_win32_TVITEMW_Setmask(itemPtr, mask)
+	End Method
+	
+	Method SethItem(hItem:Byte Ptr)
+		bmx_win32_TVITEMW_SethItem(itemPtr, hItem)
+	End Method
+	
+	Method Setstate(state:UInt)
+		bmx_win32_TVITEMW_Setstate(itemPtr, state)
+	End Method
+	
+	Method SetstateMask(stateMask:UInt)
+		bmx_win32_TVITEMW_SetstateMask(itemPtr, stateMask)
+	End Method
+	
+	Method SetpszText(pszText:Short Ptr)
+		bmx_win32_TVITEMW_SetpszText(itemPtr, pszText)
+	End Method
+	
+	Method SetcchTextMax(cchTextMax:Int)
+		bmx_win32_TVITEMW_SetcchTextMax(itemPtr, cchTextMax)
+	End Method
+	
+	Method SetiImage(iImage:Int)
+		bmx_win32_TVITEMW_SetiImage(itemPtr, iImage)
+	End Method
+	
+	Method SetiSelectedImage(iSelectedImage:Int)
+		bmx_win32_TVITEMW_SetiSelectedImage(itemPtr, iSelectedImage)
+	End Method
+	
+	Method SetcChildren(cChildren:Int)
+		bmx_win32_TVITEMW_SetcChildren(itemPtr, cChildren)
+	End Method
+	
+	Method SetlParam(lParam:Byte Ptr)
+		bmx_win32_TVITEMW_SetlParam(itemPtr, lParam)
+	End Method
+	
+	Method mask:Uint()
+		Return bmx_win32_TVITEMW_mask(itemPtr)
+	End Method
+	
+	Method hItem:Byte Ptr()
+		Return bmx_win32_TVITEMW_hItem(itemPtr)
+	End Method
+	
+	Method pszText:Short Ptr()
+		Return bmx_win32_TVITEMW_pszText(itemPtr)
+	End Method
+	
+	Method iImage:Int()
+		Return bmx_win32_TVITEMW_iImage(itemPtr)
+	End Method
+	
+	Method lParam:Byte Ptr()
+		Return bmx_win32_TVITEMW_lParam(itemPtr)
+	End Method
+'	Field mask
+'	Field hItem
+'	Field state
+'	Field stateMask
+'	Field pszText:Short Ptr
+'	Field cchTextMax
+'	Field iImage
+'	Field iSelectedImage
+'	Field cChildren
+'	Field lParam
+'	Field iIntegral
 End Type
 
+Extern
+	Function bmx_win32_TVINSERTSTRUCTW_new:Byte Ptr()
+	Function bmx_win32_TVINSERTSTRUCTW_free(handle:Byte Ptr)
+	Function bmx_win32_TVINSERTSTRUCTW_SethParent(handle:Byte Ptr, hParent:Byte Ptr)
+	Function bmx_win32_TVINSERTSTRUCTW_SethInsertAfter(handle:Byte Ptr, hInsertAfter:Byte Ptr)
+	Function bmx_win32_TVINSERTSTRUCTW_Setitem_mask(handle:Byte Ptr, item_mask:UInt)
+	Function bmx_win32_TVINSERTSTRUCTW_Setitem_hItem(handle:Byte Ptr, item_hItem:Byte Ptr)
+	Function bmx_win32_TVINSERTSTRUCTW_Setitem_state(handle:Byte Ptr, item_state:UInt)
+	Function bmx_win32_TVINSERTSTRUCTW_Setitem_stateMask(handle:Byte Ptr, item_stateMask:UInt)
+	Function bmx_win32_TVINSERTSTRUCTW_Setitem_pszText(handle:Byte Ptr, item_pszText:Short Ptr)
+	Function bmx_win32_TVINSERTSTRUCTW_Setitem_cchTextMax(handle:Byte Ptr, item_cchTextMax:Int)
+	Function bmx_win32_TVINSERTSTRUCTW_Setitem_iImage(handle:Byte Ptr, item_iImage:Int)
+	Function bmx_win32_TVINSERTSTRUCTW_Setitem_iSelectedImage(handle:Byte Ptr, item_iSelectedImage:Int)
+	Function bmx_win32_TVINSERTSTRUCTW_Setitem_cChildren(handle:Byte Ptr, item_cChildren:Int)
+	Function bmx_win32_TVINSERTSTRUCTW_Setitem_lParam(handle:Byte Ptr, item_lParam:Byte Ptr)
+	Function bmx_win32_TVINSERTSTRUCTW_item_mask:UInt(handle:Byte Ptr)
+	Function bmx_win32_TVINSERTSTRUCTW_item_iImage:Int(handle:Byte Ptr)
+	Function bmx_win32_TVINSERTSTRUCTW_item_lparam:Byte Ptr(handle:Byte Ptr)
+	Function bmx_win32_TVINSERTSTRUCTW_item_pszText:Short Ptr(handle:Byte Ptr)
+End Extern
 Type TVINSERTSTRUCTW
-	Field hParent
-	Field hInsertAfter
+	Field structPtr:Byte Ptr
+	
+	Method New()
+		structPtr = bmx_win32_TVINSERTSTRUCTW_new()
+	End Method
+
+	Method Delete()
+		Free()
+	End Method
+	
+	Method Free()
+		If structPtr Then
+			bmx_win32_TVINSERTSTRUCTW_free(structPtr)
+			structPtr = Null
+		End If
+	End Method
+	
+	Method SethParent(hParent:Byte Ptr)
+		bmx_win32_TVINSERTSTRUCTW_SethParent(structPtr, hParent)
+	End Method
+	
+	Method SethInsertAfter(hInsertAfter:Byte Ptr)
+		bmx_win32_TVINSERTSTRUCTW_SethInsertAfter(structPtr, hInsertAfter)
+	End Method
+	
+	Method Setitem_mask(item_mask:UInt)
+		bmx_win32_TVINSERTSTRUCTW_Setitem_mask(structPtr, item_mask)
+	End Method
+	
+	Method Setitem_hItem(item_hItem:Byte Ptr)
+		bmx_win32_TVINSERTSTRUCTW_Setitem_hItem(structPtr, item_hItem)
+	End Method
+	
+	Method Setitem_state(item_state:UInt)
+		bmx_win32_TVINSERTSTRUCTW_Setitem_state(structPtr, item_state)
+	End Method
+	
+	Method Setitem_stateMask(item_stateMask:UInt)
+		bmx_win32_TVINSERTSTRUCTW_Setitem_stateMask(structPtr, item_stateMask)
+	End Method
+	
+	Method Setitem_pszText(item_pszText:Short Ptr)
+		bmx_win32_TVINSERTSTRUCTW_Setitem_pszText(structPtr, item_pszText)
+	End Method
+	
+	Method Setitem_cchTextMax(item_cchTextMax:Int)
+		bmx_win32_TVINSERTSTRUCTW_Setitem_cchTextMax(structPtr, item_cchTextMax)
+	End Method
+	
+	Method Setitem_iImage(item_iImage:Int)
+		bmx_win32_TVINSERTSTRUCTW_Setitem_iImage(structPtr, item_iImage)
+	End Method
+	
+	Method Setitem_iSelectedImage(item_iSelectedImage:Int)
+		bmx_win32_TVINSERTSTRUCTW_Setitem_iSelectedImage(structPtr, item_iSelectedImage)
+	End Method
+	
+	Method Setitem_cChildren(item_cChildren:Int)
+		bmx_win32_TVINSERTSTRUCTW_Setitem_cChildren(structPtr, item_cChildren)
+	End Method
+	
+	Method Setitem_lParam(item_lParam:Byte Ptr)
+		bmx_win32_TVINSERTSTRUCTW_Setitem_lParam(structPtr, item_lParam)
+	End Method
+	
+	Method item_mask:UInt()
+		Return bmx_win32_TVINSERTSTRUCTW_item_mask(structPtr)
+	End Method
+	
+	Method item_iImage:Int()
+		Return bmx_win32_TVINSERTSTRUCTW_item_iImage(structPtr)
+	End Method
+	
+	Method item_lparam:Byte Ptr()
+		Return bmx_win32_TVINSERTSTRUCTW_item_lparam(structPtr)
+	End Method
+	
+	Method item_pszText:Short Ptr()
+		Return bmx_win32_TVINSERTSTRUCTW_item_pszText(structPtr)
+	End Method
+	
+'	Field hParent
+'	Field hInsertAfter
 ' TVITEMW
-	Field item_mask
-	Field item_hItem
-	Field item_state
-	Field item_stateMask
-	Field item_pszText:Short Ptr
-	Field item_cchTextMax
- 	Field item_iImage
-	Field item_iSelectedImage
-	Field item_cChildren
-	Field item_lParam
-	Field itemx_iIntegral
+'	Field item_mask
+'	Field item_hItem
+'	Field item_state
+'	Field item_stateMask
+'	Field item_pszText:Short Ptr
+'	Field item_cchTextMax
+ '	Field item_iImage
+'	Field item_iSelectedImage
+'	Field item_cChildren
+'	Field item_lParam
+'	Field itemx_iIntegral
 End Type
 
 Const I_CHILDRENCALLBACK=-1
@@ -858,6 +1093,13 @@ Const TVM_SETINSERTMARKCOLOR=TV_FIRST+37
 Extern
 	Function bmx_win32_TOOLINFOW_new:Byte Ptr()
 	Function bmx_win32_TOOLINFOW_free(handle:Byte Ptr)
+	Function bmx_win32_TOOLINFOW_SetuFlags(handle:Byte Ptr, uFlags:UInt)
+	Function bmx_win32_TOOLINFOW_Sethwnd(handle:Byte Ptr, hwnd:Byte Ptr)
+	Function bmx_win32_TOOLINFOW_SetuId(handle:Byte Ptr, uId:Byte Ptr)
+	Function bmx_win32_TOOLINFOW_Sethinst(handle:Byte Ptr, hinst:Byte Ptr)
+	Function bmx_win32_TOOLINFOW_SetlpszText(handle:Byte Ptr, lpszText:Short Ptr)
+	Function bmx_win32_TOOLINFOW_rect:Int Ptr(handle:Byte Ptr)
+	Function bmx_win32_TOOLINFOW_lpszText:Short Ptr(handle:Byte Ptr)
 End Extern
 
 Type TOOLINFOW
@@ -879,19 +1121,32 @@ Type TOOLINFOW
 		End If
 	End Method
 	
-	Method SetuFlags(uFlags:Int)
+	Method SetuFlags(uFlags:UInt)
+		bmx_win32_TOOLINFOW_SetuFlags(infoPtr, uFlags)
 	End Method
 	
 	Method Sethwnd(hwnd:Byte Ptr)
+		bmx_win32_TOOLINFOW_Sethwnd(infoPtr, hwnd)
 	End Method
 	
 	Method SetuId(uId:Byte Ptr)
+		bmx_win32_TOOLINFOW_SetuId(infoPtr, uId)
 	End Method
 	
 	Method Sethinst(hinst:Byte Ptr)
+		bmx_win32_TOOLINFOW_Sethinst(infoPtr, hinst)
 	End Method
 	
 	Method SetlpszText(lpszText:Short Ptr)
+		bmx_win32_TOOLINFOW_SetlpszText(infoPtr, lpszText)
+	End Method
+	
+	Method rect:Int Ptr()
+		Return bmx_win32_TOOLINFOW_rect(infoPtr)
+	End Method
+	
+	Method lpszText:Short Ptr()
+		Return bmx_win32_TOOLINFOW_lpszText(infoPtr)
 	End Method
 	
 '	Field cbSize
@@ -1072,15 +1327,56 @@ Const TBSTYLE_TRANSPARENT=$8000
 
 Const TBSTYLE_EX_DRAWDDARROWS=$00000001
 
+Extern
+	Function bmx_win32_TBBUTTON_new:Byte Ptr()
+	Function bmx_win32_TBBUTTON_free(handle:Byte Ptr)
+	Function bmx_win32_TBBUTTON_SetiBitmap(handle:Byte Ptr, iBitmap:Int)
+	Function bmx_win32_TBBUTTON_SetidCommand(handle:Byte Ptr, idCommand:Int)
+	Function bmx_win32_TBBUTTON_SetfsState(handle:Byte Ptr, fsState:Int)
+	Function bmx_win32_TBBUTTON_SetfsStyle(handle:Byte Ptr, fsStyle:Int)
+End Extern
 Type TBBUTTON
-	Field iBitmap
-	Field idCommand;
-	Field fsState:Byte
-	Field fsStyle:Byte
-	Field pad0:Byte
-	Field pad1:Byte
-	Field dwData:Byte Ptr
-	Field iString:Byte Ptr
+	Field buttonPtr:Byte Ptr
+
+	Method New()
+		buttonPtr = bmx_win32_TBBUTTON_new()
+	End Method
+	
+	Method Delete()
+		Free()
+	End Method
+	
+	Method Free()
+		If buttonPtr Then
+			bmx_win32_TBBUTTON_free(buttonPtr)
+			buttonPtr = Null
+		End If
+	End Method
+	
+	Method SetiBitmap(iBitmap:Int)
+		bmx_win32_TBBUTTON_SetiBitmap(buttonPtr, iBitmap)
+	End Method
+	
+	Method SetidCommand(idCommand:Int)
+		bmx_win32_TBBUTTON_SetidCommand(buttonPtr, idCommand)
+	End Method
+	
+	Method SetfsState(fsState:Int)
+		bmx_win32_TBBUTTON_SetfsState(buttonPtr, fsState)
+	End Method
+	
+	Method SetfsStyle(fsStyle:Int)
+		bmx_win32_TBBUTTON_SetfsStyle(buttonPtr, fsStyle)
+	End Method
+	
+'	Field iBitmap
+'	Field idCommand;
+'	Field fsState:Byte
+'	Field fsStyle:Byte
+'	Field pad0:Byte
+'	Field pad1:Byte
+'	Field dwData:Byte Ptr
+'	Field iString:Byte Ptr
 End Type
 
 
@@ -1814,4 +2110,132 @@ Extern
 	
 	Function bmx_win32_NMITEMACTIVATE_iItem:Int(handle:Byte Ptr)
 	
+	Function bmx_win32_NMTREEVIEW_itemNew:Byte Ptr(handle:Byte Ptr)
+	Function bmx_win32_NMTREEVIEW_action:UInt(handle:Byte Ptr)
+	Function bmx_win32_NMTREEVIEW_x:Int(handle:Byte Ptr)
+	Function bmx_win32_NMTREEVIEW_y:Int(handle:Byte Ptr)
+	
+	Function bmx_win32_MSGFILTER_msg:UInt(handle:Byte Ptr)
+	Function bmx_win32_MSGFILTER_wParam:Byte Ptr(handle:Byte Ptr)
+	Function bmx_win32_MSGFILTER_lParam:Byte Ptr(handle:Byte Ptr)
+	Function bmx_win32_MSGFILTER_Setmsg(handle:Byte Ptr, msg:UInt)
+	
 End Extern
+
+Extern
+	Function bmx_win32_TCHITTESTINFO_new:Byte Ptr()
+	Function bmx_win32_TCHITTESTINFO_free(handle:Byte Ptr)
+	Function bmx_win32_TCHITTESTINFO_pt:Byte Ptr(handle:Byte Ptr)
+	Function bmx_win32_TCHITTESTINFO_flags:UInt(handle:Byte Ptr)
+	Function bmx_win32_TCHITTESTINFO_Setx(handle:Byte Ptr, x:Int)
+	Function bmx_win32_TCHITTESTINFO_Sety(handle:Byte Ptr, y:Int)
+	Function bmx_win32_TCHITTESTINFO_x:Int(handle:Byte Ptr)
+	Function bmx_win32_TCHITTESTINFO_y:Int(handle:Byte Ptr)
+	Function bmx_win32_TCHITTESTINFO_Setflags(handle:Byte Ptr, flags:UInt)
+End Extern
+Type TCHITTESTINFO
+	Field infoPtr:Byte Ptr
+	
+	Method New()
+		infoPtr = bmx_win32_TCHITTESTINFO_new()
+	End Method
+	
+	Method Delete()
+		Free()
+	End Method
+	
+	Method Free()
+		If infoPtr Then
+			bmx_win32_TCHITTESTINFO_free(infoPtr)
+			infoPtr = Null
+		End If
+	End Method
+
+	Method Setx(x:Int)
+		bmx_win32_TCHITTESTINFO_Setx(infoPtr, x)
+	End Method
+	
+	Method Sety(y:Int)
+		bmx_win32_TCHITTESTINFO_Sety(infoPtr, y)
+	End Method
+	
+	Method Setflags(flags:UInt)
+		bmx_win32_TCHITTESTINFO_Setflags(infoPtr, flags)
+	End Method
+
+	Method pt:Byte Ptr()
+		Return bmx_win32_TCHITTESTINFO_pt(infoPtr)
+	End Method
+	
+	Method x:Int()
+		Return bmx_win32_TCHITTESTINFO_x(infoPtr)
+	End Method
+	
+	Method y:Int()
+		Return bmx_win32_TCHITTESTINFO_y(infoPtr)
+	End Method
+	
+	Method flags:UInt()
+		Return bmx_win32_TCHITTESTINFO_flags(infoPtr)
+	End Method
+	
+End Type
+
+Extern
+	Function bmx_win32_TVHITTESTINFO_new:Byte Ptr()
+	Function bmx_win32_TVHITTESTINFO_free(handle:Byte Ptr)
+	Function bmx_win32_TVHITTESTINFO_Setx(handle:Byte Ptr, x:Int)
+	Function bmx_win32_TVHITTESTINFO_Sety(handle:Byte Ptr, y:Int)
+	Function bmx_win32_TVHITTESTINFO_x:Int(handle:Byte Ptr)
+	Function bmx_win32_TVHITTESTINFO_y:Int(handle:Byte Ptr)
+	Function bmx_win32_TVHITTESTINFO_Setflags(handle:Byte Ptr, flags:UInt)
+	Function bmx_win32_TVHITTESTINFO_flags:UInt(handle:Byte Ptr)
+	Function bmx_win32_TVHITTESTINFO_hItem:Byte Ptr(handle:Byte Ptr)
+End Extern
+Type TVHITTESTINFO
+	Field infoPtr:Byte Ptr
+	
+	Method New()
+		infoPtr = bmx_win32_TVHITTESTINFO_new()
+	End Method
+	
+	Method Delete()
+		Free()
+	End Method
+	
+	Method Free()
+		If infoPtr Then
+			bmx_win32_TVHITTESTINFO_free(infoPtr)
+			infoPtr = Null
+		End If
+	End Method
+
+	Method Setx(x:Int)
+		bmx_win32_TVHITTESTINFO_Setx(infoPtr, x)
+	End Method
+	
+	Method Sety(y:Int)
+		bmx_win32_TVHITTESTINFO_Sety(infoPtr, y)
+	End Method
+	
+	Method Setflags(flags:UInt)
+		bmx_win32_TVHITTESTINFO_Setflags(infoPtr, flags)
+	End Method
+
+	Method x:Int()
+		Return bmx_win32_TVHITTESTINFO_x(infoPtr)
+	End Method
+	
+	Method y:Int()
+		Return bmx_win32_TVHITTESTINFO_y(infoPtr)
+	End Method
+	
+	Method flags:UInt()
+		Return bmx_win32_TVHITTESTINFO_flags(infoPtr)
+	End Method
+
+	Method hItem:Byte Ptr()
+		Return bmx_win32_TVHITTESTINFO_hItem(infoPtr)
+	End Method
+
+End Type

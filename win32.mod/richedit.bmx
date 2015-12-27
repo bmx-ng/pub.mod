@@ -2,6 +2,8 @@ Strict
 
 Import "user32.bmx"
 
+Import "richtext.cpp"
+
 Const EN_MSGFILTER=$0700
 Const EN_REQUESTRESIZE=$0701
 Const EN_SELCHANGE=$0702
@@ -382,12 +384,85 @@ Type TEXTRANGEW
 	Field	lpStrText:Short Ptr
 End Type
 
+Extern
+	Function bmx_win32_CHARRANGE_new:Byte Ptr()
+	Function bmx_win32_CHARRANGE_free(handle:Byte Ptr)
+	Function bmx_win32_CHARRANGE_SetcpMin(handle:Byte Ptr, cpMin:Int)
+	Function bmx_win32_CHARRANGE_SetcpMax(handle:Byte Ptr, cpMax:Int)
+	Function bmx_win32_CHARRANGE_cpMin:Int(handle:Byte Ptr)
+	Function bmx_win32_CHARRANGE_cpMax:Int(handle:Byte Ptr)
+End Extern
 Type CHARRANGE
-	Field	cpMin
-	Field	cpMax
+	Field rangePtr:Byte Ptr
+	
+	Method New()
+		rangePtr = bmx_win32_CHARRANGE_new()
+	End Method
+
+	Method Delete()
+		Free()
+	End Method
+	
+	Method Free()
+		If rangePtr Then
+			bmx_win32_CHARRANGE_free(rangePtr)
+			rangePtr = Null
+		End If
+	End Method
+	
+	Method SetcpMin(cpMin:Int)
+		bmx_win32_CHARRANGE_SetcpMin(rangePtr, cpMin)
+	End Method
+	
+	Method SetcpMax(cpMax:Int)
+		bmx_win32_CHARRANGE_SetcpMax(rangePtr, cpMax)
+	End Method
+	
+	Method cpMin:Int()
+		Return bmx_win32_CHARRANGE_cpMin(rangePtr)
+	End Method
+	
+	Method cpMax:Int()
+		Return bmx_win32_CHARRANGE_cpMax(rangePtr)
+	End Method
+	
+'	Field	cpMin
+'	Field	cpMax
 End Type
 
+Extern
+	Function bmx_win32_CHARFORMATW_new:Byte Ptr()
+	Function bmx_win32_CHARFORMATW_free(handle:Byte Ptr)
+	Function bmx_win32_CHARFORMATW_SetdwMask(handle:Byte Ptr, dwMask:Int)
+	Function bmx_win32_CHARFORMATW_SetcrTextColor(handle:Byte Ptr, crTextColor:Int)
+End Extern
 Type CHARFORMATW
+	Field formatPtr:Byte Ptr
+	
+	Method New()
+		formatPtr = bmx_win32_CHARFORMATW_new()
+	End Method
+
+	Method Delete()
+		Free()
+	End Method
+	
+	Method Free()
+		If formatPtr Then
+			bmx_win32_CHARFORMATW_free(formatPtr)
+			formatPtr = Null
+		End If
+	End Method
+	
+	Method SetdwMask(dwMask:Int)
+		bmx_win32_CHARFORMATW_SetdwMask(formatPtr, dwMask)
+	End Method
+	
+	Method SetcrTextColor(crTextColor:Int)
+		bmx_win32_CHARFORMATW_SetcrTextColor(formatPtr, crTextColor)
+	End Method
+	
+Rem
 	Field	cbSize
 	Field	dwMask
 	Field	dwEffects
@@ -429,6 +504,7 @@ Type CHARFORMATW
 	Field lfFaceName1e:Short
 	Field lfFaceName1f:Short
 	Field	pad:Short
+End Rem
 End Type
 
 Type CHARFORMAT
