@@ -1192,7 +1192,7 @@ Function GetMenuItemCount( hmenu:Byte Ptr )
 Function SetWindowTextA( hWnd:Byte Ptr,text$z )
 Function SetWindowTextW( hWnd:Byte Ptr,text$w )
 Function SetWindowPos( hWnd:Byte Ptr,hWndInsertAfter:Byte Ptr,x,y,cx,cy,uFlags )
-Function GetForegroundWindow()
+Function GetForegroundWindow:Byte Ptr()
 Function SetForegroundWindow(hWnd:Byte Ptr)
 Function IsIconic(hWnd:Byte Ptr)
 Function GetParent_:Byte Ptr(hWnd:Byte Ptr)="GetParent" '"GetParent@4"
