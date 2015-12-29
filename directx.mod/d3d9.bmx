@@ -19,6 +19,7 @@ Type D3DDEVTYPE
 	Const D3DDEVTYPE_FORCE_DWORD = $7fffffff
 End Type
 
+Global nullBaseTexture9:IDirect3DBaseTexture9 = New IDirect3DBaseTexture9
 
 Extern
 	Function bmx_directx_d3d9_D3DCAPS9_new:Byte Ptr()
