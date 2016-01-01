@@ -1,6 +1,8 @@
 
 Strict
 
+Import "-lole32"
+
 Import "com.cpp"
 
 Extern "win32"
