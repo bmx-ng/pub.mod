@@ -1,3 +1,4 @@
+Strict
 
 Extern "Win32"
 
@@ -33,8 +34,8 @@ Function GetFileAttributesW( lpFileName$z )
 
 Function GetCurrentThreadId()
 
-Function GlobalAlloc:Byte Ptr(uFlags,dwBytes)
-Function GlobalSize(hMem:Byte Ptr)
+Function GlobalAlloc:Byte Ptr(uFlags:UInt,dwBytes:size_t)
+Function GlobalSize:size_t(hMem:Byte Ptr)
 Function GlobalFree(hMem:Byte Ptr)
 Function GlobalLock:Byte Ptr(hMem:Byte Ptr)
 Function GlobalUnlock(hMem:Byte Ptr)
@@ -43,6 +44,11 @@ Const STD_INPUT_HANDLE=-10
 Const STD_OUTPUT_HANDLE=-11
 Const STD_ERROR_HANDLE=-12
 
-Function GetStdHandle(nStdHandle)
+Function GetLastError()
+
+Function GetStdHandle:Byte Ptr(nStdHandle)
+
+Function ReleaseMutex(mutex:Byte Ptr)
+Function CreateMutexW:Byte Ptr( security:Byte Ptr, owner:Int, name$w)
 
 End Extern

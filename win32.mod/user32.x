@@ -55,40 +55,40 @@ BBINT AppendMenuW(BBINT ,BBINT ,BBINT ,BBBYTE * )!
 BBINT SetMenuItemInfoA(BBINT ,BBINT ,BBINT ,BBBYTE * )!
 BBINT SetMenuItemInfoW(BBINT ,BBINT ,BBINT ,BBBYTE * )!
 BBINT GetMenuItemCount(BBINT )!
-BBINT SetWindowTextA(BBINT ,BBBYTE * )!
-BBINT SetWindowTextW(BBINT ,BBSHORT * )!
-BBINT SetWindowPos(BBINT ,BBINT ,BBINT ,BBINT ,BBINT ,BBINT ,BBINT )!
-BBINT GetForegroundWindow()!
-BBINT SetForegroundWindow(BBINT )!
-BBINT IsIconic(BBINT )!
-BBINT GetParent(BBINT )!
-BBINT GetWindowLongA(BBINT ,BBINT )!
-BBINT SetWindowLongA(BBINT ,BBINT ,BBINT )!
-BBINT GetWindowLongW(BBINT ,BBINT )!
-BBINT SetWindowLongW(BBINT ,BBINT ,BBINT )!
-BBINT GetClassLongA(BBINT ,BBINT )!
-BBINT SetClassLongA(BBINT ,BBINT ,BBINT )!
-BBINT GetClassLongW(BBINT ,BBINT )!
-BBINT SetClassLongW(BBINT ,BBINT ,BBINT )!
-BBINT IsZoomed(BBINT )!
-BBINT CallWindowProcA(BBBYTE * ,BBINT ,BBINT ,BBINT ,BBINT )!
-BBINT CallWindowProcW(BBBYTE * ,BBINT ,BBINT ,BBINT ,BBINT )!
+BBINT SetWindowTextA(HWND ,BBBYTE * )!
+BBINT SetWindowTextW(HWND ,BBSHORT * )!
+BBINT SetWindowPos(HWND ,HWND ,BBINT ,BBINT ,BBINT ,BBINT ,UINT )!
+HWND GetForegroundWindow()!
+BBINT SetForegroundWindow(HWND )!
+BBINT IsIconic(HWND )!
+HWND GetParent(HWND )!
+BBINT GetWindowLongA(HWND ,BBINT )!
+BBINT SetWindowLongA(HWND ,BBINT ,BBINT )!
+BBINT GetWindowLongW(HWND ,BBINT )!
+BBINT SetWindowLongW(HWND ,BBINT ,BBINT )!
+BBINT GetClassLongA(HWND ,BBINT )!
+BBINT SetClassLongA(HWND ,BBINT ,BBINT )!
+BBINT GetClassLongW(HWND ,BBINT )!
+BBINT SetClassLongW(HWND ,BBINT ,BBINT )!
+BBINT IsZoomed(HWND )!
+BBINT CallWindowProcA(BBBYTE * ,HWND ,UINT ,WPARAM ,LPARAM )!
+BBINT CallWindowProcW(BBBYTE * ,HWND ,UINT ,WPARAM ,LPARAM )!
 BBINT OleInitialize(BBBYTE * )!
 BBINT OleUninitialize()!
 BBINT InitCommonControlsEx(const INITCOMMONCONTROLSEX *)!
-BBINT SetScrollPos(BBINT ,BBINT ,BBINT ,BBINT )!
-BBINT GetScrollPos(BBINT ,BBINT )!
-BBINT SetScrollRange(BBINT ,BBINT ,BBINT ,BBINT ,BBINT )!
-BBINT GetScrollRange(BBINT ,BBINT ,BBINT * ,BBINT * )!
-BBINT ShowScrollBar(BBINT ,BBINT ,BBINT )!
-BBINT EnableScrollBar(BBINT ,BBINT ,BBINT )!
-BBINT SetScrollInfo(BBINT ,BBINT ,void* ,BBINT )!
-BBINT GetScrollInfo(BBINT ,BBINT ,void* )!
-BBINT InvalidateRect(BBINT ,BBINT * ,BBINT )!
-BBINT ValidateRect(BBINT ,BBINT * )!
-BBINT BeginPaint(BBINT ,BBBYTE * )!
+BBINT SetScrollPos(HWND ,BBINT ,BBINT ,BBINT )!
+BBINT GetScrollPos(HWND ,BBINT )!
+BBINT SetScrollRange(HWND ,BBINT ,BBINT ,BBINT ,BBINT )!
+BBINT GetScrollRange(HWND ,BBINT ,BBINT * ,BBINT * )!
+BBINT ShowScrollBar(HWND ,BBINT ,BBINT )!
+BBINT EnableScrollBar(HWND ,BBINT ,BBINT )!
+BBINT SetScrollInfo(HWND ,BBINT ,void* ,BBINT )!
+BBINT GetScrollInfo(HWND ,BBINT ,void* )!
+BBINT InvalidateRect(HWND ,BBINT * ,BBINT )!
+BBINT ValidateRect(HWND ,BBINT * )!
+BBINT BeginPaint(HWND ,BBBYTE * )!
 BBINT FillRect(BBINT ,BBINT * ,BBINT )!
-BBINT EndPaint(BBINT ,BBBYTE * )!
+BBINT EndPaint(HWND ,BBBYTE * )!
 BBINT SetFocus(BBINT )!
 BBINT GetFocus()!
 BBINT GetActiveWindow()!
@@ -100,12 +100,13 @@ BBINT GetKeyState(BBINT )!
 BBINT SetWindowsHookExW(BBINT ,BBBYTE * ,BBINT ,BBINT )!
 BBINT CallNextHookEx(BBINT ,BBINT ,BBINT ,BBINT )!
 BBINT UnhookWindowsHookEx(BBINT )!
-BBINT EnableWindow(BBINT ,BBINT )!
-BBINT IsWindowEnabled(BBINT )!
-BBINT IsWindowVisible(BBINT )!
-BBINT GetWindowInfo(BBINT ,BBBYTE * )!
+BBINT EnableWindow(HWND ,BBINT )!
+BBINT IsWindowEnabled(HWND )!
+BBINT IsWindowVisible(HWND )!
+BBINT GetWindowInfo(HWND ,BBBYTE * )!
 BBINT GetCursorPos(BBINT * )!
-BBINT EnumChildWindows(BBINT ,BBBYTE * ,BBINT )!
+BBINT EnumChildWindows(HWND ,BBBYTE * ,LPARAM )!
+BBINT EnumWindows(BBBYTE * ,LPARAM )!
 BBINT OpenClipboard(BBINT )!
 BBINT CloseClipboard()!
 BBINT SetClipboardData(BBINT ,BBINT )!
@@ -119,3 +120,8 @@ BBINT DragQueryFileW(BBINT ,BBINT ,BBSHORT * ,BBINT )!
 BBINT DragFinish(BBINT )!
 WINBOOL __stdcall _TrackMouseEvent(LPTRACKMOUSEEVENT )!
 LONG_PTR __stdcall SetWindowLongPtrW(HWND ,int ,LONG_PTR )!
+UINT __stdcall GetWindowModuleFileNameW(HWND ,LPWSTR ,UINT )!
+DWORD __stdcall GetModuleFileNameW(HMODULE , LPWSTR , DWORD )!
+int __stdcall GetWindowTextA(HWND ,LPSTR ,int )!
+int __stdcall GetWindowTextW(HWND ,LPWSTR ,int )!
+int __stdcall GetClassNameW(HWND ,LPWSTR ,int )!

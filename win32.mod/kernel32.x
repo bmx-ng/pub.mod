@@ -7,9 +7,12 @@ BBINT SetFileAttributesW(BBBYTE * ,BBINT )!
 BBINT GetFileAttributesA(BBBYTE * )!
 BBINT GetFileAttributesW(BBBYTE * )!
 BBINT GetCurrentThreadId()!
-BBINT GlobalAlloc(BBINT ,BBINT )!
-BBINT GlobalSize(BBINT )!
-BBINT GlobalFree(BBINT )!
-BBBYTE * GlobalLock(BBINT )!
-BBINT GlobalUnlock(BBINT )!
-BBINT GetStdHandle(BBINT )!
+HGLOBAL GlobalAlloc(UINT ,SIZE_T )!
+SIZE_T GlobalSize(HGLOBAL )!
+HGLOBAL GlobalFree(HGLOBAL )!
+BBBYTE * GlobalLock(HGLOBAL )!
+BBINT GlobalUnlock(HGLOBAL )!
+HANDLE __stdcall GetStdHandle(BBINT )!
+WINBOOL __stdcall ReleaseMutex(HANDLE)!
+HANDLE __stdcall CreateMutexW(LPSECURITY_ATTRIBUTES, WINBOOL , LPCWSTR)!
+DWORD __stdcall GetLastError()!

@@ -1191,6 +1191,8 @@ Function SetMenuItemInfoW( hmenu:Byte Ptr,item,fByPosition,info:Byte Ptr )
 Function GetMenuItemCount( hmenu:Byte Ptr )
 Function SetWindowTextA( hWnd:Byte Ptr,text$z )
 Function SetWindowTextW( hWnd:Byte Ptr,text$w )
+Function GetWindowTextA( hWnd:Byte Ptr, lpString:Byte Ptr, maxCount:Int)
+Function GetWindowTextW( hWnd:Byte Ptr, lpString:Short Ptr, maxCount:Int)
 Function SetWindowPos( hWnd:Byte Ptr,hWndInsertAfter:Byte Ptr,x,y,cx,cy,uFlags )
 Function GetForegroundWindow:Byte Ptr()
 Function SetForegroundWindow(hWnd:Byte Ptr)
@@ -1244,6 +1246,7 @@ Function GetWindowInfo( hWnd:Byte Ptr,winfo:Byte Ptr )
 Function GetCursorPos_( lpPoint:Int Ptr)="GetCursorPos" '"GetCursorPos@4"
 
 Function EnumChildWindows( hWnd:Byte Ptr,lpfn:Byte Ptr,lp:Byte Ptr )
+Function EnumWindows( lpfn:Byte Ptr,lp:Byte Ptr )
 
 Function OpenClipboard(hWnd:Byte Ptr)
 Function CloseClipboard()
@@ -1253,6 +1256,10 @@ Function EmptyClipboard()
 Function IsClipboardFormatAvailable(format)
 
 Function DefDlgProcW(hDlg:Byte Ptr,Msg:UInt,wParam:Byte Ptr,lParam:Byte Ptr)
+
+Function GetModuleFileNameW:Int( hmodule:Byte Ptr, buffer:Short Ptr, sz:Int)
+Function GetWindowModuleFileNameW:UInt(hwnd:Byte Ptr, lpszFileName:Short Ptr, cchFileNameMax:UInt)
+Function GetClassNameW:Int( hwnd:Byte Ptr, dst:Short Ptr, maxlen:Int)
 
 'shellapi
 
