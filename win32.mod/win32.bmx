@@ -36,6 +36,7 @@ ModuleInfo "History: Added com.bmx"
 
 ?Win32
 Import "gdi32.bmx"
+Import "shell32.bmx"
 Import "user32.bmx"
 Import "kernel32.bmx"
 Import "winmm.bmx"
