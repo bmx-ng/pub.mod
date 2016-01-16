@@ -59,9 +59,11 @@ void *Decode_Ogg(void *stream,void *oread,void *oseek,void *oclose,void *otell,i
 
 int Read_Ogg(oggio *ogg,char *buf,int bytes)	// null buffer to close
 {
-	int		res,bs;
+	int		res,bs,read;
 
 	if (buf==0) return ov_clear(&ogg->vf);
+
+	read = 0;
 
 	while (bytes>0)
 	{
@@ -71,8 +73,13 @@ int Read_Ogg(oggio *ogg,char *buf,int bytes)	// null buffer to close
 			if (bs) return -1;	// Only one logical bitstream currently supported
 			return -2;			// Warning: hole in data
 		}
+		else if (res == 0) // reached eof
+		{
+			return read;
+		}
+		read+=res;
 		buf+=res;
 		bytes-=res;
 	}
-	return 0;
+	return read;
 }
