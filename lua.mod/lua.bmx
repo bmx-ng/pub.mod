@@ -170,7 +170,7 @@ Import "lua-5.1.4/src/print.c"
 ' ******************************************************************************
 
 Extern
-  Type lua_Debug
+  Struct lua_Debug
     Field event:Int
     Field name:Byte Ptr                                         ' no ~0 expected
     Field namewhat:Byte Ptr                                               ' dto.
@@ -186,7 +186,7 @@ Extern
     Field short_src_28:Long, short_src_36:Long, short_src_44:Long
     Field short_src_52:Long
     Field i_ci:Int      ' "private" field - mentioned here to get the right size
-  End Type
+  End Struct
 End Extern
 
 Extern
@@ -683,10 +683,10 @@ End Rem
 ' ******************************************************************************
 
 Extern
-  Type lua_Reg
+  Struct lua_Reg
     Field name:Byte Ptr                                         ' no ~0 expected
     Field func:Int(ls:Byte Ptr)
-  End Type
+  End Struct
 End Extern
 
 Extern
