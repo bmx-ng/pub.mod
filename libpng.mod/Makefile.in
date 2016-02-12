@@ -677,23 +677,17 @@ TESTS = \
    tests/pngvalid-gamma-expand16-background\
    tests/pngvalid-gamma-expand16-transform tests/pngvalid-gamma-sbit\
    tests/pngvalid-gamma-threshold tests/pngvalid-gamma-transform\
-   tests/pngvalid-progressive-interlace-size\
+   tests/pngvalid-progressive-size\
    tests/pngvalid-progressive-interlace-standard\
-   tests/pngvalid-progressive-interlace-transform\
+   tests/pngvalid-transform\
    tests/pngvalid-progressive-standard tests/pngvalid-standard\
-   tests/pngstest-0g01 tests/pngstest-0g02 tests/pngstest-0g04\
-   tests/pngstest-0g08 tests/pngstest-0g16 tests/pngstest-2c08\
-   tests/pngstest-2c16 tests/pngstest-3p01 tests/pngstest-3p02\
-   tests/pngstest-3p04 tests/pngstest-3p08 tests/pngstest-4a08\
-   tests/pngstest-4a16 tests/pngstest-6a08 tests/pngstest-6a16\
-   tests/pngstest-error tests/pngunknown-IDAT\
+   tests/pngstest-1.8 tests/pngstest-1.8-alpha tests/pngstest-linear\
+   tests/pngstest-linear-alpha tests/pngstest-none tests/pngstest-none-alpha\
+   tests/pngstest-sRGB tests/pngstest-sRGB-alpha tests/pngunknown-IDAT\
    tests/pngunknown-discard tests/pngunknown-if-safe tests/pngunknown-sAPI\
    tests/pngunknown-sTER tests/pngunknown-save tests/pngunknown-vpAg\
    tests/pngimage-quick tests/pngimage-full
 
-
-# These tests are expected, and required, to fail:
-XFAIL_TESTS = tests/pngstest-error
 
 # man pages
 dist_man_MANS = libpng.3 libpngpf.3 png.5
@@ -1520,9 +1514,9 @@ tests/pngvalid-gamma-transform.log: tests/pngvalid-gamma-transform
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
 	"$$tst" $(AM_TESTS_FD_REDIRECT)
-tests/pngvalid-progressive-interlace-size.log: tests/pngvalid-progressive-interlace-size
-	@p='tests/pngvalid-progressive-interlace-size'; \
-	b='tests/pngvalid-progressive-interlace-size'; \
+tests/pngvalid-progressive-size.log: tests/pngvalid-progressive-size
+	@p='tests/pngvalid-progressive-size'; \
+	b='tests/pngvalid-progressive-size'; \
 	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
@@ -1534,9 +1528,9 @@ tests/pngvalid-progressive-interlace-standard.log: tests/pngvalid-progressive-in
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
 	"$$tst" $(AM_TESTS_FD_REDIRECT)
-tests/pngvalid-progressive-interlace-transform.log: tests/pngvalid-progressive-interlace-transform
-	@p='tests/pngvalid-progressive-interlace-transform'; \
-	b='tests/pngvalid-progressive-interlace-transform'; \
+tests/pngvalid-transform.log: tests/pngvalid-transform
+	@p='tests/pngvalid-transform'; \
+	b='tests/pngvalid-transform'; \
 	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
@@ -1555,114 +1549,58 @@ tests/pngvalid-standard.log: tests/pngvalid-standard
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
 	"$$tst" $(AM_TESTS_FD_REDIRECT)
-tests/pngstest-0g01.log: tests/pngstest-0g01
-	@p='tests/pngstest-0g01'; \
-	b='tests/pngstest-0g01'; \
+tests/pngstest-1.8.log: tests/pngstest-1.8
+	@p='tests/pngstest-1.8'; \
+	b='tests/pngstest-1.8'; \
 	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
 	"$$tst" $(AM_TESTS_FD_REDIRECT)
-tests/pngstest-0g02.log: tests/pngstest-0g02
-	@p='tests/pngstest-0g02'; \
-	b='tests/pngstest-0g02'; \
+tests/pngstest-1.8-alpha.log: tests/pngstest-1.8-alpha
+	@p='tests/pngstest-1.8-alpha'; \
+	b='tests/pngstest-1.8-alpha'; \
 	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
 	"$$tst" $(AM_TESTS_FD_REDIRECT)
-tests/pngstest-0g04.log: tests/pngstest-0g04
-	@p='tests/pngstest-0g04'; \
-	b='tests/pngstest-0g04'; \
+tests/pngstest-linear.log: tests/pngstest-linear
+	@p='tests/pngstest-linear'; \
+	b='tests/pngstest-linear'; \
 	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
 	"$$tst" $(AM_TESTS_FD_REDIRECT)
-tests/pngstest-0g08.log: tests/pngstest-0g08
-	@p='tests/pngstest-0g08'; \
-	b='tests/pngstest-0g08'; \
+tests/pngstest-linear-alpha.log: tests/pngstest-linear-alpha
+	@p='tests/pngstest-linear-alpha'; \
+	b='tests/pngstest-linear-alpha'; \
 	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
 	"$$tst" $(AM_TESTS_FD_REDIRECT)
-tests/pngstest-0g16.log: tests/pngstest-0g16
-	@p='tests/pngstest-0g16'; \
-	b='tests/pngstest-0g16'; \
+tests/pngstest-none.log: tests/pngstest-none
+	@p='tests/pngstest-none'; \
+	b='tests/pngstest-none'; \
 	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
 	"$$tst" $(AM_TESTS_FD_REDIRECT)
-tests/pngstest-2c08.log: tests/pngstest-2c08
-	@p='tests/pngstest-2c08'; \
-	b='tests/pngstest-2c08'; \
+tests/pngstest-none-alpha.log: tests/pngstest-none-alpha
+	@p='tests/pngstest-none-alpha'; \
+	b='tests/pngstest-none-alpha'; \
 	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
 	"$$tst" $(AM_TESTS_FD_REDIRECT)
-tests/pngstest-2c16.log: tests/pngstest-2c16
-	@p='tests/pngstest-2c16'; \
-	b='tests/pngstest-2c16'; \
+tests/pngstest-sRGB.log: tests/pngstest-sRGB
+	@p='tests/pngstest-sRGB'; \
+	b='tests/pngstest-sRGB'; \
 	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
 	"$$tst" $(AM_TESTS_FD_REDIRECT)
-tests/pngstest-3p01.log: tests/pngstest-3p01
-	@p='tests/pngstest-3p01'; \
-	b='tests/pngstest-3p01'; \
-	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
-	--log-file $$b.log --trs-file $$b.trs \
-	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
-	"$$tst" $(AM_TESTS_FD_REDIRECT)
-tests/pngstest-3p02.log: tests/pngstest-3p02
-	@p='tests/pngstest-3p02'; \
-	b='tests/pngstest-3p02'; \
-	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
-	--log-file $$b.log --trs-file $$b.trs \
-	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
-	"$$tst" $(AM_TESTS_FD_REDIRECT)
-tests/pngstest-3p04.log: tests/pngstest-3p04
-	@p='tests/pngstest-3p04'; \
-	b='tests/pngstest-3p04'; \
-	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
-	--log-file $$b.log --trs-file $$b.trs \
-	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
-	"$$tst" $(AM_TESTS_FD_REDIRECT)
-tests/pngstest-3p08.log: tests/pngstest-3p08
-	@p='tests/pngstest-3p08'; \
-	b='tests/pngstest-3p08'; \
-	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
-	--log-file $$b.log --trs-file $$b.trs \
-	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
-	"$$tst" $(AM_TESTS_FD_REDIRECT)
-tests/pngstest-4a08.log: tests/pngstest-4a08
-	@p='tests/pngstest-4a08'; \
-	b='tests/pngstest-4a08'; \
-	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
-	--log-file $$b.log --trs-file $$b.trs \
-	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
-	"$$tst" $(AM_TESTS_FD_REDIRECT)
-tests/pngstest-4a16.log: tests/pngstest-4a16
-	@p='tests/pngstest-4a16'; \
-	b='tests/pngstest-4a16'; \
-	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
-	--log-file $$b.log --trs-file $$b.trs \
-	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
-	"$$tst" $(AM_TESTS_FD_REDIRECT)
-tests/pngstest-6a08.log: tests/pngstest-6a08
-	@p='tests/pngstest-6a08'; \
-	b='tests/pngstest-6a08'; \
-	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
-	--log-file $$b.log --trs-file $$b.trs \
-	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
-	"$$tst" $(AM_TESTS_FD_REDIRECT)
-tests/pngstest-6a16.log: tests/pngstest-6a16
-	@p='tests/pngstest-6a16'; \
-	b='tests/pngstest-6a16'; \
-	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
-	--log-file $$b.log --trs-file $$b.trs \
-	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
-	"$$tst" $(AM_TESTS_FD_REDIRECT)
-tests/pngstest-error.log: tests/pngstest-error
-	@p='tests/pngstest-error'; \
-	b='tests/pngstest-error'; \
+tests/pngstest-sRGB-alpha.log: tests/pngstest-sRGB-alpha
+	@p='tests/pngstest-sRGB-alpha'; \
+	b='tests/pngstest-sRGB-alpha'; \
 	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \

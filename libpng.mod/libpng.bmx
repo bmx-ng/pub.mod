@@ -2,12 +2,14 @@ SuperStrict
 
 Module Pub.LibPNG
 
-ModuleInfo "Version: 1.05"
+ModuleInfo "Version: 1.06"
 ModuleInfo "Author: Guy Eric Schalnat, Andreas Dilger, Glenn Randers-Pehrson, Others"
 ModuleInfo "License: ZLib/PNG License"
 ModuleInfo "Modserver: BRL"
 ModuleInfo "Credit: Adapted for BlitzMax by Mark Sibly"
 
+ModuleInfo "History: 1.06"
+ModuleInfo "History: Update to libpng 1.6.21"
 ModuleInfo "History: 1.05"
 ModuleInfo "History: Update to libpng 1.6.18"
 ModuleInfo "History: Added iOS/arm support."
