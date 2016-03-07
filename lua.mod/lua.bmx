@@ -672,7 +672,7 @@ End Rem
     	If (StringPtr = Null) Then
       Return Null
     Else
-    	  Return String.fromBytes(StringPtr,Length)
+    	  Return String.fromBytes(StringPtr,Int(Length))
     End If
   End Function
 
