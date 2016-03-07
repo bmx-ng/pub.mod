@@ -370,15 +370,15 @@ int connect_( int socket,const char *addr,int addr_type,int addr_len,int port ){
 	struct sockaddr_in sa;
 
 	if( addr_type!=AF_INET ) return -1;
-	
-	memset( &sa,0,sizeof(sa) );
-	sa.sin_family=addr_type;
-	sa.sin_port=htons( port );
-	memcpy( &sa.sin_addr,addr,addr_len );
-	
-	return connect( socket,(void*)&sa,sizeof(sa) );
-}
 
+		memset( &sa,0,sizeof(sa) );
+		sa.sin_family=addr_type;
+		sa.sin_port=htons( port );
+		memcpy( &sa.sin_addr,addr,addr_len );
+	
+		return connect( socket,(void*)&sa,sizeof(sa) );
+	}
+	
 int listen_( int socket,int backlog ){
 	return listen( socket,backlog );
 }
@@ -434,7 +434,7 @@ int select_( int n_read,int *r_socks,int n_write,int *w_socks,int n_except,int *
 	return r;
 }
 
-int send_( int socket,const char *buf,int size,int flags ){
+size_t send_( int socket,const char *buf,size_t size,int flags ){
 	return send( socket,buf,size,flags );
 }
 
@@ -447,7 +447,7 @@ int sendto_( int socket,const char *buf,int size,int flags,int dest_ip,int dest_
 	return sendto( socket,buf,size,flags,(void*)&sa,sizeof(sa));
 }
 
-int recv_( int socket,char *buf,int size,int flags ){
+size_t recv_( int socket,char *buf,size_t size,int flags ){
 	return recv( socket,buf,size,flags );
 }
 
