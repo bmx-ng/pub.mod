@@ -42,18 +42,15 @@ int is_pid_native( pid_t pid )
 	return ret;
 }
 
-BBString *bbStringFromNSString( NSString *s ){
-	BBString	*bbstring;
-	unsigned short *buff;
+BBString *bbStringFromNSString( NSString *s ) {
+	BBString *bbstring;
 	int n;
 	n=[s length];
-	buff=malloc( n*2 );
-	[s getCharacters:buff];
-	bbstring=bbStringFromShorts( buff,n );
-	free( buff );
+	NSData * data=[s dataUsingEncoding:NSUnicodeStringEncoding];
+	bbstring=bbStringFromShorts((unsigned short*)[data bytes] + 1,n );
 	return bbstring;
 }
 
-NSString *NSStringFromBBString( BBString *s ){
+NSString *NSStringFromBBString( BBString *s ) {
 	return [NSString stringWithCharacters:s->buf length:s->length];
 }
