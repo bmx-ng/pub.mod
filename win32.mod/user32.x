@@ -125,3 +125,4 @@ DWORD __stdcall GetModuleFileNameW(HMODULE , LPWSTR , DWORD )!
 int __stdcall GetWindowTextA(HWND ,LPSTR ,int )!
 int __stdcall GetWindowTextW(HWND ,LPWSTR ,int )!
 int __stdcall GetClassNameW(HWND ,LPWSTR ,int )!
+int __stdcall MessageBoxW(HWND ,LPCWSTR ,LPCWSTR ,UINT )!
