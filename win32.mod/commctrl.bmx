@@ -121,7 +121,7 @@ Extern
 	Function bmx_win32_COMBOBOXEXITEMW_new:Byte Ptr()
 	Function bmx_win32_COMBOBOXEXITEMW_free(handle:Byte Ptr)
 	Function bmx_win32_COMBOBOXEXITEMW_Setmask(handle:Byte Ptr, mask:UInt)
-	Function bmx_win32_COMBOBOXEXITEMW_SetiItem(handle:Byte Ptr, iItem:Byte Ptr)
+	Function bmx_win32_COMBOBOXEXITEMW_SetiItem(handle:Byte Ptr, iItem:Int Ptr)
 	Function bmx_win32_COMBOBOXEXITEMW_SetpszText(handle:Byte Ptr, pszText:Short Ptr)
 	Function bmx_win32_COMBOBOXEXITEMW_SetiImage(handle:Byte Ptr, iImage:Int)
 	Function bmx_win32_COMBOBOXEXITEMW_SetiSelectedImage(handle:Byte Ptr, iSelectedImage:Int)
@@ -150,7 +150,7 @@ Type COMBOBOXEXITEMW
 		bmx_win32_COMBOBOXEXITEMW_Setmask(itemPtr, mask)
 	End Method
 	
-	Method SetiItem(iItem:Byte Ptr)
+	Method SetiItem(iItem:Int Ptr)
 		bmx_win32_COMBOBOXEXITEMW_SetiItem(itemPtr, iItem)
 	End Method
 	
