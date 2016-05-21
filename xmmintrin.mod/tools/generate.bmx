@@ -97,9 +97,36 @@ For Local version$ = EachIn SSE_VERSIONS
 	EndIf
 Next
 
+moduledata :+ "Import ~q_MM_SHUFFLE.bmx~q~n"
 moduledata :+ "?~n"
 
 SaveText moduledata,modulefile
+
+' create _MM_SHUFFLE constants file
+Local shufflefile$ = "../" + "_MM_SHUFFLE.bmx"
+Local outstream:TStream = WriteStream(shufflefile)
+
+WriteLine(outstream, headerdata)
+WriteLine(outstream, "Strict")
+WriteLine(outstream, "Function _MM_SHUFFLE:Int(a:Byte,b:Byte,c:Byte,d:Byte)")
+WriteLine(outstream, "~tReturn a Shl 6 | b Shl 4 | c Shl 2 | d")
+WriteLine(outstream, "EndFunction~n")
+
+For Local a:Int = 0 Until 4
+	For Local b:Int = 0 Until 4
+		For Local c:Int = 0 Until 4
+			For Local d:Int  = 0 Until 4
+				Local shuffle$ = "Const _MM_SHUFFLE_" + String(a) + String(b) + String(c) + String(d) + ":Int"
+				Local value$ = String(a Shl 6 | b Shl 4 | c Shl 2 | d)
+				WriteLine outstream, shuffle$ + "=" + value
+			Next
+		Next
+	Next
+Next
+CloseStream outstream
+
+
+
 
 Type tparser
 	Field _data$
@@ -373,3 +400,4 @@ Function BackupFile(filename$)
 		SaveText data,backup
 	EndIf
 EndFunction
+
