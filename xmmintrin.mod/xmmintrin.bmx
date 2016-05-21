@@ -35,4 +35,5 @@ Import "sse3.bmx"
 Import "ssse3.bmx"
 Import "sse41.bmx"
 Import "sse42.bmx"
+Import "_MM_SHUFFLE.bmx"
 ?
