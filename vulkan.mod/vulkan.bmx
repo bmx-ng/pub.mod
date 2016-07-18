@@ -22,5 +22,4 @@ SuperStrict
 Module pub.vulkan
 
 Import "vkLoader.bmx"
-Import "vkUtils.bmx"
 
