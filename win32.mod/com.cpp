@@ -33,7 +33,7 @@ int bmx_win32_com_IUnknown_Release(IUnknown * unk) {
 // ********************************************************
 
 GUID * bmx_win32_GUID_new() {
-	return (GUID *)malloc(sizeof(GUID));
+	return (GUID *)calloc(1,sizeof(GUID));
 }
 
 void bmx_win32_GUID_free(GUID * guid) {

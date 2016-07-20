@@ -75,9 +75,7 @@ extern "C" {
 // ********************************************************
 
 WNDCLASSW * bmx_win32_WNDCLASSW_new() {
-	WNDCLASSW * clas = (WNDCLASSW *)malloc(sizeof(WNDCLASSW));
-	memset(clas, 0, sizeof(WNDCLASSW));
-	return clas;
+	return (WNDCLASSW *)calloc(1,sizeof(WNDCLASSW));
 }
 
 void bmx_win32_WNDCLASSW_free(WNDCLASSW * clas) {
@@ -119,7 +117,7 @@ void bmx_win32_WNDCLASSW_SetcbWndExtra(WNDCLASSW * clas, int cbWndExtra) {
 // ********************************************************
 
 ICONINFO * bmx_win32_ICONINFO_new() {
-	return (ICONINFO *)malloc(sizeof(ICONINFO));
+	return (ICONINFO *)calloc(1,sizeof(ICONINFO));
 }
 
 void bmx_win32_ICONINFO_free(ICONINFO * info) {
@@ -141,7 +139,7 @@ void bmx_win32_ICONINFO_SethbmColor(ICONINFO * info, HBITMAP hbmColor) {
 // ********************************************************
 
 MENUINFO * bmx_win32_MENUINFO_new() {
-	MENUINFO * info = (MENUINFO *)malloc(sizeof(MENUINFO));
+	MENUINFO * info = (MENUINFO *)calloc(1,sizeof(MENUINFO));
 	info->cbSize = sizeof(MENUINFO);
 	return info;
 }
@@ -177,7 +175,7 @@ void bmx_win32_MENUINFO_SetdwMenuData(MENUINFO * info, ULONG_PTR dwMenuData) {
 // ********************************************************
 
 MENUITEMINFOW * bmx_win32_MENUITEMINFOW_new() {
-	MENUITEMINFOW * info = (MENUITEMINFOW *)malloc(sizeof(MENUITEMINFOW));
+	MENUITEMINFOW * info = (MENUITEMINFOW *)calloc(1,sizeof(MENUITEMINFOW));
 	info->cbSize = sizeof(MENUITEMINFOW);
 	return info;
 }
@@ -221,7 +219,7 @@ LPWSTR bmx_win32_MENUITEMINFOW_dwTypeData(MENUITEMINFOW * info) {
 // ********************************************************
 
 SCROLLINFO * bmx_win32_SCROLLINFO_new() {
-	SCROLLINFO * info = (SCROLLINFO *)malloc(sizeof(SCROLLINFO));
+	SCROLLINFO * info = (SCROLLINFO *)calloc(1,sizeof(SCROLLINFO));
 	info->cbSize = sizeof(SCROLLINFO);
 	return info;
 }

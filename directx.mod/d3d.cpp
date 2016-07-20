@@ -2,7 +2,7 @@
 #include <windows.h>
 #include "d3d9types.h"
 #include <stdlib.h>
-
+#include <stdio.h>
 extern "C" {
 
 	D3DPRESENT_PARAMETERS * bmx_directx_D3DPRESENT_PARAMETERS_new();

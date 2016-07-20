@@ -30,22 +30,15 @@ Extern
 	Function bmx_win32_com_IUnknown_Release:Int(handle:Byte Ptr)
 End Extern
 
-Type IUnknown
-	Field unknownPtr:Byte Ptr
+Extern "win32"
+Interface IUnknown_
 	
-	Method QueryInterface:Int( riid:Byte Ptr,ppvObj:Byte Ptr Ptr )'="IUnknown_QueryInterface"
-		Return bmx_win32_com_IUnknown_QueryInterface(unknownPtr, riid, ppvObj)
-	End Method
-	
-	Method AddRef:Int()'="IUnknown_AddRef"
-		Return bmx_win32_com_IUnknown_AddRef(unknownPtr)
-	End Method
-	
-	Method Release_:Int()'="IUnknown_Release"
-		Return bmx_win32_com_IUnknown_Release(unknownPtr)
-	End Method
-End Type
+	Method QueryInterface:Int( riid:Byte Ptr,ppvObj:IUnknown_ Var)
+	Method AddRef:Int()
+	Method Release_:Int()
 
+End Interface
+End Extern
 
 ' oleautomation
 Extern 
@@ -53,236 +46,179 @@ Function SysAllocStringLen:Short Ptr(bstr:Short Ptr,length)
 Function SysFreeString(bstr:Short Ptr)
 End Extern
 
-Type IDispatch Extends IUnknown
+Extern "win32"
+Interface IDispatch_ Extends IUnknown_
 '	Method QueryInterface( riid:Byte Ptr,ppvObj:Byte Ptr )="IDispatch_QueryInterface"
 '	Method AddRef()="IDispatch_AddRef"
 '	Method Release_()="IDispatch_Release"
 
 	Method lfGetTypeInfoCount(pctinfo:Byte Ptr)'="IDispatch_lfGetTypeInfoCount"
-	End Method
+	
 	
 	Method lfGetTypeInfo(iTInfo,lcid,ITypeInfo:Byte Ptr)'="IDispatch_lfGetTypeInfo"
-	End Method
+	
 	
 	Method lfGetIDsOfNames( riid:Byte Ptr,rgszNames:Byte Ptr Ptr,cNames,lcid,rgDispId:Byte Ptr)'="IDispatch_lfGetIDsOfNames"
-	End Method
+	
 	
 	Method Invoke(dispIdMember:Byte Ptr,riid:Byte Ptr,lcid,wFlags,pDispParams:Byte Ptr,pVarResult:Byte Ptr,pExcepInfo:Byte Ptr,puArgErr:Byte Ptr)'="IDispatch_Invoke"
-	End Method
 	
-End Type
+	
+End Interface
+End Extern
 
 Extern
 	Function bmx_win32_IWebBrowser_get_LocationURL:Int(handle:Byte Ptr, LocationURL:Short Ptr Ptr)
 	Function bmx_win32_IWebBrowser_get_LocationName:Int(handle:Byte Ptr, LocationName:Short Ptr Ptr)
 	Function bmx_win32_IWebBrowser_get_Document:Int(handle:Byte Ptr, ppDisp:Byte Ptr Ptr)
 End Extern
-Type IWebBrowser Extends IDispatch	
+
+Extern "win32"
+Interface IWebBrowser_ Extends IDispatch_	
 	Method lfGoBack()
-	End Method
-	
+		
 	Method lfGoForward()
-	End Method
-
+	
 	Method lfGoHome()
-	End Method
-
+	
 	Method lfGoSearch()
-	End Method
-
+	
 	Method lfNavigate(URL$w,Flags:VARIANT,TargetFrameName:VARIANT,PostData:VARIANT,Headers:Byte Ptr) 'VARIANT)
-	End Method
-
+	
 	Method lfRefresh()
-	End Method
-
+	
 	Method lfRefresh2(Level:Byte Ptr) 'VARIANT)
-	End Method
-
+	
 	Method lfStop()
-	End Method
-
-	Method lfget_Application(ppDisp:IDispatch Ptr Ptr) 
-	End Method
-
-	Method lfget_Parent(ppDisp:IDispatch Ptr Ptr)
-	End Method
-
-	Method lfget_Container(ppDisp:IDispatch Ptr Ptr)
-	End Method
-
-	Method lfget_Document(ppDisp:Byte Ptr Ptr)
-		bmx_win32_IWebBrowser_get_Document(unknownPtr, ppDisp)
-	End Method
+	
+	Method lfget_Application(ppDisp:IDispatch_ Var) 
+	
+	Method lfget_Parent(ppDisp:IDispatch_ Var)
+	
+	Method lfget_Container(ppDisp:IDispatch_ Var)
+	
+	Method lfget_Document(ppDisp:IDispatch_ Var)
+	'	bmx_win32_IWebBrowser_get_Document(unknownPtr, ppDisp)
+	'End Method
 
 	Method lfget_TopLevelContainer(pBool:Short Ptr)
-	End Method
 
 	Method lfget_Type(_Type$w)	
-	End Method
-
+	
 	Method lfget_Left(pl:Int Ptr)
-	End Method
-
+	
 	Method put_Left(Left) 
-	End Method
-
+	
 	Method lfget_Top(pl:Int Ptr)
-	End Method
-
+	
 	Method put_Top(Top)
-	End Method
-
+	
 	Method lfget_Width(pl:Int Ptr)
-	End Method
-
+	
 	Method put_Width(Width)
-	End Method
-
+	
 	Method lfget_Height(pl:Int Ptr)
-	End Method
-
+	
 	Method put_Height(Height)
-	End Method
-
+	
 	Method lfget_LocationName(LocationName:Short Ptr Ptr)
-		Return bmx_win32_IWebBrowser_get_LocationName(unknownPtr, LocationName)
-	End Method
+	'	Return bmx_win32_IWebBrowser_get_LocationName(unknownPtr, LocationName)
+	'End Method
 
 	Method lfget_LocationURL(LocationURL:Short Ptr Ptr)
-		Return bmx_win32_IWebBrowser_get_LocationURL(unknownPtr, LocationURL)
-	End Method
+	'	Return bmx_win32_IWebBrowser_get_LocationURL(unknownPtr, LocationURL)
+	'End Method
 
 	Method lfget_Busy(pBool:Short Ptr)
-	End Method
+	
+End Interface
 
-End Type
-
-Type IWebBrowserApp Extends IWebBrowser
+Interface IWebBrowserApp_ Extends IWebBrowser_
 	Method lfQuit()
-	End Method
-
+	
 	Method lfClientToWindow(pcx:Int Ptr,pcy:Int Ptr) 
-	End Method
-
+	
 	Method lfPutProperty(Property$w,vtValue:Byte Ptr) 'VARIANT)	'simon come here 
-	End Method
-
+	
 	Method lfGetProperty(Property$w,vtValue:Byte Ptr) 'VARIANT) 
-	End Method
-
+	
 	Method lfget_Name(Name:Byte Ptr )
-	End Method
-
+	
 	Method lfget_HWND(pHWND:Int Ptr)
-	End Method
-
+	
 	Method lfget_FullName(FullName:Short Ptr Ptr)
-	End Method
-
+	
 	Method lfget_Path(Path:Short Ptr Ptr)
-	End Method
-
+	
 	Method lfget_Visible(pBool:Short Ptr)
-	End Method
-
+	
 	Method put_Visible(Value:Byte Ptr) 'VARIANT)
-	End Method
-
+	
 	Method lfget_StatusBar(pBool:Short Ptr)
-	End Method
-
+	
 	Method put_StatusBar(Value:Byte Ptr) 'VARIANT)
-	End Method
-
+	
 	Method lfget_StatusText(StatusText:Short Ptr Ptr)
-	End Method
-
+	
 	Method put_StatusText(StatusText$w)
-	End Method
-
+	
 	Method lfget_ToolBar(Value:Int Ptr)
-	End Method
 
 	Method put_ToolBar(Value)
-	End Method
-
+	
 	Method lfget_MenuBar(Value:Byte Ptr) 'VARIANT)
-	End Method
-
+	
 	Method put_MenuBar(Value:Byte Ptr) 'VARIANT)
-	End Method
-
+	
 	Method lfget_FullScreen(pbFullScreen:Byte Ptr) 'VARIANT)
-	End Method
-
+	
 	Method put_FullScreen(bFullScreen:Byte Ptr) 'VARIANT)
-	End Method
+	
+End Interface
 
-End Type
-
-Type IWebBrowser2 Extends IWebBrowserApp
+Interface IWebBrowser2_ Extends IWebBrowserApp_
 	Method lfNavigate2(URL:VARIANT,Flags:VARIANT,TargetFrameName:VARIANT,PostData:VARIANT,Headers:Byte Ptr) 'VARIANT)
-	End Method
-
+	
 	Method lfQueryStatusWB(cmdID,pcmdf)
-	End Method
-
+	
 	Method lfExecWB(cmdID,cmdexecopt,pvaIn:VARIANT,pvaOut:Byte Ptr) 'VARIANT)
-	End Method
-
+	
 	Method lfShowBrowserBar(pvaClsid:VARIANT,pvarShow:VARIANT,pvarSize:Byte Ptr) 'VARIANT)
-	End Method
-
+	
 	Method get_ReadyState(plReadyState:Int Ptr)
-	End Method
-
+	
 	Method lfget_Offline(pbOffline:Short Ptr)
-	End Method
-
+	
 	Method put_Offline(bOffline)
-	End Method
-
+	
 	Method lfget_Silent(pbSilent:Short Ptr)
-	End Method
-
+	
 	Method put_Silent(bSilent)
-	End Method
-
+	
 	Method lfget_RegisterAsBrowser(pbRegister:Short Ptr)
-	End Method
-
+	
 	Method put_RegisterAsBrowser(bRegister)
-	End Method
-
+	
 	Method lfget_RegisterAsDropTarget(pbRegister:Short Ptr)
-	End Method
-
+	
 	Method put_RegisterAsDropTarget(bRegister)
-	End Method
-
+	
 	Method lfget_TheaterMode(pbRegister:Short Ptr) 
-	End Method
-
+	
 	Method put_TheaterMode(bRegister)
-	End Method
-
+	
 	Method lfget_AddressBar(Value:Short Ptr)
-	End Method
-
+	
 	Method put_AddressBar(Value)
-	End Method
-
+	
 	Method lfget_Resizable(Value:Short Ptr)
-	End Method
-
+	
 	Method put_Resizable(Value)
-	End Method
+	
+End Interface
 
-End Type
+Interface IHTMLWindow2_ Extends IDispatch_
 
-Type IHTMLWindow2 Extends IDispatch
-Rem
     Method item(this:Byte Ptr,_variant:Byte Ptr)
     Method get_length(_pint:Int Ptr)
 
@@ -329,7 +265,7 @@ Rem
     Method get_onresize(this:Byte Ptr)
     Method put_onscroll(_variant:Long)
     Method get_onscroll(this:Byte Ptr)
-    Method get_document(IHTMLDocument2:Byte Ptr Ptr)
+    Method get_document(doc:IHTMLDocument2_ Var)
     Method get_event(LPHTMLEVENTOBJ:Byte Ptr)
     Method get__newEnum(IUnknown:Byte Ptr Ptr)
     Method showModalDialog(_bstr:Short Ptr,_variant:Byte Ptr,_variant2:Byte Ptr,_variant3:Byte Ptr)
@@ -353,287 +289,287 @@ Rem
     Method moveBy(_int,_int1)
     Method resizeTo(_int,_int1)
     Method resizeBy(_int,_int1)
-    Method get_external(IDispatch:Byte Ptr Ptr)
-End Rem
-End Type
+    Method get_external(disp:IDispatch_ Var)
 
-Type IHTMLDocument2 Extends IDispatch
-Rem 
+End Interface
+
+Interface IHTMLDocument2_ Extends IDispatch_
+
 	Method get_Script(IDispatch:Byte Ptr Ptr)
-	End Method
+	'End Method
 
 	Method get_all(LPHTMLELEMENTCOLLECTION:Byte Ptr)
-	End Method
+	'End Method
 
 	Method get_body(LPHTMLELEMENT:Byte Ptr)
-	End Method
+	'End Method
 
 	Method get_activeElement(LPHTMLELEMENT:Byte Ptr)
-	End Method
+	'End Method
 
 	Method get_images(LPHTMLELEMENTCOLLECTION:Byte Ptr)
-	End Method
+	'End Method
 
 	Method get_applets(LPHTMLELEMENTCOLLECTION:Byte Ptr)
-	End Method
+	'End Method
 
 	Method get_links(LPHTMLELEMENTCOLLECTION:Byte Ptr)
-	End Method
+	'End Method
 
 	Method get_forms(LPHTMLELEMENTCOLLECTION:Byte Ptr)
-	End Method
+	'End Method
 
 	Method get_anchors(LPHTMLELEMENTCOLLECTION:Byte Ptr)
-	End Method
+	'End Method
 
 	Method put_title(_bstr:Short Ptr)
-	End Method
-End Rem
+	'End Method
+
 	Method get_title(_pbstr:Short Ptr Ptr)
-	End Method
-Rem
+	'End Method
+
 	Method get_scripts(LPHTMLELEMENTCOLLECTION:Byte Ptr)
-	End Method
+'	End Method
 
 	Method put_designMode(_bstr:Short Ptr)
-	End Method
+'	End Method
 
 	Method get_designMode(_pbstr:Short Ptr Ptr)
-	End Method
+'	End Method
 
 	Method get_selection(LPHTMLSELECTIONOBJECT:Byte Ptr)
-	End Method
+'	End Method
 
 	Method get_readyState(_pbstr:Short Ptr Ptr)
-	End Method
+'	End Method
 
 	Method get_frames(LPHTMLFRAMESCOLLECTION:Byte Ptr)
-	End Method
+'	End Method
 
 	Method get_embeds(LPHTMLELEMENTCOLLECTION:Byte Ptr)
-	End Method
+'	End Method
 
 	Method get_plugins(LPHTMLELEMENTCOLLECTION:Byte Ptr)
-	End Method
+'	End Method
 
 	Method put_alinkColor(_variant:Long)
-	End Method
+'	End Method
 
 	Method get_alinkColor(this:Byte Ptr)
-	End Method
+'	End Method
 
 	Method put_bgColor(_variant:Long)
-	End Method
+'	End Method
 
 	Method get_bgColor(this:Byte Ptr)
-	End Method
+'	End Method
 
 	Method put_fgColor(_variant:Long)
-	End Method
+'	End Method
 
 	Method get_fgColor(this:Byte Ptr)
-	End Method
+'	End Method
 
 	Method put_linkColor(_variant:Long)
-	End Method
+'	End Method
 
 	Method get_linkColor(this:Byte Ptr)
-	End Method
+'	End Method
 
 	Method put_vlinkColor(_variant:Long)
-	End Method
+'	End Method
 
 	Method get_vlinkColor(this:Byte Ptr)
-	End Method
+'	End Method
 
 	Method get_referrer(_pbstr:Short Ptr Ptr)
-	End Method
+'	End Method
 
 	Method get_location(LPHTMLLOCATION:Byte Ptr)
-	End Method
+'	End Method
 
 	Method get_lastModified(_pbstr:Short Ptr Ptr)
-	End Method
+'	End Method
 
 	Method put_url(_bstr:Short Ptr)
-	End Method
+'	End Method
 
 	Method get_url(_pbstr:Short Ptr Ptr)
-	End Method
+'	End Method
 
 	Method put_domain(_bstr:Short Ptr)
-	End Method
+'	End Method
 
 	Method get_domain(_pbstr:Short Ptr Ptr)
-	End Method
+'	End Method
 
 	Method put_cookie(_bstr:Short Ptr)
-	End Method
+'	End Method
 
 	Method get_cookie(_pbstr:Short Ptr Ptr)
-	End Method
+'	End Method
 
 	Method put_expands(_variant:Short)
-	End Method
+'	End Method
 
 	Method get_expands(_variant:Short Ptr)
-	End Method
+'	End Method
 
 	Method put_charset(_bstr:Short Ptr)
-	End Method
+'	End Method
 
 	Method get_charset(_pbstr:Short Ptr Ptr)
-	End Method
+'	End Method
 
 	Method put_defaultCharset(_bstr:Short Ptr)
-	End Method
+'	End Method
 
 	Method get_defaultCharset(_pbstr:Short Ptr Ptr)
-	End Method
+'	End Method
 
 	Method get_mimeType(_pbstr:Short Ptr Ptr)
-	End Method
+'	End Method
 
 	Method get_fileSize(_pbstr:Short Ptr Ptr)
-	End Method
+'	End Method
 
 	Method get_fileCreatedDate(_pbstr:Short Ptr Ptr)
-	End Method
+'	End Method
 
 	Method get_fileModifiedDate(_pbstr:Short Ptr Ptr)
-	End Method
+'	End Method
 
 	Method get_fileUpdatedDate(_pbstr:Short Ptr Ptr)
-	End Method
+'	End Method
 
 	Method get_security(_pbstr:Short Ptr Ptr)
-	End Method
+'	End Method
 
 	Method get_protocol(_pbstr:Short Ptr Ptr)
-	End Method
+'	End Method
 
 	Method get_nameProp(_pbstr:Short Ptr Ptr)
-	End Method
+'	End Method
 
 	Method write(SAFEARRAY)
-	End Method
+'	End Method
 
 	Method writeln(SAFEARRAY)
-	End Method
+'	End Method
 
-	Method open(_bstr:Short Ptr,v1:Long,v2:Long,v3:Long,IDispatch:Byte Ptr Ptr)
-	End Method
+	Method open(_bstr:Short Ptr,v1:Long,v2:Long,v3:Long,disp:IDispatch_ Var)
+'	End Method
 
 	Method close()
-	End Method
+'	End Method
 
 	Method clear()
-	End Method
+'	End Method
 
 	Method queryCommandSupported(_bstr:Short Ptr,_variantbool:Short Ptr)
-	End Method
+'	End Method
 
 	Method queryCommandEnabled(_bstr:Short Ptr,_variantbool:Short Ptr)
-	End Method
+'	End Method
 
 	Method queryCommandState(_bstr:Short Ptr,_variantbool:Short Ptr)
-	End Method
+'	End Method
 
 	Method queryCommandIndeterm(_bstr:Short Ptr,_variantbool:Short Ptr)
-	End Method
+'	End Method
 
 	Method queryCommandText(_bstr:Short Ptr,BSTR:Byte Ptr)
-	End Method
+'	End Method
 
 	Method queryCommandValue(_bstr:Short Ptr,_variant:Byte Ptr)
-	End Method
+'	End Method
 
 	Method execCommand(_bstr:Short Ptr,_variantbool:Short,_variant:Long,_variantpbool:Short Ptr)
-	End Method
+'	End Method
 
 	Method execCommandShowHelp(_bstr:Short Ptr,_variantbool:Short Ptr)
-	End Method
+'	End Method
 
 	Method createElement(_bstr:Short Ptr,LPHTMLELEMENT:Byte Ptr)
-	End Method
+'	End Method
 
 	Method put_onhelp(_variant:Long)
-	End Method
+'	End Method
 
 	Method get_onhelp(this:Byte Ptr)
-	End Method
+'	End Method
 
 	Method put_onclick(_variant:Long)
-	End Method
+'	End Method
 
 	Method get_onclick(this:Byte Ptr)
-	End Method
+'	End Method
 
 	Method put_ondblclick(_variant:Long)
-	End Method
+'	End Method
 
 	Method get_ondblclick(this:Byte Ptr)
-	End Method
+'	End Method
 
 	Method put_onkeyup(_variant:Long)
-	End Method
+'	End Method
 
 	Method get_onkeyup(this:Byte Ptr)
-	End Method
+'	End Method
 
 	Method put_onkeydown(_variant:Long)
-	End Method
+'	End Method
 
 	Method get_onkeydown(this:Byte Ptr)
-	End Method
+'	End Method
 
 	Method put_onkeypress(_variant:Long)
-	End Method
+'	End Method
 
 	Method get_onkeypress(this:Byte Ptr)
-	End Method
+'	End Method
 
 	Method put_onmouseup(_variant:Long)
-	End Method
+'	End Method
 
 	Method get_onmouseup(this:Byte Ptr)
-	End Method
+'	End Method
 
 	Method put_onmousedown(_variant:Long)
-	End Method
+'	End Method
 
 	Method get_onmousedown(this:Byte Ptr)
-	End Method
+'	End Method
 
 	Method put_onmousemove(_variant:Long)
-	End Method
+'	End Method
 
 	Method get_onmousemove(this:Byte Ptr)
-	End Method
+'	End Method
 
 	Method put_onmouseout(_variant:Long)
-	End Method
+'	End Method
 
 	Method get_onmouseout(this:Byte Ptr)
-	End Method
+'	End Method
 
 	Method put_onmouseover(_variant:Long)
-	End Method
+'	End Method
 
 	Method get_onmouseover(this:Byte Ptr)
-	End Method
+'	End Method
 
 	Method put_onreadystatechange(_variant:Long)
-	End Method
+'	End Method
 
 	Method get_onreadystatechange(this:Byte Ptr)
-	End Method
+'	End Method
 
 	Method put_onafterupdate(_variant:Long)
-	End Method
+'	End Method
 
 	Method get_onafterupdate(this:Byte Ptr)
-	End Method
+'	End Method
 
 	Method put_onrowexit(_variant:Long)
 	Method get_onrowexit(this:Byte Ptr)
@@ -652,9 +588,8 @@ Rem
 	Method get_onerrorupdate(this:Byte Ptr)
 	Method toString(_pbstr:Short Ptr Ptr)
 	Method createStyleSheet(_bstr:Short Ptr,_int,LPHTMLSTYLESHEET:Byte Ptr)
-End Rem
-End Type
-
+End Interface
+End Extern
 
 Const IUnknown_UUID$="{00000000-0000-0000-C000-000000000046}"
 Const IDispatch_UUID$="{00020400-0000-0000-C000-000000000046}"

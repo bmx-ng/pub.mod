@@ -459,7 +459,7 @@ Extern
 	Function bmx_win32_TVITEMW_SetiImage(handle:Byte Ptr, iImage:Int)
 	Function bmx_win32_TVITEMW_SetiSelectedImage(handle:Byte Ptr, iSelectedImage:Int)
 	Function bmx_win32_TVITEMW_SetcChildren(handle:Byte Ptr, cChildren:Int)
-	Function bmx_win32_TVITEMW_SetlParam(handle:Byte Ptr, lParam:Byte Ptr)
+	Function bmx_win32_TVITEMW_SetlParam(handle:Byte Ptr, lp:LParam)
 	Function bmx_win32_TVITEMW_mask:Uint(handle:Byte Ptr)
 	Function bmx_win32_TVITEMW_hItem:Byte Ptr(handle:Byte Ptr)
 	Function bmx_win32_TVITEMW_pszText:Short Ptr(handle:Byte Ptr)
@@ -520,8 +520,8 @@ Type TVITEMW
 		bmx_win32_TVITEMW_SetcChildren(itemPtr, cChildren)
 	End Method
 	
-	Method SetlParam(lParam:Byte Ptr)
-		bmx_win32_TVITEMW_SetlParam(itemPtr, lParam)
+	Method SetlParam(lp:LParam)
+		bmx_win32_TVITEMW_SetlParam(itemPtr, lp)
 	End Method
 	
 	Method mask:Uint()
@@ -2116,8 +2116,8 @@ Extern
 	Function bmx_win32_NMTREEVIEW_y:Int(handle:Byte Ptr)
 	
 	Function bmx_win32_MSGFILTER_msg:UInt(handle:Byte Ptr)
-	Function bmx_win32_MSGFILTER_wParam:Byte Ptr(handle:Byte Ptr)
-	Function bmx_win32_MSGFILTER_lParam:Byte Ptr(handle:Byte Ptr)
+	Function bmx_win32_MSGFILTER_wParam:WParam(handle:Byte Ptr)
+	Function bmx_win32_MSGFILTER_lParam:LParam(handle:Byte Ptr)
 	Function bmx_win32_MSGFILTER_Setmsg(handle:Byte Ptr, msg:UInt)
 	
 End Extern

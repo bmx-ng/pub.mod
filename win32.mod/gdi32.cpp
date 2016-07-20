@@ -24,6 +24,7 @@ extern "C" {
 	int bmx_win32_LOGFONTW_lfQuality(LOGFONTW * font);
 	int bmx_win32_LOGFONTW_lfPitchAndFamily(LOGFONTW * font);
 	WCHAR * bmx_win32_LOGFONTW_lfFaceName(LOGFONTW * font);
+	int bmx_win32_LOGFONTW_size();
 
 	TEXTMETRIC * bmx_win32_TEXTMETRIC_new();
 	void bmx_win32_TEXTMETRIC_free(TEXTMETRIC * metric);
@@ -39,6 +40,10 @@ extern "C" {
 }
 
 // ********************************************************
+
+int bmx_win32_LOGFONTW_size() {
+	return sizeof(LOGFONTW);
+}
 
 LOGFONTW * bmx_win32_LOGFONTW_new() {
 	return (LOGFONTW *)calloc(1, sizeof(LOGFONTW));

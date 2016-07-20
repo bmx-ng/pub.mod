@@ -191,8 +191,7 @@ LPWSTR bmx_win32_TOOLINFOW_lpszText(TOOLINFOW * info) {
 // ********************************************************
 
 INITCOMMONCONTROLSEX * bmx_win32_TINITCOMMONCONTROLSEX_new() {
-	INITCOMMONCONTROLSEX * icc = (INITCOMMONCONTROLSEX *)malloc(sizeof(INITCOMMONCONTROLSEX));
-	memset(icc, 0, sizeof(INITCOMMONCONTROLSEX));
+	INITCOMMONCONTROLSEX * icc = (INITCOMMONCONTROLSEX *)calloc(1,sizeof(INITCOMMONCONTROLSEX));
 	icc->dwSize = sizeof(INITCOMMONCONTROLSEX);
 	return icc;
 }
@@ -230,7 +229,7 @@ HIMAGELIST bmx_win32_BUTTON_IMAGELIST_himl(BUTTON_IMAGELIST * list) {
 // ********************************************************
 
 COMBOBOXEXITEMW * bmx_win32_COMBOBOXEXITEMW_new() {
-	return (COMBOBOXEXITEMW *)malloc(sizeof(COMBOBOXEXITEMW));
+	return (COMBOBOXEXITEMW *)calloc(1, sizeof(COMBOBOXEXITEMW));
 }
 
 void bmx_win32_COMBOBOXEXITEMW_free(COMBOBOXEXITEMW * item) {
@@ -278,7 +277,7 @@ void bmx_win32_LVCOLUMNW_free(LVCOLUMNW * col) {
 // ********************************************************
 
 LVITEMW * bmx_win32_LVITEMW_new() {
-	return (LVITEMW *)malloc(sizeof(LVITEMW));
+	return (LVITEMW *)calloc(1, sizeof(LVITEMW));
 }
 
 void bmx_win32_LVITEMW_free(LVITEMW * item) {

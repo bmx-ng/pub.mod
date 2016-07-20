@@ -86,8 +86,9 @@ IDirect3D9 * bmx_directx_d3d9_Direct3DCreate9(int SDKVersion) {
 
 int bmx_directx_d3d9_IDirect3D9_CreateDevice(IDirect3D9 * id, int Adapter, int DeviceType, HWND hFocusWindow,
 		int BehaviorFlags, D3DPRESENT_PARAMETERS * pPresentationParameters, IDirect3DDevice9 ** ppReturnedDeviceInterface) {
-
-	return id->CreateDevice(Adapter, static_cast<D3DDEVTYPE>(DeviceType), hFocusWindow, BehaviorFlags, pPresentationParameters, ppReturnedDeviceInterface);
+	int res = id->CreateDevice(Adapter, static_cast<D3DDEVTYPE>(DeviceType), hFocusWindow, BehaviorFlags, pPresentationParameters, ppReturnedDeviceInterface);
+	
+	return res;
 }
 
 int bmx_directx_d3d9_IDirect3D9_GetDeviceCaps(IDirect3D9 * id, int Adapter, int DeviceType, D3DCAPS9 * pCaps) {
@@ -195,7 +196,7 @@ int bmx_directx_d3d9_IDirect3DQuery9_GetData(IDirect3DQuery9 * id, void * pData,
 // ********************************************************
 
 D3DCAPS9 * bmx_directx_d3d9_D3DCAPS9_new() {
-	return (D3DCAPS9*)malloc(sizeof(D3DCAPS9));
+	return (D3DCAPS9*)calloc(1,sizeof(D3DCAPS9));
 }
 
 void bmx_directx_d3d9_D3DCAPS9_free(D3DCAPS9 * caps) {
@@ -205,7 +206,7 @@ void bmx_directx_d3d9_D3DCAPS9_free(D3DCAPS9 * caps) {
 // ********************************************************
 
 D3DVIEWPORT9 * bmx_directx_d3d9_D3DVIEWPORT9_new() {
-	return (D3DVIEWPORT9*)malloc(sizeof(D3DVIEWPORT9));
+	return (D3DVIEWPORT9*)calloc(1,sizeof(D3DVIEWPORT9));
 }
 
 void bmx_directx_d3d9_D3DVIEWPORT9_free(D3DVIEWPORT9 * vp) {

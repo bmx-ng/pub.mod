@@ -751,8 +751,8 @@ Const WA_CLICKACTIVE=2
 Type MSG
 	Field hWnd:Byte Ptr
 	Field message
-	Field wParam:Byte Ptr
-	Field lParam:Byte Ptr
+	Field wp:WParam
+	Field lp:LParam
 	Field time
 	Field pt_x,pt_y
 End Type
@@ -1137,20 +1137,20 @@ Function RegisterClassA( lpWndClass:Byte Ptr )
 Function RegisterClassW( lpWndClass:Byte Ptr )
 Function CreateWindowExA:Byte Ptr( dwExStyle,lpClassName:Byte Ptr,lpWindowName:Byte Ptr,dwStyle,x,y,nWidth,nHeight,hWndParent,hmenu:Byte Ptr,hInstance:Byte Ptr,lpParam:Byte Ptr )
 Function CreateWindowExW:Byte Ptr( dwExStyle,lpClassName$w,lpWindowName$w,dwStyle,x,y,nWidth,nHeight,hWndParent:Byte Ptr,hmenu:Byte Ptr,hInstance:Byte Ptr,lpParam:Byte Ptr )
-Function DefWindowProcA:Byte Ptr( hWnd:Byte Ptr,MSG:UInt,wParam:Byte Ptr,lParam:Byte Ptr )
-Function DefWindowProcW:Byte Ptr( hWnd:Byte Ptr,MSG:UInt,wParam:Byte Ptr,lParam:Byte Ptr )
+Function DefWindowProcA:Byte Ptr( hWnd:Byte Ptr,MSG:UInt,wp:WParam,lp:LParam)
+Function DefWindowProcW:Byte Ptr( hWnd:Byte Ptr,MSG:UInt,wp:WParam,lp:LParam)
 Function DispatchMessageA( lpMsg:Byte Ptr )
 Function DispatchMessageW( lpMsg:Byte Ptr )
 Function GetMessageA( lpMsg:Byte Ptr,hWnd:Byte Ptr,wMsgFilterMin,wMsgFilterMax )
 Function GetMessageW( lpMsg:Byte Ptr,hWnd:Byte Ptr,wMsgFilterMin,wMsgFilterMax )
 Function PeekMessageA( lpMsg:Byte Ptr,hWnd:Byte Ptr,wMsgFilterMin,wMsgFilterMax,wRemoveMsg )
 Function PeekMessageW( lpMsg:Byte Ptr,hWnd:Byte Ptr,wMsgFilterMin,wMsgFilterMax,wRemoveMsg )
-Function PostMessageA( hWnd:Byte Ptr,MSG,wParam:Byte Ptr,lParam:Byte Ptr )
-Function PostMessageW( hWnd:Byte Ptr,MSG,wParam:Byte Ptr,lParam:Byte Ptr )
-Function SendMessageA( hWnd:Byte Ptr,MSG:UInt,wParam:Byte Ptr,lParam:Byte Ptr )
-Function SendMessageW( hWnd:Byte Ptr,MSG:UInt,wParam:Byte Ptr,lParam:Byte Ptr )
-Function PostThreadMessageA( idThread,Msg,wParam:Byte Ptr,lParam:Byte Ptr )
-Function PostThreadMessageW( idThread,Msg,wParam:Byte Ptr,lParam:Byte Ptr )
+Function PostMessageA( hWnd:Byte Ptr,MSG,wp:WParam,lp:LParam )
+Function PostMessageW( hWnd:Byte Ptr,MSG,wp:WParam,lp:LParam )
+Function SendMessageA( hWnd:Byte Ptr,MSG:UInt,wp:WParam,lp:LParam )
+Function SendMessageW( hWnd:Byte Ptr,MSG:UInt,wp:WParam,lp:LParam )
+Function PostThreadMessageA( idThread,Msg,wp:WParam,lp:LParam )
+Function PostThreadMessageW( idThread,Msg,wp:WParam,lp:LParam )
 Function GetDC:Byte Ptr( hWnd:Byte Ptr )
 Function PostQuitMessage( nExitCode )
 Function TranslateMessage( lpMsg:Byte Ptr )
@@ -1208,8 +1208,8 @@ Function SetClassLongA( hWnd:Byte Ptr,index,newlong )
 Function GetClassLongW( hWnd:Byte Ptr,index )
 Function SetClassLongW( hWnd:Byte Ptr,index,newlong )
 Function IsZoomed( hWnd:Byte Ptr )
-Function CallWindowProcA:Byte Ptr( proc:Byte Ptr,hWnd:Byte Ptr,msg:UInt,wp:Byte Ptr,lp:Byte Ptr )
-Function CallWindowProcW:Byte Ptr( proc:Byte Ptr,hWnd:Byte Ptr,msg:Uint,wp:Byte Ptr,lp:Byte Ptr )
+Function CallWindowProcA:Byte Ptr( proc:Byte Ptr,hWnd:Byte Ptr,msg:UInt,wp:WParam,lp:LParam)
+Function CallWindowProcW:Byte Ptr( proc:Byte Ptr,hWnd:Byte Ptr,msg:Uint,wp:WParam,lp:LParam )
 Function OleInitialize(pvReserved:Byte Ptr)
 Function OleUninitialize()
 Function InitCommonControlsEx(controlsex:Byte Ptr)
@@ -1236,7 +1236,7 @@ Function WindowFromPoint:Byte Ptr( point:Int Ptr )
 Function GetKeyState(vkey)
 
 Function SetWindowsHookExW:Byte Ptr(idHook,lpfn:Byte Ptr,hmod:Byte Ptr,dwThreadId)
-Function CallNextHookEx(hhk:Byte Ptr,ncode,wparam:Byte Ptr,lparam:Byte Ptr)
+Function CallNextHookEx(hhk:Byte Ptr,ncode,wp:WParam,lp:LParam)
 Function UnhookWindowsHookEx(hhk:Byte Ptr)
 
 Function EnableWindow( hWnd:Byte Ptr,enable )
@@ -1245,8 +1245,8 @@ Function IsWindowVisible( hWnd:Byte Ptr )
 Function GetWindowInfo( hWnd:Byte Ptr,winfo:Byte Ptr )
 Function GetCursorPos_( lpPoint:Int Ptr)="GetCursorPos" '"GetCursorPos@4"
 
-Function EnumChildWindows( hWnd:Byte Ptr,lpfn:Byte Ptr,lp:Byte Ptr )
-Function EnumWindows( lpfn:Byte Ptr,lp:Byte Ptr )
+Function EnumChildWindows( hWnd:Byte Ptr,lpfn:Byte Ptr,lp:LParam )
+Function EnumWindows( lpfn:Byte Ptr,lp:LParam )
 
 Function OpenClipboard(hWnd:Byte Ptr)
 Function CloseClipboard()
@@ -1255,7 +1255,7 @@ Function GetClipboardData:Byte Ptr(uFormat:UInt)
 Function EmptyClipboard()
 Function IsClipboardFormatAvailable(format)
 
-Function DefDlgProcW(hDlg:Byte Ptr,Msg:UInt,wParam:Byte Ptr,lParam:Byte Ptr)
+Function DefDlgProcW(hDlg:Byte Ptr,Msg:UInt,wp:WParam,lp:LParam)
 
 Function GetModuleFileNameW:Int( hmodule:Byte Ptr, buffer:Short Ptr, sz:Int)
 Function GetWindowModuleFileNameW:UInt(hwnd:Byte Ptr, lpszFileName:Short Ptr, cchFileNameMax:UInt)

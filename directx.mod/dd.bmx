@@ -1267,7 +1267,7 @@ endrem
 
 Extern "win32"
 
-Type IDirectDraw Extends IUnknown
+Interface IDirectDraw Extends IUnknown_
 	Method Compact()
 	Method CreateClipper()
 	Method CreatePalette()
@@ -1310,9 +1310,9 @@ Rem
  STDMETHOD(SetDisplayMode)(THIS_ DWORD, DWORD,DWORD) PURE;
  STDMETHOD(WaitForVerticalBlank)(THIS_ DWORD, HANDLE ) PURE;
 End Rem
-End Type
+End Interface 
 
-Type IDirectDraw2 Extends IUnknown
+Interface IDirectDraw2 Extends IUnknown_
 
 Rem
  STDMETHOD(Compact)(THIS) PURE;
@@ -1338,9 +1338,9 @@ Rem
  ' Added in the v2 interface
  STDMETHOD(GetAvailableVidMem)(THIS_ LPDDSCAPS, LPDWORD, LPDWORD) PURE;
 End Rem
-End Type
+End Interface 
 
-Type IDirectDraw4 Extends IUnknown
+Interface IDirectDraw4 Extends IUnknown_
 Rem
  STDMETHOD(Compact)(THIS) PURE;
  STDMETHOD(CreateClipper)(THIS_ DWORD, LPDIRECTDRAWCLIPPER FAR*, IUnknown FAR * ) PURE;
@@ -1370,9 +1370,9 @@ Rem
  STDMETHOD(TestCooperativeLevel)(THIS) PURE;
  STDMETHOD(GetDeviceIdentifier)(THIS_ LPDDDEVICEIDENTIFIER, DWORD ) PURE;
 End Rem
-End Type
+End Interface 
 
-Type IDirectDraw7 Extends IUnknown
+Interface IDirectDraw7 Extends IUnknown_
 	Method Compact()
 	Method CreateClipper(flags,clipper:Byte Ptr,outer:Byte Ptr)
 	Method CreatePalette()
@@ -1432,18 +1432,18 @@ Rem
  STDMETHOD(StartModeTest)(THIS_ LPSIZE, DWORD, DWORD ) PURE;
  STDMETHOD(EvaluateMode)(THIS_ DWORD, DWORD * ) PURE;
 End Rem
-End Type
+End Interface 
 
-Type IDirectDrawPalette Extends IUnknown
+Interface IDirectDrawPalette Extends IUnknown_
 Rem
  STDMETHOD(GetCaps)(THIS_ LPDWORD) PURE;
  STDMETHOD(GetEntries)(THIS_ DWORD,DWORD,DWORD,LPPALETTEENTRY) PURE;
  STDMETHOD(Initialize)(THIS_ LPDIRECTDRAW, DWORD, LPPALETTEENTRY) PURE;
  STDMETHOD(SetEntries)(THIS_ DWORD,DWORD,DWORD,LPPALETTEENTRY) PURE;
 End Rem
-End Type
+End Interface 
 
-Type IDirectDrawClipper Extends IUnknown
+Interface IDirectDrawClipper Extends IUnknown_
 	Method GetClipList(rect:Byte Ptr,region:Byte Ptr,flags)
 	Method GetHWnd()
 	Method Initialize()
@@ -1458,9 +1458,9 @@ Rem
  STDMETHOD(SetClipList)(THIS_ LPRGNDATA,DWORD) PURE;
  STDMETHOD(SetHWnd)(THIS_ DWORD, HWND ) PURE;
 End Rem
-End Type
+End Interface 
 
-Type IDirectDrawSurface Extends IUnknown
+Interface IDirectDrawSurface Extends IUnknown_
 	Method AddAttachedSurface(surface:Byte Ptr)
 	Method AddOverlayDirtyRect(rect:Byte Ptr)
 	Method Blt(destrect:Byte Ptr,srcsurface:Byte Ptr,srcrect:Byte Ptr,flags,blitfx:Byte Ptr)
@@ -1506,9 +1506,9 @@ Rem
  STDMETHOD(UpdateOverlayDisplay)(THIS_ DWORD) PURE;
  STDMETHOD(UpdateOverlayZOrder)(THIS_ DWORD, LPDIRECTDRAWSURFACE) PURE;
 End Rem
-End Type
+End Interface 
 
-Type IDirectDrawSUrface2 Extends IUnknown
+Interface IDirectDrawSUrface2 Extends IUnknown_
 Rem
  STDMETHOD(AddAttachedSurface)(THIS_ LPDIRECTDRAWSURFACE2) PURE;
  STDMETHOD(AddOverlayDirtyRect)(THIS_ LPRECT) PURE;
@@ -1548,9 +1548,9 @@ Rem
  STDMETHOD(PageLock)(THIS_ DWORD) PURE;
  STDMETHOD(PageUnlock)(THIS_ DWORD) PURE;
 End Rem
-End Type
+End Interface 
 
-Type IDirectDrawSurface3 Extends IUnknown
+Interface IDirectDrawSurface3 Extends IUnknown_
 Rem
  STDMETHOD(AddAttachedSurface)(THIS_ LPDIRECTDRAWSURFACE3) PURE;
  STDMETHOD(AddOverlayDirtyRect)(THIS_ LPRECT) PURE;
@@ -1592,9 +1592,9 @@ Rem
 ' /*** Added in the V3 interface ***/
  STDMETHOD(SetSurfaceDesc)(THIS_ LPDDSURFACEDESC, DWORD) PURE;
 End Rem
-End Type
+End Interface 
 
-Type IDirectDrawSurface4 Extends IUnknown
+Interface IDirectDrawSurface4 Extends IUnknown_
 Rem
  STDMETHOD(AddAttachedSurface)(THIS_ LPDIRECTDRAWSURFACE4) PURE;
  STDMETHOD(AddOverlayDirtyRect)(THIS_ LPRECT) PURE;
@@ -1642,9 +1642,9 @@ Rem
  STDMETHOD(GetUniquenessValue)(THIS_ LPDWORD) PURE;
  STDMETHOD(ChangeUniquenessValue)(THIS) PURE;
 End Rem
-End Type
+End Interface 
 
-Type IDirectDrawSurface7 Extends IUnknown
+Interface IDirectDrawSurface7 Extends IUnknown_
 	Method AddAttachedSurface(surface:Byte Ptr)
 	Method AddOverlayDirtyRect(rect:Byte Ptr)
 	Method Blt(destrect:Byte Ptr,srcsurface:Byte Ptr,srcrect:Byte Ptr,flags,blitfx:Byte Ptr)
@@ -1733,22 +1733,22 @@ Rem
  STDMETHOD(SetLOD)(THIS_ DWORD) PURE;
  STDMETHOD(GetLOD)(THIS_ LPDWORD) PURE;
 End Rem
-End Type
+End Interface 
 
-Type IDirectDrawColorControl Extends IUnknown
+Interface IDirectDrawColorControl Extends IUnknown_
 Rem
 DECLARE_INTERFACE_( IDirectDrawColorControl, IUnknown )
  STDMETHOD(GetColorControls)(THIS_ LPDDCOLORCONTROL) PURE;
  STDMETHOD(SetColorControls)(THIS_ LPDDCOLORCONTROL) PURE;
 End Rem
-End Type
+End Interface 
 
-Type IDirectDrawGammaControl Extends IUnknown
+Interface IDirectDrawGammaControl Extends IUnknown_
 Rem
  STDMETHOD(GetGammaRamp)(THIS_ DWORD, LPDDGAMMARAMP) PURE;
  STDMETHOD(SetGammaRamp)(THIS_ DWORD, LPDDGAMMARAMP) PURE;
 End Rem
-End Type
+End Interface 
 
 End Extern
 

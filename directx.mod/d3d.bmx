@@ -569,263 +569,56 @@ Type D3DMATRIX
 End Type
 
 Extern
-	Function bmx_directx_D3DDISPLAYMODE_new:Byte Ptr()
-	Function bmx_directx_D3DDISPLAYMODE_free(handle:Byte Ptr)
-	Function bmx_directx_D3DDISPLAYMODE_GetWidth:Int(handle:Byte Ptr)
-	Function bmx_directx_D3DDISPLAYMODE_GetHeight:Int(handle:Byte Ptr)
-	Function bmx_directx_D3DDISPLAYMODE_GetRefreshRate:Int(handle:Byte Ptr)
-	Function bmx_directx_D3DDISPLAYMODE_GetFormat:Int(handle:Byte Ptr)
+Struct D3DDISPLAYMODE
+	Field Width:UInt
+	Field Height:UInt
+	Field RefreshRate:UInt
+	Field Format:Int
+End Struct
 End Extern
-
-Type D3DDISPLAYMODE
-	Field modePtr:Byte Ptr
-	
-	Method New()
-		modePtr = bmx_directx_D3DDISPLAYMODE_new()
-	End Method
-	
-	Method Delete()
-		If modePtr Then
-			bmx_directx_D3DDISPLAYMODE_free(modePtr)
-			modePtr = Null
-		End If
-	End Method
-	
-	Method GetWidth:Int()
-		Return bmx_directx_D3DDISPLAYMODE_GetWidth(modePtr)
-	End Method
-	
-	Method GetHeight:Int()
-		Return bmx_directx_D3DDISPLAYMODE_GetHeight(modePtr)
-	End Method
-	
-	Method GetRefreshRate:Int()
-		Return bmx_directx_D3DDISPLAYMODE_GetRefreshRate(modePtr)
-	End Method
-	
-	Method GetFormat:Int()
-		Return bmx_directx_D3DDISPLAYMODE_GetFormat(modePtr)
-	End Method
-	
-End Type
 
 Type D3DRASTER_STATUS
 	Field InVBlank
 	Field ScanLine
 End Type
 
+Struct D3DPRESENT_PARAMETERS
 
-Extern
-	Function bmx_directx_D3DPRESENT_PARAMETERS_new:Byte Ptr()
-	Function bmx_directx_D3DPRESENT_PARAMETERS_SetBackBufferWidth(handle:Byte Ptr, BackBufferWidth:Int)
-	Function bmx_directx_D3DPRESENT_PARAMETERS_GetBackBufferWidth:Int(handle:Byte Ptr)
-	Function bmx_directx_D3DPRESENT_PARAMETERS_SetBackBufferHeight(handle:Byte Ptr, BackBufferHeight:Int)
-	Function bmx_directx_D3DPRESENT_PARAMETERS_GetBackBufferHeight:Int(handle:Byte Ptr)
-	Function bmx_directx_D3DPRESENT_PARAMETERS_SetBackBufferFormat(handle:Byte Ptr, BackBufferFormat:Int)
-	Function bmx_directx_D3DPRESENT_PARAMETERS_GetBackBufferFormat:Int(handle:Byte Ptr)
-	Function bmx_directx_D3DPRESENT_PARAMETERS_SetBackBufferCount(handle:Byte Ptr, BackBufferCount:Int)
-	Function bmx_directx_D3DPRESENT_PARAMETERS_GetBackBufferCount:Int(handle:Byte Ptr)
-	Function bmx_directx_D3DPRESENT_PARAMETERS_SetMultiSampleType(handle:Byte Ptr, MultiSampleType:Int)
-	Function bmx_directx_D3DPRESENT_PARAMETERS_GetMultiSampleType:Int(handle:Byte Ptr)
-	Function bmx_directx_D3DPRESENT_PARAMETERS_SetMultiSampleQuality(handle:Byte Ptr, MultiSampleQuality:Int)
-	Function bmx_directx_D3DPRESENT_PARAMETERS_GetMultiSampleQuality:Int(handle:Byte Ptr)
-	Function bmx_directx_D3DPRESENT_PARAMETERS_SetSwapEffect(handle:Byte Ptr, SwapEffect:Int)
-	Function bmx_directx_D3DPRESENT_PARAMETERS_GetSwapEffect:Int(handle:Byte Ptr)
-	Function bmx_directx_D3DPRESENT_PARAMETERS_SethDeviceWindow(handle:Byte Ptr, hDeviceWindow:Byte Ptr)
-	Function bmx_directx_D3DPRESENT_PARAMETERS_GethDeviceWindow:Byte Ptr(handle:Byte Ptr)
-	Function bmx_directx_D3DPRESENT_PARAMETERS_SetWindowed(handle:Byte Ptr, Windowed:Int)
-	Function bmx_directx_D3DPRESENT_PARAMETERS_GetWindowed:Int(handle:Byte Ptr)
-	Function bmx_directx_D3DPRESENT_PARAMETERS_SetEnableAutoDepthStencil(handle:Byte Ptr, EnableAutoDepthStencil:Int)
-	Function bmx_directx_D3DPRESENT_PARAMETERS_GetEnableAutoDepthStencil:Int(handle:Byte Ptr)
-	Function bmx_directx_D3DPRESENT_PARAMETERS_SetAutoDepthStencilFormat(handle:Byte Ptr, AutoDepthStencilFormat:Int)
-	Function bmx_directx_D3DPRESENT_PARAMETERS_GetAutoDepthStencilFormat:Int(handle:Byte Ptr)
-	Function bmx_directx_D3DPRESENT_PARAMETERS_SetFlags(handle:Byte Ptr, Flags:Int)
-	Function bmx_directx_D3DPRESENT_PARAMETERS_GetFlags:Int(handle:Byte Ptr)
-	Function bmx_directx_D3DPRESENT_PARAMETERS_SetFullScreen_RefreshRateInHz(handle:Byte Ptr, FullScreen_RefreshRateInHz:Int)
-	Function bmx_directx_D3DPRESENT_PARAMETERS_GetFullScreen_RefreshRateInHz:Int(handle:Byte Ptr)
-	Function bmx_directx_D3DPRESENT_PARAMETERS_SetPresentationInterval(handle:Byte Ptr, PresentationInterval:Int)
-	Function bmx_directx_D3DPRESENT_PARAMETERS_GetPresentationInterval:Int(handle:Byte Ptr)
-	Function bmx_directx_D3DPRESENT_PARAMETERS_free(handle:Byte Ptr)
-End Extern
+	Field BackBufferWidth:UInt
+	Field BackBufferHeight:UInt
+	Field BackBufferFormat:Int
+	Field BackBufferCount:UInt
 
-Type D3DPRESENT_PARAMETERS
+	Field MultiSampleType:Int
+	Field MultiSampleQuality:UInt
 
-	Field paramPtr:Byte Ptr
-	
-	Method New()
-		paramPtr = bmx_directx_D3DPRESENT_PARAMETERS_new()
-	End Method
+	Field SwapEffect:Int
+	Field hDeviceWindow:Byte Ptr
+	Field Windowed:Int
+	Field EnableAutoDepthStencil:Int
+	Field AutoDepthStencilFormat:Int
+	Field Flags:UInt
 
-	Method SetBackBufferWidth(BackBufferWidth:Int)
-		bmx_directx_D3DPRESENT_PARAMETERS_SetBackBufferWidth(paramPtr, BackBufferWidth)
-	End Method
+	Field FullScreen_RefreshRateInHz:UInt
+	Field PresentationInterval:UInt
 	
-	Method GetBackBufferWidth:Int()
-		Return bmx_directx_D3DPRESENT_PARAMETERS_GetBackBufferWidth(paramPtr)
-	End Method
-	
-	Method SetBackBufferHeight(BackBufferHeight:Int)
-		bmx_directx_D3DPRESENT_PARAMETERS_SetBackBufferHeight(paramPtr, BackBufferHeight)
-	End Method
-	
-	Method GetBackBufferHeight:Int()
-		Return bmx_directx_D3DPRESENT_PARAMETERS_GetBackBufferHeight(paramPtr)
-	End Method
-	
-	Method SetBackBufferFormat(BackBufferFormat:Int)
-		bmx_directx_D3DPRESENT_PARAMETERS_SetBackBufferFormat(paramPtr, BackBufferFormat)
-	End Method
-	
-	Method GetBackBufferFormat:Int()
-		Return bmx_directx_D3DPRESENT_PARAMETERS_GetBackBufferFormat(paramPtr)
-	End Method
-	
-	Method SetBackBufferCount(BackBufferCount:Int)
-		bmx_directx_D3DPRESENT_PARAMETERS_SetBackBufferCount(paramPtr, BackBufferCount)
-	End Method
-	
-	Method GetBackBufferCount:Int()
-		Return bmx_directx_D3DPRESENT_PARAMETERS_GetBackBufferCount(paramPtr)
-	End Method
-	
-	Method SetMultiSampleType(MultiSampleType:Int)
-		bmx_directx_D3DPRESENT_PARAMETERS_SetMultiSampleType(paramPtr, MultiSampleType)
-	End Method
-	
-	Method GetMultiSampleType:Int()
-		Return bmx_directx_D3DPRESENT_PARAMETERS_GetMultiSampleType(paramPtr)
-	End Method
-	
-	Method SetMultiSampleQuality(MultiSampleQuality:Int)
-		bmx_directx_D3DPRESENT_PARAMETERS_SetMultiSampleQuality(paramPtr, MultiSampleQuality)
-	End Method
-	
-	Method GetMultiSampleQuality:Int()
-		Return bmx_directx_D3DPRESENT_PARAMETERS_GetMultiSampleQuality(paramPtr)
-	End Method
-	
-	Method SetSwapEffect(SwapEffect:Int)
-		bmx_directx_D3DPRESENT_PARAMETERS_SetSwapEffect(paramPtr, SwapEffect)
-	End Method
-	
-	Method GetSwapEffect:Int()
-		Return bmx_directx_D3DPRESENT_PARAMETERS_GetSwapEffect(paramPtr)
-	End Method
-	
-	Method SethDeviceWindow(hDeviceWindow:Byte Ptr)
-		bmx_directx_D3DPRESENT_PARAMETERS_SethDeviceWindow(paramPtr, hDeviceWindow)
-	End Method
-	
-	Method GethDeviceWindow:Byte Ptr()
-		Return bmx_directx_D3DPRESENT_PARAMETERS_GethDeviceWindow(paramPtr)
-	End Method
-	
-	Method SetWindowed(Windowed:Int)
-		bmx_directx_D3DPRESENT_PARAMETERS_SetWindowed(paramPtr, Windowed)
-	End Method
-	
-	Method GetWindowed:Int()
-		Return bmx_directx_D3DPRESENT_PARAMETERS_GetWindowed(paramPtr)
-	End Method
-	
-	Method SetEnableAutoDepthStencil(EnableAutoDepthStencil:Int)
-		bmx_directx_D3DPRESENT_PARAMETERS_SetEnableAutoDepthStencil(paramPtr, EnableAutoDepthStencil)
-	End Method
-	
-	Method GetEnableAutoDepthStencil:Int()
-		Return bmx_directx_D3DPRESENT_PARAMETERS_GetEnableAutoDepthStencil(paramPtr)
-	End Method
-	
-	Method SetAutoDepthStencilFormat(AutoDepthStencilFormat:Int)
-		bmx_directx_D3DPRESENT_PARAMETERS_SetAutoDepthStencilFormat(paramPtr, AutoDepthStencilFormat)
-	End Method
-	
-	Method GetAutoDepthStencilFormat:Int()
-		Return bmx_directx_D3DPRESENT_PARAMETERS_GetAutoDepthStencilFormat(paramPtr)
-	End Method
-	
-	Method SetFlags(Flags:Int)
-		bmx_directx_D3DPRESENT_PARAMETERS_SetFlags(paramPtr, Flags)
-	End Method
-	
-	Method GetFlags:Int()
-		Return bmx_directx_D3DPRESENT_PARAMETERS_GetFlags(paramPtr)
-	End Method
-	
-	Method SetFullScreen_RefreshRateInHz(FullScreen_RefreshRateInHz:Int)
-		bmx_directx_D3DPRESENT_PARAMETERS_SetFullScreen_RefreshRateInHz(paramPtr, FullScreen_RefreshRateInHz)
-	End Method
-	
-	Method GetFullScreen_RefreshRateInHz:Int()
-		Return bmx_directx_D3DPRESENT_PARAMETERS_GetFullScreen_RefreshRateInHz(paramPtr)
-	End Method
-	
-	Method SetPresentationInterval(PresentationInterval:Int)
-		bmx_directx_D3DPRESENT_PARAMETERS_SetPresentationInterval(paramPtr, PresentationInterval)
-	End Method
-	
-	Method GetPresentationInterval:Int()
-		Return bmx_directx_D3DPRESENT_PARAMETERS_GetPresentationInterval(paramPtr)
-	End Method
-	
-Rem	
-	Field BackBufferWidth
-	Field BackBufferHeight
-	Field BackBufferFormat
-	Field BackBufferCount
-
-	Field MultiSampleType
-	Field MultiSampleQuality
-
-	Field SwapEffect
-	Field hDeviceWindow
-	Field Windowed
-	Field EnableAutoDepthStencil
-	Field AutoDepthStencilFormat
-	Field Flags
-
-	Field FullScreen_RefreshRateInHz
-	Field PresentationInterval
-End Rem	
-	Method Delete()
-		If paramPtr Then
-			bmx_directx_D3DPRESENT_PARAMETERS_free(paramPtr)
-			paramPtr = Null
-		End If
-	End Method
-	
-End Type
+End Struct
 
 Extern
 	Function bmx_directx_D3DSURFACE_DESC_new:Byte Ptr()
 	Function bmx_directx_D3DSURFACE_DESC_free(handle:Byte Ptr)
 End Extern
 
-Type D3DSURFACE_DESC
-
-	Field descPtr:Byte Ptr
-	
-	Method New()
-		descPtr = bmx_directx_D3DSURFACE_DESC_new()
-	End Method
-
-	Method Delete()
-		If descPtr Then
-			bmx_directx_D3DSURFACE_DESC_free(descPtr)
-			descPtr = Null
-		End If
-	End Method
-Rem
+Struct D3DSURFACE_DESC
 	Field Format
 	Field Type_
 	Field Usage
 	Field Pool
 	Field MultiSampleType
 	Field MultiSampleQuality
-	Field Width
-	Field Height
-End Rem
-End Type
+	Field Width:UInt
+	Field Height:UInt
+End Struct
 
 Type D3DLOCKED_RECT
 	Field Pitch

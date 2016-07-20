@@ -469,6 +469,7 @@ Extern
 	Function bmx_win32_LOGFONTW_lfQuality:Int(handle:Byte Ptr)
 	Function bmx_win32_LOGFONTW_lfPitchAndFamily:Int(handle:Byte Ptr)
 	Function bmx_win32_LOGFONTW_lfFaceName:Int(handle:Byte Ptr)
+	Function bmx_win32_LOGFONTW_size:Int()
 End Extern
 Type LOGFONTW
 	Field fontPtr:Byte Ptr
@@ -489,6 +490,10 @@ Type LOGFONTW
 		End If
 		fontPtr = Null
 	End Method
+	
+	Function Size:Int()
+		Return bmx_win32_LOGFONTW_size()
+	End Function
 	
 	Function _create:LOGFONTW(fontPtr:Byte Ptr)
 		Local this:LOGFONTW = New LOGFONTW
