@@ -18,15 +18,15 @@
 '
 SuperStrict
 Extern
-	Function _mm_addsub_pd:Double128(a:Double128,b:Double128)="_mm_addsub_pd"
-	Function _mm_addsub_ps:Float128(a:Float128,b:Float128)="_mm_addsub_ps"
-	Function _mm_hadd_pd:Double128(a:Double128,b:Double128)="_mm_hadd_pd"
-	Function _mm_hadd_ps:Float128(a:Float128,b:Float128)="_mm_hadd_ps"
-	Function _mm_hsub_pd:Double128(a:Double128,b:Double128)="_mm_hsub_pd"
-	Function _mm_hsub_ps:Float128(a:Float128,b:Float128)="_mm_hsub_ps"
-	Function _mm_lddqu_si128:Int128(mem_addr:Int128 Ptr)="_mm_lddqu_si128"
-	Function _mm_loaddup_pd:Double128(mem_addr:Double Ptr)="_mm_loaddup_pd"
-	Function _mm_movedup_pd:Double128(a:Double128)="_mm_movedup_pd"
-	Function _mm_movehdup_ps:Float128(a:Float128)="_mm_movehdup_ps"
-	Function _mm_moveldup_ps:Float128(a:Float128)="_mm_moveldup_ps"
+	Function _mm_addsub_pd:Double128(a:Double128,b:Double128)="__m128d _mm_addsub_pd(__m128d ,__m128d )!"
+	Function _mm_addsub_ps:Float128(a:Float128,b:Float128)="__m128 _mm_addsub_ps(__m128 ,__m128 )!"
+	Function _mm_hadd_pd:Double128(a:Double128,b:Double128)="__m128d _mm_hadd_pd(__m128d ,__m128d )!"
+	Function _mm_hadd_ps:Float128(a:Float128,b:Float128)="__m128 _mm_hadd_ps(__m128 ,__m128 )!"
+	Function _mm_hsub_pd:Double128(a:Double128,b:Double128)="__m128d _mm_hsub_pd(__m128d ,__m128d )!"
+	Function _mm_hsub_ps:Float128(a:Float128,b:Float128)="__m128 _mm_hsub_ps(__m128 ,__m128 )!"
+	Function _mm_lddqu_si128:Int128(mem_addr:Int128 Ptr)="__m128i _mm_lddqu_si128(__m128i* )!"
+	Function _mm_loaddup_pd:Double128(mem_addr:Double Ptr)="__m128d _mm_loaddup_pd(double* )!"
+	Function _mm_movedup_pd:Double128(a:Double128)="__m128d _mm_movedup_pd(__m128d )!"
+	Function _mm_movehdup_ps:Float128(a:Float128)="__m128 _mm_movehdup_ps(__m128 )!"
+	Function _mm_moveldup_ps:Float128(a:Float128)="__m128 _mm_moveldup_ps(__m128 )!"
 EndExtern

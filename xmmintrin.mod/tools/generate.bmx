@@ -74,16 +74,16 @@ For Local version$ = EachIn SSE_VERSIONS
 		Local parser:tparser = New tparser(LoadText(version+".txt"))
 		
 		Local outstream:TStream = WriteFile(path)
-		Local xstream:TStream = WriteFile(xfile)
+		'Local xstream:TStream = WriteFile(xfile)
 		
 		WriteLine(outstream, headerdata)
 		WriteLine(outstream,"SuperStrict")
 		WriteLine(outstream,"Extern") 
-		parser.parse(outstream,xstream)
+		parser.parse(outstream)',xstream)
 		WriteLine(outstream,"EndExtern")
 
 		CloseFile outstream
-		CloseFile xstream
+		'CloseFile xstream
 		
 		If FileType(path)
 			moduledata :+ "Import ~q" + file + "~q"
@@ -147,7 +147,7 @@ Type tparser
 		NextToken()
 	EndMethod
 	
-	Method Parse(outfile:TStream,xfile:TStream)
+	Method Parse(outfile:TStream)',xfile:TStream)
 		While _posb < _length
 			If _token = "'"
 				SkipComment()
@@ -165,7 +165,7 @@ Type tparser
 					ParseMacro()
 				Else
 					ParseFunction()
-					FilterOutputToXFile(xfile)
+					'FilterOutputToXFile(xfile)
 					FilterOutputToFile(outfile)
 					_out = "~t"
 					_xfunc = ""
@@ -238,7 +238,7 @@ Type tparser
 	
 		Emit(")")
 		_xfunc :+ ")!"
-		Emit("=~q" + funcname + "~q")
+		Emit("=~q" + _xfunc + "~q")
 
 		NextToken
 	EndMethod
