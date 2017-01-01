@@ -1,4 +1,3 @@
-
 Strict
 
 Rem
@@ -567,341 +566,341 @@ Const GL_COLOR_INDEX4_EXT=$80E4
 Const GL_COLOR_INDEX8_EXT=$80E5
 Const GL_COLOR_INDEX12_EXT=$80E6
 Const GL_COLOR_INDEX16_EXT=$80E7
-Function glAccum(op_:Int,value_:Float)
-Function glAlphaFunc(func_:Int,ref_:Float)
-Function glAreTexturesResident:Byte(n_:Int,textures_:Int Ptr,residences_:Byte Ptr)
-Function glArrayElement(i_:Int)
-Function glBegin(mode_:Int)
-Function glBindTexture(target_:Int,texture_:Int)
-Function glBitmap(width_:Int,height_:Int,xorig_:Float,yorig_:Float,xmove_:Float,ymove_:Float,bitmap_:Byte Ptr)
-Function glBlendFunc(sfactor_:Int,dfactor_:Int)
-Function glCallList(list_:Int)
-Function glCallLists(n_:Int,type_:Int,lists_:Byte Ptr)
-Function glClear(mask_:Int)
-Function glClearAccum(red_:Float,green_:Float,blue_:Float,alpha_:Float)
-Function glClearColor(red_:Float,green_:Float,blue_:Float,alpha_:Float)
-Function glClearDepth(depth_:Double)
-Function glClearIndex(c_:Float)
-Function glClearStencil(s_:Int)
-Function glClipPlane(plane_:Int,equation_:Double Ptr)
-Function glColor3b(red_:Byte,green_:Byte,blue_:Byte)
-Function glColor3bv(v_:Byte Ptr)
-Function glColor3d(red_:Double,green_:Double,blue_:Double)
-Function glColor3dv(v_:Double Ptr)
-Function glColor3f(red_:Float,green_:Float,blue_:Float)
-Function glColor3fv(v_:Float Ptr)
-Function glColor3i(red_:Int,green_:Int,blue_:Int)
-Function glColor3iv(v_:Int Ptr)
-Function glColor3s(red_:Short,green_:Short,blue_:Short)
-Function glColor3sv(v_:Short Ptr)
-Function glColor3ub(red_:Byte,green_:Byte,blue_:Byte)
-Function glColor3ubv(v_:Byte Ptr)
-Function glColor3ui(red_:Int,green_:Int,blue_:Int)
-Function glColor3uiv(v_:Int Ptr)
-Function glColor3us(red_:Short,green_:Short,blue_:Short)
-Function glColor3usv(v_:Short Ptr)
-Function glColor4b(red_:Byte,green_:Byte,blue_:Byte,alpha_:Byte)
-Function glColor4bv(v_:Byte Ptr)
-Function glColor4d(red_:Double,green_:Double,blue_:Double,alpha_:Double)
-Function glColor4dv(v_:Double Ptr)
-Function glColor4f(red_:Float,green_:Float,blue_:Float,alpha_:Float)
-Function glColor4fv(v_:Float Ptr)
-Function glColor4i(red_:Int,green_:Int,blue_:Int,alpha_:Int)
-Function glColor4iv(v_:Int Ptr)
-Function glColor4s(red_:Short,green_:Short,blue_:Short,alpha_:Short)
-Function glColor4sv(v_:Short Ptr)
-Function glColor4ub(red_:Byte,green_:Byte,blue_:Byte,alpha_:Byte)
-Function glColor4ubv(v_:Byte Ptr)
-Function glColor4ui(red_:Int,green_:Int,blue_:Int,alpha_:Int)
-Function glColor4uiv(v_:Int Ptr)
-Function glColor4us(red_:Short,green_:Short,blue_:Short,alpha_:Short)
-Function glColor4usv(v_:Short Ptr)
-Function glColorMask(red_:Byte,green_:Byte,blue_:Byte,alpha_:Byte)
-Function glColorMaterial(face_:Int,mode_:Int)
-Function glColorPointer(size_:Int,type_:Int,stride_:Int,pointer_:Byte Ptr)
-Function glCopyPixels(x_:Int,y_:Int,width_:Int,height_:Int,type_:Int)
-Function glCopyTexImage1D(target_:Int,level_:Int,internalFormat_:Int,x_:Int,y_:Int,width_:Int,border_:Int)
-Function glCopyTexImage2D(target_:Int,level_:Int,internalFormat_:Int,x_:Int,y_:Int,width_:Int,height_:Int,border_:Int)
-Function glCopyTexSubImage1D(target_:Int,level_:Int,xoffset_:Int,x_:Int,y_:Int,width_:Int)
-Function glCopyTexSubImage2D(target_:Int,level_:Int,xoffset_:Int,yoffset_:Int,x_:Int,y_:Int,width_:Int,height_:Int)
-Function glCullFace(mode_:Int)
-Function glDeleteLists(list_:Int,range_:Int)
-Function glDeleteTextures(n_:Int,textures_:Int Ptr)
-Function glDepthFunc(func_:Int)
-Function glDepthMask(flag_:Byte)
-Function glDepthRange(zNear_:Double,zFar_:Double)
-Function glDisable(cap_:Int)
-Function glDisableClientState(array_:Int)
-Function glDrawArrays(mode_:Int,first_:Int,count_:Int)
-Function glDrawBuffer(mode_:Int)
-Function glDrawElements(mode_:Int,count_:Int,type_:Int,indices_:Byte Ptr)
-Function glDrawPixels(width_:Int,height_:Int,format_:Int,type_:Int,pixels_:Byte Ptr)
-Function glEdgeFlag(flag_:Byte)
-Function glEdgeFlagPointer(stride_:Int,pointer_:Byte Ptr)
-Function glEdgeFlagv(flag_:Byte Ptr)
-Function glEnable(cap_:Int)
-Function glEnableClientState(array_:Int)
-Function glEnd()
-Function glEndList()
-Function glEvalCoord1d(u_:Double)
-Function glEvalCoord1dv(u_:Double Ptr)
-Function glEvalCoord1f(u_:Float)
-Function glEvalCoord1fv(u_:Float Ptr)
-Function glEvalCoord2d(u_:Double,v_:Double)
-Function glEvalCoord2dv(u_:Double Ptr)
-Function glEvalCoord2f(u_:Float,v_:Float)
-Function glEvalCoord2fv(u_:Float Ptr)
-Function glEvalMesh1(mode_:Int,i1_:Int,i2_:Int)
-Function glEvalMesh2(mode_:Int,i1_:Int,i2_:Int,j1_:Int,j2_:Int)
-Function glEvalPoint1(i_:Int)
-Function glEvalPoint2(i_:Int,j_:Int)
-Function glFeedbackBuffer(size_:Int,type_:Int,buffer_:Float Ptr)
-Function glFinish()
-Function glFlush()
-Function glFogf(pname_:Int,param_:Float)
-Function glFogfv(pname_:Int,params_:Float Ptr)
-Function glFogi(pname_:Int,param_:Int)
-Function glFogiv(pname_:Int,params_:Int Ptr)
-Function glFrontFace(mode_:Int)
-Function glFrustum(left_:Double,right_:Double,bottom_:Double,top_:Double,zNear_:Double,zFar_:Double)
-Function glGenLists:Int(range_:Int)
-Function glGenTextures(n_:Int,textures_:Int Ptr)
-Function glGetBooleanv(pname_:Int,params_:Byte Ptr)
-Function glGetClipPlane(plane_:Int,equation_:Double Ptr)
-Function glGetDoublev(pname_:Int,params_:Double Ptr)
-Function glGetError:Int()
-Function glGetFloatv(pname_:Int,params_:Float Ptr)
-Function glGetIntegerv(pname_:Int,params_:Int Ptr)
-Function glGetLightfv(light_:Int,pname_:Int,params_:Float Ptr)
-Function glGetLightiv(light_:Int,pname_:Int,params_:Int Ptr)
-Function glGetMapdv(target_:Int,query_:Int,v_:Double Ptr)
-Function glGetMapfv(target_:Int,query_:Int,v_:Float Ptr)
-Function glGetMapiv(target_:Int,query_:Int,v_:Int Ptr)
-Function glGetMaterialfv(face_:Int,pname_:Int,params_:Float Ptr)
-Function glGetMaterialiv(face_:Int,pname_:Int,params_:Int Ptr)
-Function glGetPixelMapfv(map_:Int,values_:Float Ptr)
-Function glGetPixelMapuiv(map_:Int,values_:Int Ptr)
-Function glGetPixelMapusv(map_:Int,values_:Short Ptr)
-Function glGetPointerv(pname_:Int,params_:Byte Ptr Ptr)
-Function glGetPolygonStipple(mask_:Byte Ptr)
-Function glGetString:Byte Ptr(name_:Int)
-Function glGetTexEnvfv(target_:Int,pname_:Int,params_:Float Ptr)
-Function glGetTexEnviv(target_:Int,pname_:Int,params_:Int Ptr)
-Function glGetTexGendv(coord_:Int,pname_:Int,params_:Double Ptr)
-Function glGetTexGenfv(coord_:Int,pname_:Int,params_:Float Ptr)
-Function glGetTexGeniv(coord_:Int,pname_:Int,params_:Int Ptr)
-Function glGetTexImage(target_:Int,level_:Int,format_:Int,type_:Int,pixels_:Byte Ptr)
-Function glGetTexLevelParameterfv(target_:Int,level_:Int,pname_:Int,params_:Float Ptr)
-Function glGetTexLevelParameteriv(target_:Int,level_:Int,pname_:Int,params_:Int Ptr)
-Function glGetTexParameterfv(target_:Int,pname_:Int,params_:Float Ptr)
-Function glGetTexParameteriv(target_:Int,pname_:Int,params_:Int Ptr)
-Function glHint(target_:Int,mode_:Int)
-Function glIndexMask(mask_:Int)
-Function glIndexPointer(type_:Int,stride_:Int,pointer_:Byte Ptr)
-Function glIndexd(c_:Double)
-Function glIndexdv(c_:Double Ptr)
-Function glIndexf(c_:Float)
-Function glIndexfv(c_:Float Ptr)
-Function glIndexi(c_:Int)
-Function glIndexiv(c_:Int Ptr)
-Function glIndexs(c_:Short)
-Function glIndexsv(c_:Short Ptr)
-Function glIndexub(c_:Byte)
-Function glIndexubv(c_:Byte Ptr)
-Function glInitNames()
-Function glInterleavedArrays(format_:Int,stride_:Int,pointer_:Byte Ptr)
-Function glIsEnabled:Byte(cap_:Int)
-Function glIsList:Byte(list_:Int)
-Function glIsTexture:Byte(texture_:Int)
-Function glLightModelf(pname_:Int,param_:Float)
-Function glLightModelfv(pname_:Int,params_:Float Ptr)
-Function glLightModeli(pname_:Int,param_:Int)
-Function glLightModeliv(pname_:Int,params_:Int Ptr)
-Function glLightf(light_:Int,pname_:Int,param_:Float)
-Function glLightfv(light_:Int,pname_:Int,params_:Float Ptr)
-Function glLighti(light_:Int,pname_:Int,param_:Int)
-Function glLightiv(light_:Int,pname_:Int,params_:Int Ptr)
-Function glLineStipple(factor_:Int,pattern_:Short)
-Function glLineWidth(width_:Float)
-Function glListBase(base_:Int)
-Function glLoadIdentity()
-Function glLoadMatrixd(m_:Double Ptr)
-Function glLoadMatrixf(m_:Float Ptr)
-Function glLoadName(name_:Int)
-Function glLogicOp(opcode_:Int)
-Function glMap1d(target_:Int,u1_:Double,u2_:Double,stride_:Int,order_:Int,points_:Double Ptr)
-Function glMap1f(target_:Int,u1_:Float,u2_:Float,stride_:Int,order_:Int,points_:Float Ptr)
-Function glMap2d(target_:Int,u1_:Double,u2_:Double,ustride_:Int,uorder_:Int,v1_:Double,v2_:Double,vstride_:Int,vorder_:Int,points_:Double Ptr)
-Function glMap2f(target_:Int,u1_:Float,u2_:Float,ustride_:Int,uorder_:Int,v1_:Float,v2_:Float,vstride_:Int,vorder_:Int,points_:Float Ptr)
-Function glMapGrid1d(un_:Int,u1_:Double,u2_:Double)
-Function glMapGrid1f(un_:Int,u1_:Float,u2_:Float)
-Function glMapGrid2d(un_:Int,u1_:Double,u2_:Double,vn_:Int,v1_:Double,v2_:Double)
-Function glMapGrid2f(un_:Int,u1_:Float,u2_:Float,vn_:Int,v1_:Float,v2_:Float)
-Function glMaterialf(face_:Int,pname_:Int,param_:Float)
-Function glMaterialfv(face_:Int,pname_:Int,params_:Float Ptr)
-Function glMateriali(face_:Int,pname_:Int,param_:Int)
-Function glMaterialiv(face_:Int,pname_:Int,params_:Int Ptr)
-Function glMatrixMode(mode_:Int)
-Function glMultMatrixd(m_:Double Ptr)
-Function glMultMatrixf(m_:Float Ptr)
-Function glNewList(list_:Int,mode_:Int)
-Function glNormal3b(nx_:Byte,ny_:Byte,nz_:Byte)
-Function glNormal3bv(v_:Byte Ptr)
-Function glNormal3d(nx_:Double,ny_:Double,nz_:Double)
-Function glNormal3dv(v_:Double Ptr)
-Function glNormal3f(nx_:Float,ny_:Float,nz_:Float)
-Function glNormal3fv(v_:Float Ptr)
-Function glNormal3i(nx_:Int,ny_:Int,nz_:Int)
-Function glNormal3iv(v_:Int Ptr)
-Function glNormal3s(nx_:Short,ny_:Short,nz_:Short)
-Function glNormal3sv(v_:Short Ptr)
-Function glNormalPointer(type_:Int,stride_:Int,pointer_:Byte Ptr)
-Function glOrtho(left_:Double,right_:Double,bottom_:Double,top_:Double,zNear_:Double,zFar_:Double)
-Function glPassThrough(token_:Float)
-Function glPixelMapfv(map_:Int,mapsize_:Int,values_:Float Ptr)
-Function glPixelMapuiv(map_:Int,mapsize_:Int,values_:Int Ptr)
-Function glPixelMapusv(map_:Int,mapsize_:Int,values_:Short Ptr)
-Function glPixelStoref(pname_:Int,param_:Float)
-Function glPixelStorei(pname_:Int,param_:Int)
-Function glPixelTransferf(pname_:Int,param_:Float)
-Function glPixelTransferi(pname_:Int,param_:Int)
-Function glPixelZoom(xfactor_:Float,yfactor_:Float)
-Function glPointSize(size_:Float)
-Function glPolygonMode(face_:Int,mode_:Int)
-Function glPolygonOffset(factor_:Float,units_:Float)
-Function glPolygonStipple(mask_:Byte Ptr)
-Function glPopAttrib()
-Function glPopClientAttrib()
-Function glPopMatrix()
-Function glPopName()
-Function glPrioritizeTextures(n_:Int,textures_:Int Ptr,priorities_:Float Ptr)
-Function glPushAttrib(mask_:Int)
-Function glPushClientAttrib(mask_:Int)
-Function glPushMatrix()
-Function glPushName(name_:Int)
-Function glRasterPos2d(x_:Double,y_:Double)
-Function glRasterPos2dv(v_:Double Ptr)
-Function glRasterPos2f(x_:Float,y_:Float)
-Function glRasterPos2fv(v_:Float Ptr)
-Function glRasterPos2i(x_:Int,y_:Int)
-Function glRasterPos2iv(v_:Int Ptr)
-Function glRasterPos2s(x_:Short,y_:Short)
-Function glRasterPos2sv(v_:Short Ptr)
-Function glRasterPos3d(x_:Double,y_:Double,z_:Double)
-Function glRasterPos3dv(v_:Double Ptr)
-Function glRasterPos3f(x_:Float,y_:Float,z_:Float)
-Function glRasterPos3fv(v_:Float Ptr)
-Function glRasterPos3i(x_:Int,y_:Int,z_:Int)
-Function glRasterPos3iv(v_:Int Ptr)
-Function glRasterPos3s(x_:Short,y_:Short,z_:Short)
-Function glRasterPos3sv(v_:Short Ptr)
-Function glRasterPos4d(x_:Double,y_:Double,z_:Double,w_:Double)
-Function glRasterPos4dv(v_:Double Ptr)
-Function glRasterPos4f(x_:Float,y_:Float,z_:Float,w_:Float)
-Function glRasterPos4fv(v_:Float Ptr)
-Function glRasterPos4i(x_:Int,y_:Int,z_:Int,w_:Int)
-Function glRasterPos4iv(v_:Int Ptr)
-Function glRasterPos4s(x_:Short,y_:Short,z_:Short,w_:Short)
-Function glRasterPos4sv(v_:Short Ptr)
-Function glReadBuffer(mode_:Int)
-Function glReadPixels(x_:Int,y_:Int,width_:Int,height_:Int,format_:Int,type_:Int,pixels_:Byte Ptr)
-Function glRectd(x1_:Double,y1_:Double,x2_:Double,y2_:Double)
-Function glRectdv(v1_:Double Ptr,v2_:Double Ptr)
-Function glRectf(x1_:Float,y1_:Float,x2_:Float,y2_:Float)
-Function glRectfv(v1_:Float Ptr,v2_:Float Ptr)
-Function glRecti(x1_:Int,y1_:Int,x2_:Int,y2_:Int)
-Function glRectiv(v1_:Int Ptr,v2_:Int Ptr)
-Function glRects(x1_:Short,y1_:Short,x2_:Short,y2_:Short)
-Function glRectsv(v1_:Short Ptr,v2_:Short Ptr)
-Function glRenderMode:Int(mode_:Int)
-Function glRotated(angle_:Double,x_:Double,y_:Double,z_:Double)
-Function glRotatef(angle_:Float,x_:Float,y_:Float,z_:Float)
-Function glScaled(x_:Double,y_:Double,z_:Double)
-Function glScalef(x_:Float,y_:Float,z_:Float)
-Function glScissor(x_:Int,y_:Int,width_:Int,height_:Int)
-Function glSelectBuffer(size_:Int,buffer_:Int Ptr)
-Function glShadeModel(mode_:Int)
-Function glStencilFunc(func_:Int,ref_:Int,mask_:Int)
-Function glStencilMask(mask_:Int)
-Function glStencilOp(fail_:Int,zfail_:Int,zpass_:Int)
-Function glTexCoord1d(s_:Double)
-Function glTexCoord1dv(v_:Double Ptr)
-Function glTexCoord1f(s_:Float)
-Function glTexCoord1fv(v_:Float Ptr)
-Function glTexCoord1i(s_:Int)
-Function glTexCoord1iv(v_:Int Ptr)
-Function glTexCoord1s(s_:Short)
-Function glTexCoord1sv(v_:Short Ptr)
-Function glTexCoord2d(s_:Double,t_:Double)
-Function glTexCoord2dv(v_:Double Ptr)
-Function glTexCoord2f(s_:Float,t_:Float)
-Function glTexCoord2fv(v_:Float Ptr)
-Function glTexCoord2i(s_:Int,t_:Int)
-Function glTexCoord2iv(v_:Int Ptr)
-Function glTexCoord2s(s_:Short,t_:Short)
-Function glTexCoord2sv(v_:Short Ptr)
-Function glTexCoord3d(s_:Double,t_:Double,r_:Double)
-Function glTexCoord3dv(v_:Double Ptr)
-Function glTexCoord3f(s_:Float,t_:Float,r_:Float)
-Function glTexCoord3fv(v_:Float Ptr)
-Function glTexCoord3i(s_:Int,t_:Int,r_:Int)
-Function glTexCoord3iv(v_:Int Ptr)
-Function glTexCoord3s(s_:Short,t_:Short,r_:Short)
-Function glTexCoord3sv(v_:Short Ptr)
-Function glTexCoord4d(s_:Double,t_:Double,r_:Double,q_:Double)
-Function glTexCoord4dv(v_:Double Ptr)
-Function glTexCoord4f(s_:Float,t_:Float,r_:Float,q_:Float)
-Function glTexCoord4fv(v_:Float Ptr)
-Function glTexCoord4i(s_:Int,t_:Int,r_:Int,q_:Int)
-Function glTexCoord4iv(v_:Int Ptr)
-Function glTexCoord4s(s_:Short,t_:Short,r_:Short,q_:Short)
-Function glTexCoord4sv(v_:Short Ptr)
-Function glTexCoordPointer(size_:Int,type_:Int,stride_:Int,pointer_:Byte Ptr)
-Function glTexEnvf(target_:Int,pname_:Int,param_:Float)
-Function glTexEnvfv(target_:Int,pname_:Int,params_:Float Ptr)
-Function glTexEnvi(target_:Int,pname_:Int,param_:Int)
-Function glTexEnviv(target_:Int,pname_:Int,params_:Int Ptr)
-Function glTexGend(coord_:Int,pname_:Int,param_:Double)
-Function glTexGendv(coord_:Int,pname_:Int,params_:Double Ptr)
-Function glTexGenf(coord_:Int,pname_:Int,param_:Float)
-Function glTexGenfv(coord_:Int,pname_:Int,params_:Float Ptr)
-Function glTexGeni(coord_:Int,pname_:Int,param_:Int)
-Function glTexGeniv(coord_:Int,pname_:Int,params_:Int Ptr)
-Function glTexImage1D(target_:Int,level_:Int,internalformat_:Int,width_:Int,border_:Int,format_:Int,type_:Int,pixels_:Byte Ptr)
-Function glTexImage2D(target_:Int,level_:Int,internalformat_:Int,width_:Int,height_:Int,border_:Int,format_:Int,type_:Int,pixels_:Byte Ptr)
-Function glTexParameterf(target_:Int,pname_:Int,param_:Float)
-Function glTexParameterfv(target_:Int,pname_:Int,params_:Float Ptr)
-Function glTexParameteri(target_:Int,pname_:Int,param_:Int)
-Function glTexParameteriv(target_:Int,pname_:Int,params_:Int Ptr)
-Function glTexSubImage1D(target_:Int,level_:Int,xoffset_:Int,width_:Int,format_:Int,type_:Int,pixels_:Byte Ptr)
-Function glTexSubImage2D(target_:Int,level_:Int,xoffset_:Int,yoffset_:Int,width_:Int,height_:Int,format_:Int,type_:Int,pixels_:Byte Ptr)
-Function glTranslated(x_:Double,y_:Double,z_:Double)
-Function glTranslatef(x_:Float,y_:Float,z_:Float)
-Function glVertex2d(x_:Double,y_:Double)
-Function glVertex2dv(v_:Double Ptr)
-Function glVertex2f(x_:Float,y_:Float)
-Function glVertex2fv(v_:Float Ptr)
-Function glVertex2i(x_:Int,y_:Int)
-Function glVertex2iv(v_:Int Ptr)
-Function glVertex2s(x_:Short,y_:Short)
-Function glVertex2sv(v_:Short Ptr)
-Function glVertex3d(x_:Double,y_:Double,z_:Double)
-Function glVertex3dv(v_:Double Ptr)
-Function glVertex3f(x_:Float,y_:Float,z_:Float)
-Function glVertex3fv(v_:Float Ptr)
-Function glVertex3i(x_:Int,y_:Int,z_:Int)
-Function glVertex3iv(v_:Int Ptr)
-Function glVertex3s(x_:Short,y_:Short,z_:Short)
-Function glVertex3sv(v_:Short Ptr)
-Function glVertex4d(x_:Double,y_:Double,z_:Double,w_:Double)
-Function glVertex4dv(v_:Double Ptr)
-Function glVertex4f(x_:Float,y_:Float,z_:Float,w_:Float)
-Function glVertex4fv(v_:Float Ptr)
-Function glVertex4i(x_:Int,y_:Int,z_:Int,w_:Int)
-Function glVertex4iv(v_:Int Ptr)
-Function glVertex4s(x_:Short,y_:Short,z_:Short,w_:Short)
-Function glVertex4sv(v_:Short Ptr)
-Function glVertexPointer(size_:Int,type_:Int,stride_:Int,pointer_:Byte Ptr)
-Function glViewport(x_:Int,y_:Int,width_:Int,height_:Int)
+Function glAccum(op_:Int,value_:Float)="void glAccum( GLenum , GLfloat )!"
+Function glAlphaFunc(func_:Int,ref_:Float)="void glAlphaFunc( GLenum , GLclampf )!"
+Function glAreTexturesResident:Byte(n_:Int,textures_:Int Ptr,residences_:Byte Ptr)="GLboolean glAreTexturesResident( GLsizei, const GLuint *, GLboolean * )!"
+Function glArrayElement(i_:Int)="void glArrayElement( GLint )!"
+Function glBegin(mode_:Int)="void glBegin( GLenum  )!"
+Function glBindTexture(target_:Int,texture_:Int)="void glBindTexture( GLenum , GLuint )!"
+Function glBitmap(width_:Int,height_:Int,xorig_:Float,yorig_:Float,xmove_:Float,ymove_:Float,bitmap_:Byte Ptr)="void glBitmap( GLsizei, GLsizei, GLfloat, GLfloat, GLfloat, GLfloat, const GLubyte * )!"
+Function glBlendFunc(sfactor_:Int,dfactor_:Int)="void glBlendFunc( GLenum , GLenum  )!"
+Function glCallList(list_:Int)="void glCallList( GLuint )!"
+Function glCallLists(n_:Int,type_:Int,lists_:Byte Ptr)="void glCallLists( GLsizei, GLenum , const GLvoid * )!"
+Function glClear(mask_:Int)="void glClearIndex( GLfloat )!"
+Function glClearAccum(red_:Float,green_:Float,blue_:Float,alpha_:Float)="void glClearAccum( GLfloat, GLfloat, GLfloat, GLfloat )!"
+Function glClearColor(red_:Float,green_:Float,blue_:Float,alpha_:Float)="void glClearColor( GLclampf, GLclampf, GLclampf, GLclampf )!"
+Function glClearDepth(depth_:Double)="void glClearDepth( GLclampd  )!"
+Function glClearIndex(c_:Float)="void glClearIndex( GLfloat )!"
+Function glClearStencil(s_:Int)="void glClearStencil( GLint  )!"
+Function glClipPlane(plane_:Int,equation_:Double Ptr)="void glClipPlane( GLenum , const GLdouble * )!"
+Function glColor3b(red_:Byte,green_:Byte,blue_:Byte)="void glColor3b( GLbyte , GLbyte , GLbyte  )!"
+Function glColor3bv(v_:Byte Ptr)="void glColor3bv( const GLbyte * )!"
+Function glColor3d(red_:Double,green_:Double,blue_:Double)="void glColor3d( GLdouble, GLdouble, GLdouble )!"
+Function glColor3dv(v_:Double Ptr)="void glColor3dv( const GLdouble * )!"
+Function glColor3f(red_:Float,green_:Float,blue_:Float)="void glColor3f( GLfloat, GLfloat, GLfloat )!"
+Function glColor3fv(v_:Float Ptr)="void glColor3fv( const GLfloat * )!"
+Function glColor3i(red_:Int,green_:Int,blue_:Int)="void glColor3i( GLint, GLint, GLint  )!"
+Function glColor3iv(v_:Int Ptr)="void glColor3iv( const GLint * )!"
+Function glColor3s(red_:Short,green_:Short,blue_:Short)="void glColor3s( GLshort, GLshort, GLshort )!"
+Function glColor3sv(v_:Short Ptr)="void glColor3sv( const GLshort * )!"
+Function glColor3ub(red_:Byte,green_:Byte,blue_:Byte)="void glColor3ub( GLubyte, GLubyte, GLubyte )!"
+Function glColor3ubv(v_:Byte Ptr)="void glColor3ubv( const GLubyte * )!"
+Function glColor3ui(red_:Int,green_:Int,blue_:Int)="void glColor3ui( GLuint, GLuint, GLuint )!"
+Function glColor3uiv(v_:Int Ptr)="void glColor3uiv( const GLuint * )!"
+Function glColor3us(red_:Short,green_:Short,blue_:Short)="void glColor3us( GLushort, GLushort, GLushort )!"
+Function glColor3usv(v_:Short Ptr)="void glColor3usv( const GLushort * )!"
+Function glColor4b(red_:Byte,green_:Byte,blue_:Byte,alpha_:Byte)="void glColor4b( GLbyte, GLbyte, GLbyte, GLbyte )!"
+Function glColor4bv(v_:Byte Ptr)="void glColor4bv( const GLbyte * )!"
+Function glColor4d(red_:Double,green_:Double,blue_:Double,alpha_:Double)="void glColor4d( GLdouble, GLdouble, GLdouble, GLdouble )!"
+Function glColor4dv(v_:Double Ptr)="void glColor4dv( const GLdouble * )!"
+Function glColor4f(red_:Float,green_:Float,blue_:Float,alpha_:Float)="void glColor4f( GLfloat, GLfloat, GLfloat, GLfloat )!"
+Function glColor4fv(v_:Float Ptr)="void glColor4fv( const GLfloat * )!"
+Function glColor4i(red_:Int,green_:Int,blue_:Int,alpha_:Int)="void glColor4i( GLint, GLint, GLint, GLint  )!"
+Function glColor4iv(v_:Int Ptr)="void glColor4iv( const GLint * )!"
+Function glColor4s(red_:Short,green_:Short,blue_:Short,alpha_:Short)="void glColor4s( GLshort, GLshort, GLshort, GLshort )!"
+Function glColor4sv(v_:Short Ptr)="void glColor4sv( const GLshort * )!"
+Function glColor4ub(red_:Byte,green_:Byte,blue_:Byte,alpha_:Byte)="void glColor4ub( GLubyte, GLubyte, GLubyte, GLubyte )!"
+Function glColor4ubv(v_:Byte Ptr)="void glColor4ubv( const GLubyte * )!"
+Function glColor4ui(red_:Int,green_:Int,blue_:Int,alpha_:Int)="void glColor4ui( GLuint, GLuint, GLuint, GLuint )!"
+Function glColor4uiv(v_:Int Ptr)="void glColor4uiv( const GLuint * )!"
+Function glColor4us(red_:Short,green_:Short,blue_:Short,alpha_:Short)="void glColor4us( GLushort, GLushort, GLushort, GLushort )!"
+Function glColor4usv(v_:Short Ptr)="void glColor4usv( const GLushort * )!"
+Function glColorMask(red_:Byte,green_:Byte,blue_:Byte,alpha_:Byte)="void glColorMask( GLboolean, GLboolean, GLboolean, GLboolean )!"
+Function glColorMaterial(face_:Int,mode_:Int)="void glColorMaterial( GLenum, GLenum  )!"
+Function glColorPointer(size_:Int,type_:Int,stride_:Int,pointer_:Byte Ptr)="void glColorPointer( GLint , GLenum , GLsizei, const GLvoid * )!"
+Function glCopyPixels(x_:Int,y_:Int,width_:Int,height_:Int,type_:Int)="void glCopyPixels( GLint, GLint, GLsizei, GLsizei, GLenum  )!"
+Function glCopyTexImage1D(target_:Int,level_:Int,internalFormat_:Int,x_:Int,y_:Int,width_:Int,border_:Int)="void glCopyTexImage1D( GLenum, GLint, GLenum, GLint, GLint, GLsizei, GLint  )!"
+Function glCopyTexImage2D(target_:Int,level_:Int,internalFormat_:Int,x_:Int,y_:Int,width_:Int,height_:Int,border_:Int)="void glCopyTexImage2D( GLenum, GLint, GLenum, GLint, GLint, GLsizei, GLsizei, GLint  )!"
+Function glCopyTexSubImage1D(target_:Int,level_:Int,xoffset_:Int,x_:Int,y_:Int,width_:Int)="void glCopyTexSubImage1D( GLenum, GLint, GLint, GLint, GLint, GLsizei )!"
+Function glCopyTexSubImage2D(target_:Int,level_:Int,xoffset_:Int,yoffset_:Int,x_:Int,y_:Int,width_:Int,height_:Int)="void glCopyTexSubImage2D( GLenum, GLint, GLint, GLint, GLint, GLint, GLsizei, GLsizei )!"
+Function glCullFace(mode_:Int)="void glCullFace( GLenum  )!"
+Function glDeleteLists(list_:Int,range_:Int)="void glDeleteLists( GLuint, GLsizei )!"
+Function glDeleteTextures(n_:Int,textures_:Int Ptr)="void glDeleteTextures( GLsizei, const GLuint *)!"
+Function glDepthFunc(func_:Int)="void glDepthFunc( GLenum  )!"
+Function glDepthMask(flag_:Byte)="void glDepthMask( GLboolean )!"
+Function glDepthRange(zNear_:Double,zFar_:Double)="void glDepthRange( GLclampd , GLclampd  )!"
+Function glDisable(cap_:Int)="void glDisable( GLenum  )!"
+Function glDisableClientState(array_:Int)="void glDisableClientState( GLenum  )!"
+Function glDrawArrays(mode_:Int,first_:Int,count_:Int)="void glDrawArrays( GLenum , GLint , GLsizei )!"
+Function glDrawBuffer(mode_:Int)="void glDrawBuffer( GLenum  )!"
+Function glDrawElements(mode_:Int,count_:Int,type_:Int,indices_:Byte Ptr)="void glDrawElements( GLenum , GLsizei, GLenum , const GLvoid * )!"
+Function glDrawPixels(width_:Int,height_:Int,format_:Int,type_:Int,pixels_:Byte Ptr)="void glDrawPixels( GLsizei, GLsizei, GLenum, GLenum, const GLvoid * )!"
+Function glEdgeFlag(flag_:Byte)="void glEdgeFlag( GLboolean )!"
+Function glEdgeFlagPointer(stride_:Int,pointer_:Byte Ptr)="void glEdgeFlagPointer( GLsizei, const GLvoid * )!"
+Function glEdgeFlagv(flag_:Byte Ptr)="void glEdgeFlagv( const GLboolean * )!"
+Function glEnable(cap_:Int)="void glEnable( GLenum  )!"
+Function glEnableClientState(array_:Int)="void glEnableClientState( GLenum  )!"
+Function glEnd()="void glEndList( )!"
+Function glEndList()="void glEndList( )!"
+Function glEvalCoord1d(u_:Double)="void glEvalCoord1d( GLdouble )!"
+Function glEvalCoord1dv(u_:Double Ptr)="void glEvalCoord1dv( const GLdouble * )!"
+Function glEvalCoord1f(u_:Float)="void glEvalCoord1f( GLfloat )!"
+Function glEvalCoord1fv(u_:Float Ptr)="void glEvalCoord1fv( const GLfloat * )!"
+Function glEvalCoord2d(u_:Double,v_:Double)="void glEvalCoord2d( GLdouble, GLdouble )!"
+Function glEvalCoord2dv(u_:Double Ptr)="void glEvalCoord2dv( const GLdouble * )!"
+Function glEvalCoord2f(u_:Float,v_:Float)="void glEvalCoord2f( GLfloat, GLfloat )!"
+Function glEvalCoord2fv(u_:Float Ptr)="void glEvalCoord2fv( const GLfloat * )!"
+Function glEvalMesh1(mode_:Int,i1_:Int,i2_:Int)="void glEvalMesh1( GLenum, GLint, GLint  )!"
+Function glEvalMesh2(mode_:Int,i1_:Int,i2_:Int,j1_:Int,j2_:Int)="void glEvalMesh2( GLenum, GLint, GLint, GLint, GLint )!"
+Function glEvalPoint1(i_:Int)="void glEvalPoint1( GLint  )!"
+Function glEvalPoint2(i_:Int,j_:Int)="void glEvalPoint2( GLint, GLint  )!"
+Function glFeedbackBuffer(size_:Int,type_:Int,buffer_:Float Ptr)="void glFeedbackBuffer( GLsizei, GLenum , GLfloat * )!"
+Function glFinish()="void glFinish(  )!"
+Function glFlush()="void glFlush(  )!"
+Function glFogf(pname_:Int,param_:Float)="void glFogf( GLenum , GLfloat )!"
+Function glFogfv(pname_:Int,params_:Float Ptr)="void glFogfv( GLenum , const GLfloat * )!"
+Function glFogi(pname_:Int,param_:Int)="void glFogi( GLenum , GLint  )!"
+Function glFogiv(pname_:Int,params_:Int Ptr)="void glFogiv( GLenum , const GLint * )!"
+Function glFrontFace(mode_:Int)="void glFrontFace( GLenum  )!"
+Function glFrustum(left_:Double,right_:Double,bottom_:Double,top_:Double,zNear_:Double,zFar_:Double)="void glFrustum( GLdouble, GLdouble, GLdouble, GLdouble, GLdouble, GLdouble )!"
+Function glGenLists:Int(range_:Int)="GLuind glGenLists( GLsizei )!"
+Function glGenTextures(n_:Int,textures_:Int Ptr)="void glGenTextures( GLsizei, GLuint * )!"
+Function glGetBooleanv(pname_:Int,params_:Byte Ptr)="void glGetBooleanv( GLenum , GLboolean * )!"
+Function glGetClipPlane(plane_:Int,equation_:Double Ptr)="void glGetClipPlane( GLenum , GLdouble * )!"
+Function glGetDoublev(pname_:Int,params_:Double Ptr)="void glGetDoublev( GLenum , GLdouble * )!"
+Function glGetError:Int()="GLenum glGetError(  )!"
+Function glGetFloatv(pname_:Int,params_:Float Ptr)="void glGetFloatv( GLenum , GLfloat * )!"
+Function glGetIntegerv(pname_:Int,params_:Int Ptr)="void glGetIntegerv( GLenum , GLint * )!"
+Function glGetLightfv(light_:Int,pname_:Int,params_:Float Ptr)="void glGetLightfv( GLenum, GLenum, GLfloat * )!"
+Function glGetLightiv(light_:Int,pname_:Int,params_:Int Ptr)="void glGetLightiv( GLenum, GLenum, GLint * )!"
+Function glGetMapdv(target_:Int,query_:Int,v_:Double Ptr)="void glGetMapdv( GLenum, GLenum, GLdouble * )!"
+Function glGetMapfv(target_:Int,query_:Int,v_:Float Ptr)="void glGetMapfv( GLenum, GLenum, GLfloat * )!"
+Function glGetMapiv(target_:Int,query_:Int,v_:Int Ptr)="void glGetMapiv( GLenum, GLenum, GLint * )!"
+Function glGetMaterialfv(face_:Int,pname_:Int,params_:Float Ptr)="void glGetMaterialfv( GLenum, GLenum, GLfloat * )!"
+Function glGetMaterialiv(face_:Int,pname_:Int,params_:Int Ptr)="void glGetMaterialiv( GLenum, GLenum, GLint * )!"
+Function glGetPixelMapfv(map_:Int,values_:Float Ptr)="void glGetPixelMapfv( GLenum, GLfloat * )!"
+Function glGetPixelMapuiv(map_:Int,values_:Int Ptr)="void glGetPixelMapuiv( GLenum, GLuint * )!"
+Function glGetPixelMapusv(map_:Int,values_:Short Ptr)="void glGetPixelMapusv( GLenum, GLushort * )!"
+Function glGetPointerv(pname_:Int,params_:Byte Ptr Ptr)="void glGetPointerv( GLenum , GLvoid ** )!"
+Function glGetPolygonStipple(mask_:Byte Ptr)="void glGetPolygonStipple( GLubyte * )!"
+Function glGetString:Byte Ptr(name_:Int)="GLubyte* glGetString( GLenum  )!"
+Function glGetTexEnvfv(target_:Int,pname_:Int,params_:Float Ptr)="void glGetTexEnvfv( GLenum, GLenum, GLfloat * )!"
+Function glGetTexEnviv(target_:Int,pname_:Int,params_:Int Ptr)="void glGetTexEnviv( GLenum, GLenum, GLint * )!"
+Function glGetTexGendv(coord_:Int,pname_:Int,params_:Double Ptr)="void glGetTexGendv( GLenum, GLenum, GLdouble * )!"
+Function glGetTexGenfv(coord_:Int,pname_:Int,params_:Float Ptr)="void glGetTexGenfv( GLenum, GLenum, GLfloat * )!"
+Function glGetTexGeniv(coord_:Int,pname_:Int,params_:Int Ptr)="void glGetTexGeniv( GLenum, GLenum, GLint * )!"
+Function glGetTexImage(target_:Int,level_:Int,format_:Int,type_:Int,pixels_:Byte Ptr)="void glGetTexImage( GLenum, GLint, GLenum, GLenum, GLvoid * )!"
+Function glGetTexLevelParameterfv(target_:Int,level_:Int,pname_:Int,params_:Float Ptr)="void glGetTexLevelParameterfv( GLenum, GLint, GLenum, GLfloat * )!"
+Function glGetTexLevelParameteriv(target_:Int,level_:Int,pname_:Int,params_:Int Ptr)="void glGetTexLevelParameteriv( GLenum, GLint, GLenum, GLint * )!"
+Function glGetTexParameterfv(target_:Int,pname_:Int,params_:Float Ptr)="void glGetTexParameterfv( GLenum, GLenum, GLfloat *)!"
+Function glGetTexParameteriv(target_:Int,pname_:Int,params_:Int Ptr)="void glGetTexParameteriv( GLenum, GLenum, GLint * )!"
+Function glHint(target_:Int,mode_:Int)="void glHint( GLenum , GLenum  )!"
+Function glIndexMask(mask_:Int)="void glIndexMask( GLuint )!"
+Function glIndexPointer(type_:Int,stride_:Int,pointer_:Byte Ptr)="void glIndexPointer( GLenum , GLsizei, const GLvoid * )!"
+Function glIndexd(c_:Double)="void glIndexd( GLdouble )!"
+Function glIndexdv(c_:Double Ptr)="void glIndexdv( const GLdouble * )!"
+Function glIndexf(c_:Float)="void glIndexf( GLfloat )!"
+Function glIndexfv(c_:Float Ptr)="void glIndexfv( const GLfloat * )!"
+Function glIndexi(c_:Int)="void glIndexi( GLint )!"
+Function glIndexiv(c_:Int Ptr)="void glIndexiv( const GLint * )!"
+Function glIndexs(c_:Short)="void glIndexs( GLshort )!"
+Function glIndexsv(c_:Short Ptr)="void glIndexsv( const GLshort * )!"
+Function glIndexub(c_:Byte)="void glIndexub( GLubyte )!"
+Function glIndexubv(c_:Byte Ptr)="void glIndexubv( const GLubyte * )!"
+Function glInitNames()="void glInitNames(  )!"
+Function glInterleavedArrays(format_:Int,stride_:Int,pointer_:Byte Ptr)="void glInterleavedArrays( GLenum , GLsizei, const GLvoid * )!"
+Function glIsEnabled:Byte(cap_:Int)="GLboolean glIsEnabled( GLenum  )!"
+Function glIsList:Byte(list_:Int)="GLboolean glIsList( GLuint )!"
+Function glIsTexture:Byte(texture_:Int)="GLboolean glIsTexture( GLuint )!"
+Function glLightModelf(pname_:Int,param_:Float)="void glLightModelf( GLenum, GLfloat )!"
+Function glLightModelfv(pname_:Int,params_:Float Ptr)="void glLightModelfv( GLenum, const GLfloat * )!"
+Function glLightModeli(pname_:Int,param_:Int)="void glLightModeli( GLenum, GLint  )!"
+Function glLightModeliv(pname_:Int,params_:Int Ptr)="void glLightModeliv( GLenum, const GLint * )!"
+Function glLightf(light_:Int,pname_:Int,param_:Float)="void glLightf( GLenum, GLenum, GLfloat )!"
+Function glLightfv(light_:Int,pname_:Int,params_:Float Ptr)="void glLightfv( GLenum, GLenum, const GLfloat * )!"
+Function glLighti(light_:Int,pname_:Int,param_:Int)="void glLighti( GLenum, GLenum, GLint  )!"
+Function glLightiv(light_:Int,pname_:Int,params_:Int Ptr)="void glLightiv( GLenum, GLenum, const GLint * )!"
+Function glLineStipple(factor_:Int,pattern_:Short)="void glLineStipple( GLint , GLushort  )!"
+Function glLineWidth(width_:Float)="void glLineWidth( GLfloat )!"
+Function glListBase(base_:Int)="void glListBase( GLuint )!"
+Function glLoadIdentity()="void glLoadIdentity( void )!"
+Function glLoadMatrixd(m_:Double Ptr)="void glLoadMatrixd( const GLdouble * )!"
+Function glLoadMatrixf(m_:Float Ptr)="void glLoadMatrixf( const GLfloat * )!"
+Function glLoadName(name_:Int)="void glLoadName( GLuint )!"
+Function glLogicOp(opcode_:Int)="void glLogicOp( GLenum  )!"
+Function glMap1d(target_:Int,u1_:Double,u2_:Double,stride_:Int,order_:Int,points_:Double Ptr)="void glMap1d( GLenum, GLdouble, GLdouble, GLint, GLint, const GLdouble * )!"
+Function glMap1f(target_:Int,u1_:Float,u2_:Float,stride_:Int,order_:Int,points_:Float Ptr)="void glMap1f( GLenum, GLfloat, GLfloat, GLint, GLint, const GLfloat * )!"
+Function glMap2d(target_:Int,u1_:Double,u2_:Double,ustride_:Int,uorder_:Int,v1_:Double,v2_:Double,vstride_:Int,vorder_:Int,points_:Double Ptr)="void glMap2d( GLenum, GLdouble, GLdouble, GLint, GLint, GLdouble, GLdouble, GLint, GLint, const GLdouble * )!"
+Function glMap2f(target_:Int,u1_:Float,u2_:Float,ustride_:Int,uorder_:Int,v1_:Float,v2_:Float,vstride_:Int,vorder_:Int,points_:Float Ptr)="void glMap2f( GLenum, GLfloat, GLfloat, GLint, GLint, GLfloat, GLfloat, GLint, GLint, const GLfloat * )!"
+Function glMapGrid1d(un_:Int,u1_:Double,u2_:Double)="void glMapGrid1d( GLint, GLdouble, GLdouble )!"
+Function glMapGrid1f(un_:Int,u1_:Float,u2_:Float)="void glMapGrid1f( GLint, GLfloat, GLfloat )!"
+Function glMapGrid2d(un_:Int,u1_:Double,u2_:Double,vn_:Int,v1_:Double,v2_:Double)="void glMapGrid2d( GLint, GLdouble, GLdouble, GLint, GLdouble, GLdouble )!"
+Function glMapGrid2f(un_:Int,u1_:Float,u2_:Float,vn_:Int,v1_:Float,v2_:Float)="void glMapGrid2f( GLint, GLfloat, GLfloat, GLint, GLfloat, GLfloat )!"
+Function glMaterialf(face_:Int,pname_:Int,param_:Float)="void glMaterialf( GLenum, GLenum, GLfloat )!"
+Function glMaterialfv(face_:Int,pname_:Int,params_:Float Ptr)="void glMaterialfv( GLenum, GLenum, const GLfloat * )!"
+Function glMateriali(face_:Int,pname_:Int,param_:Int)="void glMateriali( GLenum, GLenum, GLint  )!"
+Function glMaterialiv(face_:Int,pname_:Int,params_:Int Ptr)="void glMaterialiv( GLenum, GLenum, const GLint * )!"
+Function glMatrixMode(mode_:Int)="void glMatrixMode( GLenum  )!"
+Function glMultMatrixd(m_:Double Ptr)="void glMultMatrixd( const GLdouble * )!"
+Function glMultMatrixf(m_:Float Ptr)="void glMultMatrixf( const GLfloat * )!"
+Function glNewList(list_:Int,mode_:Int)="void glNewList( GLuint, GLenum  )!"
+Function glNormal3b(nx_:Byte,ny_:Byte,nz_:Byte)="void glNormal3b( GLbyte, GLbyte, GLbyte )!"
+Function glNormal3bv(v_:Byte Ptr)="void glNormal3bv( const GLbyte * )!"
+Function glNormal3d(nx_:Double,ny_:Double,nz_:Double)="void glNormal3d( GLdouble, GLdouble, GLdouble )!"
+Function glNormal3dv(v_:Double Ptr)="void glNormal3dv( const GLdouble * )!"
+Function glNormal3f(nx_:Float,ny_:Float,nz_:Float)="void glNormal3f( GLfloat, GLfloat, GLfloat )!"
+Function glNormal3fv(v_:Float Ptr)="void glNormal3fv( const GLfloat * )!"
+Function glNormal3i(nx_:Int,ny_:Int,nz_:Int)="void glNormal3i( GLint, GLint, GLint  )!"
+Function glNormal3iv(v_:Int Ptr)="void glNormal3iv( const GLint * )!"
+Function glNormal3s(nx_:Short,ny_:Short,nz_:Short)="void glNormal3s( GLshort, GLshort, GLshort )!"
+Function glNormal3sv(v_:Short Ptr)="void glNormal3sv( const GLshort * )!"
+Function glNormalPointer(type_:Int,stride_:Int,pointer_:Byte Ptr)="void glNormalPointer( GLenum , GLsizei, const GLvoid * )!"
+Function glOrtho(left_:Double,right_:Double,bottom_:Double,top_:Double,zNear_:Double,zFar_:Double)="void glOrtho( GLdouble, GLdouble, GLdouble, GLdouble, GLdouble, GLdouble )!"
+Function glPassThrough(token_:Float)="void glPassThrough( GLfloat )!"
+Function glPixelMapfv(map_:Int,mapsize_:Int,values_:Float Ptr)="void glPixelMapfv( GLenum, GLint, const GLfloat * )!"
+Function glPixelMapuiv(map_:Int,mapsize_:Int,values_:Int Ptr)="void glPixelMapuiv( GLenum, GLint, const GLuint * )!"
+Function glPixelMapusv(map_:Int,mapsize_:Int,values_:Short Ptr)="void glPixelMapusv( GLenum, GLint, const GLushort * )!"
+Function glPixelStoref(pname_:Int,param_:Float)="void glPixelStoref( GLenum, GLfloat )!"
+Function glPixelStorei(pname_:Int,param_:Int)="void glPixelStorei( GLenum, GLint  )!"
+Function glPixelTransferf(pname_:Int,param_:Float)="void glPixelTransferf( GLenum, GLfloat )!"
+Function glPixelTransferi(pname_:Int,param_:Int)="void glPixelTransferi( GLenum, GLint  )!"
+Function glPixelZoom(xfactor_:Float,yfactor_:Float)="void glPixelZoom( GLfloat, GLfloat )!"
+Function glPointSize(size_:Float)="void glPointSize( GLfloat )!"
+Function glPolygonMode(face_:Int,mode_:Int)="void glPolygonMode( GLenum , GLenum  )!"
+Function glPolygonOffset(factor_:Float,units_:Float)="void glPolygonOffset( GLfloat, GLfloat )!"
+Function glPolygonStipple(mask_:Byte Ptr)="void glPolygonStipple( const GLubyte * )!"
+Function glPopAttrib()="void glPopAttrib(  )!"
+Function glPopClientAttrib()="void glPopClientAttrib(  )!"
+Function glPopMatrix()="void glPopMatrix(  )!"
+Function glPopName()="void glPopName(  )!"
+Function glPrioritizeTextures(n_:Int,textures_:Int Ptr,priorities_:Float Ptr)="void glPrioritizeTextures( GLsizei, const GLuint *, const GLclampf * )!"
+Function glPushAttrib(mask_:Int)="void glPushAttrib( GLbitfield  )!"
+Function glPushClientAttrib(mask_:Int)="void glPushClientAttrib( GLbitfield  )!"
+Function glPushMatrix()="void glPushMatrix(  )!"
+Function glPushName(name_:Int)="void glPushName( GLuint )!"
+Function glRasterPos2d(x_:Double,y_:Double)="void glRasterPos2d( GLdouble, GLdouble )!"
+Function glRasterPos2dv(v_:Double Ptr)="void glRasterPos2dv( const GLdouble * )!"
+Function glRasterPos2f(x_:Float,y_:Float)="void glRasterPos2f( GLfloat, GLfloat )!"
+Function glRasterPos2fv(v_:Float Ptr)="void glRasterPos2fv( const GLfloat * )!"
+Function glRasterPos2i(x_:Int,y_:Int)="void glRasterPos2i( GLint, GLint  )!"
+Function glRasterPos2iv(v_:Int Ptr)="void glRasterPos2iv( const GLint * )!"
+Function glRasterPos2s(x_:Short,y_:Short)="void glRasterPos2s( GLshort , GLshort  )!"
+Function glRasterPos2sv(v_:Short Ptr)="void glRasterPos2sv( const GLshort * )!"
+Function glRasterPos3d(x_:Double,y_:Double,z_:Double)="void glRasterPos3d( GLdouble, GLdouble, GLdouble )!"
+Function glRasterPos3dv(v_:Double Ptr)="void glRasterPos3dv( const GLdouble * )!"
+Function glRasterPos3f(x_:Float,y_:Float,z_:Float)="void glRasterPos3f( GLfloat, GLfloat, GLfloat )!"
+Function glRasterPos3fv(v_:Float Ptr)="void glRasterPos3fv( const GLfloat * )!"
+Function glRasterPos3i(x_:Int,y_:Int,z_:Int)="void glRasterPos3i( GLint, GLint, GLint  )!"
+Function glRasterPos3iv(v_:Int Ptr)="void glRasterPos3iv( const GLint * )!"
+Function glRasterPos3s(x_:Short,y_:Short,z_:Short)="void glRasterPos3s( GLshort , GLshort , GLshort  )!"
+Function glRasterPos3sv(v_:Short Ptr)="void glRasterPos3sv( const GLshort * )!"
+Function glRasterPos4d(x_:Double,y_:Double,z_:Double,w_:Double)="void glRasterPos4d( GLdouble, GLdouble, GLdouble, GLdouble )!"
+Function glRasterPos4dv(v_:Double Ptr)="void glRasterPos4dv( const GLdouble * )!"
+Function glRasterPos4f(x_:Float,y_:Float,z_:Float,w_:Float)="void glRasterPos4f( GLfloat, GLfloat, GLfloat, GLfloat )!"
+Function glRasterPos4fv(v_:Float Ptr)="void glRasterPos4fv( const GLfloat * )!"
+Function glRasterPos4i(x_:Int,y_:Int,z_:Int,w_:Int)="void glRasterPos4i( GLint, GLint, GLint, GLint  )!"
+Function glRasterPos4iv(v_:Int Ptr)="void glRasterPos4iv( const GLint * )!"
+Function glRasterPos4s(x_:Short,y_:Short,z_:Short,w_:Short)="void glRasterPos4s( GLshort , GLshort , GLshort , GLshort  )!"
+Function glRasterPos4sv(v_:Short Ptr)="void glRasterPos4sv( const GLshort * )!"
+Function glReadBuffer(mode_:Int)="void glReadBuffer( GLenum  )!"
+Function glReadPixels(x_:Int,y_:Int,width_:Int,height_:Int,format_:Int,type_:Int,pixels_:Byte Ptr)="void glReadPixels( GLint, GLint, GLsizei, GLsizei, GLenum, GLenum, GLvoid * )!"
+Function glRectd(x1_:Double,y1_:Double,x2_:Double,y2_:Double)="void glRectd( GLdouble, GLdouble, GLdouble, GLdouble )!"
+Function glRectdv(v1_:Double Ptr,v2_:Double Ptr)="void glRectdv( const GLdouble *, const GLdouble * )!"
+Function glRectf(x1_:Float,y1_:Float,x2_:Float,y2_:Float)="void glRectf( GLfloat, GLfloat, GLfloat, GLfloat )!"
+Function glRectfv(v1_:Float Ptr,v2_:Float Ptr)="void glRectfv( const GLfloat *, const GLfloat * )!"
+Function glRecti(x1_:Int,y1_:Int,x2_:Int,y2_:Int)="void glRecti( GLint, GLint, GLint, GLint  )!"
+Function glRectiv(v1_:Int Ptr,v2_:Int Ptr)="void glRectiv( const GLint *, const GLint * )!"
+Function glRects(x1_:Short,y1_:Short,x2_:Short,y2_:Short)="void glRects( GLshort , GLshort , GLshort , GLshort  )!"
+Function glRectsv(v1_:Short Ptr,v2_:Short Ptr)="void glRectsv( const GLshort *, const GLshort * )!"
+Function glRenderMode:Int(mode_:Int)="GLint glRenderMode( GLenum  )!"
+Function glRotated(angle_:Double,x_:Double,y_:Double,z_:Double)="void glRotated( GLdouble, GLdouble, GLdouble, GLdouble )!"
+Function glRotatef(angle_:Float,x_:Float,y_:Float,z_:Float)="void glRotatef( GLfloat, GLfloat, GLfloat, GLfloat )!"
+Function glScaled(x_:Double,y_:Double,z_:Double)="void glScaled( GLdouble, GLdouble, GLdouble )!"
+Function glScalef(x_:Float,y_:Float,z_:Float)="void glScalef( GLfloat, GLfloat, GLfloat )!"
+Function glScissor(x_:Int,y_:Int,width_:Int,height_:Int)="void glScissor( GLint, GLint, GLsizei, GLsizei)!"
+Function glSelectBuffer(size_:Int,buffer_:Int Ptr)="void glSelectBuffer( GLsizei, GLuint * )!"
+Function glShadeModel(mode_:Int)="void glShadeModel( GLenum  )!"
+Function glStencilFunc(func_:Int,ref_:Int,mask_:Int)="void glStencilFunc( GLenum, GLint, GLuint )!"
+Function glStencilMask(mask_:Int)="void glStencilMask( GLuint )!"
+Function glStencilOp(fail_:Int,zfail_:Int,zpass_:Int)="void glStencilOp( GLenum, GLenum, GLenum  )!"
+Function glTexCoord1d(s_:Double)="void glTexCoord1d( GLdouble )!"
+Function glTexCoord1dv(v_:Double Ptr)="void glTexCoord1dv( const GLdouble * )!"
+Function glTexCoord1f(s_:Float)="void glTexCoord1f( GLfloat )!"
+Function glTexCoord1fv(v_:Float Ptr)="void glTexCoord1fv( const GLfloat * )!"
+Function glTexCoord1i(s_:Int)="void glTexCoord1i( GLint )!"
+Function glTexCoord1iv(v_:Int Ptr)="void glTexCoord1iv( const GLint * )!"
+Function glTexCoord1s(s_:Short)="void glTexCoord1s( GLshort )!"
+Function glTexCoord1sv(v_:Short Ptr)="void glTexCoord1sv( const GLshort * )!"
+Function glTexCoord2d(s_:Double,t_:Double)="void glTexCoord2d( GLdouble, GLdouble )!"
+Function glTexCoord2dv(v_:Double Ptr)="void glTexCoord2dv( const GLdouble * )!"
+Function glTexCoord2f(s_:Float,t_:Float)="void glTexCoord2f( GLfloat, GLfloat )!"
+Function glTexCoord2fv(v_:Float Ptr)="void glTexCoord2fv( const GLfloat * )!"
+Function glTexCoord2i(s_:Int,t_:Int)="void glTexCoord2i( GLint, GLint )!"
+Function glTexCoord2iv(v_:Int Ptr)="void glTexCoord2iv( const GLint * )!"
+Function glTexCoord2s(s_:Short,t_:Short)="void glTexCoord2s( GLshort, GLshort )!"
+Function glTexCoord2sv(v_:Short Ptr)="void glTexCoord2sv( const GLshort * )!"
+Function glTexCoord3d(s_:Double,t_:Double,r_:Double)="void glTexCoord3d( GLdouble, GLdouble, GLdouble )!"
+Function glTexCoord3dv(v_:Double Ptr)="void glTexCoord3dv( const GLdouble * )!"
+Function glTexCoord3f(s_:Float,t_:Float,r_:Float)="void glTexCoord3f( GLfloat, GLfloat, GLfloat )!"
+Function glTexCoord3fv(v_:Float Ptr)="void glTexCoord3fv( const GLfloat * )!"
+Function glTexCoord3i(s_:Int,t_:Int,r_:Int)="void glTexCoord3i( GLint, GLint, GLint  )!"
+Function glTexCoord3iv(v_:Int Ptr)="void glTexCoord3iv( const GLint * )!"
+Function glTexCoord3s(s_:Short,t_:Short,r_:Short)="void glTexCoord3s( GLshort, GLshort, GLshort )!"
+Function glTexCoord3sv(v_:Short Ptr)="void glTexCoord3sv( const GLshort * )!"
+Function glTexCoord4d(s_:Double,t_:Double,r_:Double,q_:Double)="void glTexCoord4d( GLdouble, GLdouble, GLdouble, GLdouble )!"
+Function glTexCoord4dv(v_:Double Ptr)="void glTexCoord4dv( const GLdouble * )!"
+Function glTexCoord4f(s_:Float,t_:Float,r_:Float,q_:Float)="void glTexCoord4f( GLfloat, GLfloat, GLfloat, GLfloat )!"
+Function glTexCoord4fv(v_:Float Ptr)="void glTexCoord4fv( const GLfloat * )!"
+Function glTexCoord4i(s_:Int,t_:Int,r_:Int,q_:Int)="void glTexCoord4i( GLint, GLint, GLint, GLint  )!"
+Function glTexCoord4iv(v_:Int Ptr)="void glTexCoord4iv( const GLint * )!"
+Function glTexCoord4s(s_:Short,t_:Short,r_:Short,q_:Short)="void glTexCoord4s( GLshort, GLshort, GLshort, GLshort )!"
+Function glTexCoord4sv(v_:Short Ptr)="void glTexCoord4sv( const GLshort * )!"
+Function glTexCoordPointer(size_:Int,type_:Int,stride_:Int,pointer_:Byte Ptr)="void glTexCoordPointer( GLint , GLenum , GLsizei, const GLvoid * )!"
+Function glTexEnvf(target_:Int,pname_:Int,param_:Float)="void glTexEnvf( GLenum, GLenum, GLfloat )!"
+Function glTexEnvfv(target_:Int,pname_:Int,params_:Float Ptr)="void glTexEnvfv( GLenum, GLenum, const GLfloat * )!"
+Function glTexEnvi(target_:Int,pname_:Int,param_:Int)="void glTexEnvi( GLenum, GLenum, GLint  )!"
+Function glTexEnviv(target_:Int,pname_:Int,params_:Int Ptr)="void glTexEnviv( GLenum, GLenum, const GLint * )!"
+Function glTexGend(coord_:Int,pname_:Int,param_:Double)="void glTexGend( GLenum, GLenum, GLdouble )!"
+Function glTexGendv(coord_:Int,pname_:Int,params_:Double Ptr)="void glTexGendv( GLenum, GLenum, const GLdouble * )!"
+Function glTexGenf(coord_:Int,pname_:Int,param_:Float)="void glTexGenf( GLenum, GLenum, GLfloat )!"
+Function glTexGenfv(coord_:Int,pname_:Int,params_:Float Ptr)="void glTexGenfv( GLenum, GLenum, const GLfloat * )!"
+Function glTexGeni(coord_:Int,pname_:Int,param_:Int)="void glTexGeni( GLenum, GLenum, GLint  )!"
+Function glTexGeniv(coord_:Int,pname_:Int,params_:Int Ptr)="void glTexGeniv( GLenum, GLenum, const GLint * )!"
+Function glTexImage1D(target_:Int,level_:Int,internalformat_:Int,width_:Int,border_:Int,format_:Int,type_:Int,pixels_:Byte Ptr)="void glTexImage1D( GLenum, GLint, GLint, GLsizei, GLint, GLenum, GLenum, const GLvoid * )!"
+Function glTexImage2D(target_:Int,level_:Int,internalformat_:Int,width_:Int,height_:Int,border_:Int,format_:Int,type_:Int,pixels_:Byte Ptr)="void glTexImage2D( GLenum, GLint, GLint, GLsizei, GLsizei, GLint, GLenum, GLenum, const GLvoid * )!"
+Function glTexParameterf(target_:Int,pname_:Int,param_:Float)="void glTexParameterf( GLenum, GLenum, GLfloat )!"
+Function glTexParameterfv(target_:Int,pname_:Int,params_:Float Ptr)="void glTexParameterfv( GLenum, GLenum, const GLfloat * )!"
+Function glTexParameteri(target_:Int,pname_:Int,param_:Int)="void glTexParameteri( GLenum, GLenum, GLint  )!"
+Function glTexParameteriv(target_:Int,pname_:Int,params_:Int Ptr)="void glTexParameteriv( GLenum, GLenum, const GLint * )!"
+Function glTexSubImage1D(target_:Int,level_:Int,xoffset_:Int,width_:Int,format_:Int,type_:Int,pixels_:Byte Ptr)="void glTexSubImage1D( GLenum, GLint, GLint, GLsizei, GLenum, GLenum, const GLvoid * )!"
+Function glTexSubImage2D(target_:Int,level_:Int,xoffset_:Int,yoffset_:Int,width_:Int,height_:Int,format_:Int,type_:Int,pixels_:Byte Ptr)="void glTexSubImage2D( GLenum, GLint, GLint, GLint, GLsizei, GLsizei, GLenum, GLenum, const GLvoid * )!"
+Function glTranslated(x_:Double,y_:Double,z_:Double)="void glTranslated( GLdouble, GLdouble, GLdouble )!"
+Function glTranslatef(x_:Float,y_:Float,z_:Float)="void glTranslatef( GLfloat, GLfloat, GLfloat )!"
+Function glVertex2d(x_:Double,y_:Double)="void glVertex2d( GLdouble, GLdouble )!"
+Function glVertex2dv(v_:Double Ptr)="void glVertex2dv( const GLdouble * )!"
+Function glVertex2f(x_:Float,y_:Float)="void glVertex2f( GLfloat, GLfloat )!"
+Function glVertex2fv(v_:Float Ptr)="void glVertex2fv( const GLfloat * )!"
+Function glVertex2i(x_:Int,y_:Int)="void glVertex2i( GLint , GLint  )!"
+Function glVertex2iv(v_:Int Ptr)="void glVertex2iv( const GLint * )!"
+Function glVertex2s(x_:Short,y_:Short)="void glVertex2s( GLshort , GLshort  )!"
+Function glVertex2sv(v_:Short Ptr)="void glVertex2sv( const GLshort * )!"
+Function glVertex3d(x_:Double,y_:Double,z_:Double)="void glVertex3d( GLdouble, GLdouble, GLdouble )!"
+Function glVertex3dv(v_:Double Ptr)="void glVertex3dv( const GLdouble * )!"
+Function glVertex3f(x_:Float,y_:Float,z_:Float)="void glVertex3f( GLfloat, GLfloat, GLfloat )!"
+Function glVertex3fv(v_:Float Ptr)="void glVertex3fv( const GLfloat * )!"
+Function glVertex3i(x_:Int,y_:Int,z_:Int)="void glVertex3i( GLint, GLint , GLint  )!"
+Function glVertex3iv(v_:Int Ptr)="void glVertex3iv( const GLint * )!"
+Function glVertex3s(x_:Short,y_:Short,z_:Short)="void glVertex3s( GLshort , GLshort , GLshort  )!"
+Function glVertex3sv(v_:Short Ptr)="void glVertex3sv( const GLshort * )!"
+Function glVertex4d(x_:Double,y_:Double,z_:Double,w_:Double)="void glVertex4d( GLdouble, GLdouble, GLdouble, GLdouble )!"
+Function glVertex4dv(v_:Double Ptr)="void glVertex4dv( const GLdouble * )!"
+Function glVertex4f(x_:Float,y_:Float,z_:Float,w_:Float)="void glVertex4f( GLfloat, GLfloat, GLfloat, GLfloat )!"
+Function glVertex4fv(v_:Float Ptr)="void glVertex4fv( const GLfloat * )!"
+Function glVertex4i(x_:Int,y_:Int,z_:Int,w_:Int)="void glVertex4i( GLint, GLint, GLint, GLint  )!"
+Function glVertex4iv(v_:Int Ptr)="void glVertex4iv( const GLint * )!"
+Function glVertex4s(x_:Short,y_:Short,z_:Short,w_:Short)="void glVertex4s( GLshort, GLshort, GLshort, GLshort )!"
+Function glVertex4sv(v_:Short Ptr)="void glVertex4sv( const GLshort * )!"
+Function glVertexPointer(size_:Int,type_:Int,stride_:Int,pointer_:Byte Ptr)="void glVertexPointer( GLint , GLenum , GLsizei, const GLvoid * )!"
+Function glViewport(x_:Int,y_:Int,width_:Int,height_:Int)="void glViewport( GLint , GLint , GLsizei, GLsizei )!"
 
 End Extern
