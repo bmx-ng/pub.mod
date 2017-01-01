@@ -70,7 +70,7 @@ Import "loadjpeg.c"
 
 Extern "C"
 
-Function loadjpg(stream:Object,readfunc:Byte Ptr,width Var,height Var,depth Var,pix:Byte Ptr Var)
-Function savejpg(stream:Object,writefunc:Byte Ptr,width,height,pitch,pix:Byte Ptr,quality)
+Function loadjpg(stream:Object,readfunc:Byte Ptr,width Var,height Var,depth Var,pix:Byte Ptr Var)="int loadjpg(void *,void *,int *,int *,int *,char **)"
+Function savejpg(stream:Object,writefunc:Byte Ptr,width,height,pitch,pix:Byte Ptr,quality)="int savejpg(void *,void *,int ,int ,int ,char *,int)"
 
 End Extern

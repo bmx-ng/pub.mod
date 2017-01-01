@@ -48,16 +48,16 @@ Extern
 Rem
 bbdoc: Compress a block of data at default compression level
 end rem
-Function compress( dest:Byte Ptr,dest_len Var,source:Byte Ptr,source_len )
+Function compress( dest:Byte Ptr,dest_len Var,source:Byte Ptr,source_len )="int compress(void *, int *, const void *, int)"
 
 Rem
 bbdoc: Compress a block of data at specified compression level
 end rem
-Function compress2( dest:Byte Ptr,dest_len Var,source:Byte Ptr,source_len,level )
+Function compress2( dest:Byte Ptr,dest_len Var,source:Byte Ptr,source_len,level )="int compress2(void *, int *, const void *, int , int)"
 
 Rem
 bbdoc: Uncompress a block of data
 end rem
-Function uncompress( dest:Byte Ptr,dest_len Var,source:Byte Ptr,source_len )
+Function uncompress( dest:Byte Ptr,dest_len Var,source:Byte Ptr,source_len )="int uncompress(void *, int *, const void *, int)"
 
 End Extern
