@@ -68,15 +68,15 @@ Function getenv_$( env$ )
 'file system
 
 Function fopen_:Byte Ptr( file$,Mode$ )
-Function fclose_%( c_stream:Byte Ptr )="fclose"
-Function fread_:Long( buf:Byte Ptr,size:Long,count:Long,c_stream:Byte Ptr )="fread"
-Function fwrite_:Long( buf:Byte Ptr,size:Long,count:Long,c_stream:Byte Ptr )="fwrite"
-Function fflush_( c_stream:Byte Ptr )="fflush"
+Function fclose_%( c_stream:Byte Ptr )="int fclose( FILE* ) !"
+Function fread_:Long( buf:Byte Ptr,size:Long,count:Long,c_stream:Byte Ptr )="size_t fread( void* , size_t, size_t, FILE* ) !"
+Function fwrite_:Long( buf:Byte Ptr,size:Long,count:Long,c_stream:Byte Ptr )="size_t fwrite( void* ,size_t, size_t, FILE* ) !"
+Function fflush_( c_stream:Byte Ptr )="int fflush( FILE* ) !"
 Function fseek_( c_stream:Byte Ptr,offset:Long,origin )'="fseek"
 Function ftell_:Long( c_stream:Byte Ptr )'="ftell"
-Function feof_( c_stream:Byte Ptr )="feof"
-Function fgetc_( c_stream:Byte Ptr )="fgetc"
-Function ungetc_( char,c_stream:Byte Ptr )="ungetc"
+Function feof_( c_stream:Byte Ptr )="int feof( FILE* ) !"
+Function fgetc_( c_stream:Byte Ptr )="int fgetc( FILE* ) !"
+Function ungetc_( char,c_stream:Byte Ptr )="int ungetc( int,FILE* ) !"
 Function fputs_( str$,c_stream:Byte Ptr )
 
 'posix
@@ -95,16 +95,16 @@ Function stat_( path$,st_mode Var,st_size:Long Var,st_mtime Var,st_ctime Var )
 Function system_( cmd$ )
 
 'misc
-Function abort_()="abort"
-Function malloc_:Byte Ptr( size )="malloc"
-Function realloc_:Byte Ptr( p:Byte Ptr,size )="realloc"
-Function free_( buf:Byte Ptr )="free"
-Function exit_( exit_code )="exit"
-Function atexit_( fun() )="atexit"
-Function memset_( buf:Byte Ptr,val,size )="memset"
-Function memcmp_( lhs:Byte Ptr,rhs:Byte Ptr,size )="memcmp"
-Function memcpy_( dst:Byte Ptr,src:Byte Ptr,size )="memcpy"
-Function memmove_( dst:Byte Ptr,src:Byte Ptr,size )="memmove"
+Function abort_()="void abort() !"
+Function malloc_:Byte Ptr( size )="void * malloc( size_t ) !"
+Function realloc_:Byte Ptr( p:Byte Ptr,size )="void * realloc( void * , size_t ) !"
+Function free_( buf:Byte Ptr )="void free( void * ) !"
+Function exit_( exit_code )="void exit( int ) !"
+Function atexit_( fun() )="int atexit(void (*)() ) !"
+Function memset_( buf:Byte Ptr,val,size )="void * memset( void * , int ,size_t ) !"
+Function memcmp_( lhs:Byte Ptr,rhs:Byte Ptr,size )="int memcmp( void * , void * , size_t ) !"
+Function memcpy_( dst:Byte Ptr,src:Byte Ptr,size )="void * memcpy( void * , void * , size_t ) !"
+Function memmove_( dst:Byte Ptr,src:Byte Ptr,size )="void * memmove( void * , void * , size_t ) !"
 
 'math
 
