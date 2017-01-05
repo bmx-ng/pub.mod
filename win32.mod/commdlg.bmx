@@ -142,8 +142,8 @@ End Type
 
 Extern "Win32"
 
-Function ChooseColorW_( lpcc:Byte Ptr )="ChooseColorW"
-Function ChooseFontW_( lpcc:Byte Ptr )="ChooseFontW"
+Function ChooseColorW_( lpcc:Byte Ptr )="BBINT ChooseColorW(BBBYTE * )!"
+Function ChooseFontW_( lpcc:Byte Ptr )="BBINT ChooseFontW(BBBYTE * )!"
 
 
 End Extern

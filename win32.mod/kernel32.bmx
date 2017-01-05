@@ -23,32 +23,32 @@ Const GMEM_FIXED=0
 Const GMEM_MOVEABLE=2
 Const GMEM_ZEROINT=$40
 
-Function Sleep( dwMilliseconds )
-Function Beep( dwFreq,dwDuration )
-Function GetModuleHandleA:Byte Ptr( lpModuleName:Byte Ptr  )
-Function GetModuleHandleW:Byte Ptr( lpModuleName:Short Ptr )
-Function SetFileAttributesA( lpFileName$z,dwFileAttributes )
-Function SetFileAttributesW( lpFileName$z,dwFileAttributes )
-Function GetFileAttributesA( lpFileName$z )
-Function GetFileAttributesW( lpFileName$z )
+Function Sleep( dwMilliseconds )="BBINT Sleep(BBINT )!"
+Function beep( dwFreq,dwDuration )="BBINT Beep(BBINT ,BBINT )!"
+Function GetModuleHandleA:Byte Ptr( lpModuleName:Byte Ptr  )="BBINT GetModuleHandleA(BBBYTE * )!"
+Function GetModuleHandleW:Byte Ptr( lpModuleName:Short Ptr )="BBINT GetModuleHandleW(BBSHORT * )!"
+Function SetFileAttributesA( lpFileName$z,dwFileAttributes )="BBINT SetFileAttributesA(BBBYTE * ,BBINT )!"
+Function SetFileAttributesW( lpFileName$z,dwFileAttributes )="BBINT SetFileAttributesW(BBBYTE * ,BBINT )!"
+Function GetFileAttributesA( lpFileName$z )="BBINT GetFileAttributesA(BBBYTE * )!"
+Function GetFileAttributesW( lpFileName$z )="BBINT GetFileAttributesW(BBBYTE * )!"
 
-Function GetCurrentThreadId()
+Function GetCurrentThreadId()="BBINT GetCurrentThreadId()!"
 
-Function GlobalAlloc:Byte Ptr(uFlags:UInt,dwBytes:size_t)
-Function GlobalSize:size_t(hMem:Byte Ptr)
-Function GlobalFree(hMem:Byte Ptr)
-Function GlobalLock:Byte Ptr(hMem:Byte Ptr)
-Function GlobalUnlock(hMem:Byte Ptr)
+Function GlobalAlloc:Byte Ptr(uFlags:UInt,dwBytes:Size_T)="HGLOBAL GlobalAlloc(UINT ,SIZE_T )!"
+Function GlobalSize:Size_T(hMem:Byte Ptr)="SIZE_T GlobalSize(HGLOBAL )!"
+Function GlobalFree(hMem:Byte Ptr)="HGLOBAL GlobalFree(HGLOBAL )!"
+Function GlobalLock:Byte Ptr(hMem:Byte Ptr)="BBBYTE * GlobalLock(HGLOBAL )!"
+Function GlobalUnlock(hMem:Byte Ptr)="BBINT GlobalUnlock(HGLOBAL )!"
 
 Const STD_INPUT_HANDLE=-10
 Const STD_OUTPUT_HANDLE=-11
 Const STD_ERROR_HANDLE=-12
 
-Function GetLastError()
+Function GetLastError()="DWORD __stdcall GetLastError()!"
 
-Function GetStdHandle:Byte Ptr(nStdHandle)
+Function GetStdHandle:Byte Ptr(nStdHandle)="HANDLE __stdcall GetStdHandle(BBINT )!"
 
-Function ReleaseMutex(mutex:Byte Ptr)
-Function CreateMutexW:Byte Ptr( security:Byte Ptr, owner:Int, name$w)
+Function ReleaseMutex(mutex:Byte Ptr)="WINBOOL __stdcall ReleaseMutex(HANDLE)!"
+Function CreateMutexW:Byte Ptr( security:Byte Ptr, owner:Int, name$w)="HANDLE __stdcall CreateMutexW(LPSECURITY_ATTRIBUTES, WINBOOL , LPCWSTR)!"
 
 End Extern

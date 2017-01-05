@@ -310,7 +310,7 @@ Type TCITEMW
 		End If
 	End Method
 	
-	Method Setmask(mask:Uint)
+	Method Setmask(mask:UInt)
 		bmx_win32_TCITEMW_Setmask(itemPtr, mask)
 	End Method
 	
@@ -460,7 +460,7 @@ Extern
 	Function bmx_win32_TVITEMW_SetiSelectedImage(handle:Byte Ptr, iSelectedImage:Int)
 	Function bmx_win32_TVITEMW_SetcChildren(handle:Byte Ptr, cChildren:Int)
 	Function bmx_win32_TVITEMW_SetlParam(handle:Byte Ptr, lp:LParam)
-	Function bmx_win32_TVITEMW_mask:Uint(handle:Byte Ptr)
+	Function bmx_win32_TVITEMW_mask:UInt(handle:Byte Ptr)
 	Function bmx_win32_TVITEMW_hItem:Byte Ptr(handle:Byte Ptr)
 	Function bmx_win32_TVITEMW_pszText:Short Ptr(handle:Byte Ptr)
 	Function bmx_win32_TVITEMW_iImage:Int(handle:Byte Ptr)
@@ -524,7 +524,7 @@ Type TVITEMW
 		bmx_win32_TVITEMW_SetlParam(itemPtr, lp)
 	End Method
 	
-	Method mask:Uint()
+	Method mask:UInt()
 		Return bmx_win32_TVITEMW_mask(itemPtr)
 	End Method
 	
@@ -540,7 +540,7 @@ Type TVITEMW
 		Return bmx_win32_TVITEMW_iImage(itemPtr)
 	End Method
 	
-	Method lParam:Byte Ptr()
+	Method LParam:Byte Ptr()
 		Return bmx_win32_TVITEMW_lParam(itemPtr)
 	End Method
 '	Field mask
@@ -1749,7 +1749,7 @@ Const LVFI_NEARESTXY          =$0040
 Type FINDINFOW
 	Field flags
     Field psz:Short Ptr
-    Field lParam
+    Field LParam
     Field pt_x,pt_y
 	Field vkDirection
 End Type
@@ -2082,11 +2082,11 @@ Const CMB_MASKED              =$02
 
 Extern "Win32"
 
-Function ImageList_Create:Byte Ptr(cx,cy,flags:UInt,cInitial,cGrow)
-Function ImageList_AddMasked(himl:Byte Ptr,hbmImage:Byte Ptr,crMask:Byte Ptr)
-Function ImageList_Add(himl:Byte Ptr,hbmImage:Byte Ptr,crMask:Byte Ptr)
-Function ImageList_Destroy( hImageList:Byte Ptr )
-Function ImageList_GetImageCount( hImageList:Byte Ptr )
+Function ImageList_Create:Byte Ptr(cx,cy,flags:UInt,cInitial,cGrow)="HIMAGELIST __stdcall ImageList_Create(int ,int ,UINT ,int ,int )!"
+Function ImageList_AddMasked(himl:Byte Ptr,hbmImage:Byte Ptr,crMask:Byte Ptr)="int __stdcall ImageList_AddMasked(HIMAGELIST ,HBITMAP ,COLORREF )!"
+Function ImageList_Add(himl:Byte Ptr,hbmImage:Byte Ptr,crMask:Byte Ptr)="int __stdcall ImageList_Add(HIMAGELIST ,HBITMAP ,HBITMAP )!"
+Function ImageList_Destroy( hImageList:Byte Ptr )="WINBOOL __stdcall ImageList_Destroy(HIMAGELIST )!"
+Function ImageList_GetImageCount( hImageList:Byte Ptr )="int __stdcall ImageList_GetImageCount(HIMAGELIST )!"
 
 End Extern
 

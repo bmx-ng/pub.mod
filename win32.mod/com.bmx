@@ -7,10 +7,10 @@ Import "com.cpp"
 
 Extern "win32"
 
-Function CLSIDFromProgID(code$w,clsid:Byte Ptr)
-Function CoCreateInstance(rclsid:Byte Ptr,pUnkOuter:Byte Ptr,dwClsContext,riid:Byte Ptr,ppv:Byte Ptr Ptr)
-Function IIDFromString_(lpsz$w,riid:Byte Ptr)="IIDFromString"
-Function StringFromIID_(riid:Byte Ptr,lpsz:Short Ptr Ptr)="StringFromIID"
+Function CLSIDFromProgID(code$w,clsid:Byte Ptr)="BBINT CLSIDFromProgID(BBSHORT * ,BBBYTE * )!"
+Function CoCreateInstance(rclsid:Byte Ptr,pUnkOuter:Byte Ptr,dwClsContext,riid:Byte Ptr,ppv:Byte Ptr Ptr)="BBINT CoCreateInstance(BBBYTE * ,BBBYTE * ,BBINT ,BBBYTE * ,BBBYTE ** )!"
+Function IIDFromString_(lpsz$w,riid:Byte Ptr)="BBINT IIDFromString(BBSHORT * ,BBBYTE * )!"
+Function StringFromIID_(riid:Byte Ptr,lpsz:Short Ptr Ptr)="HRESULT StringFromIID(REFIID, LPOLESTR *)!"
 End Extern
 
 Function IIDFromString(lpsz:String, riid:GUID)
@@ -42,8 +42,8 @@ End Extern
 
 ' oleautomation
 Extern 
-Function SysAllocStringLen:Short Ptr(bstr:Short Ptr,length)
-Function SysFreeString(bstr:Short Ptr)
+Function SysAllocStringLen:Short Ptr(bstr:Short Ptr,length)="BBSHORT * SysAllocStringLen(BBSHORT * ,BBINT )!"
+Function SysFreeString(bstr:Short Ptr)="BBINT SysFreeString(BBSHORT * )!"
 End Extern
 
 Extern "win32"
@@ -285,7 +285,7 @@ Interface IHTMLWindow2_ Extends IDispatch_
     Method toString(_pbstr:Short Ptr Ptr)
     Method scrollBy(_int,_int1)
     Method scrollTo(_int,_int1)
-    Method moveTo(_int,_int1)
+    Method MoveTo(_int,_int1)
     Method moveBy(_int,_int1)
     Method resizeTo(_int,_int1)
     Method resizeBy(_int,_int1)

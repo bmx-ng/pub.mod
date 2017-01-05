@@ -687,44 +687,43 @@ End Type
 
 Extern "Win32"
 
-Function GetStockObject:Byte Ptr( fnObject )
-Function ChoosePixelFormat( hdc:Byte Ptr,ppfd:Byte Ptr )
-Function SetPixelFormat( hdc:Byte Ptr,iPixelFormat,ppfd:Byte Ptr )
-Function SwapBuffers( hdc:Byte Ptr )
-
-Function wglCreateContext( hdc:Byte Ptr )
-Function wglDeleteContext( hglrc )
-Function wglMakeCurrent( hdc:Byte Ptr,hglrc )
-
-Function BitBlt(hdc:Byte Ptr,x,y,w,h,src_dc:Byte Ptr,src_x,src_y,dwrop)
-
-Function GetDeviceCaps(hdc:Byte Ptr,indec)
-
-
-Function CreateFontA:Byte Ptr(cHeight,cWidth,cEscapement,cOrientation,cWeight,bItalic,bUnderline,bStrikeOut,..
-	iCharSet,iOutPrecision,iClipPrecision,iQuality,iPitchAndFamily,pszFaceName:Byte Ptr)
+	Function GetStockObject:Byte Ptr( fnObject )="HGDIOBJ GetStockObject(int)!"
+	Function ChoosePixelFormat( hdc:Byte Ptr,ppfd:Byte Ptr )="int ChoosePixelFormat(HDC,CONST PIXELFORMATDESCRIPTOR*)!"
+	Function SetPixelFormat( hdc:Byte Ptr,iPixelFormat,ppfd:Byte Ptr )="BOOL SetPixelFormat(HDC,int,const PIXELFORMATDESCRIPTOR*)!"
+	Function SwapBuffers( hdc:Byte Ptr )="BOOL SwapBuffers(HDC)!"
 	
-Function CreateFontW:Byte Ptr(cHeight,cWidth,cEscapement,cOrientation,cWeight,bItalic,bUnderline,bStrikeOut,..
-	iCharSet,iOutPrecision,iClipPrecision,iQuality,iPitchAndFamily,pszFaceName:Short Ptr)
-
-Function SelectObject:Byte Ptr(hdc:Byte Ptr,obj:Byte Ptr)
-
-Function DeleteObject( hObject:Byte Ptr )
-
-Function CreateSolidBrush:Byte Ptr( crColor )
-
-Function CreateCompatibleDC:Byte Ptr( hdc:Byte Ptr )
-Function CreateCompatibleBitmap:Byte Ptr( hdc:Byte Ptr,nWidth,nHeight )
-
-Function SetDIBits( hdc:Byte Ptr,hbmp:Byte Ptr,uStartScan:UInt,cScanLines:UInt,lpvBits:Byte Ptr,lpbmi:Byte Ptr,fuColorUse:UInt )
-Function DeleteDC( hdc:Byte Ptr )
-
-Function SetStretchBltMode( hdc:Byte Ptr,iStretchMode )
-
-Function StretchBlt( hdcDest:Byte Ptr,dx,dy,dw,dh,hdcSrc:Byte Ptr,sx,sy,sw,sh,dwRop )
-
-Function CreateFontIndirectW( lplf:Byte Ptr )
-Function GetTextMetricsW( hdc:Byte Ptr,lptm:Byte Ptr )
-Function GetTextFaceW( hdc:Byte Ptr,nCount,lpFaceName:Short Ptr )
+	Function wglCreateContext:Byte Ptr( hdc:Byte Ptr )="HGLRC wglCreateContext(HDC)!"
+	Function wglDeleteContext( hglrc )="BOOL wglDeleteContext(HGLRC)!"
+	Function wglMakeCurrent( hdc:Byte Ptr,hglrc )="BOOL wglMakeCurrent(HDC,HGLRC)!"
+	
+	Function BitBlt(hdc:Byte Ptr,x,y,w,h,src_dc:Byte Ptr,src_x,src_y,dwrop)="BOOL BitBlt(HDC,int,int,int,int,HDC,int,int,DWORD)!"
+	
+	Function GetDeviceCaps(hdc:Byte Ptr,indec)="int GetDeviceCaps(HDC,int)!"
+	
+	
+	Function CreateFontA:Byte Ptr(cHeight,cWidth,cEscapement,cOrientation,cWeight,bItalic,bUnderline,bStrikeOut,iCharSet,iOutPrecision,iClipPrecision,iQuality,iPitchAndFamily,pszFaceName:Byte Ptr)="HFONT CreateFontA(int,int,int,int,int,DWORD,DWORD,DWORD,DWORD,DWORD,DWORD,DWORD,DWORD,LPCSTR)!"
+	
+	Function CreateFontW:Byte Ptr(cHeight,cWidth,cEscapement,cOrientation,cWeight,bItalic,bUnderline,bStrikeOut,iCharSet,iOutPrecision,iClipPrecision,iQuality,iPitchAndFamily,pszFaceName:Short Ptr)="HFONT CreateFontW(int,int,int,int,int,DWORD,DWORD,DWORD,DWORD,DWORD,DWORD,DWORD,DWORD,LPCWSTR)!"
+	
+	Function SelectObject:Byte Ptr(hdc:Byte Ptr,obj:Byte Ptr)="HGDIOBJ SelectObject(HDC,HGDIOBJ)!"
+	
+	Function DeleteObject( hObject:Byte Ptr )="BOOL DeleteObject(HGDIOBJ)!"
+	
+	Function CreateSolidBrush:Byte Ptr( crColor )="HBRUSH CreateSolidBrush(COLORREF)!"
+	
+	Function CreateCompatibleDC:Byte Ptr( hdc:Byte Ptr )="HDC CreateCompatibleDC(HDC)!"
+	Function CreateCompatibleBitmap:Byte Ptr( hdc:Byte Ptr,nWidth,nHeight )="HBITMAP CreateCompatibleBitmap(HDC,int,int)!"
+	
+	Function SetDIBits( hdc:Byte Ptr,hbmp:Byte Ptr,uStartScan:UInt,cScanLines:UInt,lpvBits:Byte Ptr,lpbmi:Byte Ptr,fuColorUse:UInt )="int SetDIBits(HDC,HBITMAP,UINT,UINT,VOID *,const BITMAPINFO*,UINT)!"
+	Function DeleteDC( hdc:Byte Ptr )="BOOL DeleteDC(HDC)!"
+	
+	Function SetStretchBltMode( hdc:Byte Ptr,iStretchMode )="int SetStretchBltMode(HDC,int)!"
+	
+	Function StretchBlt( hdcDest:Byte Ptr,dx,dy,dw,dh,hdcSrc:Byte Ptr,sx,sy,sw,sh,dwRop )="BOOL StretchBlt(HDC,int,int,int,int,HDC,int,int,int,int,DWORD)!"
+	
+	Function CreateFontIndirectW:Byte Ptr( lplf:Byte Ptr )="HFONT CreateFontIndirectW(const LOGFONTW*)!"
+	Function GetTextMetricsW( hdc:Byte Ptr,lptm:Byte Ptr )="int GetTextMetricsW(HDC,LPTEXTMETRICW)!"
+	Function GetTextFaceW( hdc:Byte Ptr,nCount,lpFaceName:Short Ptr )="int GetTextFaceW(HDC,int,LPWSTR)!"
+	
 
 End Extern

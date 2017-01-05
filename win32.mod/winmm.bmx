@@ -1,6 +1,6 @@
 
 Extern "win32"
 
-Function timeGetTime()
+Function timeGetTime()="BBINT timeGetTime()!"
 
 End Extern
