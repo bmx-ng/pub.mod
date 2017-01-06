@@ -3,10 +3,12 @@ Strict
 
 Module Pub.FreeType
 
-ModuleInfo "Version: 1.09"
+ModuleInfo "Version: 1.10"
 ModuleInfo "License: FreeType License"
 ModuleInfo "Modserver: BRL"
 
+ModuleInfo "History: 1.10"
+ModuleInfo "History: Updated to FreeType 2.7.1"
 ModuleInfo "History: 1.09"
 ModuleInfo "History: Updated to FreeType 2.5.2"
 ModuleInfo "History: 1.08 Release"

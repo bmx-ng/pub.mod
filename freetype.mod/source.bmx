@@ -33,7 +33,6 @@ Import "src/base/ftsynth.c"
 Import "src/base/ftsystem.c"
 Import "src/base/fttype1.c"
 Import "src/base/ftwinfnt.c"
-Import "src/base/ftxf86.c"
 Import "src/base/ftpatent.c"
 
 Import "src/autofit/autofit.c"
