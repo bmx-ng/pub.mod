@@ -25,8 +25,6 @@ ModuleInfo "History: Update to libpng 1.2.12"
 
 Import Pub.ZLib
 
-Import "../zlib.mod/zlib/*.h"
-
 Import "png.c"
 Import "pngerror.c"
 Import "pngget.c"
