@@ -105,6 +105,7 @@ Function memset_( buf:Byte Ptr,val,size )="void * memset( void * , int ,size_t )
 Function memcmp_( lhs:Byte Ptr,rhs:Byte Ptr,size )="int memcmp( void * , void * , size_t ) !"
 Function memcpy_( dst:Byte Ptr,src:Byte Ptr,size )="void * memcpy( void * , void * , size_t ) !"
 Function memmove_( dst:Byte Ptr,src:Byte Ptr,size )="void * memmove( void * , void * , size_t ) !"
+Function strlen_:Size_T( str:Byte Ptr )="size_t strlen( const char *) !"
 
 'math
 
