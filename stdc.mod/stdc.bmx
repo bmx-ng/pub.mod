@@ -7,7 +7,7 @@ To simplify life, this is a 'structless' interface meaning some functions have b
 
 End Rem
 
-Strict
+SuperStrict
 
 Module Pub.StdC
 
@@ -72,39 +72,39 @@ Function fclose_%( c_stream:Byte Ptr )="int fclose( FILE* ) !"
 Function fread_:Long( buf:Byte Ptr,size:Long,count:Long,c_stream:Byte Ptr )="size_t fread( void* , size_t, size_t, FILE* ) !"
 Function fwrite_:Long( buf:Byte Ptr,size:Long,count:Long,c_stream:Byte Ptr )="size_t fwrite( void* ,size_t, size_t, FILE* ) !"
 Function fflush_( c_stream:Byte Ptr )="int fflush( FILE* ) !"
-Function fseek_( c_stream:Byte Ptr,offset:Long,origin )'="fseek"
+Function fseek_:Int( c_stream:Byte Ptr,offset:Long,origin:Int )'="fseek"
 Function ftell_:Long( c_stream:Byte Ptr )'="ftell"
-Function feof_( c_stream:Byte Ptr )="int feof( FILE* ) !"
-Function fgetc_( c_stream:Byte Ptr )="int fgetc( FILE* ) !"
-Function ungetc_( char,c_stream:Byte Ptr )="int ungetc( int,FILE* ) !"
-Function fputs_( str$,c_stream:Byte Ptr )
+Function feof_:Int( c_stream:Byte Ptr )="int feof( FILE* ) !"
+Function fgetc_:Int( c_stream:Byte Ptr )="int fgetc( FILE* ) !"
+Function ungetc_:Int( char:Int,c_stream:Byte Ptr )="int ungetc( int,FILE* ) !"
+Function fputs_:Int( str$,c_stream:Byte Ptr )
 
 'posix
 
-Function chdir_( dir$ )
+Function chdir_:Int( dir$ )
 Function getcwd_$()
-Function chmod_( path$,Mode )
-Function mkdir_( path$,Mode )
-Function rmdir_( path$ )
-Function rename_( from_path$,to_path$ )
+Function chmod_:Int( path$,Mode:Int )
+Function mkdir_:Int( path$,Mode:Int )
+Function rmdir_:Int( path$ )
+Function rename_:Int( from_path$,to_path$ )
 Function remove_( path$ )
 Function opendir_:Byte Ptr( path$ )
-Function closedir_( dir:Byte Ptr )
+Function closedir_:Int( dir:Byte Ptr )
 Function readdir_$( dir:Byte Ptr )
-Function stat_( path$,st_mode Var,st_size:Long Var,st_mtime Var,st_ctime Var )
-Function system_( cmd$ )
+Function stat_:Int( path$,st_mode:Int Var,st_size:Long Var,st_mtime:Int Var,st_ctime:Int Var )
+Function system_:Int( cmd$ )
 
 'misc
 Function abort_()="void abort() !"
-Function malloc_:Byte Ptr( size )="void * malloc( size_t ) !"
-Function realloc_:Byte Ptr( p:Byte Ptr,size )="void * realloc( void * , size_t ) !"
+Function malloc_:Byte Ptr( size:Size_T )="void * malloc( size_t ) !"
+Function realloc_:Byte Ptr( p:Byte Ptr,size:Size_T )="void * realloc( void * , size_t ) !"
 Function free_( buf:Byte Ptr )="void free( void * ) !"
-Function exit_( exit_code )="void exit( int ) !"
-Function atexit_( fun() )="int atexit(void (*)() ) !"
-Function memset_( buf:Byte Ptr,val,size )="void * memset( void * , int ,size_t ) !"
-Function memcmp_( lhs:Byte Ptr,rhs:Byte Ptr,size )="int memcmp( void * , void * , size_t ) !"
-Function memcpy_( dst:Byte Ptr,src:Byte Ptr,size )="void * memcpy( void * , void * , size_t ) !"
-Function memmove_( dst:Byte Ptr,src:Byte Ptr,size )="void * memmove( void * , void * , size_t ) !"
+Function exit_( exit_code:Int )="void exit( int ) !"
+Function atexit_:Int( fun() )="int atexit(void (*)() ) !"
+Function memset_:Byte Ptr( buf:Byte Ptr,val:Int,size:Size_T )="void * memset( void * , int ,size_t ) !"
+Function memcmp_:Int( lhs:Byte Ptr,rhs:Byte Ptr,size:Size_T )="int memcmp( void * , void * , size_t ) !"
+Function memcpy_:Byte Ptr( dst:Byte Ptr,src:Byte Ptr,size:Size_T )="void * memcpy( void * , void * , size_t ) !"
+Function memmove_( dst:Byte Ptr,src:Byte Ptr,size:Size_T )="void * memmove( void * , void * , size_t ) !"
 Function strlen_:Size_T( str:Byte Ptr )="size_t strlen( const char *) !"
 
 'math
@@ -121,83 +121,84 @@ Function atan_!( n! )="atan"
 
 'sockets
 
-Const AF_INET_=2					'address types
-Const SOCK_STREAM_=1,SOCK_DGRAM_=2	'communication types
-Const SOCKET_ERROR_=-1
+Const AF_INET_:Int=2					'address types
+Const SOCK_STREAM_:Int=1,SOCK_DGRAM_:Int=2	'communication types
+Const SOCKET_ERROR_:Int=-1
+Const AF_INET6_:Int=30 ' IPv6
 
-Const SO_DEBUG=1			'turn on debugging info recording 
-Const SO_ACCEPTCONN=2		'socket has had listen() 
-Const SO_REUSEADDR=4		'allow local address reuse 
-Const SO_KEEPALIVE=8		'keep connections alive 
-Const SO_DONTROUTE=$10		'just use interface addresses 
-Const SO_BROADCAST=$20		'permit sending of broadcast msgs 
-Const SO_USELOOPBACK=$40    'bypass hardware when possible 
-Const SO_LINGER=$80         'linger on close if data present 
-Const SO_OOBINLINE=$100     'leave received OOB data in line 
+Const SO_DEBUG:Int=1			'turn on debugging info recording 
+Const SO_ACCEPTCONN:Int=2		'socket has had listen() 
+Const SO_REUSEADDR:Int=4		'allow local address reuse 
+Const SO_KEEPALIVE:Int=8		'keep connections alive 
+Const SO_DONTROUTE:Int=$10		'just use interface addresses 
+Const SO_BROADCAST:Int=$20		'permit sending of broadcast msgs 
+Const SO_USELOOPBACK:Int=$40    'bypass hardware when possible 
+Const SO_LINGER:Int=$80         'linger on close if data present 
+Const SO_OOBINLINE:Int=$100     'leave received OOB data in line 
 
 'Additional options.
 
-Const SO_SNDBUF=$1001		'sendbuffersize
-Const SO_RCVBUF=$1002		'receivebuffersize
-Const SO_SNDLOWAT=$1003		'sendlow-watermark
-Const SO_RCVLOWAT=$1004		'receivelow-watermark
-Const SO_SNDTIMEO=$1005		'sendtimeout
-Const SO_RCVTIMEO=$1006		'receivetimeout
-Const SO_ERROR=$1007		'geterrorstatusandclear
-Const SO_TYPE=$1008			'getsockettype
+Const SO_SNDBUF:Int=$1001		'sendbuffersize
+Const SO_RCVBUF:Int=$1002		'receivebuffersize
+Const SO_SNDLOWAT:Int=$1003		'sendlow-watermark
+Const SO_RCVLOWAT:Int=$1004		'receivelow-watermark
+Const SO_SNDTIMEO:Int=$1005		'sendtimeout
+Const SO_RCVTIMEO:Int=$1006		'receivetimeout
+Const SO_ERROR:Int=$1007		'geterrorstatusandclear
+Const SO_TYPE:Int=$1008			'getsockettype
 
 'Option for opening sockets for synchronous access.
-Const SO_SYNCHRONOUS_ALERT=$10
-Const SO_SYNCHRONOUS_NONALERT=$20
+Const SO_SYNCHRONOUS_ALERT:Int=$10
+Const SO_SYNCHRONOUS_NONALERT:Int=$20
 ?Win32
-Const SO_OPENTYPE=$7008
-Const SO_MAXDG=$7009
-Const SO_MAXPATHDG=$700A
-Const SO_UPDATE_ACCEPT_CONTEXT=$700B
-Const SO_CONNECT_TIME=$700C
+Const SO_OPENTYPE:Int=$7008
+Const SO_MAXDG:Int=$7009
+Const SO_MAXPATHDG:Int=$700A
+Const SO_UPDATE_ACCEPT_CONTEXT:Int=$700B
+Const SO_CONNECT_TIME:Int=$700C
 ?
-Const TCP_NODELAY=$0001
-Const TCP_BSDURGENT=$7000
+Const TCP_NODELAY:Int=$0001
+Const TCP_BSDURGENT:Int=$7000
 
-Const IPPROTO_UDP=17
-Const IPPROTO_TCP=6
+Const IPPROTO_UDP:Int=17
+Const IPPROTO_TCP:Int=6
 
 'how params for shutdown_
 
-Const SD_SEND=1
-Const SD_RECEIVE=0
-Const SD_BOTH=2
+Const SD_SEND:Int=1
+Const SD_RECEIVE:Int=0
+Const SD_BOTH:Int=2
 
-Function htons_( n )
-Function ntohs_( n )
-Function htonl_( n )
-Function ntohl_( n )
-Function socket_( addr_type,comm_type,protocol=0 )
-Function closesocket_( socket )
-Function bind_( socket,addr_type,port )
-Function gethostbyaddr_:Byte Ptr( addr:Byte Ptr,addr_len,addr_type )
+Function htons_:Int( n:Int )
+Function ntohs_:Int( n:Int )
+Function htonl_:Int( n:Int )
+Function ntohl_:Int( n:Int )
+Function socket_:Int( addr_type:Int,comm_type:Int,protocol:Int=0 )
+Function closesocket_( socket:Int )
+Function bind_:Int( socket:Int,addr_type:Int,port:Int )
+Function gethostbyaddr_:Byte Ptr( addr:Byte Ptr,addr_len:Int,addr_type:Int )
 
-Function gethostbyname_:Byte Ptr Ptr( name$,addr_type Var,addr_len Var )
+Function gethostbyname_:Byte Ptr Ptr( name$,addr_type:Int Var,addr_len:Int Var )
 
-Function connect_( socket,addr:Byte Ptr,addr_type,addr_len,port )
-Function listen_( socket,backlog )
-Function accept_( socket,addr:Byte Ptr,addr_len:Byte Ptr)
-Function select_( n_read,read_socks:Int Ptr,n_write,write_socks:Int Ptr,n_except,except_socks:Int Ptr,millis )
-Function send_:size_t( socket,buf:Byte Ptr,size:size_t,flags )
-Function sendto_( socket,buf:Byte Ptr,size,flags,dest_ip,dest_port )
-Function recv_:size_t( socket,buf:Byte Ptr,size:size_t,flags )
-Function recvfrom_( socket,buf:Byte Ptr,size,flags,sender_ip Var,sender_port Var)
-Function setsockopt_( socket,level,optname,optval:Byte Ptr,count)
-Function getsockopt_( socket,level,optname,optval:Byte Ptr,count Var)
-Function shutdown_( socket,how )
-Function getsockname_( socket,addr:Byte Ptr,addr_len Var )
-Function getpeername_( socket,addr:Byte Ptr,addr_len Var )
+Function connect_:Int( socket:Int,addr:Byte Ptr,addr_type:Int,addr_len:Int,port:Int )
+Function listen_:Int( socket:Int,backlog:Int )
+Function accept_:Int( socket:Int,addr:Byte Ptr,addr_len:Byte Ptr)
+Function select_:Int( n_read:Int,read_socks:Int Ptr,n_write:Int,write_socks:Int Ptr,n_except:Int,except_socks:Int Ptr,millis:Int )
+Function send_:Size_T( socket:Int,buf:Byte Ptr,size:Size_T,flags:Int )
+Function sendto_:Int( socket:Int,buf:Byte Ptr,size:Int,flags:Int,dest_ip:Byte Ptr,dest_port:Int )
+Function recv_:Size_T( socket:Int,buf:Byte Ptr,size:Size_T,flags:Int )
+Function recvfrom_:Int( socket:Int,buf:Byte Ptr,size:Int,flags:Int,sender_ip:Int Var,sender_port:Int Var)
+Function setsockopt_:Int( socket:Int,level:Int,optname:Int,optval:Byte Ptr,count:Int)
+Function getsockopt_:Int( socket:Int,level:Int,optname:Int,optval:Byte Ptr,count:Int Var)
+Function shutdown_:Int( socket:Int,how:Int )
+Function getsockname_:Int( socket:Int,addr:Byte Ptr,addr_len:Int Var )
+Function getpeername_:Int( socket:Int,addr:Byte Ptr,addr_len:Int Var )
 
 'time
 
 Function time_( time:Byte Ptr )
 Function localtime_:Byte Ptr( time:Byte Ptr )
-Function strftime_( buf:Byte Ptr,size,fmt$,time:Byte Ptr )
+Function strftime_:Int( buf:Byte Ptr,size:Int,fmt$,time:Byte Ptr )
 
 End Extern
 
