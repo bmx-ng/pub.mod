@@ -196,7 +196,7 @@ Function getpeername_:Int( socket:Int,addr:Byte Ptr,addr_len:Int Var )
 
 'time
 
-Function time_( time:Byte Ptr )
+Function time_:Int( time:Byte Ptr )
 Function localtime_:Byte Ptr( time:Byte Ptr )
 Function strftime_:Int( buf:Byte Ptr,size:Int,fmt$,time:Byte Ptr )
 

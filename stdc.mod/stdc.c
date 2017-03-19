@@ -485,6 +485,8 @@ int getpeername_( int socket,void *addr,int *len ){
 
 void time_( void *ttime ){
 	time( (time_t*)ttime );
+time_t time_( void *ttime ){
+	return time( (time_t*)ttime );
 }
 
 void *localtime_( void *ttime ){
