@@ -33,6 +33,11 @@ FILE* stdin_;
 FILE* stdout_;
 FILE* stderr_;
 
+extern BBObject * pub_stdc_TAddrInfo__Create(struct addrinfo * info, int owner);
+extern BBArray * pub_stdc_TAddrInfo__CreateArray(int count);
+extern void pub_stdc_TAddrInfo__SetAtIndex(BBArray * arr, BBObject * info, int index);
+
+
 #if _WIN32
 
 int getchar_(){
@@ -339,46 +344,104 @@ void closesocket_( int s ){
 #endif
 }
 
+int bmx_stdc_convertAFFamily(int family) {
+	switch (family) {
+		case 2:
+			return AF_INET;
+		case 10:
+			return AF_INET6;
+	}
+	
+	// unmapped
+	return family;
+}
+
+
 int bind_( int socket,int addr_type,int port ){
 	int r;
-	struct sockaddr_in sa;
 	
-	if( addr_type!=AF_INET ) return -1;
+	//	if ( addr_type!=AF_INET ) return -1;
 
-	memset( &sa,0,sizeof(sa) );
-	sa.sin_family=addr_type;
-	sa.sin_addr.s_addr=htonl(INADDR_ANY);
-	sa.sin_port=htons( port );
+	switch(addr_type) {
+		case AF_INET:
+		{
+			struct sockaddr_in sa;
+			memset( &sa,0,sizeof(sa) );
+			sa.sin_family= bmx_stdc_convertAFFamily(addr_type);
+			sa.sin_addr.s_addr=htonl(INADDR_ANY);
+			sa.sin_port=htons( port );
+			return bind( socket,(void*)&sa,sizeof(sa) );
+		}
+		case AF_INET6:
+		{
+			struct sockaddr_in6 sa;
+			memset( &sa,0,sizeof(sa) );
+			sa.sin6_family= bmx_stdc_convertAFFamily(addr_type);
+			sa.sin6_addr=in6addr_any;
+			sa.sin6_port=htons( port );
+			return bind( socket,(void*)&sa,sizeof(sa) );
+		}
+		default:
+			return -1;
+	}
 	
-	return bind( socket,(void*)&sa,sizeof(sa) );
 }
 
 char *gethostbyaddr_( void *addr,int addr_len,int addr_type ){
-	struct hostent *e=gethostbyaddr( addr,addr_len,addr_type );
-	return e ? e->h_name : 0;
-}
-
-char **gethostbyname_( BBString *name,int *addr_type,int *addr_len ){
-	struct hostent *e=gethostbyname( bbTmpCString( name ) );
-	if( !e ) return 0;
-	*addr_type=e->h_addrtype;
-	*addr_len=e->h_length;
-	return e->h_addr_list;
-}
-
-int connect_( int socket,const char *addr,int addr_type,int addr_len,int port ){
-	struct sockaddr_in sa;
-
-	if( addr_type!=AF_INET ) return -1;
-
-		memset( &sa,0,sizeof(sa) );
-		sa.sin_family=addr_type;
-		sa.sin_port=htons( port );
-		memcpy( &sa.sin_addr,addr,addr_len );
 	
-		return connect( socket,(void*)&sa,sizeof(sa) );
+	//struct hostent *e=gethostbyaddr( addr,addr_len,addr_type );
+	//return e ? e->h_name : 0;
+}
+
+BBARRAY getaddrinfo_(BBString *name, BBString *service, int family) {
+	struct addrinfo hints;
+	struct addrinfo * info;
+	struct addrinfo * ip;
+	
+	memset(&hints, 0, sizeof(struct addrinfo));
+	
+	char * n = bbStringToUTF8String(name);
+	char * s = 0;
+	if (service != &bbEmptyString) {
+		s = bbStringToUTF8String(service);
 	}
 	
+	hints.ai_family = bmx_stdc_convertAFFamily(family);
+	
+	int res = getaddrinfo(n, s, &hints, &info);
+	
+	bbMemFree(s);
+	bbMemFree(n);
+	
+	if (res != 0) {
+		return &bbEmptyArray;
+	}
+	
+	int count = 0;
+	for (ip = info; ip != NULL; ip = ip->ai_next) {
+		count++;
+	}
+	
+	BBArray * arr = pub_stdc_TAddrInfo__CreateArray(count);
+
+	count = 0;
+	for (ip = info; ip != NULL; ip = ip->ai_next) {
+
+		BBObject * obj = pub_stdc_TAddrInfo__Create(ip, count == 0);
+		
+		pub_stdc_TAddrInfo__SetAtIndex(arr, obj, count);
+
+		count++;
+	}
+	
+	return arr; 
+
+}
+
+int connect_( int socket, struct addrinfo * info ){
+	return connect( socket, info->ai_addr, info->ai_addrlen);
+}
+
 int listen_( int socket,int backlog ){
 	return listen( socket,backlog );
 }
@@ -438,13 +501,31 @@ size_t send_( int socket,const char *buf,size_t size,int flags ){
 	return send( socket,buf,size,flags );
 }
 
-int sendto_( int socket,const char *buf,int size,int flags,int dest_ip,int dest_port ){
-	struct	sockaddr_in sa;
-	memset( &sa,0,sizeof(sa) );
-	sa.sin_family=AF_INET;
-	sa.sin_addr.s_addr=htonl( dest_ip );
-	sa.sin_port=htons( dest_port );
-	return sendto( socket,buf,size,flags,(void*)&sa,sizeof(sa));
+int sendto_( int socket,const char *buf,int size,int flags,const char * dest_ip,int dest_port, int addr_type ){
+	addr_type = bmx_stdc_convertAFFamily(addr_type);
+	
+	switch (addr_type) {
+		case AF_INET:
+		{
+			struct	sockaddr_in sa;
+			memset( &sa,0,sizeof(sa) );
+			sa.sin_family=AF_INET;
+			sa.sin_addr.s_addr=htonl( dest_ip );
+//			memcpy( &sa.sin_addr,dest_ip,4 );
+			sa.sin_port=htons( dest_port );
+			return sendto( socket,buf,size,flags,(void*)&sa,sizeof(sa));
+		}
+		case AF_INET6:
+		{
+			struct sockaddr_in6 sa;
+			memset( &sa,0,sizeof(sa) );
+			sa.sin6_family=AF_INET6;
+			sa.sin6_port=htons( dest_port );
+			memcpy( &sa.sin6_addr, dest_ip,16 );
+		
+			return sendto( socket,buf,size,flags,(void*)&sa,sizeof(sa));
+		}
+	}
 }
 
 size_t recv_( int socket,char *buf,size_t size,int flags ){
@@ -493,6 +574,76 @@ void *localtime_( void *ttime ){
 
 int strftime_( char *buf,int size,BBString *fmt,void *ttime ){
 	return strftime( buf,size,bbTmpCString(fmt),ttime );
+}
+
+int bmx_stdc_addrinfo_flags(struct addrinfo * info) {
+	return info->ai_flags;
+}
+
+int bmx_stdc_addrinfo_family(struct addrinfo * info) {
+	return info->ai_family;
+}
+
+int bmx_stdc_addrinfo_socktype(struct addrinfo * info) {
+	return info->ai_socktype;
+}
+
+int bmx_stdc_addrinfo_protocol(struct addrinfo * info) {
+	return info->ai_protocol;
+}
+
+int bmx_stdc_addrinfo_addrlen(struct addrinfo * info) {
+	return info->ai_addrlen;
+}
+
+struct sockaddr * bmx_stdc_addrinfo_addr(struct addrinfo * info) {
+	return info->ai_addr;
+}
+
+BBString * bmx_stdc_addrinfo_canonname(struct addrinfo * info) {
+	return bbStringFromUTF8String(info->ai_canonname);
+}
+
+int bmx_stdc_convertNIFlags(int flags) {
+	int niFlags = 0;
+	
+	if (flags & 0x0001) {
+		niFlags |= NI_DGRAM;
+	}
+
+	if (flags & 0x0002) {
+		niFlags |= NI_NAMEREQD;
+	}
+
+	if (flags & 0x0004) {
+		niFlags |= NI_NOFQDN;
+	}
+
+	if (flags & 0x0008) {
+		niFlags |= NI_NUMERICHOST;
+	}
+
+	if (flags & 0x0010) {
+		niFlags |= NI_NUMERICSERV;
+	}
+	
+	return niFlags;
+}
+
+BBString * bmx_stdc_addrinfo_hostname(struct addrinfo * info, int flags) {
+	char host[256];
+	int res = getnameinfo(info->ai_addr, info->ai_addrlen, &host, 256, 0, 0, bmx_stdc_convertNIFlags(flags));
+	if (res != 0) {
+		return &bbEmptyString;
+	}
+	return bbStringFromUTF8String(host);
+}
+
+int inet_pton_(int family, BBString * src, void * dst) {
+	char * s = bbStringToCString(src);
+	int res = inet_pton(bmx_stdc_convertAFFamily(family), s, dst);
+	bbMemFree(s);
+	return res;
 }
 
 #if _WIN32

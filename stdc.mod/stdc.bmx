@@ -42,6 +42,73 @@ ModuleInfo "CC_OPTS: -D_FILE_OFFSET_BITS=64"
 
 Import "stdc.c"
 
+
+Type TAddrInfo
+
+	Field infoPtr:Byte Ptr
+	Field owner:Int
+
+	Method New(infoPtr:Byte Ptr, owner:Int)
+		Self.infoPtr = infoPtr
+		Self.owner = owner
+	End Method
+	
+	Function _Create:TAddrInfo(infoPtr:Byte Ptr, owner:Int) { nomangle }
+		Return New TAddrInfo(infoPtr, owner)
+	End Function
+
+	Function _CreateArray:TAddrInfo[](length:Int) { nomangle }
+		Return New TAddrInfo[length]
+	End Function
+	
+	Function _SetAtIndex(arr:TAddrInfo[], info:TAddrInfo, index:Int) { nomangle }
+		arr[index] = info
+	End Function
+	
+	Method flags:Int()
+		Return bmx_stdc_addrinfo_flags(infoPtr)
+	End Method
+	
+	Method family:Int()
+		Return bmx_stdc_addrinfo_family(infoPtr)
+	End Method
+	
+	Method sockType:Int()
+		Return bmx_stdc_addrinfo_socktype(infoPtr)
+	End Method
+	
+	Method protocol:Int()
+		Return bmx_stdc_addrinfo_protocol(infoPtr)
+	End Method
+	
+	Method addrLen:Int()
+		Return bmx_stdc_addrinfo_addrlen(infoPtr)
+	End Method
+	
+	Method addr:Byte Ptr()
+		Return bmx_stdc_addrinfo_addr(infoPtr)
+	End Method
+	
+	Method canonName:String()
+		Return bmx_stdc_addrinfo_canonname(infoPtr)
+	End Method
+	
+	Method HostName:String()
+		Return bmx_stdc_addrinfo_hostname(infoPtr, 0)
+	End Method
+	
+	Method HostIp:String()
+		Return bmx_stdc_addrinfo_hostname(infoPtr, NI_NUMERICHOST)
+	End Method
+	
+	Method Delete()
+		If owner Then
+			freeaddrinfo(infoPtr)
+		End If
+	End Method
+	
+End Type
+
 'c lib
 Extern "c"
 
@@ -124,7 +191,8 @@ Function atan_!( n! )="atan"
 Const AF_INET_:Int=2					'address types
 Const SOCK_STREAM_:Int=1,SOCK_DGRAM_:Int=2	'communication types
 Const SOCKET_ERROR_:Int=-1
-Const AF_INET6_:Int=30 ' IPv6
+Const AF_INET6_:Int=10 ' IPv6
+Const AF_UNSPEC_:Int = 0
 
 Const SO_DEBUG:Int=1			'turn on debugging info recording 
 Const SO_ACCEPTCONN:Int=2		'socket has had listen() 
@@ -163,6 +231,13 @@ Const TCP_BSDURGENT:Int=$7000
 Const IPPROTO_UDP:Int=17
 Const IPPROTO_TCP:Int=6
 
+Const NI_DGRAM:Int = $0001
+Const NI_NAMEREQD:Int = $0002
+Const NI_NOFQDN:Int = $0004
+Const NI_NUMERICHOST:Int = $0008
+Const NI_NUMERICSERV:Int = $0010
+
+
 'how params for shutdown_
 
 Const SD_SEND:Int=1
@@ -178,14 +253,15 @@ Function closesocket_( socket:Int )
 Function bind_:Int( socket:Int,addr_type:Int,port:Int )
 Function gethostbyaddr_:Byte Ptr( addr:Byte Ptr,addr_len:Int,addr_type:Int )
 
-Function gethostbyname_:Byte Ptr Ptr( name$,addr_type:Int Var,addr_len:Int Var )
+'Function gethostbyname_:Byte Ptr Ptr( name$,addr_type:Int Var,addr_len:Int Var )
+Function getaddrinfo_:TAddrInfo[](name:String, service:String = "http", family:Int = AF_UNSPEC_)
 
-Function connect_:Int( socket:Int,addr:Byte Ptr,addr_type:Int,addr_len:Int,port:Int )
+Function connect_:Int( socket:Int, addrinfo:Byte Ptr )
 Function listen_:Int( socket:Int,backlog:Int )
 Function accept_:Int( socket:Int,addr:Byte Ptr,addr_len:Byte Ptr)
 Function select_:Int( n_read:Int,read_socks:Int Ptr,n_write:Int,write_socks:Int Ptr,n_except:Int,except_socks:Int Ptr,millis:Int )
 Function send_:Size_T( socket:Int,buf:Byte Ptr,size:Size_T,flags:Int )
-Function sendto_:Int( socket:Int,buf:Byte Ptr,size:Int,flags:Int,dest_ip:Byte Ptr,dest_port:Int )
+Function sendto_:Int( socket:Int,buf:Byte Ptr,size:Int,flags:Int,dest_ip:Byte Ptr,dest_port:Int, addr_type:Int = AF_INET_ )
 Function recv_:Size_T( socket:Int,buf:Byte Ptr,size:Size_T,flags:Int )
 Function recvfrom_:Int( socket:Int,buf:Byte Ptr,size:Int,flags:Int,sender_ip:Int Var,sender_port:Int Var)
 Function setsockopt_:Int( socket:Int,level:Int,optname:Int,optval:Byte Ptr,count:Int)
@@ -193,6 +269,17 @@ Function getsockopt_:Int( socket:Int,level:Int,optname:Int,optval:Byte Ptr,count
 Function shutdown_:Int( socket:Int,how:Int )
 Function getsockname_:Int( socket:Int,addr:Byte Ptr,addr_len:Int Var )
 Function getpeername_:Int( socket:Int,addr:Byte Ptr,addr_len:Int Var )
+
+Function freeaddrinfo(res:Byte Ptr)
+Function bmx_stdc_addrinfo_flags:Int(info:Byte Ptr)
+Function bmx_stdc_addrinfo_family:Int(info:Byte Ptr)
+Function bmx_stdc_addrinfo_socktype:Int(info:Byte Ptr)
+Function bmx_stdc_addrinfo_protocol:Int(info:Byte Ptr)
+Function bmx_stdc_addrinfo_addrlen:Int(info:Byte Ptr)
+Function bmx_stdc_addrinfo_addr:Byte Ptr(info:Byte Ptr)
+Function bmx_stdc_addrinfo_hostname:String(info:Byte Ptr, flags:Int)
+Function bmx_stdc_addrinfo_canonname:String(info:Byte Ptr)
+Function inet_pton_:Int(family:Int, src:String, dst:Byte Ptr)
 
 'time
 
