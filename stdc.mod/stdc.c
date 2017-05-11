@@ -439,6 +439,10 @@ BBARRAY getaddrinfo_(BBString *name, BBString *service, int family) {
 
 }
 
+void freeaddrinfo_(struct addrinfo * info ) {
+	freeaddrinfo(info);
+}
+
 int connect_( int socket, struct addrinfo * info ){
 	return connect( socket, info->ai_addr, info->ai_addrlen);
 }
@@ -647,6 +651,7 @@ int inet_pton_(int family, BBString * src, void * dst) {
 	return res;
 }
 
+
 #if _WIN32
 
 static void CleanupWSA(){
@@ -661,7 +666,7 @@ int bb_stdc_Startup(){
 
 	WSADATA ws;
 	
-	WSAStartup( 0x101,&ws );
+	WSAStartup( MAKEWORD(2, 2),&ws );
 	atexit( CleanupWSA );
 
 #endif

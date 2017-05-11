@@ -38,6 +38,9 @@ ModuleInfo "History: Fixed C Compiler warnings"
 
 ?linux
 ModuleInfo "CC_OPTS: -D_FILE_OFFSET_BITS=64"
+?win32
+Import "-lWs2_32"
+Import "inet_pton.c"
 ?
 
 Import "stdc.c"
@@ -103,7 +106,7 @@ Type TAddrInfo
 	
 	Method Delete()
 		If owner Then
-			freeaddrinfo(infoPtr)
+			freeaddrinfo_(infoPtr)
 		End If
 	End Method
 	
@@ -270,7 +273,7 @@ Function shutdown_:Int( socket:Int,how:Int )
 Function getsockname_:Int( socket:Int,addr:Byte Ptr,addr_len:Int Var )
 Function getpeername_:Int( socket:Int,addr:Byte Ptr,addr_len:Int Var )
 
-Function freeaddrinfo(res:Byte Ptr)
+Function freeaddrinfo_(res:Byte Ptr)
 Function bmx_stdc_addrinfo_flags:Int(info:Byte Ptr)
 Function bmx_stdc_addrinfo_family:Int(info:Byte Ptr)
 Function bmx_stdc_addrinfo_socktype:Int(info:Byte Ptr)
