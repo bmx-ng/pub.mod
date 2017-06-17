@@ -110,7 +110,7 @@ Type TPipeStream Extends TStream
 				If p1>p0 line$=String.FromBytes(Varptr readbuffer[p0],p1-p0)
 				n:+1
 				bufferpos:-n
-				If bufferpos MemMove(readbuffer,Varptr readbuffer[n],bufferpos)
+				If bufferpos MemMove(readbuffer,Varptr readbuffer[n],Size_T(bufferpos))
 				Return line$
 			EndIf
 		Next			
