@@ -495,11 +495,7 @@ end rem
 Rem
 bbdoc: see <a href="../lua-5.1.4/doc/manual.html#lua_tolstring">Lua Reference Manual</a>
 End Rem
-?ptr64
-  Function lua_tolstring:Byte Ptr (lua_state:Byte Ptr, index:Int, size:Long Ptr) ' without any conversion!
-?Not ptr64
-  Function lua_tolstring:Byte Ptr (lua_state:Byte Ptr, index:Int, size:Int Ptr) ' without any conversion!
-?
+Function lua_tolstring:Byte Ptr (lua_state:Byte Ptr, index:Int, size:Size_T Ptr) ' without any conversion!
 Rem
 bbdoc: see <a href="../lua-5.1.4/doc/manual.html#lua_tonumber">Lua Reference Manual</a>
 end rem
@@ -644,17 +640,13 @@ end rem
   End Function
 
   Function lua_tobytearray:Byte[] (lua_state:Byte Ptr, index:Int)
-?ptr64
-    Local Length:Long
-?Not ptr64
-   	Local Length:Int
-?
+    Local Length:Size_T
     Local DataPtr:Byte Ptr = lua_tolstring(lua_state, index, Varptr Length)
     If (DataPtr = Null) Then
       Return Null
     Else
       Local Result:Byte[] = New Byte[Length]
-        MemCopy(Varptr Result[0], DataPtr, Length);
+        MemCopy(Varptr Result[0], DataPtr, Length)
       Return Result
     End If
   End Function
@@ -663,11 +655,7 @@ Rem
 bbdoc: see <a href="../lua-5.1.4/doc/manual.html#lua_tostring">Lua Reference Manual</a>
 End Rem
   Function lua_tostring:String (lua_state:Byte Ptr, index:Int)
-?ptr64
-    Local Length:Long
-?Not ptr64
-   	Local Length:Int
-?
+    Local Length:Size_T
     Local StringPtr:Byte Ptr = lua_tolstring(lua_state, index, Varptr Length)
     	If (StringPtr = Null) Then
       Return Null
