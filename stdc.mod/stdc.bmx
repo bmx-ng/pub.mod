@@ -50,6 +50,11 @@ Type TAddrInfo
 
 	Field infoPtr:Byte Ptr
 	Field owner:Int
+	
+	Method New()
+		infoPtr = bmx_stdc_addrinfo_new()
+		owner = True
+	End Method
 
 	Method New(infoPtr:Byte Ptr, owner:Int)
 		Self.infoPtr = infoPtr
@@ -72,16 +77,32 @@ Type TAddrInfo
 		Return bmx_stdc_addrinfo_flags(infoPtr)
 	End Method
 	
+	Method setFlags(flags:Int)
+		bmx_stdc_addrinfo_setflags(infoPtr, flags)
+	End Method
+	
 	Method family:Int()
 		Return bmx_stdc_addrinfo_family(infoPtr)
+	End Method
+	
+	Method setFamily(family:Int)
+		bmx_stdc_addrinfo_setfamily(infoPtr, family)
 	End Method
 	
 	Method sockType:Int()
 		Return bmx_stdc_addrinfo_socktype(infoPtr)
 	End Method
 	
+	Method setSockType(sockType:Int)
+		bmx_stdc_addrinfo_setsocktype(infoPtr, sockType)
+	End Method
+	
 	Method protocol:Int()
 		Return bmx_stdc_addrinfo_protocol(infoPtr)
+	End Method
+	
+	Method setProtocol(protocol:Int)
+		bmx_stdc_addrinfo_setprotocol(infoPtr, protocol)
 	End Method
 	
 	Method addrLen:Int()
@@ -107,6 +128,30 @@ Type TAddrInfo
 	Method Delete()
 		If owner Then
 			freeaddrinfo_(infoPtr)
+		End If
+	End Method
+	
+End Type
+
+Type TSockaddrStorage
+
+	Field storagePtr:Byte Ptr
+	
+	Method New()
+		storagePtr = bmx_stdc_sockaddrestorage_new()
+	End Method
+
+	Method family:Int()
+	End Method
+	
+	Method address:String()
+		Return bmx_stdc_sockaddrestorage_address(storagePtr)
+	End Method
+
+	Method Delete()
+		If storagePtr Then
+			free_(storagePtr)
+			storagePtr = Null
 		End If
 	End Method
 	
@@ -174,7 +219,7 @@ Function atexit_:Int( fun() )="int atexit(void (*)() ) !"
 Function memset_:Byte Ptr( buf:Byte Ptr,val:Int,size:Size_T )="void * memset( void * , int ,size_t ) !"
 Function memcmp_:Int( lhs:Byte Ptr,rhs:Byte Ptr,size:Size_T )="int memcmp( void * , void * , size_t ) !"
 Function memcpy_:Byte Ptr( dst:Byte Ptr,src:Byte Ptr,size:Size_T )="void * memcpy( void * , void * , size_t ) !"
-Function memmove_( dst:Byte Ptr,src:Byte Ptr,size:Size_T )="void * memmove( void * , void * , size_t ) !"
+Function memmove_:Byte Ptr( dst:Byte Ptr,src:Byte Ptr,size:Size_T )="void * memmove( void * , void * , size_t ) !"
 Function strlen_:Size_T( str:Byte Ptr )="size_t strlen( const char *) !"
 
 'math
@@ -206,6 +251,14 @@ Const SO_BROADCAST:Int=$20		'permit sending of broadcast msgs
 Const SO_USELOOPBACK:Int=$40    'bypass hardware when possible 
 Const SO_LINGER:Int=$80         'linger on close if data present 
 Const SO_OOBINLINE:Int=$100     'leave received OOB data in line 
+
+Const AI_PASSIVE:Int =     $001 ' Socket address is intended for 'bind'
+Const AI_CANONNAME:Int =   $002 ' Request for canonical name
+Const AI_NUMERICHOST:Int = $004 ' Don't use name resolution
+Const AI_V4MAPPED:Int =    $008 ' IPv4 mapped addresses are acceptable
+Const AI_ALL:Int =         $010 ' Return IPv4 mapped and IPv6 addresses
+Const AI_ADDRCONFIG:Int =  $020 ' Use configuration of this host to choose returned address type
+Const AI_NUMERICSERV:Int = $400 ' Don't use name resolution
 
 'Additional options.
 
@@ -240,6 +293,7 @@ Const NI_NOFQDN:Int = $0004
 Const NI_NUMERICHOST:Int = $0008
 Const NI_NUMERICSERV:Int = $0010
 
+Const SOL_SOCKET:Int = $ffff ' options for socket level
 
 'how params for shutdown_
 
@@ -258,6 +312,7 @@ Function gethostbyaddr_:Byte Ptr( addr:Byte Ptr,addr_len:Int,addr_type:Int )
 
 'Function gethostbyname_:Byte Ptr Ptr( name$,addr_type:Int Var,addr_len:Int Var )
 Function getaddrinfo_:TAddrInfo[](name:String, service:String = "http", family:Int = AF_UNSPEC_)
+Function getaddrinfo_hints:TAddrInfo[](name:String, service:String, hints:Byte Ptr)
 
 Function connect_:Int( socket:Int, addrinfo:Byte Ptr )
 Function listen_:Int( socket:Int,backlog:Int )
@@ -283,6 +338,18 @@ Function bmx_stdc_addrinfo_addr:Byte Ptr(info:Byte Ptr)
 Function bmx_stdc_addrinfo_hostname:String(info:Byte Ptr, flags:Int)
 Function bmx_stdc_addrinfo_canonname:String(info:Byte Ptr)
 Function inet_pton_:Int(family:Int, src:String, dst:Byte Ptr)
+Function bmx_stdc_addrinfo_new:Byte Ptr()
+Function bmx_stdc_addrinfo_setflags(info:Byte Ptr, flags:Int)
+Function bmx_stdc_addrinfo_setfamily(info:Byte Ptr, family:Int)
+Function bmx_stdc_addrinfo_setsocktype(info:Byte Ptr, sockType:Int)
+Function bmx_stdc_addrinfo_setprotocol(info:Byte Ptr, protocol:Int)
+
+Function bmx_stdc_bind_info:Int(socket:Int, info:Byte Ptr)
+Function bmx_stdc_sockaddrestorage_new:Byte Ptr()
+Function bmx_stdc_sockaddrestorage_address:String(handle:Byte Ptr)
+Function bmx_stdc_accept_:Int(socket:Int, storage:Byte Ptr)
+Function bmx_stdc_getsockname:String(socket:Int, port:Int Var)
+Function bmx_stdc_getpeername:String(socket:Int, port:Int Var)
 
 'time
 

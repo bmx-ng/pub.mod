@@ -357,7 +357,6 @@ int bmx_stdc_convertAFFamily(int family) {
 	return family;
 }
 
-
 int bind_( int socket,int addr_type,int port ){
 	int r;
 	
@@ -388,18 +387,19 @@ int bind_( int socket,int addr_type,int port ){
 	
 }
 
+int bmx_stdc_bind_info(int socket, struct addrinfo * info) {
+	return bind(socket, info->ai_addr, info->ai_addrlen);
+}
+
 char *gethostbyaddr_( void *addr,int addr_len,int addr_type ){
 	
 	//struct hostent *e=gethostbyaddr( addr,addr_len,addr_type );
 	//return e ? e->h_name : 0;
 }
 
-BBARRAY getaddrinfo_(BBString *name, BBString *service, int family) {
-	struct addrinfo hints;
+BBARRAY getaddrinfo_hints(BBString *name, BBString *service, struct addrinfo * hints) {
 	struct addrinfo * info;
 	struct addrinfo * ip;
-	
-	memset(&hints, 0, sizeof(struct addrinfo));
 	
 	char * n = bbStringToUTF8String(name);
 	char * s = 0;
@@ -407,9 +407,7 @@ BBARRAY getaddrinfo_(BBString *name, BBString *service, int family) {
 		s = bbStringToUTF8String(service);
 	}
 	
-	hints.ai_family = bmx_stdc_convertAFFamily(family);
-	
-	int res = getaddrinfo(n, s, &hints, &info);
+	int res = getaddrinfo(n, s, hints, &info);
 	
 	bbMemFree(s);
 	bbMemFree(n);
@@ -436,7 +434,20 @@ BBARRAY getaddrinfo_(BBString *name, BBString *service, int family) {
 	}
 	
 	return arr; 
+}
 
+BBARRAY getaddrinfo_(BBString *name, BBString *service, int family) {
+	struct addrinfo hints;
+	
+	memset(&hints, 0, sizeof(struct addrinfo));
+	
+	hints.ai_family = bmx_stdc_convertAFFamily(family);
+	
+	return getaddrinfo_hints(name, service, &hints);
+}
+
+struct addrinfo * bmx_stdc_addrinfo_new() {
+	return (struct addrinfo *)calloc(1, sizeof(struct addrinfo));
 }
 
 void freeaddrinfo_(struct addrinfo * info ) {
@@ -454,6 +465,12 @@ int listen_( int socket,int backlog ){
 int accept_( int socket,const char *addr,unsigned int *addr_len ){
 	return accept( socket,(void*)addr,addr_len );
 }
+
+int bmx_stdc_accept_(int socket, struct sockaddr_storage * storage) {
+	int size = sizeof(struct sockaddr_storage );
+	return accept(socket, (struct sockaddr *)storage, &size);
+}
+
 
 int select_( int n_read,int *r_socks,int n_write,int *w_socks,int n_except,int *e_socks,int millis ){
 
@@ -609,6 +626,22 @@ BBString * bmx_stdc_addrinfo_canonname(struct addrinfo * info) {
 	return bbStringFromUTF8String(info->ai_canonname);
 }
 
+void bmx_stdc_addrinfo_setflags(struct addrinfo * info, int flags) {
+	info->ai_flags = flags;
+}
+
+void bmx_stdc_addrinfo_setfamily(struct addrinfo * info, int family) {
+	info->ai_family = bmx_stdc_convertAFFamily(family);
+}
+
+void bmx_stdc_addrinfo_setsocktype(struct addrinfo * info, int sockType) {
+	info->ai_socktype = sockType;
+}
+
+void bmx_stdc_addrinfo_setprotocol(struct addrinfo * info, int protocol) {
+	info->ai_protocol = protocol;
+}
+
 int bmx_stdc_convertNIFlags(int flags) {
 	int niFlags = 0;
 	
@@ -651,6 +684,94 @@ int inet_pton_(int family, BBString * src, void * dst) {
 	return res;
 }
 
+struct sockaddr_storage * bmx_stdc_sockaddrestorage_new() {
+	return calloc(1, sizeof(struct sockaddr_storage));
+}
+
+BBString * bmx_stdc_sockaddrestorage_address(struct sockaddr_storage * storage) {
+
+	BBString * address = &bbEmptyString;
+	
+#if _WIN32
+
+	TCHAR add[256];
+	typedef LPTSTR (__stdcall RTLIPV6ADDRESSTOSTRING)(const IN6_ADDR*, PTSTR);
+	typedef LPTSTR (__stdcall RTLIPV4ADDRESSTOSTRING)(const IN_ADDR*, PTSTR);
+	
+	HMODULE ntdll = GetModuleHandle("NTDLL.DLL");
+
+	if (storage->ss_family == AF_INET) {
+		RTLIPV4ADDRESSTOSTRING* RtlIpv4AddressToStringFunc = GetProcAddress(ntdll, "RtlIpv4AddressToStringW");
+
+		RtlIpv4AddressToStringFunc(&((struct sockaddr_in*)storage)->sin_addr, add);
+	} else {
+		RTLIPV6ADDRESSTOSTRING* RtlIpv6AddressToStringFunc = GetProcAddress(ntdll, "RtlIpv6AddressToStringW");
+
+		RtlIpv6AddressToStringFunc(&((struct sockaddr_in6*)storage)->sin6_addr, add);
+	}
+	
+	address = bbStringFromWString(add);
+
+#else
+
+	char add[256];
+
+	if (storage->ss_family == AF_INET) {
+		inet_ntop(storage->ss_family, &((struct sockaddr_in*)storage)->sin_addr, add, sizeof(add));
+	} else {
+		inet_ntop(storage->ss_family, &((struct sockaddr_in6*)storage)->sin6_addr, add, sizeof(add));
+	}
+	
+	address = bbStringFromCString(add);
+
+#endif
+
+	return address;
+}
+
+BBString * bmx_stdc_getsockname(int socket, int * port) {
+	struct sockaddr_storage storage;
+	int len = sizeof(struct sockaddr_storage);
+	
+	BBString * address = &bbEmptyString;
+	*port = 0;
+	
+	int res = getsockname(socket, (struct sockaddr *)&storage, &len);
+	
+	if (res >= 0) {
+		if (storage.ss_family == AF_INET) {
+			*port = ((struct sockaddr_in*)&storage)->sin_port;
+		} else {
+			*port = ((struct sockaddr_in6*)&storage)->sin6_port;
+		}
+		
+		address = bmx_stdc_sockaddrestorage_address(&storage);
+	}
+	
+	return address;
+}
+
+BBString * bmx_stdc_getpeername(int socket, int * port) {
+	struct sockaddr_storage storage;
+	int len = sizeof(struct sockaddr_storage);
+	
+	BBString * address = &bbEmptyString;
+	*port = 0;
+	
+	int res = getpeername(socket, (struct sockaddr *)&storage, &len);
+	
+	if (res >= 0) {
+		if (storage.ss_family == AF_INET) {
+			*port = ((struct sockaddr_in*)&storage)->sin_port;
+		} else {
+			*port = ((struct sockaddr_in6*)&storage)->sin6_port;
+		}
+		
+		address = bmx_stdc_sockaddrestorage_address(&storage);
+	}
+	
+	return address;
+}
 
 #if _WIN32
 
