@@ -467,8 +467,12 @@ int accept_( int socket,const char *addr,unsigned int *addr_len ){
 }
 
 int bmx_stdc_accept_(int socket, struct sockaddr_storage * storage) {
-	int size = sizeof(struct sockaddr_storage );
-	return accept(socket, (struct sockaddr *)storage, &size);
+	if (storage) {
+		int size = sizeof(struct sockaddr_storage );
+		return accept(socket, (struct sockaddr *)storage, &size);
+	} else {
+		return accept(socket, NULL, NULL);
+	}
 }
 
 
