@@ -56,6 +56,16 @@ Type TAddrInfo
 		owner = True
 	End Method
 
+	Method New(family:Int, sockType:Int, flags:Int = 0)
+		infoPtr = bmx_stdc_addrinfo_new()
+		owner = True
+		setFamily(family)
+		setSockType(sockType)
+		If flags Then
+			setFlags(flags)
+		End If
+	End Method
+
 	Method New(infoPtr:Byte Ptr, owner:Int)
 		Self.infoPtr = infoPtr
 		Self.owner = owner
