@@ -25,8 +25,8 @@ Const GMEM_ZEROINT=$40
 
 Function Sleep( dwMilliseconds )="BBINT Sleep(BBINT )!"
 Function beep( dwFreq,dwDuration )="BBINT Beep(BBINT ,BBINT )!"
-Function GetModuleHandleA:Byte Ptr( lpModuleName:Byte Ptr  )="BBINT GetModuleHandleA(BBBYTE * )!"
-Function GetModuleHandleW:Byte Ptr( lpModuleName:Short Ptr )="BBINT GetModuleHandleW(BBSHORT * )!"
+Function GetModuleHandleA:Byte Ptr( lpModuleName:Byte Ptr  )="HMODULE GetModuleHandleA(BBBYTE * )!"
+Function GetModuleHandleW:Byte Ptr( lpModuleName:Short Ptr )="HMODULE GetModuleHandleW(BBSHORT * )!"
 Function SetFileAttributesA( lpFileName$z,dwFileAttributes )="BBINT SetFileAttributesA(BBBYTE * ,BBINT )!"
 Function SetFileAttributesW( lpFileName$z,dwFileAttributes )="BBINT SetFileAttributesW(BBBYTE * ,BBINT )!"
 Function GetFileAttributesA( lpFileName$z )="BBINT GetFileAttributesA(BBBYTE * )!"
