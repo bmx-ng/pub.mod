@@ -2,12 +2,14 @@ SuperStrict
 
 Module Pub.LibPNG
 
-ModuleInfo "Version: 1.07"
+ModuleInfo "Version: 1.08"
 ModuleInfo "Author: Guy Eric Schalnat, Andreas Dilger, Glenn Randers-Pehrson, Others"
 ModuleInfo "License: ZLib/PNG License"
 ModuleInfo "Modserver: BRL"
 ModuleInfo "Credit: Adapted for BlitzMax by Mark Sibly"
 
+ModuleInfo "History: 1.08"
+ModuleInfo "History: Exposed user data."
 ModuleInfo "History: 1.07"
 ModuleInfo "History: Update to libpng 1.6.27"
 ModuleInfo "History: 1.06"
@@ -94,8 +96,8 @@ Function png_create_info_struct:Byte Ptr( png_ptr:Byte Ptr ) = "bmx_png_create_i
 Function png_init_io( png_ptr:Byte Ptr,c_stream:Byte Ptr ) = "bmx_png_init_io"
 Function png_set_sig_bytes( png_ptr:Byte Ptr,number:Int ) = "bmx_png_set_sig_bytes"
 
-Function png_set_read_fn( png_ptr:Byte Ptr,user:Byte Ptr,read_fn(png_ptr:Byte Ptr,buf:Byte Ptr,size:Int) ) = "bmx_png_set_read_fn"
-Function png_set_write_fn( png_ptr:Byte Ptr,user:Byte Ptr,write_fn(png_ptr:Byte Ptr,buf:Byte Ptr,size:Int),flush_fn(png_ptr:Byte Ptr) ) = "bmx_png_set_write_fn"
+Function png_set_read_fn( png_ptr:Byte Ptr,user:Object,read_fn(png_ptr:Byte Ptr,buf:Byte Ptr,size:Int) ) = "bmx_png_set_read_fn"
+Function png_set_write_fn( png_ptr:Byte Ptr,user:Object,write_fn(png_ptr:Byte Ptr,buf:Byte Ptr,size:Int),flush_fn(png_ptr:Byte Ptr) ) = "bmx_png_set_write_fn"
 
 Function png_set_expand( png_ptr:Byte Ptr ) = "bmx_png_set_expand"
 Function png_set_strip_16( png_ptr:Byte Ptr ) = "bmx_png_set_strip_16"
@@ -112,5 +114,7 @@ Function png_set_rows( png_ptr:Byte Ptr,info_ptr:Byte Ptr,rows:Byte Ptr ) = "bmx
 
 Function png_get_IHDR:Int( png_ptr:Byte Ptr,info_ptr:Byte Ptr,width:Int Var,height:Int Var,bit_depth:Int Var,color_type:Int Var,interlace_type:Int Var,compression_type:Int Var,filter_method:Int Var ) = "bmx_png_get_IHDR"
 Function png_set_IHDR( png_ptr:Byte Ptr,info_ptr:Byte Ptr,width:Int,height:Int,bit_depth:Int,color_type:Int,interlace_type:Int,compression_type:Int,filter_method:Int ) = "bmx_png_set_IHDR"
+
+Function png_get_io_ptr:Object(png_ptr:Byte Ptr) = "bmx_png_get_io_ptr"
 
 End Extern
