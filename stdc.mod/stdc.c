@@ -786,7 +786,7 @@ static void CleanupWSA(){
 
 #endif
 
-int bb_stdc_Startup(){
+void bb_stdc_Startup(){
 
 #if _WIN32
 
@@ -800,4 +800,5 @@ int bb_stdc_Startup(){
 	stdin_=stdin;
 	stdout_=stdout;
 	stderr_=stderr;
+	
 }
