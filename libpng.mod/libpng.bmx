@@ -2,12 +2,15 @@ SuperStrict
 
 Module Pub.LibPNG
 
-ModuleInfo "Version: 1.08"
+ModuleInfo "Version: 1.09"
 ModuleInfo "Author: Guy Eric Schalnat, Andreas Dilger, Glenn Randers-Pehrson, Others"
 ModuleInfo "License: ZLib/PNG License"
 ModuleInfo "Modserver: BRL"
 ModuleInfo "Credit: Adapted for BlitzMax by Mark Sibly"
 
+ModuleInfo "History: 1.09"
+ModuleInfo "History: Update to libpng 1.6.34."
+ModuleInfo "History: Enabled SSE for x86 and x64."
 ModuleInfo "History: 1.08"
 ModuleInfo "History: Exposed user data."
 ModuleInfo "History: 1.07"
@@ -24,6 +27,12 @@ ModuleInfo "History: 1.03"
 ModuleInfo "History: Fixed for Intel Macs"
 ModuleInfo "History: 1.02"
 ModuleInfo "History: Update to libpng 1.2.12"
+
+?x86
+ModuleInfo "CC_OPTS: -DPNG_INTEL_SSE"
+?x64
+ModuleInfo "CC_OPTS: -DPNG_INTEL_SSE"
+?
 
 Import Pub.ZLib
 
@@ -45,6 +54,12 @@ Import "pngwutil.c"
 ?ios
 Import "arm/arm_init.c"
 Import "arm/filter_neon_intrinsics.c"
+?x86
+Import "intel/filter_sse2_intrinsics.c"
+Import "intel/intel_init.c"
+?x64
+Import "intel/filter_sse2_intrinsics.c"
+Import "intel/intel_init.c"
 ?
 
 Extern
