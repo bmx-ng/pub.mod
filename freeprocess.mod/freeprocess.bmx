@@ -20,7 +20,7 @@ ModuleInfo "History: Added SIGCHLD handling and fdReapZombies function."
 ModuleInfo "History: 1.01 Release"
 ModuleInfo "History: Inserts /Contents/MacOS/ into process path for Apple app packages"
 
-Strict
+SuperStrict
 
 ' createproc - to launch external executable
 ' TPipeStream - nonblocking readlines with fd file handles
@@ -35,23 +35,23 @@ Import "freeprocess.c"
 'processhandle should be assumed to be invalid, and neither function should be called
 'again.
 Extern
-Function fdClose(fd)
-Function fdRead:Long(fd,buffer:Byte Ptr,count:Long)
-Function fdWrite:Long(fd,buffer:Byte Ptr,count:Long)
-Function fdFlush(fd)
-Function fdAvail(fd)
-Function fdProcess(exe$,in_fd Ptr,out_fd Ptr,err_fd Ptr,flags)="fdProcess"
-Function fdProcessStatus(processhandle)
-Function fdTerminateProcess(processhandle)
+Function fdClose(fd:Int)
+Function fdRead:Long(fd:Int,buffer:Byte Ptr,count:Long)
+Function fdWrite:Long(fd:Int,buffer:Byte Ptr,count:Long)
+Function fdFlush(fd:Int)
+Function fdAvail:Int(fd:Int)
+Function fdProcess:Int(exe$,in_fd:Int Ptr,out_fd:Int Ptr,err_fd:Int Ptr,flags:Int)="fdProcess"
+Function fdProcessStatus:Int(processhandle:Int)
+Function fdTerminateProcess:Int(processhandle:Int)
 End Extern
 
-Const HIDECONSOLE=1
+Const HIDECONSOLE:Int=1
 
 Type TPipeStream Extends TStream
 
 	Field	readbuffer:Byte[4096]
 	Field	bufferpos:Long
-	Field	readhandle,writehandle
+	Field	readhandle:Int,writehandle:Int
 
 	Method Close()
 		If readhandle 
@@ -76,12 +76,12 @@ Type TPipeStream Extends TStream
 		fdFlush(writehandle)
 	End Method
 		
-	Method ReadAvail()
+	Method ReadAvail:Int()
 		Return fdAvail(readhandle)
 	End Method
 	
 	Method ReadPipe:Byte[]()
-		Local	bytes:Byte[],n
+		Local	bytes:Byte[],n:Int
 		n=ReadAvail()
 		If n
 			bytes=New Byte[n]
@@ -91,7 +91,7 @@ Type TPipeStream Extends TStream
 	End Method
 	
 	Method ReadLine$()	'nonblocking - returns empty string if no data available
-		Local	n:Long,r:Long,p0,p1,line$
+		Local	n:Long,r:Long,p0:Int,p1:Int,line$
 		n=ReadAvail()
 		If n
 			If bufferpos+n>4096 n=4096-bufferpos
@@ -116,7 +116,7 @@ Type TPipeStream Extends TStream
 		Next			
 	End Method
 
-	Function Create:TPipeStream( in,out )
+	Function Create:TPipeStream( in:Int,out:Int )
 		Local stream:TPipeStream=New TPipeStream
 		stream.readhandle=in
 		stream.writehandle=out
@@ -128,21 +128,21 @@ End Type
 Type TProcess
 	Global ProcessList:TList 
 	Field	name$
-	Field	handle
+	Field	handle:Int
 	Field	pipe:TPipeStream
 	Field	err:TPipeStream
 	Field   detached:Int
 
-	Method Detach()
+	Method Detach:Int()
 		detached = True
 		Return 1
 	End Method
 	
-	Method Attach()
+	Method Attach:Int()
 		detached = False
 		Return 1
 	End Method
-	Method Status()
+	Method Status:Int()
 		If handle 
 			If fdProcessStatus(handle) Return 1
 			handle=0
@@ -155,8 +155,8 @@ Type TProcess
 		If err err.Close;err=Null
 	End Method
 	
-	Method Terminate()
-		Local res
+	Method Terminate:Int()
+		Local res:Int
 		If handle
 			res=fdTerminateProcess( handle )
 			handle=0
@@ -164,9 +164,9 @@ Type TProcess
 		Return res
 	End Method
 
-	Function Create:TProcess(name$,flags)
+	Function Create:TProcess(name$,flags:Int)
 		Local	p:TProcess
-		Local	infd,outfd,errfd	
+		Local	infd:Int,outfd:Int,errfd:Int	
 ?MacOS
 		If FileType(name)=2
 			Local a$=StripExt(StripDir(name))
@@ -211,7 +211,7 @@ Rem
 bbdoc: Creates a process
 returns: TProcess object that is linked to the process you have started
 End Rem
-Function CreateProcess:TProcess(cmd$,flags=0)
+Function CreateProcess:TProcess(cmd$,flags:Int=0)
 	Return TProcess.Create(cmd,flags)
 End Function
 
