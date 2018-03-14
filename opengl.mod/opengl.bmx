@@ -22,10 +22,12 @@ Import "-lglu32"
 Import "-lopengl32"
 Import "glu.bmx"
 ?Linuxx86
+Import "GL/gl.h"
 Import "-lGL"
 Import "-lGLU"
 Import "glu.bmx"
 ?Linuxx64
+Import "GL/gl.h"
 Import "-lGL"
 Import "-lGLU"
 Import "glu.bmx"
