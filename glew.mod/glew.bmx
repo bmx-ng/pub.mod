@@ -40,7 +40,7 @@ ModuleInfo "History: Updated To GL2.0 compatible version 1.3.3"
 ' #define GLEW_STATIC
 ' #endif
 
-?Not opengles
+?Not opengles And Not nx
 
 Import "glew.c"
 
