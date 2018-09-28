@@ -470,7 +470,7 @@ Type TCodeGenerator
 		WriteLine OutGLew, "' #define GLEW_STATIC"
 		WriteLine OutGLew, "' #endif"
 		WriteLine OutGLew, ""
-		WriteLine OutGLew, "?Not opengles"
+		WriteLine OutGLew, "?Not opengles And Not nx"
 		WriteLine OutGLew, ""
 		WriteLine OutGLew, "Import ~qglew.c~q"
 		WriteLine OutGLew, ""

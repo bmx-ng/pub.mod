@@ -33,7 +33,7 @@ Import "-lGLU"
 Import "glu.bmx"
 ?
 
-
+?Not nx
 Extern "Os"
 
 Const GL_ACCUM=$0100
@@ -906,3 +906,4 @@ Function glVertexPointer(size_:Int,type_:Int,stride_:Int,pointer_:Byte Ptr)="voi
 Function glViewport(x_:Int,y_:Int,width_:Int,height_:Int)="void glViewport( GLint , GLint , GLsizei, GLsizei )!"
 
 End Extern
+?
