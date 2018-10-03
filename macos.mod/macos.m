@@ -52,5 +52,17 @@ BBString *bbStringFromNSString( NSString *s ) {
 }
 
 NSString *NSStringFromBBString( BBString *s ) {
-	return [NSString stringWithCharacters:s->buf length:s->length];
+	if (!s->length) {
+		return @"";
+	} else {
+		return [NSString stringWithCharacters:s->buf length:s->length];
+	}
+}
+
+
+void NSOSVersion(int * major, int * minor, int * patch) {
+	NSOperatingSystemVersion version = [[NSProcessInfo processInfo] operatingSystemVersion];
+	*major = version.majorVersion;
+	*minor = version.minorVersion;
+	*patch = version.patchVersion;
 }

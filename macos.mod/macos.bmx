@@ -13,13 +13,16 @@ ModuleInfo "History: 1.01 Release"
 
 ?MacOS
 Import "macos.m"
+Import "NSProcessInfo_PECocoaBackports.m"
 
 Extern
 
 Function is_pid_native( pid )
-Function Gestalt( tag,result Var )
 Function bbStringFromNSString$( ns_string:Byte Ptr )
 Function NSStringFromBBString:Byte Ptr( bb_string$ )
+
+Function NSOSVersion(major:Int Var, minor:Int Var, patch:Int Var)
+
 
 End Extern
 ?

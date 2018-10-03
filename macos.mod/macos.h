@@ -10,10 +10,14 @@
 #include <sys/types.h>
 #include <sys/sysctl.h>
 
+#include "NSProcessInfo_PECocoaBackports.h"
+
 int is_pid_native( pid_t pid );
 
 BBString *bbStringFromNSString( NSString *s );
 
 NSString *NSStringFromBBString( BBString *s );
+
+void NSOSVersion(int * major, int * minor, int * patch);
 
 #endif
