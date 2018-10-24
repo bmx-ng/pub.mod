@@ -1263,6 +1263,7 @@ Function GetClassNameW:Int( hwnd:Byte Ptr, dst:Short Ptr, maxlen:Int)="int __std
 
 Function MessageBoxW:Int(hWnd:Byte Ptr, lpText:Short Ptr, lpCaption:Short Ptr, uType:UInt)="int __stdcall MessageBoxW(HWND ,LPCWSTR ,LPCWSTR ,UINT )!"
 
+Function MonitorFromWindow:Byte Ptr(hwnd:Byte Ptr, flags:Int)="HMONITOR __stdcall MonitorFromWindow(HWND, DWORD)!"
 'shellapi
 
 Function DragAcceptFiles(hWnd:Byte Ptr,fAccept)="void DragAcceptFiles(HWND ,BBINT )!"

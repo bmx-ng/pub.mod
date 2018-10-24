@@ -46,6 +46,7 @@ Import "com.bmx"
 Import "commdlg.bmx"
 Import "commctrl.bmx"
 Import "richedit.bmx"
+Import "shcore.bmx"
 
 Rem
 bbdoc: Locks the left/right Windows keys, preventing them from opening the Windows menu.
