@@ -244,11 +244,11 @@ Global joystick_drivers:TJoystickDriver
 Public
 
 Rem
-bbdoc: Abstract base type for pixmap loaders
+bbdoc: Abstract base type for joystick drivers.
 about:
-To create a new pixmap loader, you should extend TPixmapLoader and implement the #LoadPixmap method.
+To create a new joystick driver, you should extend #TJoystickDriver and implement the #GetName method.
 
-To install your pixmap loader, simply create an instance of it using #New</font>.
+To install your joystick driver, simply create an instance of it using #New.
 End Rem
 Type TJoystickDriver
 	Field _succ:TJoystickDriver
