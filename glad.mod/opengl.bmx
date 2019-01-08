@@ -5,7 +5,7 @@
 Strict
 
 Import "glad/glad.h"
-Import "-lglad -lEGL -lglapi -ldrm_nouveau"
+Import "-lglad -lglapi -ldrm_nouveau"
 
 Extern "Os"
 

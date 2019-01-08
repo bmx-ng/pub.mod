@@ -395,7 +395,7 @@ Type TCodeGenerator
 		'WriteLine OutOpenGL, "ModuleInfo ~qLicense: SGI Free Software License B~q"
 		'WriteLine OutOpenGL, "ModuleInfo ~qModserver: brl~q"
 		WriteLine OutOpenGL, "Import ~qglad/glad.h~q"
-		WriteLine OutOpenGL, "Import ~q-lglad -lEGL -lglapi -ldrm_nouveau~q"
+		WriteLine OutOpenGL, "Import ~q-lglad -lglapi -ldrm_nouveau~q"
 		'WriteLine OutOpenGL, "ModuleInfo ~qHistory: 1.02 Release~q"
 		'WriteLine OutOpenGL, "ModuleInfo ~qHistory: Restored GLU~q"
 		'WriteLine OutOpenGL, ""
@@ -452,7 +452,6 @@ Type TCodeGenerator
 		WriteLine OutGlad, "?nx"
 		WriteLine OutGlad, ""
 		WriteLine OutGlad, "ModuleInfo ~qLD_OPTS: -L%NX.DEVKITPRO%/portlibs/switch/lib~q"
-		WriteLine OutGlad, "ModuleInfo ~qCC_OPTS: -I%NX.DEVKITPRO%/portlibs/switch/include~q"
 		WriteLine OutGlad, ""
 
 		WriteLine OutGlad, "Import ~qopengl.bmx~q"
