@@ -452,6 +452,7 @@ Type TCodeGenerator
 		WriteLine OutGlad, "?nx"
 		WriteLine OutGlad, ""
 		WriteLine OutGlad, "ModuleInfo ~qLD_OPTS: -L%NX.DEVKITPRO%/portlibs/switch/lib~q"
+		WriteLine OutGlad, "ModuleInfo ~qCC_OPTS: -I%NX.DEVKITPRO%/portlibs/switch/include~q"
 		WriteLine OutGlad, ""
 
 		WriteLine OutGlad, "Import ~qopengl.bmx~q"

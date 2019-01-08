@@ -21,6 +21,7 @@ ModuleInfo "History: Initial version."
 ?nx
 
 ModuleInfo "LD_OPTS: -L%NX.DEVKITPRO%/portlibs/switch/lib"
+ModuleInfo "CC_OPTS: -I%NX.DEVKITPRO%/portlibs/switch/include"
 
 Import "opengl.bmx"
 Import "glad00.bmx"
