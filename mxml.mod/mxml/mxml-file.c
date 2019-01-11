@@ -85,9 +85,9 @@ static int		mxml_parse_element(mxml_node_t *node, void *p, int *encoding, _mxml_
 static int		mxml_string_getc(void *p, int *encoding);
 static int		mxml_string_putc(int ch, void *p);
 static int		mxml_write_name(const char *s, void *p, _mxml_putc_cb_t putc_cb);
-static int		mxml_write_node(mxml_node_t *node, void *p, mxml_save_cb_t cb, int col, _mxml_putc_cb_t putc_cb, _mxml_global_t *global);
+static int		mxml_write_node(mxml_node_t *node, void *p, mxml_save_cb_t cb, int col, _mxml_putc_cb_t putc_cb, _mxml_global_t *global, void *cb_ctx);
 static int		mxml_write_string(const char *s, void *p, _mxml_putc_cb_t putc_cb);
-static int		mxml_write_ws(mxml_node_t *node, void *p, mxml_save_cb_t cb, int ws, int col, _mxml_putc_cb_t putc_cb);
+static int		mxml_write_ws(mxml_node_t *node, void *p, mxml_save_cb_t cb, int ws, int col, _mxml_putc_cb_t putc_cb, void *cb_ctx);
 
 
 /*
@@ -255,7 +255,8 @@ mxmlLoadStream(mxml_node_t    *top,	/* I - Top node */
 char *					/* O - Allocated string or @code NULL@ */
 mxmlSaveAllocString(
     mxml_node_t    *node,		/* I - Node to write */
-    mxml_save_cb_t cb)			/* I - Whitespace callback or @code MXML_NO_CALLBACK@ */
+    mxml_save_cb_t cb,			/* I - Whitespace callback or @code MXML_NO_CALLBACK@ */
+	void *cb_ctx)				/* I - Whitespace callback context or NULL */
 {
   int	bytes;				/* Required bytes */
   char	buffer[8192];			/* Temporary buffer */
@@ -266,7 +267,7 @@ mxmlSaveAllocString(
   * Write the node to the temporary buffer...
   */
 
-  bytes = mxmlSaveString(node, buffer, sizeof(buffer), cb);
+  bytes = mxmlSaveString(node, buffer, sizeof(buffer), cb, cb_ctx);
 
   if (bytes <= 0)
     return (NULL);
@@ -289,7 +290,7 @@ mxmlSaveAllocString(
   if ((s = malloc(bytes + 1)) == NULL)
     return (NULL);
 
-  mxmlSaveString(node, s, bytes + 1, cb);
+  mxmlSaveString(node, s, bytes + 1, cb, cb_ctx);
 
  /*
   * Return the allocated string...
@@ -312,7 +313,8 @@ mxmlSaveAllocString(
 int					/* O - 0 on success, -1 on error. */
 mxmlSaveFd(mxml_node_t    *node,	/* I - Node to write */
            int            fd,		/* I - File descriptor to write to */
-	   mxml_save_cb_t cb)		/* I - Whitespace callback or @code MXML_NO_CALLBACK@ */
+	   mxml_save_cb_t cb,		/* I - Whitespace callback or @code MXML_NO_CALLBACK@ */
+	   void *cb_ctx)			/* I - Whitespace callback context or NULL */
 {
   int		col;			/* Final column */
   _mxml_fdbuf_t	buf;			/* File descriptor buffer */
@@ -332,7 +334,7 @@ mxmlSaveFd(mxml_node_t    *node,	/* I - Node to write */
   * Write the node...
   */
 
-  if ((col = mxml_write_node(node, &buf, cb, 0, mxml_fd_putc, global)) < 0)
+  if ((col = mxml_write_node(node, &buf, cb, 0, mxml_fd_putc, global, cb_ctx)) < 0)
     return (-1);
 
   if (col > 0)
@@ -360,7 +362,8 @@ mxmlSaveFd(mxml_node_t    *node,	/* I - Node to write */
 int					/* O - 0 on success, -1 on error. */
 mxmlSaveFile(mxml_node_t    *node,	/* I - Node to write */
              FILE           *fp,	/* I - File to write to */
-	     mxml_save_cb_t cb)		/* I - Whitespace callback or @code MXML_NO_CALLBACK@ */
+	     mxml_save_cb_t cb,		/* I - Whitespace callback or @code MXML_NO_CALLBACK@ */
+		 void *cb_ctx)			/* I - Whitespace callback context or NULL */
 {
   int	col;				/* Final column */
   _mxml_global_t *global = _mxml_global();
@@ -371,7 +374,7 @@ mxmlSaveFile(mxml_node_t    *node,	/* I - Node to write */
   * Write the node...
   */
 
-  if ((col = mxml_write_node(node, fp, cb, 0, mxml_file_putc, global)) < 0)
+  if ((col = mxml_write_node(node, fp, cb, 0, mxml_file_putc, global, cb_ctx)) < 0)
     return (-1);
 
   if (col > 0)
@@ -399,7 +402,8 @@ mxmlSaveFile(mxml_node_t    *node,	/* I - Node to write */
 mxmlSaveStream(mxml_node_t    *node,	/* I - Node to write */
              mxml_write_stream_cb_t write_stream_cb, 	/* I - Stream callback */
 			 void *write_stream_context,	/* I - Stream context */
-	   mxml_save_cb_t cb)		/* I - Whitespace callback or @code MXML_NO_CALLBACK@ */
+	   mxml_save_cb_t cb,	/* I - Whitespace callback or @code MXML_NO_CALLBACK@ */
+	   void * cb_ctx)		/* I - Whitespace callback context or NULL */
 {
   int		col;			/* Final column */
   _mxml_streambuf_t	buf;			/* Stream buffer */
@@ -420,7 +424,7 @@ mxmlSaveStream(mxml_node_t    *node,	/* I - Node to write */
   * Write the node...
   */
 
-  if ((col = mxml_write_node(node, &buf, cb, 0, mxml_stream_putc, global)) < 0)
+  if ((col = mxml_write_node(node, &buf, cb, 0, mxml_stream_putc, global, cb_ctx)) < 0)
     return (-1);
 
   if (col > 0)
@@ -452,7 +456,8 @@ int					/* O - Size of string */
 mxmlSaveString(mxml_node_t    *node,	/* I - Node to write */
                char           *buffer,	/* I - String buffer */
                int            bufsize,	/* I - Size of string buffer */
-               mxml_save_cb_t cb)	/* I - Whitespace callback or @code MXML_NO_CALLBACK@ */
+               mxml_save_cb_t cb,	/* I - Whitespace callback or @code MXML_NO_CALLBACK@ */
+			   void *cb_ctx)		/* I - Whitespace callback context or NULL */
 {
   int	col;				/* Final column */
   char	*ptr[2];			/* Pointers for putc_cb */
@@ -467,7 +472,7 @@ mxmlSaveString(mxml_node_t    *node,	/* I - Node to write */
   ptr[0] = buffer;
   ptr[1] = buffer + bufsize;
 
-  if ((col = mxml_write_node(node, ptr, cb, 0, mxml_string_putc, global)) < 0)
+  if ((col = mxml_write_node(node, ptr, cb, 0, mxml_string_putc, global, cb_ctx)) < 0)
     return (-1);
 
   if (col > 0)
@@ -3243,7 +3248,8 @@ mxml_write_node(mxml_node_t     *node,	/* I - Node to write */
 	        mxml_save_cb_t  cb,	/* I - Whitespace callback */
 		int             col,	/* I - Current column */
 		_mxml_putc_cb_t putc_cb,/* I - Output callback */
-		_mxml_global_t  *global)/* I - Global data */
+		_mxml_global_t  *global,/* I - Global data */
+		void * cb_ctx)			/* I - Whitespace callback context */
 {
   mxml_node_t	*current,		/* Current node */
 		*next;			/* Next node */
@@ -3266,7 +3272,7 @@ mxml_write_node(mxml_node_t     *node,	/* I - Node to write */
     switch (current->type)
     {
       case MXML_ELEMENT :
-	  col = mxml_write_ws(current, p, cb, MXML_WS_BEFORE_OPEN, col, putc_cb);
+	  col = mxml_write_ws(current, p, cb, MXML_WS_BEFORE_OPEN, col, putc_cb, cb_ctx);
 
 	  if ((*putc_cb)('<', p) < 0)
 	    return (-1);
@@ -3360,7 +3366,7 @@ mxml_write_node(mxml_node_t     *node,	/* I - Node to write */
 	    else
 	      col ++;
 
-	    col = mxml_write_ws(current, p, cb, MXML_WS_AFTER_OPEN, col, putc_cb);
+	    col = mxml_write_ws(current, p, cb, MXML_WS_AFTER_OPEN, col, putc_cb, cb_ctx);
 	  }
 	  else if (current->value.element.name[0] == '!' ||
 		   current->value.element.name[0] == '?')
@@ -3374,7 +3380,7 @@ mxml_write_node(mxml_node_t     *node,	/* I - Node to write */
 	    else
 	      col ++;
 
-	    col = mxml_write_ws(current, p, cb, MXML_WS_AFTER_OPEN, col, putc_cb);
+	    col = mxml_write_ws(current, p, cb, MXML_WS_AFTER_OPEN, col, putc_cb, cb_ctx);
 	  }
 	  else
 	  {
@@ -3387,7 +3393,7 @@ mxml_write_node(mxml_node_t     *node,	/* I - Node to write */
 
 	    col += 3;
 
-	    col = mxml_write_ws(current, p, cb, MXML_WS_AFTER_OPEN, col, putc_cb);
+	    col = mxml_write_ws(current, p, cb, MXML_WS_AFTER_OPEN, col, putc_cb, cb_ctx);
 	  }
 	  break;
 
@@ -3526,7 +3532,7 @@ mxml_write_node(mxml_node_t     *node,	/* I - Node to write */
 	  if (current->value.element.name[0] != '!' &&
 	      current->value.element.name[0] != '?')
 	  {
-	    col = mxml_write_ws(current, p, cb, MXML_WS_BEFORE_CLOSE, col, putc_cb);
+	    col = mxml_write_ws(current, p, cb, MXML_WS_BEFORE_CLOSE, col, putc_cb, cb_ctx);
 
 	    if ((*putc_cb)('<', p) < 0)
 	      return (-1);
@@ -3539,7 +3545,7 @@ mxml_write_node(mxml_node_t     *node,	/* I - Node to write */
 
 	    col += strlen(current->value.element.name) + 3;
 
-	    col = mxml_write_ws(current, p, cb, MXML_WS_AFTER_CLOSE, col, putc_cb);
+	    col = mxml_write_ws(current, p, cb, MXML_WS_AFTER_CLOSE, col, putc_cb, cb_ctx);
 	  }
 
 	  if (current == node)
@@ -3603,12 +3609,13 @@ mxml_write_ws(mxml_node_t     *node,	/* I - Current node */
               mxml_save_cb_t  cb,	/* I - Callback function */
 	      int             ws,	/* I - Where value */
 	      int             col,	/* I - Current column */
-              _mxml_putc_cb_t putc_cb)	/* I - Write callback */
+              _mxml_putc_cb_t putc_cb,	/* I - Write callback */
+			  void * cb_ctx)			/* I - Whitespace callback context */
 {
   const char	*s;			/* Whitespace string */
 
 
-  if (cb && (s = (*cb)(node, ws)) != NULL)
+  if (cb && (s = (*cb)(node, ws, cb_ctx)) != NULL)
   {
     while (*s)
     {
