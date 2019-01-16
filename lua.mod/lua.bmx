@@ -369,8 +369,12 @@ end rem
 ' function lua_pushfstring$z (lua_state:byte ptr, fmt$z, ...)
 Rem
 bbdoc: see <a href="../lua-5.1.4/doc/manual.html#lua_pushinteger">Lua Reference Manual</a>
-end rem
+End Rem
+?ptr64
+  Function lua_pushinteger (lua_state:Byte Ptr, n:Long)
+?Not ptr64
   Function lua_pushinteger (lua_state:Byte Ptr, n:Int)
+?
 Rem
 bbdoc: see <a href="../lua-5.1.4/doc/manual.html#lua_pushlightuserdata">Lua Reference Manual</a>
 end rem
@@ -490,8 +494,12 @@ end rem
   Function lua_tocfunction:Byte Ptr (lua_state:Byte Ptr, index:Int)
 Rem
 bbdoc: see <a href="../lua-5.1.4/doc/manual.html#lua_tointeger">Lua Reference Manual</a>
-end rem
+End Rem
+?ptr64
+  Function lua_tointeger:Long (lua_state:Byte Ptr, index:Int)
+?Not ptr64
   Function lua_tointeger:Int (lua_state:Byte Ptr, index:Int)
+?
 Rem
 bbdoc: see <a href="../lua-5.1.4/doc/manual.html#lua_tolstring">Lua Reference Manual</a>
 End Rem
@@ -712,8 +720,12 @@ end rem
   Function luaL_checkany (lua_state:Byte Ptr, narg:Int)
 Rem
 bbdoc: see <a href="../lua-5.1.4/doc/manual.html#luaL_checkinteger">Lua Reference Manual</a>
-end rem
+End Rem
+?ptr64
+  Function luaL_checkinteger:Long (lua_state:Byte Ptr, narg:Int)
+?Not ptr64
   Function luaL_checkinteger:Int (lua_state:Byte Ptr, narg:Int)
+?
 Rem
 bbdoc: see <a href="../lua-5.1.4/doc/manual.html#luaL_checklstring">Lua Reference Manual</a>
 end rem
@@ -770,8 +782,12 @@ end rem
   Function luaL_openlibs (lua_state:Byte Ptr)
 Rem
 bbdoc: see <a href="../lua-5.1.4/doc/manual.html#luaL_optinteger">Lua Reference Manual</a>
-end rem
+End Rem
+?ptr64
+  Function luaL_optinteger:Long (lua_state:Byte Ptr, narg:Int, d:Long)
+?Not ptr64
   Function luaL_optinteger:Int (lua_state:Byte Ptr, narg:Int, d:Int)
+?
 Rem
 bbdoc: see <a href="../lua-5.1.4/doc/manual.html#luaL_optlstring">Lua Reference Manual</a>
 end rem
