@@ -15,7 +15,6 @@ Import "include/*.h"
 
 Import "src/base/ftbase.c"
 
-Import "src/base/ftapi.c"
 Import "src/base/ftbbox.c"
 Import "src/base/ftbdf.c"
 Import "src/base/ftbitmap.c"
