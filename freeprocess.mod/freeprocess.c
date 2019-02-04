@@ -39,16 +39,30 @@ int fdTerminateProcess(int pid){
 	return -1;
 }
 
+
+//returns 0 for success, -1 for error
+//
+int fdKillProcess(int pid){
+
+	if( !killpg( pid,SIGKILL ) ){
+		int status=0;
+		waitpid( pid,&status,0 );
+		return 0;
+	}
+	return -1;
+}
+
+
 static char **makeargv( const char *cmd ){
 	int n,c;
 	char *p;
 	static char *args,**argv;
-	
+
 	if( args ) free( args );
 	if( argv ) free( argv );
 	args=(char*)malloc( strlen(cmd)+1 );
 	strcpy( args,cmd );
-	
+
 	n=0;
 	p=args;
 	while( c=*p++ ){
@@ -91,17 +105,17 @@ int fdProcess( BBString *bbcmd,int *procin,int *procout,int *procerr,int flags)
 {
 	char 	*const*argv;
 	int   	procid;
-	
+
 	const char *cmd=bbTmpUTF8String(bbcmd);
-	
+
 	//Set-up interprocess communication
 	if (pipe(in)) return 0;
   	if (pipe(out)) return 0;
   	if (pipe(errfd)) return 0;
-	
+
 	//Fork process (returned value used to distinguish between child and parent process)
 	procid=vfork();	//vfork() avoids memory overhead of fork()
-	
+
 	//Child process
 	if (procid==0)
 	{
@@ -110,37 +124,37 @@ int fdProcess( BBString *bbcmd,int *procin,int *procout,int *procerr,int flags)
 		#else
 			setpgid(0,0);	//but OS X doesn't like it, therefore resort to using setpgid().
 		#endif
-		
+
 		dup2(out[PIPEREAD],STDIN_FILENO);
 		close(out[PIPEWRITE]);
-		
+
 		dup2(in[PIPEWRITE],STDOUT_FILENO);
 		close(in[PIPEREAD]);
-		
-		dup2(errfd[PIPEWRITE],STDERR_FILENO);		
+
+		dup2(errfd[PIPEWRITE],STDERR_FILENO);
 		close(errfd[PIPEREAD]);
-		
+
 		argv=makeargv(cmd);
 		execvp(argv[0],argv);
-		
+
 		_exit( -1 );
-		
+
 		return 0;	//Supposedly, we need this for some compilers.
-		
+
 	}
-	
+
 	//Parent process
-	
+
 	if(procid==-1) return 0;	//Return if child process couldn't be started.
-	
+
 	close(out[PIPEREAD]);		//Close the end of the pipes in that the child
 	close(in[PIPEWRITE]);		//process is using.
 	close(errfd[PIPEWRITE]);
-	
+
 	*procin=in[PIPEREAD];		//And return the end of the pipes that we should
 	*procout=out[PIPEWRITE];	//be using.
 	*procerr=errfd[PIPEREAD];
-	
+
 	return procid;
 }
 
@@ -192,7 +206,7 @@ int fdClose(int fd)
 
 BBLONG fdRead(int fd,char *buffer,BBLONG bytes)
 {
-	int		res; 
+	int		res;
 	long	count;
 	res=ReadFile((HANDLE)fd,buffer,bytes,&count,0);
 	if (res) return count;
@@ -215,7 +229,7 @@ int fdFlush(int fd)
 	return res;
 }
 
-int fdAvail(int fd) 
+int fdAvail(int fd)
 {
 	int		res;
 	long	avail;
@@ -228,13 +242,13 @@ int fdAvail(int fd)
 int fdProcessStatus( int pid ){
 
 	PROCESS_INFORMATION *pi=(PROCESS_INFORMATION *)pid;
-	
+
 	long exitcode;
-	
+
 	if( GetExitCodeProcess( pi->hProcess,&exitcode ) ){
 
 		if( exitcode==STILL_ACTIVE ) return 1;
-		
+
 		CloseHandle( pi->hProcess );
 		free( pi );
 	}
@@ -245,9 +259,9 @@ int fdProcessStatus( int pid ){
 int fdTerminateProcess( int pid ){
 
 	PROCESS_INFORMATION *pi=(PROCESS_INFORMATION *)pid;
-	
+
 	int res=TerminateProcessGroup( pi->hProcess,pi->dwProcessId );
-	
+
 	CloseHandle( pi->hProcess );
 	free( pi );
 
@@ -286,7 +300,7 @@ int fdProcess( BBString *cmd,int *procin,int *procout,int *procerr,int flags)
 	}
 
 	pi=(PROCESS_INFORMATION*)calloc(1,sizeof(PROCESS_INFORMATION));
-	
+
 	if( _bbusew ){
 		STARTUPINFOW si={sizeof(si)};
 
@@ -320,7 +334,7 @@ int fdProcess( BBString *cmd,int *procin,int *procout,int *procerr,int flags)
 		}
 		res=CreateProcess( 0,bbTmpCString(cmd),0,0,-1,pflags,0,0,&si,pi );
 	}
-	
+
 	if( !res ){
 		CloseHandle( istr );
 		CloseHandle( ostr );
@@ -330,9 +344,9 @@ int fdProcess( BBString *cmd,int *procin,int *procout,int *procerr,int flags)
 		CloseHandle( p_estr );
 		return 0;
 	}
-	
+
 	CloseHandle( pi->hThread );
-	
+
 	*procin=(int)istr;
 	*procout=(int)ostr;
 	*procerr=(int)estr;
@@ -340,7 +354,7 @@ int fdProcess( BBString *cmd,int *procin,int *procout,int *procerr,int flags)
 	CloseHandle( p_istr );
 	CloseHandle( p_ostr );
 	CloseHandle( p_estr );
-	
+
 	return (int)pi;
 }
 

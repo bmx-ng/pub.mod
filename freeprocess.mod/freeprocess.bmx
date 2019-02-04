@@ -31,7 +31,7 @@ Import brl.filesystem
 
 Import "freeprocess.c"
 
-'note: Once fdProcessStatus() returns 0 OR fdTerminateProcess() is called,
+'note: Once fdProcessStatus() returns 0 OR fdTerminateProcess()/fdKillProcess is called,
 'processhandle should be assumed to be invalid, and neither function should be called
 'again.
 Extern
@@ -43,6 +43,7 @@ Function fdAvail:Int(fd:Int)
 Function fdProcess:Int(exe$,in_fd:Int Ptr,out_fd:Int Ptr,err_fd:Int Ptr,flags:Int)="fdProcess"
 Function fdProcessStatus:Int(processhandle:Int)
 Function fdTerminateProcess:Int(processhandle:Int)
+Function fdKillProcess:Int(processhandle:Int)
 End Extern
 
 Const HIDECONSOLE:Int=1
@@ -54,11 +55,11 @@ Type TPipeStream Extends TStream
 	Field	readhandle:Int,writehandle:Int
 
 	Method Close()
-		If readhandle 
+		If readhandle
 			fdClose(readhandle)
 			readhandle=0
 		EndIf
-		If writehandle 
+		If writehandle
 			fdClose(writehandle)
 			writehandle=0
 		EndIf
@@ -71,15 +72,15 @@ Type TPipeStream Extends TStream
 	Method Write:Long( buf:Byte Ptr,count:Long )
 		Return fdWrite(writehandle,buf,count)
 	End Method
-	
+
 	Method Flush()
 		fdFlush(writehandle)
 	End Method
-		
+
 	Method ReadAvail:Int()
 		Return fdAvail(readhandle)
 	End Method
-	
+
 	Method ReadPipe:Byte[]()
 		Local	bytes:Byte[],n:Int
 		n=ReadAvail()
@@ -87,9 +88,9 @@ Type TPipeStream Extends TStream
 			bytes=New Byte[n]
 			Read(bytes,n)
 			Return bytes
-		EndIf	
+		EndIf
 	End Method
-	
+
 	Method ReadLine$()	'nonblocking - returns empty string if no data available
 		Local	n:Long,r:Long,p0:Int,p1:Int,line$
 		n=ReadAvail()
@@ -113,7 +114,7 @@ Type TPipeStream Extends TStream
 				If bufferpos MemMove(readbuffer,Varptr readbuffer[n],Size_T(bufferpos))
 				Return line$
 			EndIf
-		Next			
+		Next
 	End Method
 
 	Function Create:TPipeStream( in:Int,out:Int )
@@ -126,7 +127,7 @@ Type TPipeStream Extends TStream
 End Type
 
 Type TProcess
-	Global ProcessList:TList 
+	Global ProcessList:TList
 	Field	name$
 	Field	handle:Int
 	Field	pipe:TPipeStream
@@ -137,24 +138,24 @@ Type TProcess
 		detached = True
 		Return 1
 	End Method
-	
+
 	Method Attach:Int()
 		detached = False
 		Return 1
 	End Method
 	Method Status:Int()
-		If handle 
+		If handle
 			If fdProcessStatus(handle) Return 1
 			handle=0
 		EndIf
 		Return 0
 	End Method
-	
+
 	Method Close()
 		If pipe pipe.Close;pipe=Null
 		If err err.Close;err=Null
 	End Method
-	
+
 	Method Terminate:Int()
 		Local res:Int
 		If handle
@@ -164,9 +165,20 @@ Type TProcess
 		Return res
 	End Method
 
+	'the less nicer version of "terminate()" as it does not allow
+	'the process to finish its stuff
+	Method Kill:Int()
+		Local res:Int
+		If handle
+			res=fdKillProcess( handle )
+			handle=0
+		EndIf
+		Return res
+	End Method
+
 	Function Create:TProcess(name$,flags:Int)
 		Local	p:TProcess
-		Local	infd:Int,outfd:Int,errfd:Int	
+		Local	infd:Int,outfd:Int,errfd:Int
 ?MacOS
 		If FileType(name)=2
 			Local a$=StripExt(StripDir(name))
@@ -180,12 +192,12 @@ Type TProcess
 		If Not p.handle Return Null
 		p.pipe=TPipeStream.Create(infd,outfd)
 		p.err=TPipeStream.Create(errfd,0)
-		p.detached = False 
+		p.detached = False
 		If Not ProcessList ProcessList=New TList
 		ProcessList.AddLast p
 		Return p
 	End Function
-	
+
 	Function FlushZombies()
 		If Not ProcessList Return
 		Local live:TList=New TList
@@ -194,17 +206,26 @@ Type TProcess
 		Next
 		ProcessList=live
 	End Function
-	
+
 	Function TerminateAll() NoDebug
 		If Not ProcessList Return
 		For Local p:TProcess=EachIn ProcessList
-			If p.detached = False Then 
+			If p.detached = False Then
 				p.Terminate
 			EndIf
 		Next
 		ProcessList=Null
 	End Function
-	
+
+	Function KillAll() NoDebug
+		If Not ProcessList Return
+		For Local p:TProcess=EachIn ProcessList
+			If p.detached = False Then
+				p.Kill
+			EndIf
+		Next
+		ProcessList=Null
+	End Function
 End Type
 
 Rem
@@ -243,6 +264,14 @@ returns: 1 if termination of program was successful and 0 otherwise.
 End Rem
 Function TerminateProcess:Int(process:TProcess)
 	Return process.Terminate()
+End Function
+
+Rem
+bbdoc: Forcefully End Process
+returns: 1 if forceful termination of program was successful and 0 otherwise.
+End Rem
+Function KillProcess:Int(process:TProcess)
+	Return process.Kill()
 End Function
 
 OnEnd TProcess.TerminateAll
