@@ -170,6 +170,17 @@ extern int _bbusew;
 
 int TerminateProcessGroup(HANDLE prochandle,int procid)
 {
+	//for now we just do a kill instead of politely asking all
+	//sub-windows (gui only) to gracefully end.
+	return KillProcessGroup(prochandle, procid);
+}
+
+
+// In the Windows world "TerminateProcess" kills a process without
+// gracefully asking to stop I/O and other operations first.
+// So there is a name clash between Linux' SIGKILL and Windows' TERMINATE
+int KillProcessGroup(HANDLE prochandle,int procid)
+{
 	HANDLE snapshot,child;
 	PROCESSENTRY32 procinfo;
 	int gotinfo,res;
@@ -261,6 +272,18 @@ int fdTerminateProcess( int pid ){
 	PROCESS_INFORMATION *pi=(PROCESS_INFORMATION *)pid;
 
 	int res=TerminateProcessGroup( pi->hProcess,pi->dwProcessId );
+
+	CloseHandle( pi->hProcess );
+	free( pi );
+
+	return res;
+}
+
+//returns 0 for success
+int fdKillProcess( int pid ){
+	PROCESS_INFORMATION *pi=(PROCESS_INFORMATION *)pid;
+
+	int res=KillProcessGroup( pi->hProcess,pi->dwProcessId );
 
 	CloseHandle( pi->hProcess );
 	free( pi );
