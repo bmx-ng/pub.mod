@@ -35,15 +35,15 @@ Import "freeprocess.c"
 'processhandle should be assumed to be invalid, and neither function should be called
 'again.
 Extern
-Function fdClose(fd:Int)
-Function fdRead:Long(fd:Int,buffer:Byte Ptr,count:Long)
-Function fdWrite:Long(fd:Int,buffer:Byte Ptr,count:Long)
-Function fdFlush(fd:Int)
-Function fdAvail:Int(fd:Int)
-Function fdProcess:Int(exe$,in_fd:Int Ptr,out_fd:Int Ptr,err_fd:Int Ptr,flags:Int)="fdProcess"
-Function fdProcessStatus:Int(processhandle:Int)
-Function fdTerminateProcess:Int(processhandle:Int)
-Function fdKillProcess:Int(processhandle:Int)
+Function fdClose(fd:Size_T)
+Function fdRead:Long(fd:Size_T,buffer:Byte Ptr,count:Long)
+Function fdWrite:Long(fd:Size_T,buffer:Byte Ptr,count:Long)
+Function fdFlush(fd:Size_T)
+Function fdAvail:Int(fd:Size_T)
+Function fdProcess:Int(exe$,in_fd:Size_T Ptr,out_fd:Size_T Ptr,err_fd:Size_T Ptr,flags:Int)="fdProcess"
+Function fdProcessStatus:Int(processhandle:Size_T)
+Function fdTerminateProcess:Int(processhandle:Size_T)
+Function fdKillProcess:Int(processhandle:Size_T)
 End Extern
 
 Const HIDECONSOLE:Int=1
@@ -52,7 +52,7 @@ Type TPipeStream Extends TStream
 
 	Field	readbuffer:Byte[4096]
 	Field	bufferpos:Long
-	Field	readhandle:Int,writehandle:Int
+	Field	readhandle:Size_T,writehandle:Size_T
 
 	Method Close()
 		If readhandle
@@ -82,7 +82,7 @@ Type TPipeStream Extends TStream
 	End Method
 
 	Method ReadPipe:Byte[]()
-		Local	bytes:Byte[],n:Int
+		Local bytes:Byte[],n:Int
 		n=ReadAvail()
 		If n
 			bytes=New Byte[n]
@@ -117,7 +117,7 @@ Type TPipeStream Extends TStream
 		Next
 	End Method
 
-	Function Create:TPipeStream( in:Int,out:Int )
+	Function Create:TPipeStream( in:Size_T,out:Size_T )
 		Local stream:TPipeStream=New TPipeStream
 		stream.readhandle=in
 		stream.writehandle=out
@@ -129,7 +129,7 @@ End Type
 Type TProcess
 	Global ProcessList:TList
 	Field	name$
-	Field	handle:Int
+	Field	handle:Size_T
 	Field	pipe:TPipeStream
 	Field	err:TPipeStream
 	Field   detached:Int
@@ -178,7 +178,7 @@ Type TProcess
 
 	Function Create:TProcess(name$,flags:Int)
 		Local	p:TProcess
-		Local	infd:Int,outfd:Int,errfd:Int
+		Local	infd:Size_T,outfd:Size_T,errfd:Size_T
 ?MacOS
 		If FileType(name)=2
 			Local a$=StripExt(StripDir(name))

@@ -13,15 +13,15 @@
 #include <sys/wait.h>
 #include <signal.h>
 
-int fdClose(int fd) {return close(fd);}
-BBLONG fdRead(int fd,char *buffer,BBLONG count) {return read(fd,buffer,count);}
-BBLONG fdWrite(int fd,char *buffer,BBLONG count) {return write(fd,buffer,count);}
-int fdAvail(int fd) {int avail;if (ioctl(fd,FIONREAD,&avail)) avail=avail;return avail;}
-int fdFlush(int fd) {}//flush(fd);}
+int fdClose(size_t fd) {return close(fd);}
+BBLONG fdRead(size_t fd,char *buffer,BBLONG count) {return read(fd,buffer,count);}
+BBLONG fdWrite(size_t fd,char *buffer,BBLONG count) {return write(fd,buffer,count);}
+int fdAvail(size_t fd) {int avail;if (ioctl(fd,FIONREAD,&avail)) avail=avail;return avail;}
+int fdFlush(size_t fd) {}//flush(fd);}
 
 ///return 1 for running, 0 for finished
 //
-int fdProcessStatus( int pid ){
+int fdProcessStatus( size_t pid ){
 
 	int status=0;
 	return !waitpid( pid,&status,WNOHANG );
@@ -29,7 +29,7 @@ int fdProcessStatus( int pid ){
 
 //returns 0 for success, -1 for error
 //
-int fdTerminateProcess(int pid){
+int fdTerminateProcess(size_t pid){
 
 	if( !killpg( pid,SIGTERM ) ){
 		int status=0;
@@ -42,7 +42,7 @@ int fdTerminateProcess(int pid){
 
 //returns 0 for success, -1 for error
 //
-int fdKillProcess(int pid){
+int fdKillProcess(size_t pid){
 
 	if( !killpg( pid,SIGKILL ) ){
 		int status=0;
@@ -101,7 +101,7 @@ static char **makeargv( const char *cmd ){
 
 static int in[2],out[2],errfd[2];
 
-int fdProcess( BBString *bbcmd,int *procin,int *procout,int *procerr,int flags)
+size_t fdProcess( BBString *bbcmd,size_t *procin,size_t *procout,size_t *procerr,int flags)
 {
 	char 	*const*argv;
 	int   	procid;
@@ -210,12 +210,12 @@ int KillProcessGroup(HANDLE prochandle,int procid)
 	return res;
 }
 
-int fdClose(int fd)
+int fdClose(size_t fd)
 {
 	return CloseHandle((HANDLE)fd);
 }
 
-BBLONG fdRead(int fd,char *buffer,BBLONG bytes)
+BBLONG fdRead(size_t fd,char *buffer,BBLONG bytes)
 {
 	int		res;
 	long	count;
@@ -224,7 +224,7 @@ BBLONG fdRead(int fd,char *buffer,BBLONG bytes)
 	return 0;
 }
 
-BBLONG fdWrite(int fd,char *buffer,BBLONG bytes)
+BBLONG fdWrite(size_t fd,char *buffer,BBLONG bytes)
 {
 	int		res;
 	long	count;
@@ -233,14 +233,14 @@ BBLONG fdWrite(int fd,char *buffer,BBLONG bytes)
 	return 0;
 }
 
-int fdFlush(int fd)
+int fdFlush(size_t fd)
 {
 	int		res;
 	res=FlushFileBuffers((HANDLE)fd);
 	return res;
 }
 
-int fdAvail(int fd)
+int fdAvail(size_t fd)
 {
 	int		res;
 	long	avail;
@@ -250,7 +250,7 @@ int fdAvail(int fd)
 }
 
 //returns 1 for running, 0 for finished
-int fdProcessStatus( int pid ){
+int fdProcessStatus( size_t pid ){
 
 	PROCESS_INFORMATION *pi=(PROCESS_INFORMATION *)pid;
 
@@ -267,7 +267,7 @@ int fdProcessStatus( int pid ){
 }
 
 //returns 0 for success
-int fdTerminateProcess( int pid ){
+int fdTerminateProcess( size_t pid ){
 
 	PROCESS_INFORMATION *pi=(PROCESS_INFORMATION *)pid;
 
@@ -280,7 +280,7 @@ int fdTerminateProcess( int pid ){
 }
 
 //returns 0 for success
-int fdKillProcess( int pid ){
+int fdKillProcess( size_t pid ){
 	PROCESS_INFORMATION *pi=(PROCESS_INFORMATION *)pid;
 
 	int res=KillProcessGroup( pi->hProcess,pi->dwProcessId );
@@ -291,7 +291,7 @@ int fdKillProcess( int pid ){
 	return res;
 }
 
-int fdProcess( BBString *cmd,int *procin,int *procout,int *procerr,int flags)
+size_t fdProcess( BBString *cmd,size_t *procin,size_t *procout,size_t *procerr,int flags)
 {
 	int res;
 	int pflags=CREATE_NEW_PROCESS_GROUP;
@@ -370,15 +370,15 @@ int fdProcess( BBString *cmd,int *procin,int *procout,int *procerr,int flags)
 
 	CloseHandle( pi->hThread );
 
-	*procin=(int)istr;
-	*procout=(int)ostr;
-	*procerr=(int)estr;
+	*procin=(size_t)istr;
+	*procout=(size_t)ostr;
+	*procerr=(size_t)estr;
 
 	CloseHandle( p_istr );
 	CloseHandle( p_ostr );
 	CloseHandle( p_estr );
 
-	return (int)pi;
+	return (size_t)pi;
 }
 
 #endif
