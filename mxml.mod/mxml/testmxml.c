@@ -20,9 +20,9 @@
 
 #include "config.h"
 #include "mxml-private.h"
-#ifndef WIN32
+#ifndef _WIN32
 #  include <unistd.h>
-#endif /* !WIN32 */
+#endif /* !_WIN32 */
 #include <fcntl.h>
 #ifndef O_BINARY
 #  define O_BINARY 0
@@ -124,6 +124,22 @@ main(int  argc,				/* I - Number of command-line args */
                  MXML_OPAQUE_CALLBACK);
   mxmlLoadString(tree, "<foo><bar><one><two>value<two>value2</two></two></one>"
                        "</bar></foo>", MXML_OPAQUE_CALLBACK);
+  mxmlNewCDATA(tree,
+               "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n");
+  mxmlNewCDATA(tree,
+               "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n"
+               "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n"
+               "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n"
+               "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n");
+  mxmlNewCDATA(tree,
+               "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n"
+               "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n"
+               "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n"
+               "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n"
+               "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n"
+               "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n"
+               "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n"
+               "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n");
 
   node = tree->child;
 
@@ -310,10 +326,10 @@ main(int  argc,				/* I - Number of command-line args */
     return (1);
   }
 
-  if (ind->num_nodes != 10)
+  if (ind->num_nodes != 13)
   {
     fprintf(stderr, "ERROR: Index of all nodes contains %d "
-                    "nodes; expected 10.\n", ind->num_nodes);
+                    "nodes; expected 13.\n", ind->num_nodes);
     mxmlIndexDelete(ind);
     mxmlDelete(tree);
     return (1);
@@ -418,7 +434,7 @@ main(int  argc,				/* I - Number of command-line args */
   * Check the mxmlDelete() works properly...
   */
 
-  for (i = 0; i < 9; i ++)
+  for (i = 0; i < 12; i ++)
   {
     if (tree->child)
       mxmlDelete(tree->child);
@@ -705,7 +721,7 @@ main(int  argc,				/* I - Number of command-line args */
     }
   }
 
-#ifndef WIN32
+#ifndef _WIN32
  /*
   * Debug hooks...
   */
@@ -722,7 +738,7 @@ main(int  argc,				/* I - Number of command-line args */
       puts("Unable to check for leaks.");
   }
 #  endif /* __APPLE__ */
-#endif /* !WIN32 */
+#endif /* !_WIN32 */
 
  /*
   * Return...
