@@ -2123,7 +2123,7 @@ mxml_load_data(
           goto error;
 	}
 
-	if ((node = mxmlNewElement(parent, buffer)) == NULL)
+	if ((node = mxmlNewComment(parent, buffer)) == NULL)
 	{
 	 /*
 	  * Just print error for now...

@@ -85,7 +85,8 @@ typedef enum mxml_type_e		/**** The XML node type. ****/
   MXML_OPAQUE,				/* Opaque string */
   MXML_REAL,				/* Real value */
   MXML_TEXT,				/* Text fragment */
-  MXML_CUSTOM				/* Custom data @since Mini-XML 2.1@ */
+  MXML_CUSTOM,				/* Custom data @since Mini-XML 2.1@ */
+  MXML_COMMENT				/* XML comment */
 } mxml_type_t;
 
 typedef void (*mxml_custom_destroy_cb_t)(void *);
@@ -203,6 +204,7 @@ __attribute__ ((__format__ (__printf__, 2, 3)))
 extern mxml_node_t	*mxmlNewReal(mxml_node_t *parent, double real);
 extern mxml_node_t	*mxmlNewText(mxml_node_t *parent, int whitespace, const char *string);
 extern mxml_node_t	*mxmlNewTextf(mxml_node_t *parent, int whitespace, const char *format, ...)
+extern mxml_node_t	*mxmlNewComment(mxml_node_t *parent, const char *name);
 #    ifdef __GNUC__
 __attribute__ ((__format__ (__printf__, 3, 4)))
 #    endif /* __GNUC__ */

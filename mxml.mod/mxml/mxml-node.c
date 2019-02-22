@@ -624,6 +624,42 @@ mxmlNewTextf(mxml_node_t *parent,	/* I - Parent node or @code MXML_NO_PARENT@ */
   return (node);
 }
 
+/*
+ * 'mxmlNewComment()' - Create a new element node.
+ *
+ * The new element node is added to the end of the specified parent's child
+ * list. The constant @code MXML_NO_PARENT@ can be used to specify that the new
+ * element node has no parent.
+ */
+
+mxml_node_t *				/* O - New node */
+mxmlNewComment(mxml_node_t *parent,	/* I - Parent node or @code MXML_NO_PARENT@ */
+               const char  *name)	/* I - Name of element */
+{
+    mxml_node_t	*node;			/* New node */
+
+
+#ifdef DEBUG
+    fprintf(stderr, "mxmlNewElement(parent=%p, name=\"%s\")\n", parent,
+          name ? name : "(null)");
+#endif /* DEBUG */
+
+    /*
+     * Range check input...
+     */
+
+    if (!name)
+        return (NULL);
+
+    /*
+     * Create the node and set the element name...
+     */
+
+    if ((node = mxml_new(parent, MXML_COMMENT)) != NULL)
+        node->value.element.name = strdup(name);
+
+    return (node);
+}
 
 /*
  * 'mxmlRemove()' - Remove a node from its parent.
