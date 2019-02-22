@@ -204,11 +204,11 @@ __attribute__ ((__format__ (__printf__, 2, 3)))
 extern mxml_node_t	*mxmlNewReal(mxml_node_t *parent, double real);
 extern mxml_node_t	*mxmlNewText(mxml_node_t *parent, int whitespace, const char *string);
 extern mxml_node_t	*mxmlNewTextf(mxml_node_t *parent, int whitespace, const char *format, ...)
-extern mxml_node_t	*mxmlNewComment(mxml_node_t *parent, const char *name);
 #    ifdef __GNUC__
 __attribute__ ((__format__ (__printf__, 3, 4)))
 #    endif /* __GNUC__ */
 ;
+extern mxml_node_t	*mxmlNewComment(mxml_node_t *parent, const char *name);
 extern mxml_node_t	*mxmlNewXML(const char *version);
 extern int		mxmlRelease(mxml_node_t *node);
 extern void		mxmlRemove(mxml_node_t *node);
