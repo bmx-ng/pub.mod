@@ -3,6 +3,11 @@
 
 #include <stdio.h>
 #include <dirent.h>
+
+#if _WIN32
+#define _USE_32BIT_TIME_T 
+#endif
+#include <sys/types.h>
 #include <sys/stat.h>
 
 #if _WIN32
@@ -23,7 +28,6 @@ extern int _bbusew;
 #include <unistd.h>
 #include <limits.h>	//PATH_MAX
 #include <sys/time.h>
-#include <sys/types.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <netdb.h>
@@ -140,16 +144,16 @@ BBString *readdir_( void* dir ){
 
 int stat_( BBString *path,int *t_mode,BBLONG *t_size,int *t_mtime,int *t_ctime ){
 	int i;
-	struct _stat st;
+	struct _stati64 st;
 	
 	for( i=0;i<path->length;++i ){
 		if( path->buf[i]=='<' || path->buf[i]=='>' ) return -1;
 	}
 	
 	if( _bbusew ){
-		if( _wstat( bbTmpWString(path),&st ) ) return -1;
+		if( _wstati64( bbTmpWString(path),&st ) ) return -1;
 	}else{
-		if( _stat( bbTmpCString(path),&st ) ) return -1;
+		if( _stati64( bbTmpCString(path),&st ) ) return -1;
 	}
 
 	*t_mode=st.st_mode;
