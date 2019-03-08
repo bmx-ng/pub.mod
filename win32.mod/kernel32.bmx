@@ -51,4 +51,11 @@ Function GetStdHandle:Byte Ptr(nStdHandle)="HANDLE __stdcall GetStdHandle(BBINT 
 Function ReleaseMutex(mutex:Byte Ptr)="WINBOOL __stdcall ReleaseMutex(HANDLE)!"
 Function CreateMutexW:Byte Ptr( security:Byte Ptr, owner:Int, name$w)="HANDLE __stdcall CreateMutexW(LPSECURITY_ATTRIBUTES, WINBOOL , LPCWSTR)!"
 
+Function RegisterApplicationRestart:Int(pwzCommandline:Byte Ptr, dwFlags:Int)="HRESULT RegisterApplicationRestart(PCWSTR, DWORD)!"
+Function UnregisterApplicationRestart:Int()="HRESULT UnregisterApplicationRestart()!"
+
+Const RESTART_NO_CRASH:Int = 1
+Const RESTART_NO_HANG:Int = 2
+Const RESTART_NO_PATCH:Int = 4
+Const RESTART_NO_REBOOT:Int = 8
 End Extern
