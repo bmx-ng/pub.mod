@@ -1,0 +1,22 @@
+sudo: false
+
+language: c
+
+os:
+ - linux
+
+compiler:
+ - clang
+ - gcc
+ - g++
+
+addons:
+  apt:
+    packages:
+      - p7zip-full
+
+script:
+ - make
+ - make test
+ - make clean
+ - make -f Makefile.arduino package
