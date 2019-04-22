@@ -8,6 +8,8 @@
 #include <unistd.h>
 #include <pulse/simple.h>
 #include <pthread.h>
+//to allow access to the AppTitle
+#include <brl.mod/blitz.mod/blitz.h>
 
 extern "C" audiodevice *OpenPulseAudioDevice();
 
@@ -42,7 +44,7 @@ int InitPulse(){
 	spec.channels=2;
 	int error = 0;
 	
-	pa_simple * simple = pulse_pa_simple_new(NULL,"freeaudio",PA_STREAM_PLAYBACK,NULL,"playback",&spec,NULL,NULL,&error);
+	pa_simple * simple = pulse_pa_simple_new(NULL,bbTmpCString( bbAppTitle ),PA_STREAM_PLAYBACK,NULL,"playback",&spec,NULL,NULL,&error);
 	
 	if (simple) {
 		pulse_pa_simple_free(simple);
@@ -91,7 +93,7 @@ struct pulseaudiodevice:audiodevice{
 		stereo16.rate=44100;
 		stereo16.channels=2;
 
-		simple=pulse_pa_simple_new(NULL,"freeaudio",PA_STREAM_PLAYBACK,NULL,"playback",&stereo16,NULL,NULL,&error);
+		simple=pulse_pa_simple_new(NULL,bbTmpCString( bbAppTitle ),PA_STREAM_PLAYBACK,NULL,"playback",&stereo16,NULL,NULL,&error);
 		if (simple==NULL) return -1;
 
 		mix=new mixer(LINUXFRAG);
