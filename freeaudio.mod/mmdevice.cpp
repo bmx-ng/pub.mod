@@ -75,26 +75,9 @@ struct winmmdevice:audiodevice {
 	int			timeout;
 	int			lagbuffers;
 	
-	int iswin98()
-	{
-		OSVERSIONINFO	osinfo;
-		osinfo.dwOSVersionInfoSize=sizeof(OSVERSIONINFO);
-		if (GetVersionEx(&osinfo))
-		{
-			if
-			(
-				(osinfo.dwPlatformId==VER_PLATFORM_WIN32_WINDOWS) && (osinfo.dwMajorVersion>4)
-				//((osinfo.dwMajorVersion>4)||((osinfo.dwMajorVersion==4)&&(osinfo.dwMinorVersion>0)))
-			)	//osversion=1;
-				return 0;
-			if (osinfo.dwPlatformId==VER_PLATFORM_WIN32_NT) return 0;//osversion=2;
-		}
-		return 1;
-	}
-
 	int reset()
 	{
-		int sz=(iswin98())?2048:1024;	//10ms fragment size 20ms for windows98				
+		int sz=2048; // 20ms fragment size		
 		mix=new mixer(sz);
 		device=0;
 		buffersize=0;
