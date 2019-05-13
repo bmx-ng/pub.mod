@@ -52,33 +52,85 @@ int getchar_(){
 }
 
 int puts_( BBString *str ){
-	if( _bbusew ) return _putws( bbTmpWString(str) );
-	return puts( bbTmpCString(str) );
+	if( _bbusew ) {
+		BBChar *p=bbStringToWString( str );
+		int res = _putws( p );
+		bbMemFree(p);
+		return res;
+	}
+	char *p=bbStringToCString( str );
+	int res = puts( p );
+	bbMemFree(p);
+	return res;
 }
 
 int putenv_( BBString *str ){
-	if( _bbusew ) return _wputenv( bbTmpWString(str) );
-	return putenv( bbTmpCString(str) );
+	if( _bbusew ) {
+		BBChar *p=bbStringToWString( str );
+		int res = _wputenv( p );
+		bbMemFree(p);
+		return res;
+	}
+	char *p=bbStringToCString( str );
+	int res = putenv( p );
+	bbMemFree(p);
+	return res;
 }
 
 BBString *getenv_( BBString *str ){
-	if( _bbusew ) return bbStringFromWString( _wgetenv( bbTmpWString(str) ) );
-	return bbStringFromCString( getenv( bbTmpCString(str) ) );
+	if( _bbusew ) {
+		BBChar *p=bbStringToWString( str );
+		BBString * res = bbStringFromWString( _wgetenv( p ) );
+		bbMemFree(p);
+		return res;
+	}
+	char *p=bbStringToCString( str );
+	BBString * res = bbStringFromCString( getenv( p ) );
+	bbMemFree(res);
+	return res;
 }
 
 int fputs_( BBString *str,FILE* file ){
-	if( _bbusew ) return fputws( bbTmpWString(str),file );
-	return fputs( bbTmpCString(str),file );
+	if( _bbusew ) {
+		BBChar *p=bbStringToWString( str );
+		int res = fputws( p,file );
+		bbMemFree(p);
+		return res;
+	}
+	char *p=bbStringToCString( str );
+	int res = fputs( p,file );
+	bbMemFree(p);
+	return res;
 }
 
 int chdir_( BBString *path ){
-	if( _bbusew ) return _wchdir( bbTmpWString(path) );
-	return _chdir( bbTmpCString(path) );
+	if( _bbusew ) {
+		BBChar *p=bbStringToWString( path );
+		int res = _wchdir( p );
+		bbMemFree(p);
+		return res;
+	}
+	char *p=bbStringToCString( path );
+	int res = _chdir( p );
+	bbMemFree(p);
+	return res;
 }
 
 FILE* fopen_( BBString *file,BBString *mode ){
-	if( _bbusew ) return _wfopen( bbTmpWString(file),bbTmpWString(mode) );
-	return fopen( bbTmpCString(file),bbTmpCString(mode) );
+	if( _bbusew ) {
+		BBChar *f=bbStringToWString( file );
+		BBChar *m=bbStringToWString( mode );
+		FILE * res = _wfopen( f, m );
+		bbMemFree(m);
+		bbMemFree(f);
+		return res;
+	}
+	char *f=bbStringToCString( file );
+	char *m=bbStringToCString( mode );
+	FILE * res = fopen( f, m );
+	bbMemFree(m);
+	bbMemFree(f);
+	return res;
 }
 
 BBString *getcwd_(){
@@ -95,37 +147,85 @@ BBString *getcwd_(){
 }
 
 int chmod_( BBString *path,int mode ){
-	if( _bbusew ) return _wchmod( bbTmpWString(path),mode );
-	return _chmod( bbTmpCString(path),mode );
+	if( _bbusew ) {
+		BBChar *p=bbStringToWString( path );
+		int res = _wchmod( p,mode );
+		bbMemFree(p);
+		return res;
+	}
+	char *p=bbStringToCString( path );
+	int res = _chmod( p,mode );
+	bbMemFree(p);
+	return res;
 }
 
 int mkdir_( BBString *path,int mode ){
-	if( _bbusew ) return _wmkdir( bbTmpWString(path) );
-	return _mkdir( bbTmpCString(path) );
+	if( _bbusew ) {
+		BBChar *p=bbStringToWString( path );
+		int res = _wmkdir( p );
+		bbMemFree(p);
+		return res;
+	}
+	char *p=bbStringToCString( path );
+	int res = _mkdir( p );
+	bbMemFree(p);
+	return res;
 }
 
 int rmdir_( BBString *path ){
-	if( _bbusew ) return _wrmdir( bbTmpWString(path) );
-	return _rmdir( bbTmpCString(path) );
+	if( _bbusew ) {
+		BBChar *p=bbStringToWString( path );
+		int res = _wrmdir( p );
+		bbMemFree(p);
+		return res;
+	}
+	char *p=bbStringToCString( path );
+	int res = _rmdir( p );
+	bbMemFree(p);
+	return res;
 }
 
 int rename_( BBString *src,BBString *dst ){
-	if( _bbusew ) return _wrename( bbTmpWString(src),bbTmpWString(dst) );
-	return rename( bbTmpCString(src),bbTmpCString(dst) );
+	if( _bbusew ) {
+		BBChar *s=bbStringToWString( src );
+		BBChar *d=bbStringToWString( dst );
+		int res = _wrename( s, d );
+		bbMemFree(d);
+		bbMemFree(s);
+		return res;
+	}
+	char *s=bbStringToCString( src );
+	char *d=bbStringToCString( dst );
+	int res = rename( s, d );
+	bbMemFree(d);
+	bbMemFree(s);
+	return res;
 }
 
 void remove_( BBString *path ){
 	chmod_( path,0x1b6 );
 	if( _bbusew ){
-		_wremove( bbTmpWString(path) );
+		BBChar *p=bbStringToWString( path );
+		_wremove( p );
+		bbMemFree(p);
 	}else{
-		remove( bbTmpCString(path) );
+		char *p=bbStringToCString( path );
+		remove( p );
+		bbMemFree(p);
 	}
 }
 
 void* opendir_( BBString *path ){
-	if( _bbusew ) return _wopendir( bbTmpWString(path) );
-	return opendir( bbTmpCString(path) );
+	if( _bbusew ) {
+		BBChar *p=bbStringToWString( path );
+		void * res = _wopendir( p );
+		bbMemFree(p);
+		return res;
+	}
+	char *p=bbStringToCString( path );
+	void * res = opendir( p );
+	bbMemFree(p);
+	return res;
 }
 
 int closedir_( void* dir ){
@@ -151,9 +251,19 @@ int stat_( BBString *path,int *t_mode,BBLONG *t_size,int *t_mtime,int *t_ctime )
 	}
 	
 	if( _bbusew ){
-		if( _wstati64( bbTmpWString(path),&st ) ) return -1;
+		BBChar *p = bbStringToWString(path);
+		if( _wstati64( p,&st ) ) {
+			bbMemFree(p);
+			return -1;
+		}
+		bbMemFree(p);
 	}else{
-		if( _stati64( bbTmpCString(path),&st ) ) return -1;
+		char *p = bbStringToCString(path);
+		if( _stati64( p,&st ) ) {
+			bbMemFree(p);
+			return -1;
+		}
+		bbMemFree(p);
 	}
 
 	*t_mode=st.st_mode;
@@ -169,7 +279,7 @@ int system_( BBString *cmd ){
 	
 	if( _bbusew ){
 		STARTUPINFOW si={sizeof(si)};
-		wchar_t *tmp=bbTmpWString(cmd);
+		wchar_t *tmp = bbStringToWString(cmd);
 	
 		if( CreateProcessW( 0,tmp,0,0,1,CREATE_DEFAULT_ERROR_MODE,0,0,&si,&pi ) ){
 			WaitForSingleObject( pi.hProcess,INFINITE );
@@ -181,10 +291,11 @@ int system_( BBString *cmd ){
 		}else{
 			res=GetLastError();
 		}
+		bbMemFree(tmp);
 		
 	} else {
 		STARTUPINFO si={sizeof(si)};
-		char *tmp=bbTmpCString(cmd);
+		char *tmp = bbStringToCString(cmd);
 	
 		if( CreateProcessA( 0,tmp,0,0,1,CREATE_DEFAULT_ERROR_MODE,0,0,&si,&pi ) ){
 			WaitForSingleObject( pi.hProcess,INFINITE );
@@ -196,6 +307,7 @@ int system_( BBString *cmd ){
 		}else{
 			res=GetLastError();
 		}
+		bbMemFree(tmp);
 	}
 	return res;
 }
@@ -221,30 +333,48 @@ int getchar_(){
 }
 
 int puts_( BBString *str ){
-	return puts( bbTmpUTF8String( str ) );
+	char *p = bbStringToUTF8String( str );
+	int res = puts( p );
+	bbMemFree(p);
+	return res;
 }
 
 int putenv_( BBString *str ){
-	char *t=bbTmpUTF8String( str );
+	char *t=bbStringToUTF8String( str );
 	char *p=(char*)malloc( strlen(t)+1 );
 	strcpy( p,t );
+	bbMemFree(t);
 	return putenv( p );
 }
 
 BBString *getenv_( BBString *str ){
-	return bbStringFromUTF8String( getenv( bbTmpUTF8String(str) ) );
+	char *p = bbStringToUTF8String( str );
+	BBString * res = bbStringFromUTF8String( getenv( p ) );
+	bbMemFree(p);
+	return res;
 }
 
 FILE* fopen_( BBString *file,BBString *mode ){
-	return fopen( bbTmpUTF8String(file),bbTmpUTF8String(mode) );
+	char *f = bbStringToUTF8String( file );
+	char *m = bbStringToUTF8String( mode );
+	FILE * res = fopen( f, m );
+	bbMemFree(m);
+	bbMemFree(f);
+	return res;
 }
 
 int fputs_( BBString *str,FILE* file ){
-	return fputs( bbTmpUTF8String(str),file );
+	char *p = bbStringToUTF8String( str );
+	int res = fputs( p,file );
+	bbMemFree(p);
+	return res;
 }
 
 int chdir_( BBString *path ){
-	return chdir( bbTmpUTF8String(path) );
+	char *p = bbStringToUTF8String( path );
+	int res = chdir( p );
+	bbMemFree(p);
+	return res;
 }
 
 BBString *getcwd_(){
@@ -254,27 +384,47 @@ BBString *getcwd_(){
 }
 
 int chmod_( BBString *path,int mode ){
-	return chmod( bbTmpUTF8String(path),mode );
+	char *p = bbStringToUTF8String( path );
+	int res = chmod( p, mode );
+	bbMemFree(p);
+	return res;
 }
 
 int mkdir_( BBString *path,int mode ){
-	return mkdir( bbTmpUTF8String(path),mode );
+	char *p = bbStringToUTF8String( path );
+	int res = mkdir( p, mode );
+	bbMemFree(p);
+	return res;
 }
 
 int rmdir_( BBString *path ){
-	return rmdir( bbTmpUTF8String(path) );
+	char *p = bbStringToUTF8String( path );
+	int res = rmdir( p );
+	bbMemFree(p);
+	return res;
 }
 
 int rename_( BBString *src,BBString *dst ){
-	return rename( bbTmpUTF8String(src),bbTmpUTF8String(dst) );
+	char *s = bbStringToUTF8String( src );
+	char *d = bbStringToUTF8String( dst );
+	int res = rename( s, d );
+	bbMemFree(d);
+	bbMemFree(s);
+	return res;
 }
 
 int remove_( BBString *path ){
-	return remove( bbTmpUTF8String(path) );
+	char *p = bbStringToUTF8String( path );
+	int res = remove( p );
+	bbMemFree(p);
+	return res;
 }
 
 DIR* opendir_( BBString *path ){
-	return opendir( bbTmpUTF8String(path) );
+	char *p = bbStringToUTF8String( path );
+	DIR * res = opendir( p );
+	bbMemFree(p);
+	return res;
 }
 
 BBString *readdir_( DIR* dir ){
@@ -288,7 +438,12 @@ int closedir_( DIR* dir ){
 
 int stat_( BBString *path,int *t_mode,BBLONG *t_size,int *t_mtime,int *t_ctime ){
 	struct stat st;
-	if( stat( bbTmpUTF8String(path),&st ) ) return -1;
+	char *p = bbStringToUTF8String( path );
+	if( stat( p,&st ) ) {
+		bbMemFree(p);
+		return -1;
+	}
+	bbMemFree(p);
 	*t_mode=st.st_mode;
 	*t_size=st.st_size;
 	*t_mtime=st.st_mtime;
@@ -297,7 +452,10 @@ int stat_( BBString *path,int *t_mode,BBLONG *t_size,int *t_mtime,int *t_ctime )
 }
 
 int system_( BBString *cmd ){
-	return system( bbTmpUTF8String(cmd) );
+	char *p = bbStringToUTF8String( cmd );
+	int res = system( p );
+	bbMemFree(p);
+	return res;
 }
 
 int fseek_( FILE* stream, BBLONG offset, int origin ) {
@@ -604,7 +762,10 @@ void *localtime_( void *ttime ){
 }
 
 int strftime_( char *buf,int size,BBString *fmt,void *ttime ){
-	return strftime( buf,size,bbTmpCString(fmt),ttime );
+	char *p = bbStringToCString( fmt );
+	int res = strftime( buf,size,p,ttime );
+	bbMemFree(p);
+	return res;
 }
 
 int bmx_stdc_addrinfo_flags(struct addrinfo * info) {
