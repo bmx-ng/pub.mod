@@ -106,8 +106,6 @@ size_t fdProcess( BBString *bbcmd,size_t *procin,size_t *procout,size_t *procerr
 	char 	*const*argv;
 	int   	procid;
 
-	const char *cmd=bbTmpUTF8String(bbcmd);
-
 	//Set-up interprocess communication
 	if (pipe(in)) return 0;
   	if (pipe(out)) return 0;
@@ -134,13 +132,17 @@ size_t fdProcess( BBString *bbcmd,size_t *procin,size_t *procout,size_t *procerr
 		dup2(errfd[PIPEWRITE],STDERR_FILENO);
 		close(errfd[PIPEREAD]);
 
+		const char *cmd=bbStringToUTF8String(bbcmd);
+
 		argv=makeargv(cmd);
+		
+		bbMemFree(cmd);
+		
 		execvp(argv[0],argv);
 
 		_exit( -1 );
 
 		return 0;	//Supposedly, we need this for some compilers.
-
 	}
 
 	//Parent process
@@ -339,7 +341,9 @@ size_t fdProcess( BBString *cmd,size_t *procin,size_t *procout,size_t *procerr,i
 		else {
 			pflags|=DETACHED_PROCESS;
 		}
-		res=CreateProcessW( 0,bbTmpWString(cmd),0,0,-1,pflags,0,0,&si,pi );
+		char *c = bbStringToWString(cmd);
+		res=CreateProcessW( 0,c,0,0,-1,pflags,0,0,&si,pi );
+		bbMemFree(c);
 	}else{
 		STARTUPINFO si={sizeof(si)};
 
@@ -355,7 +359,9 @@ size_t fdProcess( BBString *cmd,size_t *procin,size_t *procout,size_t *procerr,i
 		else {
 			pflags|=DETACHED_PROCESS;
 		}
-		res=CreateProcess( 0,bbTmpCString(cmd),0,0,-1,pflags,0,0,&si,pi );
+		char *c=bbStringToCString( cmd );
+		res=CreateProcess( 0,c,0,0,-1,pflags,0,0,&si,pi );
+		bbMemFree(c);
 	}
 
 	if( !res ){
