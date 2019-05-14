@@ -910,9 +910,9 @@ BBString * bmx_stdc_getsockname(int socket, int * port) {
 	
 	if (res >= 0) {
 		if (storage.ss_family == AF_INET) {
-			*port = ((struct sockaddr_in*)&storage)->sin_port;
+			*port = ntohs(((struct sockaddr_in*)&storage)->sin_port);
 		} else {
-			*port = ((struct sockaddr_in6*)&storage)->sin6_port;
+			*port = ntohs(((struct sockaddr_in6*)&storage)->sin6_port);
 		}
 		
 		address = bmx_stdc_sockaddrestorage_address(&storage);
@@ -932,9 +932,9 @@ BBString * bmx_stdc_getpeername(int socket, int * port) {
 	
 	if (res >= 0) {
 		if (storage.ss_family == AF_INET) {
-			*port = ((struct sockaddr_in*)&storage)->sin_port;
+			*port = ntohs(((struct sockaddr_in*)&storage)->sin_port);
 		} else {
-			*port = ((struct sockaddr_in6*)&storage)->sin6_port;
+			*port = ntohs(((struct sockaddr_in6*)&storage)->sin6_port);
 		}
 		
 		address = bmx_stdc_sockaddrestorage_address(&storage);
