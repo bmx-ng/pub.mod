@@ -7,18 +7,20 @@
 #include <setjmp.h>
 #include <jpeglib.h>
 
-static jmp_buf jmp_env;
+struct error_manager {
+	struct jpeg_error_mgr mgr;
+	jmp_buf jmp_env;
+};
 
 static void format_message (j_common_ptr cinfo, char * buffer) {}
 static void output_message (j_common_ptr cinfo) {}
 static void emit_message (j_common_ptr cinfo, int msg_level) {}
 
 static void error_exit (j_common_ptr cinfo){
-//	printf("error_exit called from loadjpeg.c\n");
-//	fflush(stdout);
-	longjmp( jmp_env,-1 );
+	struct error_manager * manager = (struct error_manager*) cinfo->err;
+
+	longjmp( manager->jmp_env,-1 );
 }
-//jpeg_destroy(cinfo);}
 
 static void reset_error_mgr (j_common_ptr cinfo) {
 	cinfo->err->num_warnings=0;cinfo->err->msg_code = 0;
@@ -51,19 +53,19 @@ int loadjpg(void *stream,void *readfunc,int *width,int *height,int *channels,cha
 {
 	int		size,w,h,d,span,res;
 	char	*p;
-	
+
 	struct jpeg_decompress_struct cinfo;
-	struct jpeg_error_mgr jerr;
+	struct error_manager jerr;
 	
 	ReadStream=readfunc;
 		
-	initjerr(&jerr);
-	cinfo.err=&jerr;	
+	initjerr(&jerr.mgr);
+	cinfo.err=&jerr.mgr;	
 	
 	jpeg_create_decompress(&cinfo);
 	jpeg_stdio_src(&cinfo,(FILE*)stream);
 	
-	if( setjmp( jmp_env ) ){
+	if( setjmp( jerr.jmp_env ) ){
 		jpeg_destroy_decompress( &cinfo );
 		return -1;
 	}
@@ -92,25 +94,25 @@ int loadjpg(void *stream,void *readfunc,int *width,int *height,int *channels,cha
 	}
 	jpeg_finish_decompress(&cinfo);	
 	jpeg_destroy_decompress(&cinfo);
+
 	return 0;
 }
-
-
-struct jpeg_compress_struct	ccinfo;
-struct jpeg_error_mgr jerr;
 
 int savejpg(void *stream,void *writefunc,int width,int height,int pitch,char *pix,int qlty){
 	int y;
 
+	struct jpeg_compress_struct	ccinfo;
+	struct error_manager jerr;
+	
 	WriteStream=writefunc;
 
-	initjerr(&jerr);
-	ccinfo.err=&jerr;	
+	initjerr(&jerr.mgr);
+	ccinfo.err=&jerr.mgr;	
 
 	jpeg_create_compress(&ccinfo);
 	jpeg_stdio_dest(&ccinfo,(FILE*)stream);	//(_iobuf*)out);
 	
-	if( setjmp(jmp_env) ){return 1;}
+	if( setjmp(jerr.jmp_env) ){return 1;}
 
 	ccinfo.image_width=width;				//* image width and height, in pixels
 	ccinfo.image_height=height;
@@ -129,33 +131,3 @@ int savejpg(void *stream,void *writefunc,int width,int height,int pitch,char *pi
 	jpeg_destroy_compress(&ccinfo);
 	return 0;
 }
-
-
-
-#ifdef simon
-#include <jinclude.h>
-#include <jpeglib.h>
-#include <jversion.h>
-#include <jerror.h>
-
-// from jerror.c
-/*
- * Create the message string table.
- * We do this from the master message list in jerror.h by re-reading
- * jerror.h with a suitable definition for macro JMESSAGE.
- * The message table is made an external symbol just in case any applications
- * want to refer to it directly.
- */
-
-#ifdef NEED_SHORT_EXTERNAL_NAMES
-#define jpeg_std_message_table	jMsgTable
-#endif
-
-#define JMESSAGE(code,string)	string ,
-
-const char * const jpeg_std_message_table[] = {
-#include <jerror.h>
-  NULL
-};
-
-#endif
