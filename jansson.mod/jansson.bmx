@@ -22,11 +22,13 @@ SuperStrict
 
 Module Pub.Jansson
 
-ModuleInfo "Version: 1.03"
+ModuleInfo "Version: 1.04"
 ModuleInfo "Author: Bruce A Henderson"
 ModuleInfo "License: MIT"
 ModuleInfo "Copyright: 2014-2019 Bruce A Henderson"
 
+ModuleInfo "History: 1.04"
+ModuleInfo "History: Fix for NX"
 ModuleInfo "History: 1.03"
 ModuleInfo "History: Updated to Jansson 2.12"
 ModuleInfo "History: 1.02"
@@ -45,6 +47,8 @@ Import "include/linux/*.h"
 Import "include/macos/*.h"
 ?win32
 Import "include/win32/*.h"
+?nx
+Import "include/nx/*.h"
 ?
 
 ?android

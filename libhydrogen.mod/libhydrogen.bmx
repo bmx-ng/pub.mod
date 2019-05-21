@@ -19,12 +19,16 @@ SuperStrict
 Module Pub.LibHydrogen
 
 
-ModuleInfo "Version: 1.00"
+ModuleInfo "Version: 1.01"
 ModuleInfo "Author: Frank Denis."
 ModuleInfo "License: ISC"
 ModuleInfo "Credit: Adapted for BlitzMax by Bruce A Henderson"
 
+ModuleInfo "History: 1.01"
+ModuleInfo "History: Disabled for NX."
 ModuleInfo "History: 1.00"
 ModuleInfo "History: Initial Release."
 
+?Not nx
 Import "source.bmx"
+?
