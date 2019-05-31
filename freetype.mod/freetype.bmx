@@ -3,10 +3,13 @@ Strict
 
 Module Pub.FreeType
 
-ModuleInfo "Version: 1.13"
+ModuleInfo "Version: 1.14"
 ModuleInfo "License: FreeType License"
 ModuleInfo "Modserver: BRL"
 
+ModuleInfo "History: 1.14"
+ModuleInfo "History: Updated to FreeType 2.10.0"
+ModuleInfo "History: Added include path for Arch-based Linux distros."
 ModuleInfo "History: 1.13"
 ModuleInfo "History: Updated to FreeType 2.9.1.f686ad"
 ModuleInfo "History: 1.12"
@@ -28,6 +31,10 @@ ModuleInfo "History: 1.05 Release"
 ModuleInfo "History: Fixed Tiger build warnings in ftmac.c"
 ModuleInfo "History: 1.04 Release"
 ModuleInfo "History: Added stream hooks (new code in 'ftsystem.c')"
+
+?linux
+ModuleInfo "CC_OPTS: -I/usr/include/freetype2"
+?
 
 Rem
 

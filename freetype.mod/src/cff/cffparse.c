@@ -4,7 +4,7 @@
  *
  *   CFF token stream parser (body)
  *
- * Copyright 1996-2019 by
+ * Copyright (C) 1996-2019 by
  * David Turner, Robert Wilhelm, and Werner Lemberg.
  *
  * This file is part of the FreeType project, and may only be used,
@@ -1122,6 +1122,7 @@
 #endif /* FT_DEBUG_LEVEL_TRACE */
 
 
+#ifdef CFF_CONFIG_OPTION_OLD_ENGINE
   static void
   destruct_t2s_item( FT_Memory  memory,
                      void*      data,
@@ -1130,6 +1131,7 @@
     FT_UNUSED( user );
     memory->free( memory, data );
   }
+#endif /* CFF_CONFIG_OPTION_OLD_ENGINE */
 
 
   FT_LOCAL_DEF( FT_Error )
