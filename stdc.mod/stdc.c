@@ -899,12 +899,9 @@ BBString * bmx_stdc_sockaddrestorage_address(struct sockaddr_storage * storage) 
 	return address;
 }
 
-BBString * bmx_stdc_getsockname(int socket, int * port) {
+int bmx_stdc_getsockname(int socket, int * port, BBSTRING * address) {
 	struct sockaddr_storage storage;
 	int len = sizeof(struct sockaddr_storage);
-	
-	BBString * address = &bbEmptyString;
-	*port = 0;
 	
 	int res = getsockname(socket, (struct sockaddr *)&storage, &len);
 	
@@ -915,18 +912,15 @@ BBString * bmx_stdc_getsockname(int socket, int * port) {
 			*port = ntohs(((struct sockaddr_in6*)&storage)->sin6_port);
 		}
 		
-		address = bmx_stdc_sockaddrestorage_address(&storage);
+		*address = bmx_stdc_sockaddrestorage_address(&storage);
 	}
 	
-	return address;
+	return res;
 }
 
-BBString * bmx_stdc_getpeername(int socket, int * port) {
+int bmx_stdc_getpeername(int socket, int * port, BBSTRING * address) {
 	struct sockaddr_storage storage;
 	int len = sizeof(struct sockaddr_storage);
-	
-	BBString * address = &bbEmptyString;
-	*port = 0;
 	
 	int res = getpeername(socket, (struct sockaddr *)&storage, &len);
 	
@@ -940,7 +934,7 @@ BBString * bmx_stdc_getpeername(int socket, int * port) {
 		address = bmx_stdc_sockaddrestorage_address(&storage);
 	}
 	
-	return address;
+	return res;
 }
 
 #if _WIN32

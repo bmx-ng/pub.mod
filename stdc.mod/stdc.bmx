@@ -358,8 +358,8 @@ Function bmx_stdc_bind_info:Int(socket:Int, info:Byte Ptr)
 Function bmx_stdc_sockaddrestorage_new:Byte Ptr()
 Function bmx_stdc_sockaddrestorage_address:String(handle:Byte Ptr)
 Function bmx_stdc_accept_:Int(socket:Int, storage:Byte Ptr)
-Function bmx_stdc_getsockname:String(socket:Int, port:Int Var)
-Function bmx_stdc_getpeername:String(socket:Int, port:Int Var)
+Function bmx_stdc_getsockname:Int(socket:Int, port:Int Var, address:String Var)
+Function bmx_stdc_getpeername:Int(socket:Int, port:Int Var, address:String Var)
 
 'time
 
