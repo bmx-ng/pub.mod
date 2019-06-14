@@ -497,7 +497,12 @@ int ntohl_( int n ){
 }
 
 int socket_( int addr_type,int comm_type,int protocol ){
+#if _WIN32
+	SOCKET s = socket( addr_type,comm_type,protocol );
+	return (s != INVALID_SOCKET) ? s :-1;
+#else
 	return socket( addr_type,comm_type,protocol );
+#endif
 }
 
 void closesocket_( int s ){
