@@ -328,9 +328,14 @@ Function connect_:Int( socket:Int, addrinfo:Byte Ptr )
 Function listen_:Int( socket:Int,backlog:Int )
 Function accept_:Int( socket:Int,addr:Byte Ptr,addr_len:Byte Ptr)
 Function select_:Int( n_read:Int,read_socks:Int Ptr,n_write:Int,write_socks:Int Ptr,n_except:Int,except_socks:Int Ptr,millis:Int )
-Function send_:Size_T( socket:Int,buf:Byte Ptr,size:Size_T,flags:Int )
 Function sendto_:Int( socket:Int,buf:Byte Ptr,size:Int,flags:Int,dest_ip:Byte Ptr,dest_port:Int, addr_type:Int = AF_INET_ )
-Function recv_:Size_T( socket:Int,buf:Byte Ptr,size:Size_T,flags:Int )
+?ptr64
+Function send_:Long( socket:Int,buf:Byte Ptr,size:Size_T,flags:Int )
+Function recv_:Long( socket:Int,buf:Byte Ptr,size:Size_T,flags:Int )
+?Not ptr64
+Function send_:Int( socket:Int,buf:Byte Ptr,size:Size_T,flags:Int )
+Function recv_:Int( socket:Int,buf:Byte Ptr,size:Size_T,flags:Int )
+?
 Function recvfrom_:Int( socket:Int,buf:Byte Ptr,size:Int,flags:Int,sender_ip:Int Var,sender_port:Int Var)
 Function setsockopt_:Int( socket:Int,level:Int,optname:Int,optval:Byte Ptr,count:Int)
 Function getsockopt_:Int( socket:Int,level:Int,optname:Int,optval:Byte Ptr,count:Int Var)

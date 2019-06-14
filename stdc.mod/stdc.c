@@ -686,7 +686,7 @@ int select_( int n_read,int *r_socks,int n_write,int *w_socks,int n_except,int *
 	return r;
 }
 
-size_t send_( int socket,const char *buf,size_t size,int flags ){
+ssize_t send_( int socket,const char *buf,size_t size,int flags ){
 	return send( socket,buf,size,flags );
 }
 
@@ -717,7 +717,7 @@ int sendto_( int socket,const char *buf,int size,int flags,const char * dest_ip,
 	}
 }
 
-size_t recv_( int socket,char *buf,size_t size,int flags ){
+ssize_t recv_( int socket,char *buf,size_t size,int flags ){
 	return recv( socket,buf,size,flags );
 }
 
