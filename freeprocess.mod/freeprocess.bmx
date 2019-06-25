@@ -1,3 +1,5 @@
+SuperStrict
+
 Rem
 bbdoc: System/Execute Processes
 End Rem
@@ -19,8 +21,6 @@ ModuleInfo "History: Fixed a Linux hang when fork() is called."
 ModuleInfo "History: Added SIGCHLD handling and fdReapZombies function."
 ModuleInfo "History: 1.01 Release"
 ModuleInfo "History: Inserts /Contents/MacOS/ into process path for Apple app packages"
-
-SuperStrict
 
 ' createproc - to launch external executable
 ' TPipeStream - nonblocking readlines with fd file handles

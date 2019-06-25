@@ -1,10 +1,9 @@
+Strict
 ' commctrl.bmx
 
 Import "user32.bmx"
 
 Import "commctrl.cpp"
-
-Strict
 
 Const BS_PUSHBUTTON=0
 Const BS_DEFPUSHBUTTON=1

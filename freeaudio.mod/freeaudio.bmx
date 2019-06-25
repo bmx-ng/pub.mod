@@ -1,4 +1,4 @@
-
+Strict
 Module Pub.FreeAudio
 
 ModuleInfo "Version: 1.23"
