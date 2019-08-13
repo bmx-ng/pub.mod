@@ -1529,7 +1529,7 @@ mxml_stream_write(_mxml_streambuf_t *buf)	/* I - File descriptor buffer */
   int		bytes;			/* Bytes written */
   unsigned char	*ptr;			/* Pointer into buffer */
 
-  
+
  /*
   * Range check...
   */
@@ -3272,6 +3272,7 @@ mxml_write_node(mxml_node_t     *node,	/* I - Node to write */
     switch (current->type)
     {
       case MXML_ELEMENT :
+      case MXML_COMMENT :
 	  col = mxml_write_ws(current, p, cb, MXML_WS_BEFORE_OPEN, col, putc_cb, cb_ctx);
 
 	  if ((*putc_cb)('<', p) < 0)
