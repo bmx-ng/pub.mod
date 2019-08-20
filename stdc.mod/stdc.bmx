@@ -49,16 +49,14 @@ Import "stdc.c"
 Type TAddrInfo
 
 	Field infoPtr:Byte Ptr
-	Field owner:Int
+	Field shouldFreeInfo:Int ' 
 	
 	Method New()
 		infoPtr = bmx_stdc_addrinfo_new()
-		owner = True
 	End Method
 
 	Method New(family:Int, sockType:Int, flags:Int = 0)
 		infoPtr = bmx_stdc_addrinfo_new()
-		owner = True
 		setFamily(family)
 		setSockType(sockType)
 		If flags Then
@@ -66,13 +64,13 @@ Type TAddrInfo
 		End If
 	End Method
 
-	Method New(infoPtr:Byte Ptr, owner:Int)
+	Method New(infoPtr:Byte Ptr, shouldFreeInfo:Int)
 		Self.infoPtr = infoPtr
-		Self.owner = owner
+		Self.shouldFreeInfo = shouldFreeInfo
 	End Method
 	
-	Function _Create:TAddrInfo(infoPtr:Byte Ptr, owner:Int) { nomangle }
-		Return New TAddrInfo(infoPtr, owner)
+	Function _Create:TAddrInfo(infoPtr:Byte Ptr, shouldFreeInfo:Int) { nomangle }
+		Return New TAddrInfo(infoPtr, shouldFreeInfo)
 	End Function
 
 	Function _CreateArray:TAddrInfo[](length:Int) { nomangle }
@@ -136,7 +134,7 @@ Type TAddrInfo
 	End Method
 	
 	Method Delete()
-		If owner Then
+		If shouldFreeInfo Then
 			freeaddrinfo_(infoPtr)
 		End If
 	End Method
