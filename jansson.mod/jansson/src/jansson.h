@@ -342,6 +342,7 @@ json_t *json_load_callback(json_load_callback_t callback, void *data, size_t fla
 #define JSON_ESCAPE_SLASH       0x400
 #define JSON_REAL_PRECISION(n)  (((n) & 0x1F) << 11)
 #define JSON_EMBED              0x10000
+#define JSON_FRACTIONAL_DIGITS  0x20000
 
 typedef int (*json_dump_callback_t)(const char *buffer, size_t size, void *data);
 
@@ -359,6 +360,11 @@ typedef void (*json_free_t)(void *);
 
 void json_set_alloc_funcs(json_malloc_t malloc_fn, json_free_t free_fn);
 void json_get_alloc_funcs(json_malloc_t *malloc_fn, json_free_t *free_fn);
+
+/* runtime version checking */
+
+const char *jansson_version_str(void);
+int jansson_version_cmp(int major, int minor, int micro);
 
 #ifdef __cplusplus
 }

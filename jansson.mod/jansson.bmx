@@ -22,11 +22,13 @@ SuperStrict
 
 Module Pub.Jansson
 
-ModuleInfo "Version: 1.04"
+ModuleInfo "Version: 1.05"
 ModuleInfo "Author: Bruce A Henderson"
 ModuleInfo "License: MIT"
 ModuleInfo "Copyright: 2014-2019 Bruce A Henderson"
 
+ModuleInfo "History: 1.05"
+ModuleInfo "History: Updated to Jansson with fractional precision support."
 ModuleInfo "History: 1.04"
 ModuleInfo "History: Fix for NX"
 ModuleInfo "History: 1.03"
@@ -70,3 +72,4 @@ Import "jansson/src/strbuffer.c"
 Import "jansson/src/strconv.c"
 Import "jansson/src/utf.c"
 Import "jansson/src/value.c"
+Import "jansson/src/version.c"
