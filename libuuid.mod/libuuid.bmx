@@ -27,17 +27,19 @@ SuperStrict
 
 Module Pub.libuuid
 
-ModuleInfo "Version: 1.01"
+ModuleInfo "Version: 1.02"
 ModuleInfo "License: BSD"
 ModuleInfo "Copyright: Wrapper - 2015-2019 Bruce A Henderson"
 
+ModuleInfo "History: 1.02"
+ModuleInfo "History: Fixed Linux build."
 ModuleInfo "History: 1.01"
 ModuleInfo "History: Update to util-linux 2.34"
 ModuleInfo "History: 1.00"
 ModuleInfo "History: Initial Release."
 
 ?linux
-ModuleInfo "CC_OPTS: -DHAVE_NANOSLEEP"
+ModuleInfo "CC_OPTS: -DHAVE_NANOSLEEP -DHAVE_STRNDUP"
 ?macos
 ModuleInfo "CC_OPTS: -DHAVE_NANOSLEEP"
 ?
