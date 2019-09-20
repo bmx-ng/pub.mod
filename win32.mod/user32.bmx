@@ -748,15 +748,6 @@ Const WA_INACTIVE=0
 Const WA_ACTIVE=1
 Const WA_CLICKACTIVE=2
 
-Type MSG
-	Field hWnd:Byte Ptr
-	Field message
-	Field wp:WParam
-	Field lp:LParam
-	Field time
-	Field pt_x,pt_y
-End Type
-
 Type WNDCLASS
 	Field style
 	Field lpfnWndProc:Byte Ptr
@@ -1126,7 +1117,60 @@ Type TRACKMOUSEEVENT
 	End Method
 	
 End Type
+' MSG
+Extern
+	Function bmx_win32_MSG_new:Byte Ptr()
+	Function bmx_win32_MSG_free(handle:Byte Ptr)
+	Function bmx_win32_MSG_GetHwnd:Byte Ptr(handle:Byte Ptr)
+	Function bmx_win32_MSG_GetMessage:UInt(handle:Byte Ptr)
+	Function bmx_win32_MSG_GetWParam:WParam(handle:Byte Ptr)
+	Function bmx_win32_MSG_GetLParam:LParam(handle:Byte Ptr)
+	Function bmx_win32_MSG_GetTime:Int(handle:Byte Ptr)
+	Function bmx_win32_MSG_GetPt(handle:Byte Ptr, x:Int Var, y:Int Var)
+End Extern
+Type MSG
+	Field msgPtr:Byte Ptr
+	
+	Method New()
+		msgPtr = bmx_win32_MSG_new()
+	End Method
 
+	Method Delete()
+		Free()
+	End Method
+	
+	Method Free()
+		If msgPtr Then
+			bmx_win32_MSG_free(msgPtr)
+			msgPtr = Null
+		End If
+	End Method
+	
+	Method GetHwnd:Byte Ptr()
+		Return bmx_win32_MSG_GetHwnd(msgPtr)
+	End Method
+	
+	Method GetMessage:UInt()
+		Return bmx_win32_MSG_GetMessage(msgPtr)
+	End Method
+	
+	Method GetWParam:WParam()
+		Return bmx_win32_MSG_GetWParam(msgPtr)
+	End Method
+	
+	Method GetLParam:LParam()
+		Return bmx_win32_MSG_GetLParam(msgPtr)
+	End Method
+	
+	Method GetTime:Int()
+		Return bmx_win32_MSG_GetTime(msgPtr)
+	End Method
+	
+	Method GetPt(x:Int Var, y:Int Var)
+		bmx_win32_MSG_GetPt(msgPtr, x, y)
+	End Method
+	
+End Type
 
 Extern "Win32"
 

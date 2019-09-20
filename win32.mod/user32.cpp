@@ -70,6 +70,14 @@ extern "C" {
 	void bmx_win32_MINMAXINFO_SetmaxTrackSizeX(MINMAXINFO * info, int x);
 	void bmx_win32_MINMAXINFO_SetmaxTrackSizeY(MINMAXINFO * info, int y);
 
+	MSG * bmx_win32_MSG_new();
+	void bmx_win32_MSG_free(MSG * msg);
+	HWND bmx_win32_MSG_GetHwnd(MSG * msg);
+	UINT bmx_win32_MSG_GetMessage(MSG * msg);
+	WPARAM bmx_win32_MSG_GetWParam(MSG * msg);
+	LPARAM bmx_win32_MSG_GetLParam(MSG * msg);
+	int bmx_win32_MSG_GetTime(MSG * msg);
+	void bmx_win32_MSG_GetPt(MSG * msg, int * x, int * y);
 }
 
 // ********************************************************
@@ -322,5 +330,40 @@ void bmx_win32_MINMAXINFO_SetmaxTrackSizeX(MINMAXINFO * info, int x) {
 
 void bmx_win32_MINMAXINFO_SetmaxTrackSizeY(MINMAXINFO * info, int y) {
 	info->ptMaxTrackSize.y = y;
+}
+
+// ********************************************************
+
+MSG * bmx_win32_MSG_new() {
+	return (MSG *)calloc(1, sizeof(MSG));
+}
+
+void bmx_win32_MSG_free(MSG * msg) {
+	free(msg);
+}
+
+HWND bmx_win32_MSG_GetHwnd(MSG * msg) {
+	return msg->hwnd;
+}
+
+UINT bmx_win32_MSG_GetMessage(MSG * msg) {
+	return msg->message;
+}
+
+WPARAM bmx_win32_MSG_GetWParam(MSG * msg) {
+	return msg->wParam;
+}
+
+LPARAM bmx_win32_MSG_GetLParam(MSG * msg) {
+	return msg->lParam;
+}
+
+int bmx_win32_MSG_GetTime(MSG * msg) {
+	return msg->time;
+}
+
+void bmx_win32_MSG_GetPt(MSG * msg, int * x, int * y) {
+	*x = msg->pt.x;
+	*y = msg->pt.y;
 }
 
