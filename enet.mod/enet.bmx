@@ -1,116 +1,112 @@
+SuperStrict
 
-Strict
+Module Pub.Enet
 
-Module Pub.ENet
+ModuleInfo "Version: 1.02"
+ModuleInfo "Author: Lee Salzman, Vladyslav Hrytsenko, Dominik Madarasz"
 
-ModuleInfo "Version: 1.01"
-ModuleInfo "Author: Lee Salzman"
-ModuleInfo "Modserver: BRL"
-ModuleInfo "Credit: Adapted for BlitzMax by Mark Sibly"
-
+ModuleInfo "History: 1.02"
+ModuleInfo "History: Made SuperStrict"
+ModuleInfo "History: Ported to zpl-c enet : https://github.com/zpl-c/enet"
 ModuleInfo "History: 1.01 Release"
 
 Import Pub.StdC
 
-Import "include/*.h"
-
-Import "host.c"
-Import "list.c"
-Import "memory.c"
-Import "packet.c"
-Import "peer.c"
-Import "protocol.c"
-
-?Win32
-Import "win32.c"
-Import "-lws2_32"
-?MacOS
-Import "unix.c"
-?Linux
-Import "unix.c"
+?win32x86
+Import "-lWs2_32"
 ?
 
-Type ENetEvent
+Import "enet/include/*.h"
+Import "glue.c"
 
-	Field event
-	Field peer:Byte Ptr
-	Field channel
-	Field packet:Byte Ptr
-
-End Type
-
-Extern "C"
-
-Const ENET_HOST_ANY=0
-
-Const ENET_EVENT_TYPE_NONE=0
-Const ENET_EVENT_TYPE_CONNECT=1
-Const ENET_EVENT_TYPE_DISCONNECT=2
-Const ENET_EVENT_TYPE_RECEIVE=3
-
-Const ENET_PACKET_FLAG_RELIABLE=1
-
-Function enet_initialize()
-Function enet_deinitialize()
-
-Function enet_address_set_host( address:Byte Ptr,name$z )
-
-Function enet_time_get()
-Function enet_time_set( walltime_ms )
-
-Function enet_packet_create:Byte Ptr( data:Byte Ptr,size,flags )
-Function enet_packet_destroy( packet:Byte Ptr )
-
-Function enet_host_create:Byte Ptr( address:Byte Ptr,peerCount,incomingBandwidth,outgoingBandwidth )
-Function enet_host_destroy( host:Byte Ptr )
-Function enet_host_connect:Byte Ptr( host:Byte Ptr,address:Byte Ptr,channelCount )
-Function enet_host_flush( host:Byte Ptr )
-Function enet_host_service( host:Byte Ptr,event:Byte Ptr,timeout_ms )
-Function enet_host_broadcast( host:Byte Ptr,channel,packet:Byte Ptr )
-Function enet_host_bandwidth_limit( host:Byte Ptr,incomingBandwidth,outgoingBandwidth )
-
-Function enet_peer_send( peer:Byte Ptr,channel,packet:Byte Ptr )
-Function enet_peer_receive( peer:Byte Ptr,channel )
-Function enet_peer_ping( peer:Byte Ptr )
-Function enet_peer_reset( peer:Byte Ptr )
-Function enet_peer_disconnect( peer:Byte Ptr )
-Function enet_peer_throttle_configure( peer:Byte Ptr,interval,acceleration,deceleration )
-
-End Extern
-
-Function enet_peer_address( peer:Byte Ptr,host_ip Var,host_port Var )
-	Local ip=(Int Ptr peer)[3]
-	Local port=(Short Ptr peer)[8]
-?LittleEndian
-	ip=(ip Shr 24) | (ip Shr 8 & $ff00) | (ip Shl 8 & $ff0000) | (ip Shl 24)
-?
-	host_ip=ip
-	host_port=port
-End Function
-
-Function enet_packet_data:Byte Ptr( packet:Byte Ptr )
-	Return Byte Ptr( (Int Ptr packet)[2] )
-End Function
-
-Function enet_packet_size( packet:Byte Ptr )
-	Return (Int Ptr packet)[3]
-End Function
-
-Function enet_address_create:Byte Ptr( host_ip,host_port )
-	Local t:Byte Ptr=MemAlloc( 6 )
+Function enet_address_create:Byte Ptr( host_ip:Int,host_port:Int )
 ?BigEndian
-		(Int Ptr t)[0]=host_ip
+	Return bmx_enet_address_create_ipv4(host_ip, host_port)
 ?LittleEndian
-		(Int Ptr t)[0]=(host_ip Shr 24) | (host_ip Shr 8 & $ff00) | (host_ip Shl 8 & $ff0000) | (host_ip Shl 24)
+	Return bmx_enet_address_create_ipv4((host_ip Shr 24) | (host_ip Shr 8 & $ff00) | (host_ip Shl 8 & $ff0000) | (host_ip Shl 24), host_port)
 ?
-	(Short Ptr t)[2]=host_port
-	Return t
+End Function
+
+Function enet_address_create:Byte Ptr( host_ip:String,host_port:Int )
+	If host_ip = ENET_HOST_ANY Then
+		Return bmx_enet_address_create_any(host_port)
+	Else
+		Return bmx_enet_address_create_ipv6(host_ip, host_port, host_ip.Find(".") < 0)
+	End If
 End Function
 
 Function enet_address_destroy( address:Byte Ptr )
-	MemFree address
+	bmx_enet_address_destroy(address)
 End Function
+
+Type ENetEvent
+
+	Field eventPtr:Byte Ptr
+
+	Method New()
+		eventPtr = bmx_enet_enetevent_new()
+	End Method
+
+	Method Delete()
+		bmx_enet_enetevent_free(eventPtr)
+	End Method
+	
+	Method event:Int()
+		Return bmx_enet_enetevent_event(eventPtr)
+	End Method
+	
+	Method peer:Byte Ptr()
+		Return bmx_enet_enetevent_peer(eventPtr)
+	End Method
+	
+	Method packet:Byte Ptr()
+		Return bmx_enet_enetevent_packet(eventPtr)
+	End Method
+End Type
+
+Extern
+	Function bmx_enet_address_create_ipv4:Byte Ptr(host_ip:Int, host_port:Int)
+	Function bmx_enet_address_create_any:Byte Ptr(host_port:Int)
+	Function bmx_enet_address_create_ipv6:Byte Ptr(host_ip:String, host_port:Int, ipv6:Int)
+	Function bmx_enet_address_destroy(address:Byte Ptr)
+
+	Function bmx_enet_enetevent_new:Byte Ptr()
+	Function bmx_enet_enetevent_free(event:Byte Ptr)
+	Function bmx_enet_enetevent_peer:Byte Ptr(event:Byte Ptr)
+	Function bmx_enet_enetevent_event:Int(event:Byte Ptr)
+	Function bmx_enet_enetevent_packet:Byte Ptr(event:Byte Ptr)
+
+	Function enet_initialize:Int()
+	Function enet_deinitialize()
+
+	Function enet_peer_disconnect(peer:Byte Ptr, data:UInt)
+	Function enet_peer_send:Int(peer:Byte Ptr, channelID:Byte, packet:Byte Ptr)
+	
+    Function enet_host_create:Byte Ptr(address:Byte Ptr, peerCount:Size_T , channelLimit:Size_T , incomingBandwidth:UInt, outgoingBandwidth:UInt)
+	Function enet_host_connect:Byte Ptr(host:Byte Ptr, address:Byte Ptr, channelCount:Size_T, data:UInt)
+	Function enet_host_service:Int( host:Byte Ptr, event:Byte Ptr,timeout_ms:UInt )
+	Function enet_host_destroy(host:Byte Ptr)
+	Function enet_host_flush(host:Byte Ptr)
+	
+	Function enet_packet_create:Byte Ptr(data:Byte Ptr, dataLength:Size_T, flags:UInt)
+	Function enet_packet_destroy(packet:Byte Ptr)
+	Function bmx_enet_packet_data:Byte Ptr(packet:Byte Ptr)
+	Function bmx_enet_packet_size:Size_T(packet:Byte Ptr)
+End Extern
+
+Const ENET_HOST_ANY:String = "ENET_HOST_ANY"
+
+Const ENET_EVENT_TYPE_NONE:Int = 0
+Const ENET_EVENT_TYPE_CONNECT:Int = 1
+Const ENET_EVENT_TYPE_DISCONNECT:Int = 2
+Const ENET_EVENT_TYPE_RECEIVE:Int = 3
+Const ENET_EVENT_TYPE_DISCONNECT_TIMEOUT:Int = 4
+
+Const ENET_PACKET_FLAG_RELIABLE:Int = 1 Shl 0
+Const ENET_PACKET_FLAG_UNSEQUENCED:Int = 1 Shl 1
+Const ENET_PACKET_FLAG_NO_ALLOCATE:Int = 1 Shl 2
+Const ENET_PACKET_FLAG_UNRELIABLE_FRAGMENT:Int = 1 Shl 3
+Const ENET_PACKET_FLAG_SENT:Int = 1 Shl 8
 
 enet_initialize
 atexit_ enet_deinitialize
-
