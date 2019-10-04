@@ -54,7 +54,7 @@ Type TPipeStream Extends TStream
 	Field	bufferpos:Long
 	Field	readhandle:Size_T,writehandle:Size_T
 
-	Method Close()
+	Method Close() Override
 		If readhandle
 			fdClose(readhandle)
 			readhandle=0
@@ -65,15 +65,15 @@ Type TPipeStream Extends TStream
 		EndIf
 	End Method
 
-	Method Read:Long( buf:Byte Ptr,count:Long )
+	Method Read:Long( buf:Byte Ptr,count:Long ) Override
 		Return fdRead(readhandle,buf,count)
 	End Method
 
-	Method Write:Long( buf:Byte Ptr,count:Long )
+	Method Write:Long( buf:Byte Ptr,count:Long ) Override
 		Return fdWrite(writehandle,buf,count)
 	End Method
 
-	Method Flush()
+	Method Flush() Override
 		fdFlush(writehandle)
 	End Method
 
@@ -91,7 +91,7 @@ Type TPipeStream Extends TStream
 		EndIf
 	End Method
 
-	Method ReadLine$()	'nonblocking - returns empty string if no data available
+	Method ReadLine$() Override	'nonblocking - returns empty string if no data available
 		Local	n:Long,r:Long,p0:Int,p1:Int,line$
 		n=ReadAvail()
 		If n
