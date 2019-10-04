@@ -253,11 +253,17 @@ End Rem
 Type TJoystickDriver
 	Field _succ:TJoystickDriver
 	
+	Rem
+	bbdoc: Creates a new instance of a joystick driver.
+	End Rem
 	Method New()
 		_succ=joystick_drivers
 		joystick_drivers=Self
 	End Method
 	
+	Rem
+	bbdoc: Returns the name of the driver.
+	End Rem
 	Method GetName:String() Abstract
 
 	Method JoyCount:Int() Abstract
