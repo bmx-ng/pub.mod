@@ -326,6 +326,10 @@ BBLONG ftell_( FILE* stream ) {
 	return _telli64(f);
 }
 
+int ftruncate_(FILE* stream, BBLONG size) {
+	return _chsize_s(fileno(stream), size);
+}
+
 #else
 
 int getchar_(){
@@ -466,6 +470,9 @@ BBLONG ftell_( FILE* stream ) {
 	return ftello(stream);
 }
 
+int ftruncate_(FILE* stream, BBLONG size) {
+	return ftruncate(fileno(stream), size);
+}
 #endif
 
 int fclose_( FILE* stream ) {

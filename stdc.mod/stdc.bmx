@@ -11,12 +11,14 @@ SuperStrict
 
 Module Pub.StdC
 
-ModuleInfo "Version: 1.13"
+ModuleInfo "Version: 1.14"
 ModuleInfo "Author: Various"
 ModuleInfo "License: zlib/libpng"
 ModuleInfo "Modserver: BRL"
 ModuleInfo "Credit: Adapted for BlitzMax by Mark Sibly"
 
+ModuleInfo "History: 1.14"
+ModuleInfo "History: Added ftruncate_"
 ModuleInfo "History: 1.13 Release"
 ModuleInfo "History: Added totally awesome stat_() hack for '<' and '>' in Win32 paths"
 ModuleInfo "History: 1.12 Release"
@@ -201,6 +203,7 @@ Function feof_:Int( c_stream:Byte Ptr )="int feof( FILE* ) !"
 Function fgetc_:Int( c_stream:Byte Ptr )="int fgetc( FILE* ) !"
 Function ungetc_:Int( char:Int,c_stream:Byte Ptr )="int ungetc( int,FILE* ) !"
 Function fputs_:Int( str$,c_stream:Byte Ptr )
+Function ftruncate_:Int(c_stream:Byte Ptr, size:Long)
 
 'posix
 
