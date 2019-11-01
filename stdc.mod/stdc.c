@@ -1,6 +1,4 @@
 
-#include <brl.mod/blitz.mod/blitz.h>
-
 #include <stdio.h>
 #include <dirent.h>
 
@@ -16,9 +14,12 @@
 #include <direct.h>
 
 #define WIN32_LEAN_AND_MEAN
-#include <windows.h>
 #include <winsock2.h>
+#include <windows.h>
 #include <ws2tcpip.h>
+
+extern int bmx_inet_pton(int af, const char *src, void *dst);
+#define inet_pton bmx_inet_pton
 
 extern int _bbusew;
 
@@ -34,6 +35,8 @@ extern int _bbusew;
 #include <arpa/inet.h>
 
 #endif
+
+#include <brl.mod/blitz.mod/blitz.h>
  
 FILE* stdin_;
 FILE* stdout_;
@@ -567,7 +570,7 @@ int bmx_stdc_bind_info(int socket, struct addrinfo * info) {
 }
 
 char *gethostbyaddr_( void *addr,int addr_len,int addr_type ){
-	
+	return NULL;
 	//struct hostent *e=gethostbyaddr( addr,addr_len,addr_type );
 	//return e ? e->h_name : 0;
 }
@@ -711,7 +714,11 @@ int sendto_( int socket,const char *buf,int size,int flags,const char * dest_ip,
 			struct	sockaddr_in sa;
 			memset( &sa,0,sizeof(sa) );
 			sa.sin_family=AF_INET;
-			sa.sin_addr.s_addr=htonl( dest_ip );
+#ifdef _WIN32
+			sa.sin_addr.s_addr=inet_addr( dest_ip );
+#else
+			inet_pton(AF_INET, dest_ip, &(sa.sin_addr));
+#endif
 //			memcpy( &sa.sin_addr,dest_ip,4 );
 			sa.sin_port=htons( dest_port );
 			return sendto( socket,buf,size,flags,(void*)&sa,sizeof(sa));
@@ -727,6 +734,7 @@ int sendto_( int socket,const char *buf,int size,int flags,const char * dest_ip,
 			return sendto( socket,buf,size,flags,(void*)&sa,sizeof(sa));
 		}
 	}
+	return 0;
 }
 
 ssize_t recv_( int socket,char *buf,size_t size,int flags ){
@@ -852,7 +860,7 @@ int bmx_stdc_convertNIFlags(int flags) {
 
 BBString * bmx_stdc_addrinfo_hostname(struct addrinfo * info, int flags) {
 	char host[256];
-	int res = getnameinfo(info->ai_addr, info->ai_addrlen, &host, 256, 0, 0, bmx_stdc_convertNIFlags(flags));
+	int res = getnameinfo(info->ai_addr, info->ai_addrlen, host, 256, 0, 0, bmx_stdc_convertNIFlags(flags));
 	if (res != 0) {
 		return &bbEmptyString;
 	}
@@ -883,16 +891,16 @@ BBString * bmx_stdc_sockaddrestorage_address(struct sockaddr_storage * storage) 
 	HMODULE ntdll = GetModuleHandle("NTDLL.DLL");
 
 	if (storage->ss_family == AF_INET) {
-		RTLIPV4ADDRESSTOSTRING* RtlIpv4AddressToStringFunc = GetProcAddress(ntdll, "RtlIpv4AddressToStringW");
+		RTLIPV4ADDRESSTOSTRING* RtlIpv4AddressToStringFunc = (RTLIPV4ADDRESSTOSTRING*)GetProcAddress(ntdll, "RtlIpv4AddressToStringW");
 
 		RtlIpv4AddressToStringFunc(&((struct sockaddr_in*)storage)->sin_addr, add);
 	} else {
-		RTLIPV6ADDRESSTOSTRING* RtlIpv6AddressToStringFunc = GetProcAddress(ntdll, "RtlIpv6AddressToStringW");
+		RTLIPV6ADDRESSTOSTRING* RtlIpv6AddressToStringFunc = (RTLIPV6ADDRESSTOSTRING*)GetProcAddress(ntdll, "RtlIpv6AddressToStringW");
 
 		RtlIpv6AddressToStringFunc(&((struct sockaddr_in6*)storage)->sin6_addr, add);
 	}
 	
-	address = bbStringFromWString(add);
+	address = bbStringFromWString((BBChar*)add);
 
 #else
 
@@ -943,7 +951,7 @@ int bmx_stdc_getpeername(int socket, int * port, BBSTRING * address) {
 			*port = ntohs(((struct sockaddr_in6*)&storage)->sin6_port);
 		}
 		
-		address = bmx_stdc_sockaddrestorage_address(&storage);
+		*address = bmx_stdc_sockaddrestorage_address(&storage);
 	}
 	
 	return res;
