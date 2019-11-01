@@ -104,6 +104,7 @@
 #endif
 
 #ifdef _WIN32
+#define ftruncate _chsize
 static void gettimeofday (struct timeval *tv, void *dummy)
 {
 	FILETIME	ftime;
