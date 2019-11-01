@@ -170,13 +170,6 @@ extern int _bbusew;
 #include <windows.h>
 #include <tlhelp32.h>
 
-int TerminateProcessGroup(HANDLE prochandle,int procid)
-{
-	//for now we just do a kill instead of politely asking all
-	//sub-windows (gui only) to gracefully end.
-	return KillProcessGroup(prochandle, procid);
-}
-
 
 // In the Windows world "TerminateProcess" kills a process without
 // gracefully asking to stop I/O and other operations first.
@@ -210,6 +203,13 @@ int KillProcessGroup(HANDLE prochandle,int procid)
 	}
 	res=TerminateProcess(prochandle,-1);
 	return res;
+}
+
+int TerminateProcessGroup(HANDLE prochandle,int procid)
+{
+	//for now we just do a kill instead of politely asking all
+	//sub-windows (gui only) to gracefully end.
+	return KillProcessGroup(prochandle, procid);
 }
 
 int fdClose(size_t fd)
@@ -341,7 +341,7 @@ size_t fdProcess( BBString *cmd,size_t *procin,size_t *procout,size_t *procerr,i
 		else {
 			pflags|=DETACHED_PROCESS;
 		}
-		char *c = bbStringToWString(cmd);
+		BBChar *c = bbStringToWString(cmd);
 		res=CreateProcessW( 0,c,0,0,-1,pflags,0,0,&si,pi );
 		bbMemFree(c);
 	}else{

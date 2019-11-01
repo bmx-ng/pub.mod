@@ -208,6 +208,7 @@ struct dsounddevice:audiodevice{
 		soundbuffer->Stop();
 //		printf("done...\n");
 //		fflush(stdout);
+		return 1;
 	}
 	
 	static DWORD WINAPI soundproc(LPVOID lpParam){

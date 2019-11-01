@@ -103,6 +103,7 @@ struct winmmdevice:audiodevice {
 			buffer.finit(device); 
 			waveOutClose(device);
 		}
+		return 0;
 	}
 		
 	int init(int freq,int channels,int bits,int size)
