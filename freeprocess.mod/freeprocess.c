@@ -17,7 +17,7 @@ int fdClose(size_t fd) {return close(fd);}
 BBLONG fdRead(size_t fd,char *buffer,BBLONG count) {return read(fd,buffer,count);}
 BBLONG fdWrite(size_t fd,char *buffer,BBLONG count) {return write(fd,buffer,count);}
 int fdAvail(size_t fd) {int avail;if (ioctl(fd,FIONREAD,&avail)) avail=avail;return avail;}
-int fdFlush(size_t fd) {}//flush(fd);}
+int fdFlush(size_t fd) { return 0;}//flush(fd);}
 
 ///return 1 for running, 0 for finished
 //
