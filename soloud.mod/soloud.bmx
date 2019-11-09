@@ -45,7 +45,6 @@ ModuleInfo "CC_OPTS: -msse3"
 ?
 ModuleInfo "CC_OPTS: -DWITH_SDL2_STATIC"
 
-
 Import "common.bmx"
 
 
@@ -702,7 +701,7 @@ Type TSLWav Extends TSLLoadableAudioSource
 	Method loadStream:Int(stream:TStream)
 		Local sf:TStreamFile = New TStreamFile.Create(stream)
 		Local res:Int = Wav_loadFile(asPtr, sf.filePtr)
-		sf.Free()
+		'sf.Free()
 		Return res
 	End Method
 
@@ -819,8 +818,6 @@ bbdoc:
 End Rem
 Type TSLWavStream Extends TSLLoadableAudioSource
 
-	Field sf:TStreamFile
-	
 	Method New()
 		asPtr = WavStream_create()
 	End Method
@@ -853,10 +850,7 @@ Type TSLWavStream Extends TSLLoadableAudioSource
 	bbdoc: 
 	End Rem
 	Method loadStream:Int(stream:TStream)
-		If sf Then
-			sf.Free()
-		End If
-		sf = New TStreamFile.Create(stream)
+		Local sf:TStreamFile = New TStreamFile.Create(stream)
 		Return WavStream_loadFile(asPtr, sf.filePtr)
 	End Method
 
@@ -956,11 +950,6 @@ Type TSLWavStream Extends TSLLoadableAudioSource
 	End Method
 
 	Method destroy()
-		If sf Then
-			sf.Free()
-			sf = Null
-		End If
-
 		If asPtr Then
 			WavStream_destroy(asPtr)
 			asPtr = Null
@@ -1148,9 +1137,7 @@ Type TSLOpenmpt Extends TSLLoadableAudioSource
 	End Rem
 	Method loadStream:Int(stream:TStream)
 		Local sf:TStreamFile = New TStreamFile.Create(stream)
-		Local res:Int = Openmpt_LoadFile(asPtr, sf.filePtr)
-		sf.Free()
-		Return res
+		Return Openmpt_LoadFile(asPtr, sf.filePtr)
 	End Method
 
 	Rem
@@ -1292,9 +1279,7 @@ Type TSLMonotone Extends TSLLoadableAudioSource
 	End Rem
 	Method loadStream:Int(stream:TStream)
 		Local sf:TStreamFile = New TStreamFile.Create(stream)
-		Local res:Int = Monotone_LoadFile(asPtr, sf.filePtr)
-		sf.Free()
-		Return res
+		Return Monotone_LoadFile(asPtr, sf.filePtr)
 	End Method
 
 	Rem
@@ -1436,9 +1421,7 @@ Type TSLTedSid Extends TSLLoadableAudioSource
 	End Rem
 	Method loadStream:Int(stream:TStream)
 		Local sf:TStreamFile = New TStreamFile.Create(stream)
-		Local res:Int = TedSid_LoadFile(asPtr, sf.filePtr)
-		sf.Free()
-		Return res
+		Return TedSid_LoadFile(asPtr, sf.filePtr)
 	End Method
 
 	Rem
@@ -1566,8 +1549,9 @@ Type TStreamFile
 	Field stream:TStream
 	
 	Method Create:TStreamFile(stream:TStream)
-		filePtr = bmx_soloud_streamfile_new()
+		filePtr = bmx_soloud_streamfile_new(Self)
 		Self.stream = stream
+		stream.Seek(0)
 		Return Self
 	End Method
 	

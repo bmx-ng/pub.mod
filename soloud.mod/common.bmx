@@ -361,7 +361,7 @@ Extern
 	Function TedSid_stop(aTedSid:Byte Ptr)
 
 
-	Function bmx_soloud_streamfile_new:Byte Ptr()
+	Function bmx_soloud_streamfile_new:Byte Ptr(obj:Object)
 	Function bmx_soloud_streamfile_free(handle:Byte Ptr)
 	
 End Extern
