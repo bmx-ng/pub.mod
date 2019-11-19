@@ -333,6 +333,15 @@ int ftruncate_(FILE* stream, BBLONG size) {
 	return _chsize_s(fileno(stream), size);
 }
 
+int clock_gettime_(int id, struct timespec * spec) {
+	__int64 ftime;
+	GetSystemTimeAsFileTime((FILETIME*)&ftime);
+	ftime -= 116444736000000000LL;
+	spec->tv_sec = ftime / 10000000LL;
+	spec->tv_nsec = ftime % 10000000LL *100;
+	return 0;
+}
+
 #else
 
 int getchar_(){
@@ -475,6 +484,24 @@ BBLONG ftell_( FILE* stream ) {
 
 int ftruncate_(FILE* stream, BBLONG size) {
 	return ftruncate(fileno(stream), size);
+}
+#ifndef __APPLE__
+int clock_gettime_(int id, struct timespec * spec) {
+	return clock_gettime(id, spec);
+}
+#endif
+#endif
+
+#ifdef __APPLE__
+#include <mach/mach_time.h>
+
+BBULONG mach_absolute_time_ns() {
+	static mach_timebase_info_data_t s_timebase_info;
+	static int inited = 0;
+	if (!inited) {
+        mach_timebase_info(&s_timebase_info);
+    };
+	return (mach_absolute_time() * s_timebase_info.numer) / s_timebase_info.denom;
 }
 #endif
 

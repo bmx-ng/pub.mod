@@ -373,7 +373,25 @@ Function time_:Int( time:Byte Ptr )
 Function localtime_:Byte Ptr( time:Byte Ptr )
 Function strftime_:Int( buf:Byte Ptr,size:Int,fmt$,time:Byte Ptr )
 
+?Not macos
+Function clock_gettime_(id:Int, spec:STimeSpec Var)
+?macos
+Function mach_absolute_time_ns:ULong()
+?
+
+Function errno_:Int()
+
 End Extern
+
+Struct STimeSpec
+	Field tv_sec:Size_T
+	Field tv_nsec:Size_T
+	
+	Method New(tv_sec:Size_T, tv_nsec:Size_T)
+		Self.tv_sec = tv_sec
+		Self.tv_nsec = tv_nsec
+	End Method
+End Struct
 
 Private
 
