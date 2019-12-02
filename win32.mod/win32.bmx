@@ -1,6 +1,9 @@
 
 Strict
 
+Rem
+bbdoc: Other/Win32
+End Rem
 Module Pub.Win32
 
 ModuleInfo "Version: 1.16"
