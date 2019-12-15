@@ -971,8 +971,10 @@ about:
 <table><tr><th>Possible Error States</th><th>Description</th></tr>
 <tr><td>AL_INVALID_NAME</td><td>at least one specified source is not valid, or an attempt is being made to delete more sources than exist.</td></tr>
 <tr><td>AL_INVALID_OPERATION</td><td>There is no current context.</td></tr></table><br/>
-If the requested number of sources cannot be deleted, an error will be generated which can be detected with #alGetError. If an error occurs, no sources will be deleted. If n equals zero, #alDeleteSources does nothing and will not return an error.<p>
+If the requested number of sources cannot be deleted, an error will be generated which can be detected with #alGetError. If an error occurs, no sources will be deleted. If n equals zero, #alDeleteSources does nothing and will not return an error.
+<p>
 A playing source can be deleted - the source will be stopped and then deleted.
+</p>
 End Rem
 Global alDeleteSources( n,sources:Int Ptr )=P("alDeleteSources")
 Rem
