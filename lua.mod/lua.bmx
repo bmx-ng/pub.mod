@@ -277,7 +277,7 @@ bbdoc: Pushes onto the stack the value `t[k]`, where @t is the value at the give
 about: 
 See [Lua Reference Manual](https://www.lua.org/manual/5.1/manual.html#lua_getfield)
 End Rem
-  Function lua_getfield (lua_state:Byte Ptr, index:Int, k$z)              ' no ~0 expected
+  Function lua_getfield (lua_state:Byte Ptr, index:Int, k$z)
 Rem
 bbdoc: Returns the current hook function.
 about: 
@@ -301,13 +301,13 @@ bbdoc: Returns information about a specific function or function invocation.
 about: 
 See [Lua Reference Manual](https://www.lua.org/manual/5.1/manual.html#lua_getinfo)
 End Rem
-  Function lua_getinfo:Int (lua_state:Byte Ptr, what$z, ar:lua_Debug Ptr)    ' no ~0 expected
+  Function lua_getinfo:Int (lua_state:Byte Ptr, what$z, ar:lua_Debug Ptr)
 Rem
 bbdoc: Gets information about a local variable of a given activation record.
 about: 
 See [Lua Reference Manual](https://www.lua.org/manual/5.1/manual.html#lua_getlocal)
 End Rem
-  Function lua_getlocal$z (lua_state:Byte Ptr, ar:lua_Debug Ptr, n:Int)     ' no ~0 expected
+  Function lua_getlocal$z (lua_state:Byte Ptr, ar:lua_Debug Ptr, n:Int)
 Rem
 bbdoc: Pushes onto the stack the metatable of the value at the given acceptable @index.
 about: 
@@ -319,7 +319,7 @@ bbdoc: Get information about the interpreter runtime stack.
 about: 
 See [Lua Reference Manual](https://www.lua.org/manual/5.1/manual.html#lua_getstack)
 End Rem
-  Function lua_getstack:Int (lua_state:Byte Ptr, level:Int, ar:lua_Debug Ptr) ' no ~0 expected
+  Function lua_getstack:Int (lua_state:Byte Ptr, level:Int, ar:lua_Debug Ptr)
 Rem
 bbdoc: Pushes onto the stack the value `t[k]`, where @t is the value at the given valid index and @k is the value at the top of the stack.
 about: 
@@ -337,7 +337,7 @@ bbdoc: Gets information about a closure's upvalue.
 about: 
 See [Lua Reference Manual](https://www.lua.org/manual/5.1/manual.html#lua_getupvalue)
 End Rem
-  Function lua_getupvalue$z (lua_state:Byte Ptr, funcindex:Int, n:Int)        ' no ~0 expected
+  Function lua_getupvalue$z (lua_state:Byte Ptr, funcindex:Int, n:Int)
 Rem
 bbdoc: Moves the top element into the given valid index, shifting up the elements above this index to open space.
 about: 
@@ -380,9 +380,9 @@ about:
 See [Lua Reference Manual](https://www.lua.org/manual/5.1/manual.html#lua_load)
 End Rem
 ?ptr64
-  Function lua_load:Int (lua_state:Byte Ptr, reader:Byte Ptr(ls:Byte Ptr,data:Byte Ptr,sz:Long Ptr), data:Byte Ptr, chunkname$z) ' no ~0 expected
+  Function lua_load:Int (lua_state:Byte Ptr, reader:Byte Ptr(ls:Byte Ptr,data:Byte Ptr,sz:Long Ptr), data:Byte Ptr, chunkname$z)
 ?Not ptr64
-  Function lua_load:Int (lua_state:Byte Ptr, reader:Byte Ptr(ls:Byte Ptr,data:Byte Ptr,sz:Int Ptr), data:Byte Ptr, chunkname$z) ' no ~0 expected
+  Function lua_load:Int (lua_state:Byte Ptr, reader:Byte Ptr(ls:Byte Ptr,data:Byte Ptr,sz:Int Ptr), data:Byte Ptr, chunkname$z)
 ?
 Rem
 bbdoc: Creates a new, independent state.
@@ -467,9 +467,9 @@ about:
 See [Lua Reference Manual](https://www.lua.org/manual/5.1/manual.html#lua_pushlstring)
 End Rem
 ?ptr64
-  Function lua_pushlstring (lua_state:Byte Ptr, s:Byte Ptr, size:Long)    ' without any conversion!
+  Function lua_pushlstring (lua_state:Byte Ptr, s:Byte Ptr, size:Long)
 ?Not ptr64
-  Function lua_pushlstring (lua_state:Byte Ptr, s:Byte Ptr, size:Int)    ' without any conversion!
+  Function lua_pushlstring (lua_state:Byte Ptr, s:Byte Ptr, size:Int)
 ?
 Rem
 bbdoc: Pushes a nil value onto the stack.
@@ -488,7 +488,7 @@ bbdoc: Pushes the #String pointed to by @s onto the stack.
 about: 
 See [Lua Reference Manual](https://www.lua.org/manual/5.1/manual.html#lua_pushstring)
 End Rem
-  Function lua_pushstring (lua_state:Byte Ptr, s$z)                         ' no ~0 expected
+  Function lua_pushstring (lua_state:Byte Ptr, s$z)
 Rem
 bbdoc: Pushes the thread onto the stack.
 about: 
@@ -571,7 +571,7 @@ bbdoc: Does the equivalent to `t[k] = v`, where @t is the value at the given val
 about: 
 See [Lua Reference Manual](https://www.lua.org/manual/5.1/manual.html#lua_setfield)
 End Rem
-  Function lua_setfield (lua_state:Byte Ptr, index:Int, k$z)              ' no ~0 expected
+  Function lua_setfield (lua_state:Byte Ptr, index:Int, k$z)
 Rem
 bbdoc: Sets the debugging hook function.
 about: 
@@ -583,7 +583,7 @@ bbdoc: Sets the value of a local variable of a given activation record.
 about: 
 See [Lua Reference Manual](https://www.lua.org/manual/5.1/manual.html#lua_setlocal)
 End Rem
-  Function lua_setlocal$z (lua_state:Byte Ptr, ar:lua_Debug Ptr, n:Int)     ' no ~0 expected
+  Function lua_setlocal$z (lua_state:Byte Ptr, ar:lua_Debug Ptr, n:Int)
 Rem
 bbdoc: Pops a table from the stack and sets it as the new metatable for the value at the given acceptable @index.
 about: 
@@ -607,7 +607,7 @@ bbdoc: Sets the value of a closure's upvalue.
 about: 
 See [Lua Reference Manual](https://www.lua.org/manual/5.1/manual.html#lua_setupvalue)
 End Rem
-  Function lua_setupvalue$z (lua_state:Byte Ptr, funcindex:Int, n:Int)        ' no ~0 expected
+  Function lua_setupvalue$z (lua_state:Byte Ptr, funcindex:Int, n:Int)
 Rem
 bbdoc: Returns the status of the thread @lua_state.
 about: 
@@ -677,7 +677,7 @@ bbdoc: Returns the name of the type encoded by the value @tp, which must be one 
 about: 
 See [Lua Reference Manual](https://www.lua.org/manual/5.1/manual.html#lua_typename)
 End Rem
-  Function lua_typename$z (lua_state:Byte Ptr, tp:Int)                      ' no ~0 expected
+  Function lua_typename$z (lua_state:Byte Ptr, tp:Int)
 Rem
 bbdoc: Exchange values between different threads of the same global state.
 about: 
@@ -887,7 +887,7 @@ bbdoc: Adds the zero-terminated string pointed to by @s to the buffer @B.
 about: 
 See [Lua Reference Manual](https://www.lua.org/manual/5.1/manual.html#luaL_addstring)
 End Rem
-  Function luaL_addstring (B:Byte Ptr, s$z)                                 ' no ~0 allowed!
+  Function luaL_addstring (B:Byte Ptr, s$z)
 Rem
 bbdoc: Adds the value at the top of the stack to the buffer @B.
 about: 
@@ -899,7 +899,7 @@ bbdoc: Raises an error with the following message, where func is retrieved from 
 about: 
 See [Lua Reference Manual](https://www.lua.org/manual/5.1/manual.html#luaL_argerror)
 End Rem
-  Function luaL_argerror:Int (lua_state:Byte Ptr, narg:Int, extramsg$z)     ' no ~0 expected
+  Function luaL_argerror:Int (lua_state:Byte Ptr, narg:Int, extramsg$z)
 Rem
 bbdoc: Initializes a buffer @B.
 about: 
@@ -911,7 +911,7 @@ bbdoc: Calls a metamethod.
 about: 
 See [Lua Reference Manual](https://www.lua.org/manual/5.1/manual.html#luaL_callmeta)
 End Rem
-  Function luaL_callmeta:Int (lua_state:Byte Ptr, obj:Int, e$z)             ' no ~0 expected
+  Function luaL_callmeta:Int (lua_state:Byte Ptr, obj:Int, e$z)
 Rem
 bbdoc: Checks whether the function has an argument of any type (including nil) at position @narg.
 about: 
@@ -946,7 +946,7 @@ bbdoc: Grows the stack size to top + @sz elements, raising an error if the stack
 about: 
 See [Lua Reference Manual](https://www.lua.org/manual/5.1/manual.html#luaL_checkstack)
 End Rem
-  Function luaL_checkstack (lua_state:Byte Ptr, sz:Int, msg$z)                     ' no ~0 expected
+  Function luaL_checkstack (lua_state:Byte Ptr, sz:Int, msg$z)
 Rem
 bbdoc: Checks whether the function argument @narg has type @t.
 about: 
@@ -958,44 +958,44 @@ bbdoc: Checks whether the function argument @narg is a userdata of the type @tna
 about: 
 See [Lua Reference Manual](https://www.lua.org/manual/5.1/manual.html#luaL_checkudata)
 End Rem
-  Function luaL_checkudata:Byte Ptr (lua_state:Byte Ptr, narg:Int, tname$z)        ' no ~0 expected
+  Function luaL_checkudata:Byte Ptr (lua_state:Byte Ptr, narg:Int, tname$z)
 ' function luaL_error:int (lua_state:byte ptr, fmt$z, ...)
 Rem
 bbdoc: Pushes onto the stack the field @e from the metatable of the object at index @obj.
 about: 
 See [Lua Reference Manual](https://www.lua.org/manual/5.1/manual.html#luaL_getmetafield)
 End Rem
-  Function luaL_getmetafield:Int (lua_state:Byte Ptr, obj:Int, e$z)                ' no ~0 expected
+  Function luaL_getmetafield:Int (lua_state:Byte Ptr, obj:Int, e$z)
 Rem
 bbdoc: Creates a copy of string @s by replacing any occurrence of the string @p with the string @r.
 about: 
 See [Lua Reference Manual](https://www.lua.org/manual/5.1/manual.html#luaL_gsub)
 End Rem
-  Function luaL_gsub$z (lua_state:Byte Ptr, s$z, p$z, r$z)                         ' no ~0 expected
+  Function luaL_gsub$z (lua_state:Byte Ptr, s$z, p$z, r$z)
 Rem
 bbdoc: Loads a buffer as a Lua chunk.
 about: 
 See [Lua Reference Manual](https://www.lua.org/manual/5.1/manual.html#luaL_loadbuffer)
 End Rem
-  Function luaL_loadbuffer:Int (lua_state:Byte Ptr, buff:Byte Ptr, sz:Int, name$z) ' no ~0 expected
+  Function luaL_loadbuffer:Int (lua_state:Byte Ptr, buff:Byte Ptr, sz:Int, name$z)
 Rem
 bbdoc: Loads a file as a Lua chunk.
 about: 
 See [Lua Reference Manual](https://www.lua.org/manual/5.1/manual.html#luaL_loadfile)
 End Rem
-  Function luaL_loadfile:Int (lua_state:Byte Ptr, filename$z)                      ' no ~0 expected
+  Function luaL_loadfile:Int (lua_state:Byte Ptr, filename$z)
 Rem
 bbdoc: Loads a string as a Lua chunk.
 about: 
 See [Lua Reference Manual](https://www.lua.org/manual/5.1/manual.html#luaL_loadstring)
 End Rem
-  Function luaL_loadstring:Int (lua_state:Byte Ptr, s$z)                           ' no ~0 allowed!
+  Function luaL_loadstring:Int (lua_state:Byte Ptr, s$z)
 Rem
 bbdoc: If the registry already has the key @tname, returns 0.
 about: 
 See [Lua Reference Manual](https://www.lua.org/manual/5.1/manual.html#luaL_newmetatable)
 End Rem
-  Function luaL_newmetatable:Int (lua_state:Byte Ptr, tname$z)                     ' no ~0 expected
+  Function luaL_newmetatable:Int (lua_state:Byte Ptr, tname$z)
 Rem
 bbdoc: Creates a new Lua state.
 about: 
@@ -1023,7 +1023,7 @@ bbdoc: If the function argument @narg is a string, returns this string.
 about: 
 See [Lua Reference Manual](https://www.lua.org/manual/5.1/manual.html#luaL_optlstring)
 End Rem
-  Function luaL_optlstring:Byte Ptr (lua_state:Byte Ptr, narg:Int, d$z, size:Int Ptr) ' no ~0 expected in "d"
+  Function luaL_optlstring:Byte Ptr (lua_state:Byte Ptr, narg:Int, d$z, size:Int Ptr)
 Rem
 bbdoc: If the function argument narg is a number, returns this number.
 about: 
@@ -1053,13 +1053,13 @@ bbdoc: Opens a library.
 about: 
 See [Lua Reference Manual](https://www.lua.org/manual/5.1/manual.html#luaL_register)
 End Rem
-  Function luaL_register (lua_state:Byte Ptr, libname$z, l:lua_Reg Ptr)            ' no ~0 expected
+  Function luaL_register (lua_state:Byte Ptr, libname$z, l:lua_Reg Ptr)
 Rem
 bbdoc: Generates an error with a message.
 about: 
 See [Lua Reference Manual](https://www.lua.org/manual/5.1/manual.html#luaL_typerror)
 End Rem
-  Function luaL_typerror:Int (lua_state:Byte Ptr, narg:Int, tname$z)               ' no ~0 expected
+  Function luaL_typerror:Int (lua_state:Byte Ptr, narg:Int, tname$z)
 Rem
 bbdoc: Releases reference @ref from the table at index @t.
 about: 
