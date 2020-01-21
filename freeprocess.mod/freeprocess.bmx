@@ -3,7 +3,7 @@ SuperStrict
 Rem
 bbdoc: System/Execute Processes
 End Rem
-Module PUB.FreeProcess
+Module Pub.FreeProcess
 
 ModuleInfo "Version: 1.04"
 ModuleInfo "Framework: FreeProcess multi platform external process control"

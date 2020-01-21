@@ -19,7 +19,7 @@
 
 SuperStrict
 
-Module pub.vulkan
+Module Pub.Vulkan
 
 Import "vkLoader.bmx"
 

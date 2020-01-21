@@ -25,7 +25,7 @@
 '
 SuperStrict
 
-Module Pub.libuuid
+Module Pub.LibUUID
 
 ModuleInfo "Version: 1.02"
 ModuleInfo "License: BSD"

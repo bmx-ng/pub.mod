@@ -21,7 +21,7 @@ SuperStrict
 Rem
 bbdoc: SIMD intrinsics for x64.
 End Rem
-Module pub.xmmintrin
+Module Pub.xmmintrin
 
 ModuleInfo "Version: 1.00"
 ModuleInfo "Author: David JJ Camp"
