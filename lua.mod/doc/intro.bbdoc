@@ -70,7 +70,7 @@ lua_register(LuaState, "luaname", BMXName)
 This command registers a BlitzMax function (called `BMXName`) with the (global) name `luaname` under Lua.
 Both names may be equal, but they do not have to.
 
-##Running Lua Scripts From Within BlitzMax
+## Running Lua Scripts From Within BlitzMax
 
 The code
 ```blitzmax
