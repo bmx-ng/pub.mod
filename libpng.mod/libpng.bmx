@@ -2,12 +2,15 @@ SuperStrict
 
 Module Pub.LibPNG
 
-ModuleInfo "Version: 1.09"
+ModuleInfo "Version: 1.10"
 ModuleInfo "Author: Guy Eric Schalnat, Andreas Dilger, Glenn Randers-Pehrson, Others"
 ModuleInfo "License: ZLib/PNG License"
 ModuleInfo "Modserver: BRL"
 ModuleInfo "Credit: Adapted for BlitzMax by Mark Sibly"
 
+ModuleInfo "History: 1.10"
+ModuleInfo "History: Update to libpng 1.6.37."
+ModuleInfo "History: Fixed prefixes. Fixed rpi linkage."
 ModuleInfo "History: 1.09"
 ModuleInfo "History: Update to libpng 1.6.34."
 ModuleInfo "History: Enabled SSE for x86 and x64."
@@ -51,9 +54,10 @@ Import "pngwio.c"
 Import "pngwrite.c"
 Import "pngwtran.c"
 Import "pngwutil.c"
-?ios
+?ios Or raspberrypi
 Import "arm/arm_init.c"
 Import "arm/filter_neon_intrinsics.c"
+Import "arm/palette_neon_intrinsics.c"
 ?x86
 Import "intel/filter_sse2_intrinsics.c"
 Import "intel/intel_init.c"
