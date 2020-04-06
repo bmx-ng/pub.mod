@@ -3116,7 +3116,9 @@ extern "C" {
                 enet_protocol_remove_sent_unreliable_commands(currentPeer);
 
                 if (sentLength < 0) {
-perror("sent no bytes");
+                    #ifdef ENET_DEBUG
+                        perror("sent no bytes");
+                    #endif
                     return -1;
                 }
 
