@@ -4880,10 +4880,10 @@ extern "C" {
             tv->tv_nsec = t.QuadPart % 1000000 * 1000;
             return (0);
         }
-    #elif __APPLE__ && __MAC_OS_X_VERSION_MIN_REQUIRED < 101200
+    #elif __APPLE__
         #define CLOCK_MONOTONIC 0
-
-        int clock_gettime(int X, struct timespec *ts) {
+		#define clock_gettime enet_clock_gettime
+        int enet_clock_gettime(int X, struct timespec *ts) {
             clock_serv_t cclock;
             mach_timespec_t mts;
 
