@@ -36,6 +36,10 @@ extern int _bbusew;
 
 #endif
 
+#if __APPLE__
+#include <TargetConditionals.h>
+#endif
+
 #include <brl.mod/blitz.mod/blitz.h>
  
 FILE* stdin_;
@@ -468,10 +472,18 @@ int stat_( BBString *path,int *t_mode,BBLONG *t_size,int *t_mtime,int *t_ctime )
 }
 
 int system_( BBString *cmd ){
+#if TARGET_OS_IPHONE || TARGET_OS_TV
+	bbExThrowCString("Not available on iOS");
+	return -1;
+#elif defined(__ANDROID__)
+	bbExThrowCString("Not available on Android");
+	return -1;
+#else
 	char *p = bbStringToUTF8String( cmd );
 	int res = system( p );
 	bbMemFree(p);
 	return res;
+#endif	
 }
 
 int fseek_( FILE* stream, BBLONG offset, int origin ) {
