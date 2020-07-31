@@ -2,6 +2,10 @@ SuperStrict
 
 Module Pub.PhysFs
 
+?macos
+Import "-framework IOKit"
+?
+
 Import "physfs/src/*.h"
 Import "physfs/src/physfs.c"
 Import "physfs/src/physfs_archiver_7z.c"
