@@ -63,6 +63,12 @@ ModuleInfo "CC_OPTS: `freetype-config --cflags`"
 
 Import "-lfreetype"
 
+?haiku
+
+ModuleInfo "CC_OPTS: `freetype-config --cflags`"
+
+Import "-lfreetype"
+
 ?win32
 ModuleInfo "CC_OPTS: -DFT2_BUILD_LIBRARY"
 Import "source.bmx"

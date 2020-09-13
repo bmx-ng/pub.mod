@@ -43,6 +43,8 @@ ModuleInfo "CC_OPTS: -D_FILE_OFFSET_BITS=64"
 ?win32
 Import "-lWs2_32"
 Import "inet_pton.c"
+?haiku
+Import "-lnetwork"
 ?
 
 Import "stdc.c"

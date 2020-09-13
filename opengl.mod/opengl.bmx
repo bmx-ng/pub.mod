@@ -31,6 +31,11 @@ Import "GL/gl.h"
 Import "-lGL"
 Import "-lGLU"
 Import "glu.bmx"
+?haiku
+Import "GL/gl.h"
+Import "-lGL"
+Import "-lGLU"
+Import "glu.bmx"
 ?
 
 ?Not nx
