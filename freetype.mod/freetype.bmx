@@ -47,19 +47,19 @@ End Rem
 
 ?Linuxx86
 
-ModuleInfo "CC_OPTS: `freetype-config --cflags`"
+ModuleInfo "CC_OPTS: `pkg-config --cflags freetype2`"
 
 Import "-lfreetype"
 
 ?Linuxx64
 
-ModuleInfo "CC_OPTS: `freetype-config --cflags`"
+ModuleInfo "CC_OPTS: `pkg-config --cflags freetype2`"
 
 Import "-lfreetype"
 
 ?raspberrypi
 
-ModuleInfo "CC_OPTS: `freetype-config --cflags`"
+ModuleInfo "CC_OPTS: `pkg-config --cflags freetype2`"
 
 Import "-lfreetype"
 
