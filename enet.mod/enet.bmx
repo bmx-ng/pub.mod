@@ -51,6 +51,14 @@ Type ENetEvent
 		bmx_enet_enetevent_free(eventPtr)
 	End Method
 	
+	Method channelID:Byte()
+		Return bmx_enet_enetevent_channelid(eventPtr)
+	End Method
+
+	Method data:UInt()
+		Return bmx_enet_enetevent_data(eventPtr)
+	End Method
+	
 	Method event:Int()
 		Return bmx_enet_enetevent_event(eventPtr)
 	End Method
@@ -75,6 +83,8 @@ Extern
 	Function bmx_enet_enetevent_peer:Byte Ptr(event:Byte Ptr)
 	Function bmx_enet_enetevent_event:Int(event:Byte Ptr)
 	Function bmx_enet_enetevent_packet:Byte Ptr(event:Byte Ptr)
+	Function bmx_enet_enetevent_channelid:Byte(event:Byte Ptr)
+	Function bmx_enet_enetevent_data:UInt(event:Byte Ptr)
 
 	Function enet_initialize:Int()
 	Function enet_deinitialize()

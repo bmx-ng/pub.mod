@@ -100,3 +100,12 @@ int bmx_enet_enetevent_event(ENetEvent * event) {
 ENetPacket * bmx_enet_enetevent_packet(ENetEvent * event) {
 	return event->packet;
 }
+
+enet_uint8 bmx_enet_enetevent_channelid(ENetEvent * event) {
+	return event->channelID;
+}
+
+enet_uint32 bmx_enet_enetevent_data(ENetEvent * event) {
+	return event->data;
+}
+
