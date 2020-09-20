@@ -6,7 +6,7 @@
 
 #define HIDECONSOLE 1
 
-#if __APPLE__ || __linux
+#if __APPLE__ || __linux || __HAIKU__
 
 #include <sys/ioctl.h>
 #include <unistd.h>

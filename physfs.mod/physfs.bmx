@@ -4,6 +4,8 @@ Module Pub.PhysFs
 
 ?macos
 Import "-framework IOKit"
+?haiku
+Import "-lbe -lroot"
 ?
 
 Import "physfs/src/*.h"
@@ -30,4 +32,6 @@ Import "physfs/src/physfs_platform_windows.c"
 Import "physfs/src/physfs_unicode.c"
 ?macos
 Import "physfs/src/physfs_platform_apple.m"
+?haiku
+Import "physfs/src/physfs_platform_haiku.cpp"
 ?
