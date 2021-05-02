@@ -141,17 +141,16 @@ struct dsounddevice:audiodevice{
 	}
 	
 	void freedevice(){
-		int res;
 		if (primarybuffer){
-			res=primarybuffer->Release();
+			primarybuffer->Release();
 			primarybuffer=0;
 		}		
 		if (soundbuffer){
-			res=soundbuffer->Release();
+			soundbuffer->Release();
 			soundbuffer=0;
 		}		
 		if(directsound) {
-			res=directsound->Release();
+			directsound->Release();
 			directsound=0;
 		}	
 	}
@@ -159,8 +158,8 @@ struct dsounddevice:audiodevice{
 //thread entry point
 
 	DWORD run(){	
-		DWORD read,write;
-		int lastread,loopcount;
+		DWORD read,write,lastread;
+		int loopcount;
 		void *mem1,*mem2;
 		DWORD size1,size2;
 		int readpos,writepos;

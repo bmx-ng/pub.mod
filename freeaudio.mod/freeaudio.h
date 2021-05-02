@@ -213,7 +213,7 @@ struct audiodevice
 	sound *play(sample *sam,output *out,int paused)
 	{
 		sound	*snd;
-		int		freq,vol,state;
+		int		state;
 
 		if (mix==0) return 0; 
 		state=sound::SINGLESHOT;

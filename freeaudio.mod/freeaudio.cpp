@@ -374,7 +374,7 @@ void mixer::releaseall()
 {
 	sound	*s;
 	
-	while (s=playlist)
+	while ((s=playlist))
 	{
 		playlist=s->next;
 		releasesound(s);
@@ -392,7 +392,7 @@ void mixer::mix(int count)
 {
 	sound	*sptr,*tptr,**lptr;
 	
-	while (sptr=startlist.pull())
+	while ((sptr=startlist.pull()))
 	{
 		sptr->next=playlist;
 		playlist=sptr;
@@ -508,7 +508,7 @@ int sample::init(int n,int f,int c,int b,void *_data)
 	buffer=data;
 	writepos=0;
 	return 0;
-};
+}
 
 
 void sample::setloop(int l)
@@ -569,7 +569,7 @@ int sample::buffersize(int readpos)
 
 int sample::peek(int t)
 {
-	int 	s;
+	int s = 0;
 
 	if (t<0||t>=samples) return 0;
 

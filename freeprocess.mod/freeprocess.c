@@ -220,7 +220,7 @@ int fdClose(size_t fd)
 BBLONG fdRead(size_t fd,char *buffer,BBLONG bytes)
 {
 	int		res;
-	long	count;
+	DWORD count;
 	res=ReadFile((HANDLE)fd,buffer,bytes,&count,0);
 	if (res) return count;
 	return 0;
@@ -229,7 +229,7 @@ BBLONG fdRead(size_t fd,char *buffer,BBLONG bytes)
 BBLONG fdWrite(size_t fd,char *buffer,BBLONG bytes)
 {
 	int		res;
-	long	count;
+	DWORD count;
 	res=WriteFile((HANDLE)fd,buffer,bytes,&count,0);
 	if (res) return count;
 	return 0;
@@ -245,7 +245,7 @@ int fdFlush(size_t fd)
 int fdAvail(size_t fd)
 {
 	int		res;
-	long	avail;
+	DWORD avail;
 	res=PeekNamedPipe((HANDLE)fd,0,0,0,&avail,0);
 	if (res) return avail;
 	return 0;
@@ -256,7 +256,7 @@ int fdProcessStatus( size_t pid ){
 
 	PROCESS_INFORMATION *pi=(PROCESS_INFORMATION *)pid;
 
-	long exitcode;
+	DWORD exitcode;
 
 	if( GetExitCodeProcess( pi->hProcess,&exitcode ) ){
 
@@ -359,7 +359,7 @@ size_t fdProcess( BBString *cmd,size_t *procin,size_t *procout,size_t *procerr,i
 		else {
 			pflags|=DETACHED_PROCESS;
 		}
-		char *c=bbStringToCString( cmd );
+		char *c=(char *)bbStringToCString( cmd );
 		res=CreateProcess( 0,c,0,0,-1,pflags,0,0,&si,pi );
 		bbMemFree(c);
 	}
