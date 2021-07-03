@@ -44,7 +44,7 @@ int InitPulse(){
 	spec.channels=2;
 	int error = 0;
 	
-	char *p=bbStringToUTF8String( bbAppTitle );
+	char *p=(char*)bbStringToUTF8String( bbAppTitle );
 	pa_simple * simple = pulse_pa_simple_new(NULL,p,PA_STREAM_PLAYBACK,NULL,"playback",&spec,NULL,NULL,&error);
 	bbMemFree(p);
 	
@@ -95,7 +95,7 @@ struct pulseaudiodevice:audiodevice{
 		stereo16.rate=44100;
 		stereo16.channels=2;
 
-		char *p=bbStringToUTF8String( bbAppTitle );
+		char *p=(char*)bbStringToUTF8String( bbAppTitle );
 		simple=pulse_pa_simple_new(NULL,p,PA_STREAM_PLAYBACK,NULL,"playback",&stereo16,NULL,NULL,&error);
 		bbMemFree(p);
 		if (simple==NULL) return -1;
