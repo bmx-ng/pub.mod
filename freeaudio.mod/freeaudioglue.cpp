@@ -126,7 +126,7 @@ sample* BBCALL fa_CreateSound( int length,int bits,int channels,int freq,const c
   
 	if (io==0) return 0;
 	sam=new sample();
-	if (loop==0x80000000){	//dynamic sounds stay in app memory
+	if (loop==(int)0x80000000){	//dynamic sounds stay in app memory
 		sam->init(length,freq,channels,bits,(void*)samples);
 	}else{
 		sam->init(length,freq,channels,bits,0);
