@@ -46,7 +46,10 @@ Function fdTerminateProcess:Int(processhandle:Size_T)
 Function fdKillProcess:Int(processhandle:Size_T)
 End Extern
 
+'explicitely hide a possibly shown console
 Const HIDECONSOLE:Int=1
+'explicitely show a (new) console
+Const SHOWCONSOLE:Int=2
 
 Type TPipeStream Extends TStream
 
