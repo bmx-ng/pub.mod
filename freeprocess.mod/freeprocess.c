@@ -5,6 +5,7 @@
 #include <stdio.h>
 
 #define HIDECONSOLE 1
+#define SHOWCONSOLE 2
 
 #if __APPLE__ || __linux || __HAIKU__
 
@@ -337,8 +338,11 @@ size_t fdProcess( BBString *cmd,size_t *procin,size_t *procout,size_t *procerr,i
 		if (flags&HIDECONSOLE) {
 			si.dwFlags|=STARTF_USESHOWWINDOW;
 			si.wShowWindow=SW_HIDE;
-		}
-		else {
+		} 
+		else if (flags&SHOWCONSOLE) {
+			pflags|=CREATE_NEW_CONSOLE;
+    	} 
+    	else {
 			pflags|=DETACHED_PROCESS;
 		}
 		BBChar *c = bbStringToWString(cmd);
@@ -355,6 +359,9 @@ size_t fdProcess( BBString *cmd,size_t *procin,size_t *procout,size_t *procerr,i
 		if (flags&HIDECONSOLE) {
 			si.dwFlags|=STARTF_USESHOWWINDOW;
 			si.wShowWindow=SW_HIDE;
+		} 
+		else if (flags&SHOWCONSOLE) {
+			pflags|=CREATE_NEW_CONSOLE;
 		}
 		else {
 			pflags|=DETACHED_PROCESS;
