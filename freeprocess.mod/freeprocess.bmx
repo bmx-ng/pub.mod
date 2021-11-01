@@ -100,7 +100,7 @@ Type TPipeStream Extends TStream
 			r=Read(Varptr readbuffer[bufferpos],n)
 			bufferpos:+r
 		EndIf
-		For n=0 To bufferpos
+		For n=0 Until bufferpos
 			If readbuffer[n]=10
 				p1=n
 				If (n>0)
