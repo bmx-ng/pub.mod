@@ -54,7 +54,7 @@ Import "pngwio.c"
 Import "pngwrite.c"
 Import "pngwtran.c"
 Import "pngwutil.c"
-?ios Or raspberrypi
+?armv7 or arm64 or arm
 Import "arm/arm_init.c"
 Import "arm/filter_neon_intrinsics.c"
 Import "arm/palette_neon_intrinsics.c"
