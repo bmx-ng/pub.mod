@@ -468,7 +468,7 @@ Extern
 	Function bmx_win32_LOGFONTW_lfClipPrecision:Int(handle:Byte Ptr)
 	Function bmx_win32_LOGFONTW_lfQuality:Int(handle:Byte Ptr)
 	Function bmx_win32_LOGFONTW_lfPitchAndFamily:Int(handle:Byte Ptr)
-	Function bmx_win32_LOGFONTW_lfFaceName:Int(handle:Byte Ptr)
+	Function bmx_win32_LOGFONTW_lfFaceName:Byte Ptr(handle:Byte Ptr)
 	Function bmx_win32_LOGFONTW_size:Int()
 End Extern
 Type LOGFONTW
