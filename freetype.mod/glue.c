@@ -1,6 +1,7 @@
-
 #include <ft2build.h>
 #include FT_FREETYPE_H
+
+#include "brl.mod/blitz.mod/blitz.h"
 
 int bmx_freetype_Face_numglyphs(FT_Face ft_face) {
 	return ft_face->num_glyphs;
@@ -58,3 +59,10 @@ unsigned char * bmx_freetype_Slot_bitmap_buffer(FT_GlyphSlot slot) {
 	return slot->bitmap.buffer;
 }
 
+BBString * bmx_freetype_Face_family_name(FT_Face ft_face) {
+	return bbStringFromUTF8String((unsigned char*)ft_face->family_name);
+}
+
+BBString * bmx_freetype_Face_style_name(FT_Face ft_face) {
+	return bbStringFromUTF8String((unsigned char*)ft_face->style_name);
+}
