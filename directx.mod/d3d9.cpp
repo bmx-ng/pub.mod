@@ -67,7 +67,7 @@ extern "C" {
 typedef IDirect3D9 * (WINAPI *_Direct3DCreate9)(UINT);
 
 IDirect3D9 * bmx_directx_d3d9_Direct3DCreate9(int SDKVersion) {
-	HINSTANCE inst = LoadLibrary("d3d9");
+	HINSTANCE inst = LoadLibraryA("d3d9");
 	if (inst != NULL) {
 		_Direct3DCreate9 create = (_Direct3DCreate9)GetProcAddress( inst, "Direct3DCreate9" );
 		

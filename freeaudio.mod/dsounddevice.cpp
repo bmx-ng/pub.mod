@@ -123,7 +123,7 @@ struct dsounddevice:audiodevice{
 		res=directsound->CreateSoundBuffer(&dsbdesc,&soundbuffer,0); 
 		if (res) return res;
 // notifications
-		soundevent=CreateEvent(0,0,0,"SOUNDEVENT");
+		soundevent=CreateEventA(0,0,0,"SOUNDEVENT");
 		if (soundevent==0) return res;
 		res=soundbuffer->QueryInterface(IID_IDirectSoundNotify,(void**)&soundnotify); 
 		if (res) return res;	
