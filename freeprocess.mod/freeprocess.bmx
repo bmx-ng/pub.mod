@@ -35,15 +35,22 @@ Import "freeprocess.c"
 'processhandle should be assumed to be invalid, and neither function should be called
 'again.
 Extern
-Function fdClose(fd:Size_T)
-Function fdRead:Long(fd:Size_T,buffer:Byte Ptr,count:Long)
-Function fdWrite:Long(fd:Size_T,buffer:Byte Ptr,count:Long)
-Function fdFlush(fd:Size_T)
-Function fdAvail:Int(fd:Size_T)
-Function fdProcess:Int(exe$,in_fd:Size_T Ptr,out_fd:Size_T Ptr,err_fd:Size_T Ptr,flags:Int)="fdProcess"
-Function fdProcessStatus:Int(processhandle:Size_T)
-Function fdTerminateProcess:Int(processhandle:Size_T)
-Function fdKillProcess:Int(processhandle:Size_T)
+	Function fdClose(fd:Size_T)
+	Function fdRead:Long(fd:Size_T,buffer:Byte Ptr,count:Long)
+	Function fdWrite:Long(fd:Size_T,buffer:Byte Ptr,count:Long)
+	Function fdFlush(fd:Size_T)
+	Function fdAvail:Int(fd:Size_T)
+?win32
+	Function fdProcess:Byte Ptr(exe$,in_fd:Size_T Ptr,out_fd:Size_T Ptr,err_fd:Size_T Ptr,flags:Int)="fdProcess"
+	Function fdProcessStatus:Int(processhandle:Byte Ptr)
+	Function fdTerminateProcess:Int(processhandle:Byte Ptr)
+	Function fdKillProcess:Int(processhandle:Byte Ptr)
+?not win32
+	Function fdProcess:Size_T(exe$,in_fd:Size_T Ptr,out_fd:Size_T Ptr,err_fd:Size_T Ptr,flags:Int)="fdProcess"
+	Function fdProcessStatus:Int(processhandle:Size_T)
+	Function fdTerminateProcess:Int(processhandle:Size_T)
+	Function fdKillProcess:Int(processhandle:Size_T)
+?
 End Extern
 
 'explicitely hide a possibly shown console
@@ -132,7 +139,11 @@ End Type
 Type TProcess
 	Global ProcessList:TList
 	Field	name$
+?win32
+	Field	handle:Byte Ptr
+?not win32
 	Field	handle:Size_T
+?
 	Field	pipe:TPipeStream
 	Field	err:TPipeStream
 	Field   detached:Int

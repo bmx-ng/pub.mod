@@ -167,7 +167,7 @@ size_t fdProcess( BBString *bbcmd,size_t *procin,size_t *procout,size_t *procerr
 
 extern int _bbusew;
 
-#define WIN32_LEAN_AND_MEAN
+//#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <tlhelp32.h>
 
@@ -253,9 +253,7 @@ int fdAvail(size_t fd)
 }
 
 //returns 1 for running, 0 for finished
-int fdProcessStatus( size_t pid ){
-
-	PROCESS_INFORMATION *pi=(PROCESS_INFORMATION *)pid;
+int fdProcessStatus( PROCESS_INFORMATION * pi ){
 
 	DWORD exitcode;
 
@@ -270,9 +268,7 @@ int fdProcessStatus( size_t pid ){
 }
 
 //returns 0 for success
-int fdTerminateProcess( size_t pid ){
-
-	PROCESS_INFORMATION *pi=(PROCESS_INFORMATION *)pid;
+int fdTerminateProcess( PROCESS_INFORMATION * pi ){
 
 	int res=TerminateProcessGroup( pi->hProcess,pi->dwProcessId );
 
@@ -283,8 +279,7 @@ int fdTerminateProcess( size_t pid ){
 }
 
 //returns 0 for success
-int fdKillProcess( size_t pid ){
-	PROCESS_INFORMATION *pi=(PROCESS_INFORMATION *)pid;
+int fdKillProcess( PROCESS_INFORMATION * pi ){
 
 	int res=KillProcessGroup( pi->hProcess,pi->dwProcessId );
 
@@ -294,7 +289,7 @@ int fdKillProcess( size_t pid ){
 	return res;
 }
 
-size_t fdProcess( BBString *cmd,size_t *procin,size_t *procout,size_t *procerr,int flags)
+PROCESS_INFORMATION * fdProcess( BBString *cmd,size_t *procin,size_t *procout,size_t *procerr,int flags)
 {
 	int res;
 	int pflags=CREATE_NEW_PROCESS_GROUP;
@@ -328,8 +323,9 @@ size_t fdProcess( BBString *cmd,size_t *procin,size_t *procout,size_t *procerr,i
 	pi=(PROCESS_INFORMATION*)calloc(1,sizeof(PROCESS_INFORMATION));
 
 	if( _bbusew ){
-		STARTUPINFOW si={sizeof(si)};
-
+		STARTUPINFOW si;
+		ZeroMemory( &si, sizeof(si) );
+		si.cb = sizeof(si);
 		si.dwFlags=STARTF_USESTDHANDLES;
 		si.wShowWindow=SW_HIDE;
 		si.hStdInput=p_istr;
@@ -349,8 +345,9 @@ size_t fdProcess( BBString *cmd,size_t *procin,size_t *procout,size_t *procerr,i
 		res=CreateProcessW( 0,c,0,0,-1,pflags,0,0,&si,pi );
 		bbMemFree(c);
 	}else{
-		STARTUPINFO si={sizeof(si)};
-
+		STARTUPINFO si;
+		ZeroMemory( &si, sizeof(si) );
+		si.cb = sizeof(si);
 		si.dwFlags=STARTF_USESTDHANDLES;
 		si.wShowWindow=SW_HIDE;
 		si.hStdInput=p_istr;
@@ -366,7 +363,7 @@ size_t fdProcess( BBString *cmd,size_t *procin,size_t *procout,size_t *procerr,i
 		else {
 			pflags|=DETACHED_PROCESS;
 		}
-		char *c=(char *)bbStringToCString( cmd );
+		char *c=(char *)bbStringToUTF8String( cmd );
 		res=CreateProcess( 0,c,0,0,-1,pflags,0,0,&si,pi );
 		bbMemFree(c);
 	}
@@ -391,7 +388,7 @@ size_t fdProcess( BBString *cmd,size_t *procin,size_t *procout,size_t *procerr,i
 	CloseHandle( p_ostr );
 	CloseHandle( p_estr );
 
-	return (size_t)pi;
+	return pi;
 }
 
 #endif
