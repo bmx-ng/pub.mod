@@ -5348,7 +5348,7 @@ extern "C" {
 
     #ifdef _WIN32
 
-    #ifdef __MINGW32__
+    #if defined(__MINGW32__) && !defined(__clang__)
         // inet_ntop/inet_pton for MinGW from http://mingw-users.1079350.n2.nabble.com/IPv6-getaddrinfo-amp-inet-ntop-td5891996.html
         const char *inet_ntop(int af, const void *src, char *dst, socklen_t cnt) {
             if (af == AF_INET) {
