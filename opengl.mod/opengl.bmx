@@ -31,6 +31,11 @@ Import "GL/gl.h"
 Import "-lGL"
 Import "-lGLU"
 Import "glu.bmx"
+?Linuxarm64 and not raspberrypi
+Import "GL/gl.h"
+Import "-lGL"
+Import "-lGLU"
+Import "glu.bmx"
 ?haiku
 Import "GL/gl.h"
 Import "-lGL"
