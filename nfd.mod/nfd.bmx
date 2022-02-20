@@ -10,10 +10,12 @@ ModuleInfo "Credit: Adapted for BlitzMax by Bruce A Henderson"
 ModuleInfo "History: 1.00 Initial Release"
 ModuleInfo "History: nativefiledialog 1.1.6"
 
+?not ios
 Import "nativefiledialog/src/*.h"
 Import "nativefiledialog/src/include/*.h"
 
 Import "nativefiledialog/src/nfd_common.c"
+?
 ?osx
 Import "nativefiledialog/src/nfd_cocoa.m"
 ?linux
