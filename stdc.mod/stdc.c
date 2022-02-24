@@ -545,19 +545,20 @@ int ntohl_( int n ){
 	return ntohl( n );
 }
 
-int socket_( int addr_type,int comm_type,int protocol ){
 #if _WIN32
-	SOCKET s = socket( addr_type,comm_type,protocol );
-	return (s != INVALID_SOCKET) ? s :-1;
+SOCKET socket_( int addr_type,int comm_type,int protocol ){
+	return socket( addr_type,comm_type,protocol );
 #else
+int socket_( int addr_type,int comm_type,int protocol ){
 	return socket( addr_type,comm_type,protocol );
 #endif
 }
 
-void closesocket_( int s ){
 #if _WIN32
+void closesocket_( SOCKET s ){
 	closesocket( s );
 #else
+void closesocket_( int s ){
 	close( s );
 #endif
 }
@@ -574,7 +575,11 @@ int bmx_stdc_convertAFFamily(int family) {
 	return family;
 }
 
+#if _WIN32
+int bind_( SOCKET socket,int addr_type,int port ){
+#else
 int bind_( int socket,int addr_type,int port ){
+#endif
 	int r;
 	
 	//	if ( addr_type!=AF_INET ) return -1;
@@ -604,7 +609,11 @@ int bind_( int socket,int addr_type,int port ){
 	
 }
 
+#if _WIN32
+int bmx_stdc_bind_info(SOCKET socket, struct addrinfo * info) {
+#else
 int bmx_stdc_bind_info(int socket, struct addrinfo * info) {
+#endif
 	return bind(socket, info->ai_addr, info->ai_addrlen);
 }
 
@@ -671,19 +680,35 @@ void freeaddrinfo_(struct addrinfo * info ) {
 	freeaddrinfo(info);
 }
 
+#if _WIN32
+int connect_( SOCKET socket, struct addrinfo * info ){
+#else
 int connect_( int socket, struct addrinfo * info ){
+#endif
 	return connect( socket, info->ai_addr, info->ai_addrlen);
 }
 
+#if _WIN32
+int listen_( SOCKET socket,int backlog ){
+#else
 int listen_( int socket,int backlog ){
+#endif
 	return listen( socket,backlog );
 }
 
+#if _WIN32
+int accept_( SOCKET socket,const char *addr,unsigned int *addr_len ){
+#else
 int accept_( int socket,const char *addr,unsigned int *addr_len ){
+#endif
 	return accept( socket,(void*)addr,addr_len );
 }
 
+#if _WIN32
+int bmx_stdc_accept_(SOCKET socket, struct sockaddr_storage * storage) {
+#else
 int bmx_stdc_accept_(int socket, struct sockaddr_storage * storage) {
+#endif
 	if (storage) {
 		int size = sizeof(struct sockaddr_storage );
 		return accept(socket, (struct sockaddr *)storage, &size);
@@ -692,8 +717,11 @@ int bmx_stdc_accept_(int socket, struct sockaddr_storage * storage) {
 	}
 }
 
-
+#if _WIN32
+int select_( int n_read,SOCKET *r_socks,int n_write,SOCKET *w_socks,int n_except,SOCKET *e_socks,int millis ){
+#else
 int select_( int n_read,int *r_socks,int n_write,int *w_socks,int n_except,int *e_socks,int millis ){
+#endif
 
 	int i,n,r;
 	struct timeval tv,*tvp;
@@ -740,11 +768,19 @@ int select_( int n_read,int *r_socks,int n_write,int *w_socks,int n_except,int *
 	return r;
 }
 
+#if _WIN32
+ssize_t send_( SOCKET socket,const char *buf,size_t size,int flags ){
+#else
 ssize_t send_( int socket,const char *buf,size_t size,int flags ){
+#endif
 	return send( socket,buf,size,flags );
 }
 
+#if _WIN32
+int sendto_( SOCKET socket,const char *buf,int size,int flags,const char * dest_ip,int dest_port, int addr_type ){
+#else
 int sendto_( int socket,const char *buf,int size,int flags,const char * dest_ip,int dest_port, int addr_type ){
+#endif
 	addr_type = bmx_stdc_convertAFFamily(addr_type);
 	
 	switch (addr_type) {
@@ -776,11 +812,19 @@ int sendto_( int socket,const char *buf,int size,int flags,const char * dest_ip,
 	return 0;
 }
 
+#if _WIN32
+ssize_t recv_( SOCKET socket,char *buf,size_t size,int flags ){
+#else
 ssize_t recv_( int socket,char *buf,size_t size,int flags ){
+#endif
 	return recv( socket,buf,size,flags );
 }
 
+#if _WIN32
+int recvfrom_( SOCKET socket,char *buf,int size,int flags,int *_ip,int *_port){
+#else
 int recvfrom_( int socket,char *buf,int size,int flags,int *_ip,int *_port){
+#endif
 	struct	sockaddr_in sa;
 	int		sasize;
 	int		count;
@@ -792,23 +836,43 @@ int recvfrom_( int socket,char *buf,int size,int flags,int *_ip,int *_port){
 	return count;
 }
 
+#if _WIN32
+int setsockopt_( SOCKET socket,int level,int optname,const void *optval,int count){
+#else
 int setsockopt_( int socket,int level,int optname,const void *optval,int count){
+#endif
 	return setsockopt( socket,level,optname,optval,count);
 }
 
+#if _WIN32
+int getsockopt_( SOCKET socket,int level,int optname,void *optval,int *count){
+#else
 int getsockopt_( int socket,int level,int optname,void *optval,int *count){
+#endif
 	return getsockopt( socket,level,optname,optval,count);
 }
 
+#if _WIN32
+int shutdown_( SOCKET socket,int how ){
+#else
 int shutdown_( int socket,int how ){
+#endif
 	return shutdown( socket,how );
 }
 
+#if _WIN32
+int getsockname_( SOCKET socket,void *addr,int *len ){
+#else
 int getsockname_( int socket,void *addr,int *len ){
+#endif
 	return getsockname( socket,addr,len );
 }
 
+#if _WIN32
+int getpeername_( SOCKET socket,void *addr,int *len ){
+#else
 int getpeername_( int socket,void *addr,int *len ){
+#endif
 	return getpeername( socket,addr,len );
 }
 
@@ -958,7 +1022,11 @@ BBString * bmx_stdc_sockaddrestorage_address(struct sockaddr_storage * storage) 
 	return address;
 }
 
+#if _WIN32
+int bmx_stdc_getsockname(SOCKET socket, int * port, BBSTRING * address) {
+#else
 int bmx_stdc_getsockname(int socket, int * port, BBSTRING * address) {
+#endif
 	struct sockaddr_storage storage;
 	int len = sizeof(struct sockaddr_storage);
 	
@@ -977,7 +1045,11 @@ int bmx_stdc_getsockname(int socket, int * port, BBSTRING * address) {
 	return res;
 }
 
+#if _WIN32
+int bmx_stdc_getpeername(SOCKET socket, int * port, BBSTRING * address) {
+#else
 int bmx_stdc_getpeername(int socket, int * port, BBSTRING * address) {
+#endif
 	struct sockaddr_storage storage;
 	int len = sizeof(struct sockaddr_storage);
 	

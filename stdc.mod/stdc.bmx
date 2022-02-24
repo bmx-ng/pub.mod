@@ -318,33 +318,76 @@ Function htons_:Int( n:Int )
 Function ntohs_:Int( n:Int )
 Function htonl_:Int( n:Int )
 Function ntohl_:Int( n:Int )
+?win32 and ptr64
+Function socket_:Long( addr_type:Int,comm_type:Int,protocol:Int=0 )
+Function closesocket_( socket:Long )
+Function bind_:Int( socket:Long,addr_type:Int,port:Int )
+?win32 and ptr32
 Function socket_:Int( addr_type:Int,comm_type:Int,protocol:Int=0 )
 Function closesocket_( socket:Int )
 Function bind_:Int( socket:Int,addr_type:Int,port:Int )
+?not win32
+Function socket_:Int( addr_type:Int,comm_type:Int,protocol:Int=0 )
+Function closesocket_( socket:Int )
+Function bind_:Int( socket:Int,addr_type:Int,port:Int )
+?
 Function gethostbyaddr_:Byte Ptr( addr:Byte Ptr,addr_len:Int,addr_type:Int )
 
 'Function gethostbyname_:Byte Ptr Ptr( name$,addr_type:Int Var,addr_len:Int Var )
 Function getaddrinfo_:TAddrInfo[](name:String, service:String = "http", family:Int = AF_UNSPEC_)
 Function getaddrinfo_hints:TAddrInfo[](name:String, service:String, hints:Byte Ptr)
 
+?not win32
 Function connect_:Int( socket:Int, addrinfo:Byte Ptr )
 Function listen_:Int( socket:Int,backlog:Int )
 Function accept_:Int( socket:Int,addr:Byte Ptr,addr_len:Byte Ptr)
 Function select_:Int( n_read:Int,read_socks:Int Ptr,n_write:Int,write_socks:Int Ptr,n_except:Int,except_socks:Int Ptr,millis:Int )
 Function sendto_:Int( socket:Int,buf:Byte Ptr,size:Int,flags:Int,dest_ip:Byte Ptr,dest_port:Int, addr_type:Int = AF_INET_ )
-?ptr64
-Function send_:Long( socket:Int,buf:Byte Ptr,size:Size_T,flags:Int )
-Function recv_:Long( socket:Int,buf:Byte Ptr,size:Size_T,flags:Int )
-?Not ptr64
-Function send_:Int( socket:Int,buf:Byte Ptr,size:Size_T,flags:Int )
-Function recv_:Int( socket:Int,buf:Byte Ptr,size:Size_T,flags:Int )
-?
 Function recvfrom_:Int( socket:Int,buf:Byte Ptr,size:Int,flags:Int,sender_ip:Int Var,sender_port:Int Var)
 Function setsockopt_:Int( socket:Int,level:Int,optname:Int,optval:Byte Ptr,count:Int)
 Function getsockopt_:Int( socket:Int,level:Int,optname:Int,optval:Byte Ptr,count:Int Var)
 Function shutdown_:Int( socket:Int,how:Int )
 Function getsockname_:Int( socket:Int,addr:Byte Ptr,addr_len:Int Var )
 Function getpeername_:Int( socket:Int,addr:Byte Ptr,addr_len:Int Var )
+?not win32 and ptr64
+Function send_:Long( socket:Int,buf:Byte Ptr,size:Size_T,flags:Int )
+Function recv_:Long( socket:Int,buf:Byte Ptr,size:Size_T,flags:Int )
+?not win32 and Not ptr64
+Function send_:Int( socket:Int,buf:Byte Ptr,size:Size_T,flags:Int )
+Function recv_:Int( socket:Int,buf:Byte Ptr,size:Size_T,flags:Int )
+?
+
+?win32 and ptr32
+Function connect_:Int( socket:Int, addrinfo:Byte Ptr )
+Function listen_:Int( socket:Int,backlog:Int )
+Function accept_:Int( socket:Int,addr:Byte Ptr,addr_len:Byte Ptr)
+Function select_:Int( n_read:Int,read_socks:Int Ptr,n_write:Int,write_socks:Int Ptr,n_except:Int,except_socks:Int Ptr,millis:Int )
+Function sendto_:Int( socket:Int,buf:Byte Ptr,size:Int,flags:Int,dest_ip:Byte Ptr,dest_port:Int, addr_type:Int = AF_INET_ )
+Function recvfrom_:Int( socket:Int,buf:Byte Ptr,size:Int,flags:Int,sender_ip:Int Var,sender_port:Int Var)
+Function setsockopt_:Int( socket:Int,level:Int,optname:Int,optval:Byte Ptr,count:Int)
+Function getsockopt_:Int( socket:Int,level:Int,optname:Int,optval:Byte Ptr,count:Int Var)
+Function shutdown_:Int( socket:Int,how:Int )
+Function getsockname_:Int( socket:Int,addr:Byte Ptr,addr_len:Int Var )
+Function getpeername_:Int( socket:Int,addr:Byte Ptr,addr_len:Int Var )
+Function send_:Int( socket:Int,buf:Byte Ptr,size:Size_T,flags:Int )
+Function recv_:Int( socket:Int,buf:Byte Ptr,size:Size_T,flags:Int )
+?
+
+?win32 and ptr64
+Function connect_:Int( socket:Long, addrinfo:Byte Ptr )
+Function listen_:Int( socket:Long,backlog:Int )
+Function accept_:Int( socket:Long,addr:Byte Ptr,addr_len:Byte Ptr)
+Function select_:Int( n_read:Int,read_socks:Long Ptr,n_write:Int,write_socks:Long Ptr,n_except:Int,except_socks:Long Ptr,millis:Int )
+Function sendto_:Int( socket:Long,buf:Byte Ptr,size:Int,flags:Int,dest_ip:Byte Ptr,dest_port:Int, addr_type:Int = AF_INET_ )
+Function recvfrom_:Int( socket:Long,buf:Byte Ptr,size:Int,flags:Int,sender_ip:Int Var,sender_port:Int Var)
+Function setsockopt_:Int( socket:Long,level:Int,optname:Int,optval:Byte Ptr,count:Int)
+Function getsockopt_:Int( socket:Long,level:Int,optname:Int,optval:Byte Ptr,count:Int Var)
+Function shutdown_:Int( socket:Long,how:Int )
+Function getsockname_:Int( socket:Long,addr:Byte Ptr,addr_len:Int Var )
+Function getpeername_:Int( socket:Long,addr:Byte Ptr,addr_len:Int Var )
+Function send_:Long( socket:Long,buf:Byte Ptr,size:Size_T,flags:Int )
+Function recv_:Long( socket:Long,buf:Byte Ptr,size:Size_T,flags:Int )
+?
 
 Function freeaddrinfo_(res:Byte Ptr)
 Function bmx_stdc_addrinfo_flags:Int(info:Byte Ptr)
@@ -362,12 +405,24 @@ Function bmx_stdc_addrinfo_setfamily(info:Byte Ptr, family:Int)
 Function bmx_stdc_addrinfo_setsocktype(info:Byte Ptr, sockType:Int)
 Function bmx_stdc_addrinfo_setprotocol(info:Byte Ptr, protocol:Int)
 
-Function bmx_stdc_bind_info:Int(socket:Int, info:Byte Ptr)
 Function bmx_stdc_sockaddrestorage_new:Byte Ptr()
 Function bmx_stdc_sockaddrestorage_address:String(handle:Byte Ptr)
+?not win32
+Function bmx_stdc_bind_info:Int(socket:Int, info:Byte Ptr)
 Function bmx_stdc_accept_:Int(socket:Int, storage:Byte Ptr)
 Function bmx_stdc_getsockname:Int(socket:Int, port:Int Var, address:String Var)
 Function bmx_stdc_getpeername:Int(socket:Int, port:Int Var, address:String Var)
+?win32 and ptr32
+Function bmx_stdc_bind_info:Int(socket:Int, info:Byte Ptr)
+Function bmx_stdc_accept_:Int(socket:Int, storage:Byte Ptr)
+Function bmx_stdc_getsockname:Int(socket:Int, port:Int Var, address:String Var)
+Function bmx_stdc_getpeername:Int(socket:Int, port:Int Var, address:String Var)
+?win32 and ptr64
+Function bmx_stdc_bind_info:Int(socket:Long, info:Byte Ptr)
+Function bmx_stdc_accept_:Int(socket:Long, storage:Byte Ptr)
+Function bmx_stdc_getsockname:Int(socket:Long, port:Int Var, address:String Var)
+Function bmx_stdc_getpeername:Int(socket:Long, port:Int Var, address:String Var)
+?
 
 'time
 
