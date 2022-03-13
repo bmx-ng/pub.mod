@@ -110,8 +110,8 @@ static nfdresult_t ZenityCommon(char** command, int commandLen, const char* defa
     int byteCount = 0;
     int exitCode = 0;
     int processInvokeError = runCommandArray(stdOut, &byteCount, &exitCode, 0, command);
-
-    for(int i = 0; command[i] != NULL && i < commandLen; i++)
+    int i;
+    for(i = 0; command[i] != NULL && i < commandLen; i++)
         free(command[i]);
 
     nfdresult_t result = NFD_OKAY;
@@ -140,8 +140,8 @@ static nfdresult_t AllocPathSet(char* zenityList, nfdpathset_t *pathSet )
     pathSet->buf = NFDi_Malloc(len);
 
     int numEntries = 1;
-
-    for(size_t i = 0; i < len; i++)
+    size_t i;
+    for(i = 0; i < len; i++)
     {
         char ch = zenityList[i];
 
@@ -161,7 +161,7 @@ static nfdresult_t AllocPathSet(char* zenityList, nfdpathset_t *pathSet )
 
     int entry = 0;
     pathSet->indices[0] = 0;
-    for(size_t i = 0; i < len; i++)
+    for(i = 0; i < len; i++)
     {
         char ch = zenityList[i];
 
