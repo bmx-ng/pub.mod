@@ -219,7 +219,7 @@ Function remove_( path$ )
 Function opendir_:Byte Ptr( path$ )
 Function closedir_:Int( dir:Byte Ptr )
 Function readdir_$( dir:Byte Ptr )
-Function stat_:Int( path$,st_mode:Int Var,st_size:Long Var,st_mtime:Int Var,st_ctime:Int Var )
+Function stat_:Int( path$,st_mode:Int Var,st_size:Long Var,st_mtime:Int Var,st_ctime:Int Var,st_atime:Int Var )
 Function system_:Int( cmd$ )
 
 'misc
