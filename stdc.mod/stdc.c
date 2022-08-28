@@ -249,7 +249,7 @@ BBString *readdir_( void* dir ){
 	return t ? bbStringFromCString( t->d_name ) : &bbEmptyString;
 }
 
-int stat_( BBString *path,int *t_mode,BBLONG *t_size,int *t_mtime,int *t_ctime ){
+int stat_( BBString *path,int *t_mode,BBLONG *t_size,int *t_mtime,int *t_ctime,int *t_atime ){
 	int i;
 	struct _stati64 st;
 	
@@ -277,6 +277,7 @@ int stat_( BBString *path,int *t_mode,BBLONG *t_size,int *t_mtime,int *t_ctime )
 	*t_size=st.st_size;
 	*t_mtime=st.st_mtime;
 	*t_ctime=st.st_ctime;
+	*t_atime=st.st_atime;
 	return 0;
 }
 
@@ -456,7 +457,7 @@ int closedir_( DIR* dir ){
 	return closedir( dir );
 }
 
-int stat_( BBString *path,int *t_mode,BBLONG *t_size,int *t_mtime,int *t_ctime ){
+int stat_( BBString *path,int *t_mode,BBLONG *t_size,int *t_mtime,int *t_ctime,int *t_atime ){
 	struct stat st;
 	char *p = bbStringToUTF8String( path );
 	if( stat( p,&st ) ) {
@@ -468,6 +469,7 @@ int stat_( BBString *path,int *t_mode,BBLONG *t_size,int *t_mtime,int *t_ctime )
 	*t_size=st.st_size;
 	*t_mtime=st.st_mtime;
 	*t_ctime=st.st_ctime;
+	*t_atime=st.st_atime;
 	return 0;
 }
 
