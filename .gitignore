@@ -21,3 +21,5 @@
 
 .bmx/
 *.i2
+
+.DS_Store

@@ -5,12 +5,14 @@ bbdoc: Miscellaneous/ZLib compression
 End Rem
 Module Pub.ZLib
 
-ModuleInfo "Version: 1.06"
+ModuleInfo "Version: 1.07"
 ModuleInfo "Author: Jean-loup Gailly, Mark Adler"
 ModuleInfo "License: zlib/libpng"
 ModuleInfo "Modserver: BRL"
 ModuleInfo "Credit: Adapted for BlitzMax by Mark Sibly"
 
+ModuleInfo "History: 1.07"
+ModuleInfo "History: Updated zlib to 1.2.12.1.5752b17"
 ModuleInfo "History: 1.06"
 ModuleInfo "History: Updated zlib to 1.2.12"
 ModuleInfo "History: 1.05"
