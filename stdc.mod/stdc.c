@@ -340,10 +340,14 @@ int ftruncate_(FILE* stream, BBLONG size) {
 
 int clock_gettime_(int id, struct timespec * spec) {
 	__int64 ftime;
-	GetSystemTimeAsFileTime((FILETIME*)&ftime);
-	ftime -= 116444736000000000LL;
+	union {
+        unsigned __int64 ftime;
+        FILETIME ft;
+    } ft;
+	GetSystemTimeAsFileTime(&ft.ft);
+	ftime = ft.ftime - 116444736000000000LL;
 	spec->tv_sec = ftime / 10000000LL;
-	spec->tv_nsec = ftime % 10000000LL *100;
+	spec->tv_nsec = ((int)(ftime % 10000000LL)) *100;
 	return 0;
 }
 
