@@ -17,6 +17,7 @@
 #include <winsock2.h>
 #include <windows.h>
 #include <ws2tcpip.h>
+#include <utime.h>
 
 extern int bmx_inet_pton(int af, const char *src, void *dst);
 #define inet_pton bmx_inet_pton
@@ -33,6 +34,7 @@ extern int _bbusew;
 #include <sys/socket.h>
 #include <netdb.h>
 #include <arpa/inet.h>
+#include <utime.h>
 
 #endif
 
@@ -351,6 +353,24 @@ int clock_gettime_(int id, struct timespec * spec) {
 	return 0;
 }
 
+int utime_( BBString *path, int type, BBLONG time){
+	struct _utimbuf times = {0,0};
+	
+	if ( type == 0 ) {
+		times.modtime = time;
+	} else if ( type == 2 ) {
+		times.actime = time;
+	} else {
+		return -1;
+	}
+
+	wchar_t *p = bbStringToWString(path);
+	int res = _wutime( p, &times);
+	bbMemFree(p);
+	
+	return res == 0 ? 0 : -1;
+}
+
 #else
 
 int getchar_(){
@@ -475,6 +495,24 @@ int stat_( BBString *path,int *t_mode,BBLONG *t_size,int *t_mtime,int *t_ctime,i
 	*t_ctime=st.st_ctime;
 	*t_atime=st.st_atime;
 	return 0;
+}
+
+int utime_( BBString *path, int type, BBLONG time){
+	struct utimbuf times = {0,0};
+
+	if ( type == 0 ) {
+		times.modtime = time;
+	} else if ( type == 2 ) {
+		times.actime = time;
+	} else {
+		return -1;
+	}
+
+	char *p = (char*)bbStringToUTF8String( path );
+	int res = utime( p, &times);
+	bbMemFree(p);
+	
+	return res == 0 ? 0 : -1;
 }
 
 int system_( BBString *cmd ){

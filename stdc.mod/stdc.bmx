@@ -221,6 +221,7 @@ Function closedir_:Int( dir:Byte Ptr )
 Function readdir_$( dir:Byte Ptr )
 Function stat_:Int( path$,st_mode:Int Var,st_size:Long Var,st_mtime:Int Var,st_ctime:Int Var,st_atime:Int Var )
 Function system_:Int( cmd$ )
+Function utime_:Int( path:String, ty:Int, time:Long)
 
 'misc
 Function abort_()="void abort() !"
