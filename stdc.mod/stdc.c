@@ -327,7 +327,7 @@ int fseek_( FILE* stream, BBLONG offset, int origin ) {
 }
 
 BBLONG ftell_( FILE* stream ) {
-	return _felli64(stream);
+	return _ftelli64(stream);
 }
 
 int ftruncate_(FILE* stream, BBLONG size) {
