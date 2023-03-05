@@ -15,7 +15,7 @@
 ** BRL: Added by Mark - autodetect for linux/macos.
 **
 */
-#if __linux
+#if __linux__
 #define LUA_USE_LINUX
 #elif __APPLE__
 #define LUA_USE_MACOSX

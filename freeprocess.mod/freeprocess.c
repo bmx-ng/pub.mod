@@ -7,7 +7,7 @@
 #define HIDECONSOLE 1
 #define SHOWCONSOLE 2
 
-#if __APPLE__ || __linux || __HAIKU__
+#if __APPLE__ || __linux__ || __HAIKU__
 
 #include <sys/ioctl.h>
 #include <unistd.h>
@@ -118,7 +118,7 @@ size_t fdProcess( BBString *bbcmd,size_t *procin,size_t *procout,size_t *procerr
 	//Child process
 	if (procid==0)
 	{
-		#if __linux
+		#if __linux__
 			setsid(); //Linux doesn't mind setsid()
 		#else
 			setpgid(0,0);	//but OS X doesn't like it, therefore resort to using setpgid().

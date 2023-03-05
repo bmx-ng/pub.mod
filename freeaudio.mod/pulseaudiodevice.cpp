@@ -1,7 +1,7 @@
 // pulseaudiodevice.cpp
 // sudo apt-get install libpulse-dev
 
-#ifdef __linux
+#ifdef __linux__
 
 #include "freeaudio.h"
 
