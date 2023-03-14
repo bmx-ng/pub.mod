@@ -1,6 +1,6 @@
 // alsadevice.cpp
 
-#ifdef __linux
+#ifdef __linux__
 
 #include "freeaudio.h"
 

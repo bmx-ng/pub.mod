@@ -64,7 +64,7 @@ void *GetOpenALFunction( const char *fname ){
 
 #endif
 
-#if __linux
+#if __linux__
 
 #include <dlfcn.h>
 

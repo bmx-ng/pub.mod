@@ -74,7 +74,7 @@
 #  define CDROM_GET_CAPABILITY 0x5331
 # endif
 
-#endif /* __linux */
+#endif /* __linux__ */
 
 
 #ifdef APPLE_DARWIN
