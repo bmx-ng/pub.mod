@@ -2,9 +2,11 @@ SuperStrict
 
 Module Pub.Enet
 
-ModuleInfo "Version: 1.02"
+ModuleInfo "Version: 1.03"
 ModuleInfo "Author: Lee Salzman, Vladyslav Hrytsenko, Dominik Madarasz"
 
+ModuleInfo "History: 1.03"
+ModuleInfo "History: Updated to enet 2.3.6"
 ModuleInfo "History: 1.02"
 ModuleInfo "History: Made SuperStrict"
 ModuleInfo "History: Ported to zpl-c enet : https://github.com/zpl-c/enet"
