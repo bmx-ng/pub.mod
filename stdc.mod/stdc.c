@@ -959,10 +959,10 @@ void bmx_current_datetime(SDateTime * dt, int utc) {
     dt->year = systemTime.wYear;
     dt->month = systemTime.wMonth;
     dt->day = systemTime.wDay;
-    dt->hours = systemTime.wHour;
-    dt->minutes = systemTime.wMinute;
-    dt->seconds = systemTime.wSecond;
-    dt->milliseconds = systemTime.wMilliseconds;
+    dt->hour = systemTime.wHour;
+    dt->minute = systemTime.wMinute;
+    dt->second = systemTime.wSecond;
+    dt->millisecond = systemTime.wMilliseconds;
     dt->utc = utc;
     dt->offset = utc ? 0 : bmx_calc_timeoffset_mins();
 }
