@@ -926,6 +926,34 @@ typedef struct {
 	int offset;
 } SDateTime;
 
+#ifdef __WIN32__
+int bmx_calc_timeoffset_mins() {
+	TIME_ZONE_INFORMATION tz;
+	DWORD rc = GetTimeZoneInformation(&tz);
+	int offset_minutes = tz.Bias + (TIME_ZONE_ID_DAYLIGHT != rc ?  tz.StandardBias : tz.DaylightBias);
+	
+    return offset_minutes;
+}
+
+void bmx_current_datetime(SDateTime * dt, int utc) {
+	SYSTEMTIME systemTime;
+    if (utc) {
+        GetSystemTime(&systemTime);
+    } else {
+        GetLocalTime(&systemTime);
+    }
+
+    dt->year = systemTime.wYear;
+    dt->month = systemTime.wMonth;
+    dt->day = systemTime.wDay;
+    dt->hour = systemTime.wHour;
+    dt->minute = systemTime.wMinute;
+    dt->second = systemTime.wSecond;
+    dt->millisecond = systemTime.wMilliseconds;
+    dt->utc = utc;
+    dt->offset = utc ? 0 : bmx_calc_timeoffset_mins();
+}
+#else
 int bmx_calc_timeoffset_mins() {
 	time_t rawtime;
     struct tm *local_tm, *utc_tm;
@@ -947,26 +975,6 @@ int bmx_calc_timeoffset_mins() {
     return diff_minutes;
 }
 
-#ifdef __WIN32__
-void bmx_current_datetime(SDateTime * dt, int utc) {
-	SYSTEMTIME systemTime;
-    if (utc) {
-        GetSystemTime(&systemTime);
-    } else {
-        GetLocalTime(&systemTime);
-    }
-
-    dt->year = systemTime.wYear;
-    dt->month = systemTime.wMonth;
-    dt->day = systemTime.wDay;
-    dt->hour = systemTime.wHour;
-    dt->minute = systemTime.wMinute;
-    dt->second = systemTime.wSecond;
-    dt->millisecond = systemTime.wMilliseconds;
-    dt->utc = utc;
-    dt->offset = utc ? 0 : bmx_calc_timeoffset_mins();
-}
-#else
 void bmx_current_datetime(SDateTime * dt, int utc) {
     struct timespec ts;
     struct tm *tm;
