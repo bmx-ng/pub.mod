@@ -914,6 +914,112 @@ int getpeername_( int socket,void *addr,int *len ){
 	return getpeername( socket,addr,len );
 }
 
+typedef struct {
+    int year;
+    int month;
+    int day;
+    int hour;
+    int minute;
+    int second;
+    int millisecond;
+	int utc;
+	int offset;
+} SDateTime;
+
+int bmx_calc_timeoffset_mins() {
+	time_t rawtime;
+    struct tm *local_tm, *utc_tm;
+
+	time(&rawtime);
+    local_tm = localtime(&rawtime);
+    utc_tm = gmtime(&rawtime);
+
+    // Calculate the time difference in minutes
+    int diff_minutes = (local_tm->tm_hour - utc_tm->tm_hour) * 60 + (local_tm->tm_min - utc_tm->tm_min);
+
+    // Adjust the difference if crossing a day boundary
+    if (local_tm->tm_yday < utc_tm->tm_yday) {
+        diff_minutes -= 24 * 60;
+    } else if (local_tm->tm_yday > utc_tm->tm_yday) {
+        diff_minutes += 24 * 60;
+    }
+
+    return diff_minutes;
+}
+
+#ifdef __WIN32__
+void bmx_current_datetime(SDateTime * dt, int utc) {
+	SYSTEMTIME systemTime;
+    if (utc) {
+        GetSystemTime(&systemTime);
+    } else {
+        GetLocalTime(&systemTime);
+    }
+
+    dt->year = systemTime.wYear;
+    dt->month = systemTime.wMonth;
+    dt->day = systemTime.wDay;
+    dt->hours = systemTime.wHour;
+    dt->minutes = systemTime.wMinute;
+    dt->seconds = systemTime.wSecond;
+    dt->milliseconds = systemTime.wMilliseconds;
+    dt->utc = utc;
+    dt->offset = utc ? 0 : bmx_calc_timeoffset_mins();
+}
+#else
+void bmx_current_datetime(SDateTime * dt, int utc) {
+    struct timespec ts;
+    struct tm *tm;
+
+	clock_gettime(CLOCK_REALTIME, &ts);
+
+    if (utc) {
+        tm = gmtime(&ts.tv_sec);
+    } else {
+        tm = localtime(&ts.tv_sec);
+    }
+
+    dt->year = tm->tm_year + 1900;
+    dt->month = tm->tm_mon + 1;
+    dt->day = tm->tm_mday;
+    dt->hour = tm->tm_hour;
+    dt->minute = tm->tm_min;
+    dt->second = tm->tm_sec;
+    dt->millisecond = ts.tv_nsec / 1000000;
+    dt->utc = utc;
+    dt->offset = utc ? 0 : bmx_calc_timeoffset_mins();
+}
+#endif
+
+BBString * bmx_datetime_iso8601(const SDateTime *dt, int showMillis) {
+	char buf[32];
+	if (dt->utc) {
+        if (showMillis) {
+            snprintf(buf, 32, "%04d-%02d-%02dT%02d:%02d:%02d.%03dZ",
+                     dt->year, dt->month, dt->day, dt->hour, dt->minute, dt->second, dt->millisecond);
+        } else {
+            snprintf(buf, 32, "%04d-%02d-%02dT%02d:%02d:%02dZ",
+                     dt->year, dt->month, dt->day, dt->hour, dt->minute, dt->second);
+        }
+    } else {
+        int offset_sign = dt->offset >= 0 ? 1 : -1;
+        int offset_hours = dt->offset / 60 * offset_sign;
+        int offset_minutes = dt->offset % 60 * offset_sign;
+
+        if (showMillis) {
+            snprintf(buf, 32, "%04d-%02d-%02dT%02d:%02d:%02d.%03d%+03d:%02d",
+                     dt->year, dt->month, dt->day, dt->hour, dt->minute, dt->second, dt->millisecond,
+                     offset_hours, offset_minutes);
+        } else {
+            snprintf(buf, 32, "%04d-%02d-%02dT%02d:%02d:%02d%+03d:%02d",
+                     dt->year, dt->month, dt->day, dt->hour, dt->minute, dt->second,
+                     offset_hours, offset_minutes);
+        }
+    }
+	return bbStringFromCString(buf);
+}
+
+
 int time_( void *ttime ){
 	return (int)time( (time_t*)ttime );
 }

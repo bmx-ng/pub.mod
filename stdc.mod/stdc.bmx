@@ -9,6 +9,9 @@ End Rem
 
 SuperStrict
 
+Rem
+bbdoc: Standard C Library functions.
+End Rem
 Module Pub.StdC
 
 ModuleInfo "Version: 1.14"
@@ -439,6 +442,12 @@ Function mach_absolute_time_ns:ULong()
 
 Function errno_:Int()
 
+Rem
+bbdoc: Returns the current date and time.
+End Rem
+Function CurrentDateTime(dt:SDateTime Var, utc:Int = True)="bmx_current_datetime"
+	
+
 End Extern
 
 Struct STimeSpec
@@ -451,10 +460,119 @@ Struct STimeSpec
 	End Method
 End Struct
 
+Rem
+bbdoc: A basic DateTime struct.
+End Rem
+Struct SDateTime
+	Rem
+	bbdoc: The year.
+	End Rem
+	Field year:Int
+	Rem
+	bbdoc: The month, 1-12.
+	End Rem
+    Field month:Int
+	Rem
+	bbdoc: The day of the month, 1-31.
+	End Rem
+    Field day:Int
+	Rem
+	bbdoc: The hour, 0-23.
+	End Rem
+    Field hour:Int
+	Rem
+	bbdoc: The minute, 0-59.
+	End Rem
+    Field minute:Int
+	Rem
+	bbdoc: The second, 0-59.
+	End Rem
+    Field second:Int
+	Rem
+	bbdoc: The millisecond, 0-999.
+	End Rem
+    Field millisecond:Int
+	Rem
+	bbdoc: #True if the date time is in UTC, #False if it is in local time.
+	End Rem
+	Field utc:Int
+	Rem
+	bbdoc: The offset from UTC, in minutes.
+	End Rem
+	Field offset:Int
+
+	Rem
+	bbdoc: Returns a string representation of the date time in ISO 8601 format.
+	about: Without millisecond precision.
+	End Rem
+	Method ToString:String()
+		Return ToIso8601()
+	End Method
+
+	Rem
+	bbdoc: Returns a string representation of the date time in ISO 8601 format.
+	End Rem
+	Method ToIso8601:String(showMillis:Int = False)
+		Return bmx_datetime_iso8601(Self, showMillis)
+	End Method
+End Struct
+
+Rem
+bbdoc: Gets the current date string.
+returns: The current date as a string
+about:
+By default, it returns the current date in the format: DD MON YYYY (i.e. 10 DEC 2000).
+You can also specify some parameters to return the date in a format of your choice:
+[ @parameter | @description
+* %%a | Abbreviated day name (sun - mon).
+* %%A | Long day name (Sunday - Monday).
+* %%b | Abbreviated month name (jan - feb).
+* %%B | Long month name (January...).
+* %%c | Locale date & time.
+* %%d | day - in number (1..31).
+* %%H | hour - in number (0..23).
+* %%I | hour - in number (1..12).
+* %%j | day of the year (1..366).
+* %%m | month - in number (1..12).
+* %%M | minutes - in number (00..59).
+* %%P | AM / PM.
+* %%S | seconds - in number (00..59).
+* %%U | week number
+* %%w | day of the week (0..6).
+* %%W | week of the year (0..53).
+* %%x | locale data representation.
+* %%y | year without century (2014 --> 14).
+* %%Y | Year (2014).
+* %%Z | Time zone name.
+]
+You can use these parameters together:<br/>
+CurrentDate("Month: %%a Day: %%d")<br/>
+End Rem
+Function CurrentDate$(_format$="%d %b %Y")
+	Local time:Byte[256],buff:Byte[256]
+	time_(time)
+	strftime_(buff,256,_format,localtime_( time ))
+	Return String.FromCString(buff)
+End Function
+
+Rem
+bbdoc: Gets the current time string.
+returns: The current time as a string
+about:
+Returns the current time in the format: HH:MM:SS (i.e. 14:31:57).
+End Rem
+Function CurrentTime$()
+	Local time:Byte[256],buff:Byte[256]
+	time_(time)
+	strftime_( buff,256,"%H:%M:%S",localtime_( time ) );
+	Return String.FromCString(buff)
+End Function
+
 Private
 
 Extern "c"
-Function Startup()="bb_stdc_Startup"
+	Function bmx_datetime_iso8601:String(dt:SDateTime Var, showMillis:Int = False)
+	Function Startup()="bb_stdc_Startup"
 End Extern
 
 Startup
