@@ -44,7 +44,7 @@ ModuleInfo "History: Fixed C Compiler warnings"
 ?linux
 ModuleInfo "CC_OPTS: -D_FILE_OFFSET_BITS=64"
 ?win32
-Import "-lWs2_32"
+Import "-lws2_32"
 Import "inet_pton.c"
 ?haiku
 Import "-lnetwork"

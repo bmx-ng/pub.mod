@@ -15,7 +15,7 @@ ModuleInfo "History: 1.01 Release"
 Import Pub.StdC
 
 ?win32x86
-Import "-lWs2_32"
+Import "-lws2_32"
 ?
 
 Import "enet/include/*.h"
