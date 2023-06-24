@@ -956,19 +956,19 @@ void bmx_current_datetime(SDateTime * dt, int utc) {
 #else
 int bmx_calc_timeoffset_mins() {
 	time_t rawtime;
-    struct tm *local_tm, *utc_tm;
+    struct tm local_tm, utc_tm;
 
 	time(&rawtime);
-    local_tm = localtime(&rawtime);
-    utc_tm = gmtime(&rawtime);
+	localtime_r(&rawtime, &local_tm);
+	gmtime_r(&rawtime, &utc_tm);
 
     // Calculate the time difference in minutes
-    int diff_minutes = (local_tm->tm_hour - utc_tm->tm_hour) * 60 + (local_tm->tm_min - utc_tm->tm_min);
+    int diff_minutes = (local_tm.tm_hour - utc_tm.tm_hour) * 60 + (local_tm.tm_min - utc_tm.tm_min);
 
     // Adjust the difference if crossing a day boundary
-    if (local_tm->tm_yday < utc_tm->tm_yday) {
+    if (local_tm.tm_yday < utc_tm.tm_yday) {
         diff_minutes -= 24 * 60;
-    } else if (local_tm->tm_yday > utc_tm->tm_yday) {
+    } else if (local_tm.tm_yday > utc_tm.tm_yday) {
         diff_minutes += 24 * 60;
     }
 
@@ -977,27 +977,76 @@ int bmx_calc_timeoffset_mins() {
 
 void bmx_current_datetime(SDateTime * dt, int utc) {
     struct timespec ts;
-    struct tm *tm;
+    struct tm tm;
 
 	clock_gettime(CLOCK_REALTIME, &ts);
 
     if (utc) {
-        tm = gmtime(&ts.tv_sec);
+        gmtime_r(&ts.tv_sec, &tm);
     } else {
-        tm = localtime(&ts.tv_sec);
+        localtime_r(&ts.tv_sec, &tm);
     }
 
-    dt->year = tm->tm_year + 1900;
-    dt->month = tm->tm_mon + 1;
-    dt->day = tm->tm_mday;
-    dt->hour = tm->tm_hour;
-    dt->minute = tm->tm_min;
-    dt->second = tm->tm_sec;
+    dt->year = tm.tm_year + 1900;
+    dt->month = tm.tm_mon + 1;
+    dt->day = tm.tm_mday;
+    dt->hour = tm.tm_hour;
+    dt->minute = tm.tm_min;
+    dt->second = tm.tm_sec;
     dt->millisecond = ts.tv_nsec / 1000000;
     dt->utc = utc;
     dt->offset = utc ? 0 : bmx_calc_timeoffset_mins();
 }
 #endif
+
+SDateTime bmx_datetime_from_epoch(BBLONG epochTimeSecs, BBLONG fracNanoseconds) {
+    SDateTime dt;
+    struct tm timeinfo;
+
+#if defined(_WIN32) || defined(_WIN64)
+    gmtime_s(&timeinfo, &epochTimeSecs);
+#else
+    gmtime_r(&epochTimeSecs, &timeinfo);
+#endif
+
+    dt.year = timeinfo.tm_year + 1900;
+    dt.month = timeinfo.tm_mon + 1;
+    dt.day = timeinfo.tm_mday;
+    dt.hour = timeinfo.tm_hour;
+    dt.minute = timeinfo.tm_min;
+    dt.second = timeinfo.tm_sec;
+
+    dt.millisecond = fracNanoseconds / 1000000;
+
+    dt.utc = 1;
+    dt.offset = 0;
+
+    return dt;
+}
+
+BBString * bmx_current_datetime_format(BBString * format) {
+	struct tm tm;
+	time_t rawtime;
+	char buf[256];
+
+	unsigned char * f = bbStringToUTF8String(format);
+
+	time(&rawtime);
+    
+#if defined(_WIN32) || defined(_WIN64)
+    localtime_s(&tm, &rawtime);
+#else
+    localtime_r(&rawtime, &tm);
+#endif
+
+    strftime(buf, sizeof(buf), f, &tm);
+
+	BBString * res = bbStringFromUTF8String(buf);
+
+    bbMemFree(f);
+
+	return res;
+}
 
 BBString * bmx_datetime_iso8601(const SDateTime *dt, int showMillis) {
 	char buf[32];
