@@ -431,7 +431,7 @@ Function bmx_stdc_getpeername:Int(socket:Long, port:Int Var, address:String Var)
 'time
 
 Function time_:Int( time:Byte Ptr )
-Function localtime_:Byte Ptr( time:Byte Ptr )
+Function localtime_:Byte Ptr( time:Byte Ptr ) ' note : not thread safe
 Function strftime_:Int( buf:Byte Ptr,size:Int,fmt$,time:Byte Ptr )
 
 ?Not macos
@@ -510,11 +510,31 @@ Struct SDateTime
 	End Method
 
 	Rem
-	bbdoc: Returns a string representation of the date time in ISO 8601 format.
+	bbdoc: Returns a string representation in ISO 8601 format.
+	about: ISO 8601 is an international standard covering the exchange of date- and time-related data.
+	It was issued by the International Organization for Standardization (ISO) and provides a well-defined method of representing dates and
+	times in a way that avoids ambiguity. 
+
+	An example of a date in ISO 8601 format is "2023-06-24T18:30:00Z", representing 6:30 pm on June 24, 2023, in Coordinated Universal Time (UTC).
+
+	If @showMillis is set to #True, the output string will include millisecond precision. For instance, "2023-06-24T18:30:00.123Z"
+	where "123" represents milliseconds.
 	End Rem
 	Method ToIso8601:String(showMillis:Int = False)
 		Return bmx_datetime_iso8601(Self, showMillis)
 	End Method
+
+	Rem
+	bbdoc: Returns an instance of #SDateTime representing the date and time corresponding to the given epoch timestamp.
+	about: The 'epoch' refers to the Unix epoch, which is a system for describing a point in time, defined as the number of seconds
+	that have elapsed since 00:00:00 Coordinated Universal Time (UTC), Thursday, 1 January 1970, minus the number of leap seconds. 
+
+	If @fracNanoSecs is provided, it will be used to set the 'millisecond' field of the SDateTime instance.
+	The nanosecond fraction is effectively divided by a million to provide millisecond precision.
+	End Rem
+	Function FromEpoch:SDateTime(epochSecs:Long, fracNanoSecs:Long = 0)
+		Return bmx_datetime_from_epoch(epochSecs, fracNanoSecs)
+	End Function
 End Struct
 
 Rem
@@ -549,10 +569,7 @@ You can use these parameters together:<br/>
 CurrentDate("Month: %%a Day: %%d")<br/>
 End Rem
 Function CurrentDate$(_format$="%d %b %Y")
-	Local time:Byte[256],buff:Byte[256]
-	time_(time)
-	strftime_(buff,256,_format,localtime_( time ))
-	Return String.FromCString(buff)
+	Return bmx_current_datetime_format(_format)
 End Function
 
 Rem
@@ -562,10 +579,7 @@ about:
 Returns the current time in the format: HH:MM:SS (i.e. 14:31:57).
 End Rem
 Function CurrentTime$()
-	Local time:Byte[256],buff:Byte[256]
-	time_(time)
-	strftime_( buff,256,"%H:%M:%S",localtime_( time ) );
-	Return String.FromCString(buff)
+	Return bmx_current_datetime_format("%H:%M:%S")
 End Function
 
 Private
@@ -573,6 +587,8 @@ Private
 Extern "c"
 	Function bmx_datetime_iso8601:String(dt:SDateTime Var, showMillis:Int = False)
 	Function Startup()="bb_stdc_Startup"
+	Function bmx_datetime_from_epoch:SDateTime(epochSecs:Long, fracNanoSecs:Long)
+	Function bmx_current_datetime_format:String(format:String)
 End Extern
 
 Startup
