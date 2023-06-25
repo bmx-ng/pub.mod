@@ -924,14 +924,17 @@ typedef struct {
     int millisecond;
 	int utc;
 	int offset;
+	int dst;
 } SDateTime;
 
 #ifdef __WIN32__
-int bmx_calc_timeoffset_mins() {
+int bmx_calc_timeoffset_mins(SDateTime * dt) {
 	TIME_ZONE_INFORMATION tz;
 	DWORD rc = GetTimeZoneInformation(&tz);
 	int offset_minutes = tz.Bias + (TIME_ZONE_ID_DAYLIGHT != rc ?  tz.StandardBias : tz.DaylightBias);
 	
+	dt->dst = (rc == TIME_ZONE_ID_DAYLIGHT) ? 1 : 0;
+
     return offset_minutes;
 }
 
@@ -951,7 +954,7 @@ void bmx_current_datetime(SDateTime * dt, int utc) {
     dt->second = systemTime.wSecond;
     dt->millisecond = systemTime.wMilliseconds;
     dt->utc = utc;
-    dt->offset = utc ? 0 : bmx_calc_timeoffset_mins();
+    dt->offset = utc ? 0 : bmx_calc_timeoffset_mins(dt);
 }
 #else
 int bmx_calc_timeoffset_mins() {
@@ -983,8 +986,10 @@ void bmx_current_datetime(SDateTime * dt, int utc) {
 
     if (utc) {
         gmtime_r(&ts.tv_sec, &tm);
+		dt->dst = 0;
     } else {
         localtime_r(&ts.tv_sec, &tm);
+		dt->dst = tm.tm_isdst > 0 ? 1 : 0;
     }
 
     dt->year = tm.tm_year + 1900;
@@ -1020,8 +1025,30 @@ SDateTime bmx_datetime_from_epoch(BBLONG epochTimeSecs, BBLONG fracNanoseconds) 
 
     dt.utc = 1;
     dt.offset = 0;
+	dt.dst = 0;
 
     return dt;
+}
+
+BBLONG bmx_datetime_to_epoch(SDateTime * dt) {
+    struct tm t;
+    time_t ts;
+
+    t.tm_year = dt->year - 1900;
+    t.tm_mon = dt->month - 1;
+    t.tm_mday = dt->day;
+    t.tm_hour = dt->hour;
+    t.tm_min = dt->minute;
+    t.tm_sec = dt->second;
+    t.tm_isdst = dt->dst;
+
+    // Convert struct tm to time_t (seconds since the Epoch)
+    ts = mktime(&t);
+    if (ts == -1) {
+        return -1;
+    }
+    
+    return (BBLONG)ts;
 }
 
 BBString * bmx_current_datetime_format(BBString * format) {

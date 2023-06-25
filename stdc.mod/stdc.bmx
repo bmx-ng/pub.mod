@@ -500,6 +500,15 @@ Struct SDateTime
 	bbdoc: The offset from UTC, in minutes.
 	End Rem
 	Field offset:Int
+	Rem
+	bbdoc: #True if the date time is observing daylight savings time, #False otherwise.
+    about: Daylight Saving Time (DST) is the practice of setting the clock ahead by one hour from standard time
+	during the warmer months, and then back again in the fall, in order to extend evening daylight and reduce the
+	need for artificial lighting. This can affect local time calculations, and so it's important to track whether a
+	given datetime object is observing DST. Note that not all regions observe DST, and the start and end dates
+	for DST can vary from one region to another.
+	End Rem
+	Field dst:Int
 
 	Rem
 	bbdoc: Returns a string representation of the date time in ISO 8601 format.
@@ -535,6 +544,16 @@ Struct SDateTime
 	Function FromEpoch:SDateTime(epochSecs:Long, fracNanoSecs:Long = 0)
 		Return bmx_datetime_from_epoch(epochSecs, fracNanoSecs)
 	End Function
+
+	Rem
+	bbdoc: Converts the current date and time to the number of seconds that have elapsed since the Unix Epoch.
+	returns: The number of seconds that have elapsed since the Unix Epoch, or -1 if the conversion failed.
+	about: The 'epoch' refers to the Unix epoch, which is a system for describing a point in time, defined as the number of seconds
+	that have elapsed since 00:00:00 Coordinated Universal Time (UTC), Thursday, 1 January 1970, minus the number of leap seconds. 
+	End Rem
+	Method ToEpochSecs:Long()
+		Return bmx_datetime_to_epoch(Self)
+	End Method
 End Struct
 
 Rem
@@ -589,6 +608,7 @@ Extern "c"
 	Function Startup()="bb_stdc_Startup"
 	Function bmx_datetime_from_epoch:SDateTime(epochSecs:Long, fracNanoSecs:Long)
 	Function bmx_current_datetime_format:String(format:String)
+	Function bmx_datetime_to_epoch:Long(dt:SDateTime Var)
 End Extern
 
 Startup
