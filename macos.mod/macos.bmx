@@ -18,8 +18,8 @@ Import "NSProcessInfo_PECocoaBackports.m"
 Extern
 
 Function is_pid_native( pid )
-Function bbStringFromNSString$( ns_string:Byte Ptr )
-Function NSStringFromBBString:Byte Ptr( bb_string$ )
+Function bbStringFromNSString:String( ns_string:Byte Ptr )
+Function NSStringFromBBString:Byte Ptr( bb_string:String )
 
 Function NSOSVersion(major:Int Var, minor:Int Var, patch:Int Var)
 

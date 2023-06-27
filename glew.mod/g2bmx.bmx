@@ -9,14 +9,14 @@ Import brl.system
 '
 
 Global OutDir:String = "_out_"
-Local OutOpenGLName$="opengl.bmx"
-Local OutGlewName$="glew.bmx"
+Local OutOpenGLName:String="opengl.bmx"
+Local OutGlewName:String="glew.bmx"
 
 Const LINES_PER_PAGE:Int = 500
 
 CreateDir(outDir, True)
-Global OutOpenGL:TStream	=	WriteStream(outDir + "/" + OutOpenGLName$)
-Global OutGLew	:TStream	=	WriteStream(outDir + "/" + OutGlewName$)
+Global OutOpenGL:TStream	=	WriteStream(outDir + "/" + OutOpenGLName)
+Global OutGLew	:TStream	=	WriteStream(outDir + "/" + OutGlewName)
 Global Out		:TStream	=	OutOpenGL
 
 Local generator:TCodeGenerator = New TCodeGenerator
@@ -86,7 +86,7 @@ Type TCodeGenerator
 			
 	End Method
 	
-	Method GenerateApi (chaine$, bbDoc$)
+	Method GenerateApi (chaine:String, bbDoc:String)
 		
 		Select stage
 			Case STAGE_COUNT
@@ -150,12 +150,12 @@ Type TCodeGenerator
 			If curr="GLAPI"
 				bump
 				Local ty:Tty = New Tty
-				Local funty$=gltype(ty)
+				Local funty:String=gltype(ty)
 				If funty<>"x" And curr="GLAPIENTRY"
-					Local id$=bump()
+					Local id:String=bump()
 					If id[..2]="gl" And bump()="("
 						Local p:Tproto = New TProto
-						Local proto$=glproto(p)
+						Local proto:String=glproto(p)
 						If proto<>"x"
 							GenerateApi ( "Function "+id+funty+"("+proto+")", "GL Function "+id+funty )
 						EndIf
@@ -163,12 +163,12 @@ Type TCodeGenerator
 				EndIf
 			Else If curr="#"
 				If bump()="define"
-					Local id$=bump()
+					Local id:String=bump()
 					If id[..11]="GL_VERSION_"
 						
 					Else If id[..3]="GL_"
 						If Not constMap.ValueForKey(id)
-							Local n$=bump()
+							Local n:String=bump()
 							If n[..2]="0x"
 								GenerateApi ( "Const "+id+"=$"+n[2..], "GL Const "+id )
 							Else If n.length
@@ -191,7 +191,7 @@ Type TCodeGenerator
 						EndIf
 					Else If id[..5]="GLEW_"
 						If bump()="GLEW_GET_VAR" And bump()="("
-							Local sym$=bump()
+							Local sym:String=bump()
 							If sym[..7]="__GLEW_" And bump()=")"
 							If Not constMap.ValueForKey("GL_"+id[5..])
 								GenerateApi ( "Global GL_"+id[5..]+":Byte=~q"+sym+"~q", "GL Global "+id )
@@ -200,9 +200,9 @@ Type TCodeGenerator
 						EndIf
 					Else If id[..2]="gl"
 						If bump()="GLEW_GET_FUN" And bump()="("
-							Local sym$=bump()
+							Local sym:String=bump()
 							If sym[..6]="__glew" And bump()=")"
-								Local key$="PFNGL"+sym[6..].ToUpper()+"PROC"
+								Local key:String="PFNGL"+sym[6..].ToUpper()+"PROC"
 								Local val:Tproto=Tproto( funMap.ValueForKey( key ) )
 								If val
 									GenerateApi ( "Global "+id+val.proto+"=~q"+val.exproto.Replace("XXXXXXXX", sym).Trim()+"~q", "GL Global "+id+val.proto )
@@ -216,12 +216,12 @@ Type TCodeGenerator
 			Else If curr="typedef"
 				bump
 				Local ty:Tty = New Tty
-				Local funty$=gltype(ty)
+				Local funty:String=gltype(ty)
 				If funty<>"x" And curr="(" And bump()="GLAPIENTRY" And bump()="*"
-					Local id$=bump()
+					Local id:String=bump()
 					If id[..5]="PFNGL" And bump()=")" And bump()="("
 						Local p:Tproto = New TProto
-						Local proto$=glproto(p)
+						Local proto:String=glproto(p)
 						If proto<>"x"
 							p.proto = funty+"("+proto+")"
 							p.exproto = ty.exty + " XXXXXXXX(" + p.exproto + ")!"
@@ -251,16 +251,16 @@ Type TCodeGenerator
 
 	End Method	
 	
-	Method glproto$(proto:Tproto)
+	Method glproto:String(proto:Tproto)
 		If bump()=")" Return ""
 		Local err,argid
 		Repeat
 			Local ty:Tty = New Tty
-			Local argty$=gltype(ty)
+			Local argty:String=gltype(ty)
 			If argty="x" Return argty
-			Local id$
+			Local id:String
 			If curr<>"," And curr<>")" And curr.length And (isalpha(curr[0]) Or curr[0]=Asc("_"))
-				id$=curr
+				id=curr
 				If bump()="["
 					While bump()<>"]"
 					Wend
@@ -288,8 +288,8 @@ Type TCodeGenerator
 		Forever
 	End Method
 	
-	Method gltype$(ty:TTy)
-		'Local ty$
+	Method gltype:String(ty:TTy)
+		'Local ty:String
 		'Local exty:String
 		If curr="const"
 			ty.exty :+ curr
@@ -349,7 +349,7 @@ Type TCodeGenerator
 		Return (c>=Asc("A") And c<=Asc("F")) Or (c>=Asc("a") And c<=Asc("f")) Or isdigit(c)
 	End Method
 	
-	Method bump$()
+	Method bump:String()
 		Local i=0
 		While i<Text.length And Text[i]<=Asc(" ")
 			i:+1

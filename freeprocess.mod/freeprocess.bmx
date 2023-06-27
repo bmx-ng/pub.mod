@@ -41,12 +41,12 @@ Extern
 	Function fdFlush(fd:Size_T)
 	Function fdAvail:Int(fd:Size_T)
 ?win32
-	Function fdProcess:Byte Ptr(exe$,in_fd:Size_T Ptr,out_fd:Size_T Ptr,err_fd:Size_T Ptr,flags:Int)="fdProcess"
+	Function fdProcess:Byte Ptr(exe:String,in_fd:Size_T Ptr,out_fd:Size_T Ptr,err_fd:Size_T Ptr,flags:Int)="fdProcess"
 	Function fdProcessStatus:Int(processhandle:Byte Ptr)
 	Function fdTerminateProcess:Int(processhandle:Byte Ptr)
 	Function fdKillProcess:Int(processhandle:Byte Ptr)
 ?not win32
-	Function fdProcess:Size_T(exe$,in_fd:Size_T Ptr,out_fd:Size_T Ptr,err_fd:Size_T Ptr,flags:Int)="fdProcess"
+	Function fdProcess:Size_T(exe:String,in_fd:Size_T Ptr,out_fd:Size_T Ptr,err_fd:Size_T Ptr,flags:Int)="fdProcess"
 	Function fdProcessStatus:Int(processhandle:Size_T)
 	Function fdTerminateProcess:Int(processhandle:Size_T)
 	Function fdKillProcess:Int(processhandle:Size_T)
@@ -101,8 +101,8 @@ Type TPipeStream Extends TStream
 		EndIf
 	End Method
 
-	Method ReadLine$() Override	'nonblocking - returns empty string if no data available
-		Local	n:Long,r:Long,p0:Int,p1:Int,line$
+	Method ReadLine:String() Override	'nonblocking - returns empty string if no data available
+		Local	n:Long,r:Long,p0:Int,p1:Int,line:String
 		n=ReadAvail()
 		If n
 			If bufferpos+n>4096 n=4096-bufferpos
@@ -118,11 +118,11 @@ Type TPipeStream Extends TStream
 				EndIf
 				p0=0
 				If readbuffer[0]=13 p0=1
-				If p1>p0 line$=String.FromBytes(Varptr readbuffer[p0],p1-p0)
+				If p1>p0 line:String=String.FromBytes(Varptr readbuffer[p0],p1-p0)
 				n:+1
 				bufferpos:-n
 				If bufferpos MemMove(readbuffer,Varptr readbuffer[n],Size_T(bufferpos))
-				Return line$
+				Return line
 			EndIf
 		Next
 	End Method
@@ -138,7 +138,7 @@ End Type
 
 Type TProcess
 	Global ProcessList:TList
-	Field	name$
+	Field	name:String
 ?win32
 	Field	handle:Byte Ptr
 ?not win32
@@ -190,13 +190,13 @@ Type TProcess
 		Return res
 	End Method
 
-	Function Create:TProcess(name$,flags:Int)
+	Function Create:TProcess(name:String,flags:Int)
 		Local	p:TProcess
 		Local	infd:Size_T,outfd:Size_T,errfd:Size_T
 ?MacOS
 		If FileType(name)=2
-			Local a$=StripExt(StripDir(name))
-			name:+"/Contents/MacOS/"+a$
+			Local a:String=StripExt(StripDir(name))
+			name:+"/Contents/MacOS/"+a
 		EndIf
 ?
 		FlushZombies
@@ -246,7 +246,7 @@ Rem
 bbdoc: Creates a process
 returns: TProcess object that is linked to the process you have started
 End Rem
-Function CreateProcess:TProcess(cmd$,flags:Int=0)
+Function CreateProcess:TProcess(cmd:String,flags:Int=0)
 	Return TProcess.Create(cmd,flags)
 End Function
 

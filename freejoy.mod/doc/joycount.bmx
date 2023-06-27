@@ -8,9 +8,9 @@ If Not JoyCount() RuntimeError "No joystick found!"
 
 Graphics 640,480
 
-Function drawprop(n$,p#,y)
-	Local	w
-	DrawText n$,0,y
+Function drawprop(n:String,p:Float,y:Int)
+	Local w:Int
+	DrawText n,0,y
 	w=Abs(p)*256
 	If p<0
 		DrawRect 320-w,y,w,16
@@ -28,8 +28,8 @@ While Not KeyHit(KEY_ESCAPE)
 	Local n=JoyCount()
 	DrawText "joycount="+n,0,0
 	DrawText "JoyName(0)="+JoyName(0),0,20
-	DrawText "JoyButtonCaps(0)="+Bin$(JoyButtonCaps(0)),0,40
-	DrawText "JoyAxisCaps(0)="+Bin$(JoyAxisCaps(0)),0,60
+	DrawText "JoyButtonCaps(0)="+Bin(JoyButtonCaps(0)),0,40
+	DrawText "JoyAxisCaps(0)="+Bin(JoyAxisCaps(0)),0,60
 
 	For Local i=0 To 31
 		SetColor 255,255,255

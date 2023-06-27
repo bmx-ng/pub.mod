@@ -175,30 +175,30 @@ End Type
 'c lib
 Extern "c"
 
-Const SEEK_SET_%=0
-Const SEEK_CUR_%=1
-Const SEEK_END_%=2
+Const SEEK_SET_:Int=0
+Const SEEK_CUR_:Int=1
+Const SEEK_END_:Int=2
 
-Const S_IFMT_%=$f000
-Const S_IFIFO_%=$1000
-Const S_IFCHR_%=$2000
-Const S_IFBLK_%=$3000
-Const S_IFDIR_%=$4000
-Const S_IFREG_%=$8000
+Const S_IFMT_:Int=$f000
+Const S_IFIFO_:Int=$1000
+Const S_IFCHR_:Int=$2000
+Const S_IFBLK_:Int=$3000
+Const S_IFDIR_:Int=$4000
+Const S_IFREG_:Int=$8000
 
 Global stdin_:Byte Ptr
 Global stdout_:Byte Ptr
 Global stderr_:Byte Ptr
 
-Function getchar_%()
-Function puts_%( str$ )
-Function putenv_%( str$ )
-Function getenv_$( env$ )
+Function getchar_:Int()
+Function puts_:Int( str:String )
+Function putenv_:Int( str:String )
+Function getenv_:String( env:String )
 
 'file system
 
-Function fopen_:Byte Ptr( file$,Mode$ )
-Function fclose_%( c_stream:Byte Ptr )="int fclose( FILE* ) !"
+Function fopen_:Byte Ptr( file:String,Mode:String )
+Function fclose_:Int( c_stream:Byte Ptr )="int fclose( FILE* ) !"
 Function fread_:Long( buf:Byte Ptr,size:Long,count:Long,c_stream:Byte Ptr )="size_t fread( void* , size_t, size_t, FILE* ) !"
 Function fwrite_:Long( buf:Byte Ptr,size:Long,count:Long,c_stream:Byte Ptr )="size_t fwrite( void* ,size_t, size_t, FILE* ) !"
 Function fflush_( c_stream:Byte Ptr )="int fflush( FILE* ) !"
@@ -207,23 +207,23 @@ Function ftell_:Long( c_stream:Byte Ptr )'="ftell"
 Function feof_:Int( c_stream:Byte Ptr )="int feof( FILE* ) !"
 Function fgetc_:Int( c_stream:Byte Ptr )="int fgetc( FILE* ) !"
 Function ungetc_:Int( char:Int,c_stream:Byte Ptr )="int ungetc( int,FILE* ) !"
-Function fputs_:Int( str$,c_stream:Byte Ptr )
+Function fputs_:Int( str:String,c_stream:Byte Ptr )
 Function ftruncate_:Int(c_stream:Byte Ptr, size:Long)
 
 'posix
 
-Function chdir_:Int( dir$ )
-Function getcwd_$()
-Function chmod_:Int( path$,Mode:Int )
-Function mkdir_:Int( path$,Mode:Int )
-Function rmdir_:Int( path$ )
-Function rename_:Int( from_path$,to_path$ )
-Function remove_( path$ )
-Function opendir_:Byte Ptr( path$ )
+Function chdir_:Int( dir:String )
+Function getcwd_:String()
+Function chmod_:Int( path:String,Mode:Int )
+Function mkdir_:Int( path:String,Mode:Int )
+Function rmdir_:Int( path:String )
+Function rename_:Int( from_path:String,to_path:String )
+Function remove_( path:String )
+Function opendir_:Byte Ptr( path:String )
 Function closedir_:Int( dir:Byte Ptr )
-Function readdir_$( dir:Byte Ptr )
-Function stat_:Int( path$,st_mode:Int Var,st_size:Long Var,st_mtime:Int Var,st_ctime:Int Var,st_atime:Int Var )
-Function system_:Int( cmd$ )
+Function readdir_:String( dir:Byte Ptr )
+Function stat_:Int( path:String,st_mode:Int Var,st_size:Long Var,st_mtime:Int Var,st_ctime:Int Var,st_atime:Int Var )
+Function system_:Int( cmd:String )
 Function utime_:Int( path:String, ty:Int, time:Long)
 
 'misc
@@ -337,7 +337,7 @@ Function bind_:Int( socket:Int,addr_type:Int,port:Int )
 ?
 Function gethostbyaddr_:Byte Ptr( addr:Byte Ptr,addr_len:Int,addr_type:Int )
 
-'Function gethostbyname_:Byte Ptr Ptr( name$,addr_type:Int Var,addr_len:Int Var )
+'Function gethostbyname_:Byte Ptr Ptr( name:String,addr_type:Int Var,addr_len:Int Var )
 Function getaddrinfo_:TAddrInfo[](name:String, service:String = "http", family:Int = AF_UNSPEC_)
 Function getaddrinfo_hints:TAddrInfo[](name:String, service:String, hints:Byte Ptr)
 
@@ -432,7 +432,7 @@ Function bmx_stdc_getpeername:Int(socket:Long, port:Int Var, address:String Var)
 
 Function time_:Int( time:Byte Ptr )
 Function localtime_:Byte Ptr( time:Byte Ptr ) ' note : not thread safe
-Function strftime_:Int( buf:Byte Ptr,size:Int,fmt$,time:Byte Ptr )
+Function strftime_:Int( buf:Byte Ptr,size:Int,fmt:String,time:Byte Ptr )
 
 ?Not macos
 Function clock_gettime_(id:Int, spec:STimeSpec Var)
@@ -587,7 +587,7 @@ You can also specify some parameters to return the date in a format of your choi
 You can use these parameters together:<br/>
 CurrentDate("Month: %%a Day: %%d")<br/>
 End Rem
-Function CurrentDate$(_format$="%d %b %Y")
+Function CurrentDate:String(_format:String="%d %b %Y")
 	Return bmx_current_datetime_format(_format)
 End Function
 
@@ -597,7 +597,7 @@ returns: The current time as a string
 about:
 Returns the current time in the format: HH:MM:SS (i.e. 14:31:57).
 End Rem
-Function CurrentTime$()
+Function CurrentTime:String()
 	Return bmx_current_datetime_format("%H:%M:%S")
 End Function
 

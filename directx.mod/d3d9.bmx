@@ -70,12 +70,12 @@ Struct D3DCAPS9
 	Field MaxTextureRepeat;
 	Field MaxTextureAspectRatio;
 	Field MaxAnisotropy;
-	Field MaxVertexW#;
-	Field GuardBandLeft#;
-	Field GuardBandTop#;
-	Field GuardBandRight#;
-	Field GuardBandBottom#;
-	Field ExtentsAdjust#;
+	Field MaxVertexW:Float;
+	Field GuardBandLeft:Float;
+	Field GuardBandTop:Float;
+	Field GuardBandRight:Float;
+	Field GuardBandBottom:Float;
+	Field ExtentsAdjust:Float;
 	Field StencilCaps;
 	Field FVFCaps;
 	Field TextureOpCaps;
@@ -86,7 +86,7 @@ Struct D3DCAPS9
 	Field MaxUserClipPlanes;
 	Field MaxVertexBlendMatrices;
 	Field MaxVertexBlendMatrixIndex;
-	Field MaxPointSize#;
+	Field MaxPointSize:Float;
 	Field MaxPrimitiveCount;
 	Field MaxVertexIndex;
 	Field MaxStreams;
@@ -94,9 +94,9 @@ Struct D3DCAPS9
 	Field VertexShaderVersion;
 	Field MaxVertexShaderConst;
 	Field PixelShaderVersion;
-	Field PixelShader1xMaxValue#;
+	Field PixelShader1xMaxValue:Float;
 	Field DevCaps2;
-	Field MaxNpatchTessellationLevel#;
+	Field MaxNpatchTessellationLevel:Float;
 	Field Reserved5;	
 	Field MasterAdapterOrdinal;
 	Field AdapterOrdinalInGroup;
@@ -128,27 +128,27 @@ Struct D3DVIEWPORT9
 End Struct
 
 Type D3DMATERIAL9
-	Field Diffuse_r#,Diffuse_g#,Diffuse_b#,Diffuse_a#
-	Field Ambient_r#,Ambient_g#,Ambient_b#,Ambient_a#
-	Field Specular_r#,Specular_g#,Specular_b#,Specular_a#
-	Field Emissive_r#,Emissive_g#,Emissive_b#,Emissive_a#
-	Field Power#
+	Field Diffuse_r:Float,Diffuse_g:Float,Diffuse_b:Float,Diffuse_a:Float
+	Field Ambient_r:Float,Ambient_g:Float,Ambient_b:Float,Ambient_a:Float
+	Field Specular_r:Float,Specular_g:Float,Specular_b:Float,Specular_a:Float
+	Field Emissive_r:Float,Emissive_g:Float,Emissive_b:Float,Emissive_a:Float
+	Field Power:Float
 End Type
 
 Type D3DLIGHT9
 	Field Type_
-	Field Diffuse_r#,Diffuse_g#,Diffuse_b#,Diffuse_a#
-	Field Specular_r#,Specular_g#,Specular_b#,Specular_a#
-	Field Ambient_r#,Ambient_g#,Ambient_b#,Ambient_a#
-	Field Position_x#,Position_y#,Position_z#
-	Field Direction_x#,Direction_y#,Direction_z#
-	Field Range#
-	Field Falloff#
-	Field Attenuation0#
-	Field Attenuation1#
-	Field Attenuation2#
-	Field Theta#
-	Field Phi#
+	Field Diffuse_r:Float,Diffuse_g:Float,Diffuse_b:Float,Diffuse_a:Float
+	Field Specular_r:Float,Specular_g:Float,Specular_b:Float,Specular_a:Float
+	Field Ambient_r:Float,Ambient_g:Float,Ambient_b:Float,Ambient_a:Float
+	Field Position_x:Float,Position_y:Float,Position_z:Float
+	Field Direction_x:Float,Direction_y:Float,Direction_z:Float
+	Field Range:Float
+	Field Falloff:Float
+	Field Attenuation0:Float
+	Field Attenuation1:Float
+	Field Attenuation2:Float
+	Field Theta:Float
+	Field Phi:Float
 End Type
 
 Type D3DVERTEXELEMENT9
@@ -201,13 +201,13 @@ Type D3DADAPTER_IDENTIFIER9
 	Field DeviceIdentifier3
 	Field WHQLLevel
 
-	Method Driver$()
+	Method Driver:String()
 		Return String.fromCString(Varptr Driver0)
 	End Method
-	Method Description$()
+	Method Description:String()
 		Return String.fromCString(Varptr Description0)	
 	End Method
-	Method DeviceName$()
+	Method DeviceName:String()
 		Return String.fromCString(Varptr DeviceName0)	
 	End Method	
 End Type
@@ -353,7 +353,7 @@ Interface IDirect3DDevice9 Extends IUnknown_
 	Method GetDepthStencilSurface( ppZStencilSurface:IDirect3DSurface9 Var )
 	Method BeginScene()
 	Method EndScene()
-	Method Clear( Count,pRects:Byte Ptr,Flags,Color,Z#,Stencil )
+	Method Clear( Count,pRects:Byte Ptr,Flags,Color,Z:Float,Stencil )
 	Method SetTransform( State,pMatrix:Float Ptr )
 	Method GetTransform( State,pMatrix:Float Ptr )
 	Method MultiplyTransform( State,pMatrix:Float Ptr )
@@ -392,8 +392,8 @@ Interface IDirect3DDevice9 Extends IUnknown_
 	Method GetScissorRect( pRect:Byte Ptr )
 	Method SetSoftwareVertexProcessing( bSoftware )
 	Method GetSoftwareVertexProcessing()
-	Method SetNPatchMode( nSegments# )
-	Method GetNPatchMode#()
+	Method SetNPatchMode( nSegments:Float )
+	Method GetNPatchMode:Float()
 	Method DrawPrimitive( PrimitiveType,StartVertex,PrimitiveCount )
 	Method DrawIndexedPrimitive( PrimitiveType,BaseVertexIndex,MinVertexIndex,NumVertices,startIndex,primCount )
 
