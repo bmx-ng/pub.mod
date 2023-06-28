@@ -114,10 +114,10 @@ Function fa_ChannelStatus( channel )
 Function fa_ChannelPosition( channel )
 
 Function fa_SetChannelPaused( channel,paused )
-Function fa_SetChannelVolume( channel,volume# )
-Function fa_SetChannelRate( channel,pitch# )
-Function fa_SetChannelPan( channel,pan# )
-Function fa_SetChannelDepth( channel,depth# )
+Function fa_SetChannelVolume( channel,volume:Float )
+Function fa_SetChannelRate( channel,pitch:Float )
+Function fa_SetChannelPan( channel,pan:Float )
+Function fa_SetChannelDepth( channel,depth:Float )
 
 End Extern
 

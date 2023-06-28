@@ -49,7 +49,7 @@ Extern
 	Function freejoy_JoyButtonCaps:Int(port:Int) = "JoyButtonCaps"
 	Function freejoy_JoyAxisCaps:Int(port:Int) = "JoyAxisCaps"
 	Function freejoy_ReadJoy(port:Int,buttons:Int Ptr,axis:Float Ptr) = "ReadJoy"
-	Function freejoy_WriteJoy(port:Int,channel:Int,value#) = "WriteJoy"
+	Function freejoy_WriteJoy(port:Int,channel:Int,value:Float) = "WriteJoy"
 
 End Extern
 
@@ -59,7 +59,7 @@ Type TFreeJoyDriver Extends TJoystickDriver
 
 	Global joy_time:Int[16]
 	Global joy_buttons:Int[16]
-	Global joy_axis#[16*16]
+	Global joy_axis:Float[16*16]
 	Global joy_hits:Int[16,16]
 	
 	Method New()
@@ -98,57 +98,57 @@ Type TFreeJoyDriver Extends TJoystickDriver
 		Return n
 	End Method
 
-	Method JoyX#( port:Int=0 ) Override
+	Method JoyX:Float( port:Int=0 ) Override
 		SampleJoy port
 		Return joy_axis[port*16+JOY_X]
 	End Method
 
-	Method JoyY#( port:Int=0 ) Override
+	Method JoyY:Float( port:Int=0 ) Override
 		SampleJoy port
 		Return joy_axis[port*16+JOY_Y]
 	End Method
 
-	Method JoyZ#( port:Int=0 ) Override
+	Method JoyZ:Float( port:Int=0 ) Override
 		SampleJoy port
 		Return joy_axis[port*16+JOY_Z]
 	End Method
 
-	Method JoyR#( port:Int=0 ) Override
+	Method JoyR:Float( port:Int=0 ) Override
 		SampleJoy port
 		Return joy_axis[port*16+JOY_R]
 	End Method
 
-	Method JoyU#( port:Int=0 ) Override
+	Method JoyU:Float( port:Int=0 ) Override
 		SampleJoy port
 		Return joy_axis[port*16+JOY_U]
 	End Method
 
-	Method JoyV#( port:Int=0 ) Override
+	Method JoyV:Float( port:Int=0 ) Override
 		SampleJoy port
 		Return joy_axis[port*16+JOY_V]
 	End Method
 
-	Method JoyYaw#( port:Int=0 ) Override
+	Method JoyYaw:Float( port:Int=0 ) Override
 		SampleJoy port
 		Return joy_axis[port*16+JOY_YAW]
 	End Method
 
-	Method JoyPitch#( port:Int=0 ) Override
+	Method JoyPitch:Float( port:Int=0 ) Override
 		SampleJoy port
 		Return joy_axis[port*16+JOY_PITCH]
 	End Method
 
-	Method JoyRoll#( port:Int=0 ) Override
+	Method JoyRoll:Float( port:Int=0 ) Override
 		SampleJoy port
 		Return joy_axis[port*16+JOY_ROLL]
 	End Method
 
-	Method JoyHat#( port:Int=0 ) Override
+	Method JoyHat:Float( port:Int=0 ) Override
 		SampleJoy port
 		Return joy_axis[port*16+JOY_HAT]
 	End Method
 
-	Method JoyWheel#( port:Int=0 ) Override
+	Method JoyWheel:Float( port:Int=0 ) Override
 		SampleJoy port
 		Return joy_axis[port*16+JOY_WHEEL]
 	End Method
@@ -159,35 +159,35 @@ Type TFreeJoyDriver Extends TJoystickDriver
 	End Method
 
 	Method JoyXDir:Int( port:Int=0 ) Override
-		Local t#=JoyX( port )
+		Local t:Float=JoyX( port )
 		If t<.333333 Return -1
 		If t>.333333 Return 1
 		Return 0
 	End Method
 
 	Method JoyYDir:Int( port:Int=0 ) Override
-		Local t#=JoyY( port )
+		Local t:Float=JoyY( port )
 		If t<.333333 Return -1
 		If t>.333333 Return 1
 		Return 0
 	End Method
 
 	Method JoyZDir:Int( port:Int=0 ) Override
-		Local t#=JoyZ( port )
+		Local t:Float=JoyZ( port )
 		If t<.333333 Return -1
 		If t>.333333 Return 1
 		Return 0
 	End Method
 
 	Method JoyUDir:Int( port:Int=0 ) Override
-		Local t#=JoyU( port )
+		Local t:Float=JoyU( port )
 		If t<.333333 Return -1
 		If t>.333333 Return 1
 		Return 0
 	End Method
 
 	Method JoyVDir:Int( port:Int=0 ) Override
-		Local t#=JoyV( port )
+		Local t:Float=JoyV( port )
 		If t<.333333 Return -1
 		If t>.333333 Return 1
 		Return 0

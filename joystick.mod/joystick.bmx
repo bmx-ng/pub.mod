@@ -99,7 +99,7 @@ Rem
 bbdoc: Reports the horizontal position of the joystick.
 returns: Zero if the joystick is centered, -1 if Left, 1 if Right or a value inbetween.
 End Rem
-Function JoyX#( port:Int=0 )
+Function JoyX:Float( port:Int=0 )
 	Assert current_joystick
 	Return current_joystick.JoyX(port)
 End Function
@@ -108,7 +108,7 @@ Rem
 bbdoc: Reports the vertical position of the joystick.
 returns: Zero if the joystick is centered, -1.0 if Up, 1.0 if Down or a value inbetween.
 End Rem
-Function JoyY#( port:Int=0 )
+Function JoyY:Float( port:Int=0 )
 	Assert current_joystick
 	Return current_joystick.JoyY(port)
 End Function
@@ -117,7 +117,7 @@ Rem
 bbdoc: Reports the position of the joystick's Z axis if supported.
 returns: Zero if the joystick is centered, -1.0 if Up, 1.0 if Down or a value inbetween.
 End Rem
-Function JoyZ#( port:Int=0 )
+Function JoyZ:Float( port:Int=0 )
 	Assert current_joystick
 	Return current_joystick.JoyZ(port)
 End Function
@@ -126,7 +126,7 @@ Rem
 bbdoc: Reports the position of the joystick's R axis if supported.
 returns: Zero if the joystick is centered, -1.0 if Up, 1.0 if Down or a value inbetween.
 End Rem
-Function JoyR#( port:Int=0 )
+Function JoyR:Float( port:Int=0 )
 	Assert current_joystick
 	Return current_joystick.JoyR(port)
 End Function
@@ -137,7 +137,7 @@ returns: Zero if the joystick is centered, -1.0 if Up, 1.0 if Down or a value in
 about:
 The U value of a joystick usually corresponds to a joystick's 'slider' or 'throttle' feature, although this may vary depending on the joystick, and will not be available with all joysticks.
 End Rem
-Function JoyU#( port:Int=0 )
+Function JoyU:Float( port:Int=0 )
 	Assert current_joystick
 	Return current_joystick.JoyU(port)
 End Function
@@ -148,7 +148,7 @@ returns: Zero if the joystick is centered, -1.0 if Up, 1.0 if Down or a value in
 about:
 The V value of a joystick usually corresponds to a joystick's 'slider' or 'throttle' feature, although this may vary depending on the joystick, and will not be available with all joysticks.
 End Rem
-Function JoyV#( port:Int=0 )
+Function JoyV:Float( port:Int=0 )
 	Assert current_joystick
 	Return current_joystick.JoyV(port)
 End Function
@@ -157,7 +157,7 @@ Rem
 bbdoc: Reports the position of the joystick's YAW axis if supported.
 returns: Zero if the joystick is centered, -1.0 if Up, 1.0 if Down or a value inbetween.
 End Rem
-Function JoyYaw#( port:Int=0 )
+Function JoyYaw:Float( port:Int=0 )
 	Assert current_joystick
 	Return current_joystick.JoyYaw(port)
 End Function
@@ -166,7 +166,7 @@ Rem
 bbdoc: Reports the position of the joystick's PITCH axis if supported.
 returns: Zero if the joystick is centered, -1.0 if Up, 1.0 if Down or a value inbetween.
 End Rem
-Function JoyPitch#( port:Int=0 )
+Function JoyPitch:Float( port:Int=0 )
 	Assert current_joystick
 	Return current_joystick.JoyPitch(port)
 End Function
@@ -175,7 +175,7 @@ Rem
 bbdoc: Reports the position of the joystick's ROLL axis if supported.
 returns: Zero if the joystick is centered, -1.0 if Up, 1.0 if Down or a value inbetween.
 End Rem
-Function JoyRoll#( port:Int=0 )
+Function JoyRoll:Float( port:Int=0 )
 	Assert current_joystick
 	Return current_joystick.JoyRoll(port)
 End Function
@@ -184,7 +184,7 @@ Rem
 bbdoc: Reports the position of the joystick's HAT controller if supported.
 returns: -1.0 if the joystick is centered, and values between 0.0, 0.25, 0.5 and 0.75 for the directions Up, Right, Down, Left respectively.
 End Rem
-Function JoyHat#( port:Int=0 )
+Function JoyHat:Float( port:Int=0 )
 	Assert current_joystick
 	Return current_joystick.JoyHat(port)
 End Function
@@ -193,7 +193,7 @@ Rem
 bbdoc: Reports the position of the joystick's WHEEL controller if supported.
 returns: Zero if the joystick is centered, -1.0 if Left, 1.0 if Right or a value inbetween.
 End Rem
-Function JoyWheel#( port:Int=0 )
+Function JoyWheel:Float( port:Int=0 )
 	Assert current_joystick
 	Return current_joystick.JoyWheel(port)
 End Function
@@ -272,17 +272,17 @@ Type TJoystickDriver
 	Method JoyAxisCaps:Int(port:Int) Abstract
 	Method JoyDown:Int( button:Int, port:Int=0 ) Abstract
 	Method JoyHit:Int( button:Int, port:Int=0 ) Abstract
-	Method JoyX#( port:Int=0 ) Abstract
-	Method JoyY#( port:Int=0 ) Abstract
-	Method JoyZ#( port:Int=0 ) Abstract
-	Method JoyR#( port:Int=0 ) Abstract
-	Method JoyU#( port:Int=0 ) Abstract
-	Method JoyV#( port:Int=0 ) Abstract
-	Method JoyYaw#( port:Int=0 ) Abstract
-	Method JoyPitch#( port:Int=0 ) Abstract
-	Method JoyRoll#( port:Int=0 ) Abstract
-	Method JoyHat#( port:Int=0 ) Abstract
-	Method JoyWheel#( port:Int=0 ) Abstract
+	Method JoyX:Float( port:Int=0 ) Abstract
+	Method JoyY:Float( port:Int=0 ) Abstract
+	Method JoyZ:Float( port:Int=0 ) Abstract
+	Method JoyR:Float( port:Int=0 ) Abstract
+	Method JoyU:Float( port:Int=0 ) Abstract
+	Method JoyV:Float( port:Int=0 ) Abstract
+	Method JoyYaw:Float( port:Int=0 ) Abstract
+	Method JoyPitch:Float( port:Int=0 ) Abstract
+	Method JoyRoll:Float( port:Int=0 ) Abstract
+	Method JoyHat:Float( port:Int=0 ) Abstract
+	Method JoyWheel:Float( port:Int=0 ) Abstract
 	Method JoyType:Int( port:Int=0 ) Abstract
 	Method JoyXDir:Int( port:Int=0 ) Abstract
 	Method JoyYDir:Int( port:Int=0 ) Abstract

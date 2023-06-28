@@ -102,7 +102,7 @@ End Extern
 
 Global _ok=LoadOpenAL()
 
-Function P:Byte Ptr(t$)
+Function P:Byte Ptr(t:String)
 	Return GetOpenALFunction( t )
 End Function
 
@@ -600,7 +600,7 @@ about:
 <tr><td>AL_INVALID_ENUM</td><td>The specified parameter is not valid.</td></tr>
 <tr><td>AL_INVALID_OPERATION</td><td>There is no current context.</td></tr></table><br/>
 End Rem
-Global alListenerf( param,value# )=P("alListenerf")
+Global alListenerf( param,value:Float )=P("alListenerf")
 Rem
 bbdoc: This function sets a floating point property for the listener. The relevant properties are listed in the table Listener Properties.
 about:

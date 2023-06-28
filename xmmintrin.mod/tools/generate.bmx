@@ -51,7 +51,7 @@ headerdata :+ "' 3. This notice may not be removed or altered from any source di
 headerdata :+ "'"
 
 
-Local moduledata$ = headerdata + "~n"
+Local moduledata:String = headerdata + "~n"
 moduledata :+ "SuperStrict~n~n"
 moduledata :+ "Rem~n"
 moduledata :+ "bbdoc: SIMD intrinsics for x64.~n"
@@ -63,7 +63,7 @@ moduledata :+ "ModuleInfo ~qLicense: zlib/libpng~q~n"
 moduledata :+ "ModuleInfo ~qCopyright: David JJ Camp~q~n~n"
 moduledata :+ "?x64~n"
 
-For Local version$ = EachIn SSE_VERSIONS
+For Local version:String = EachIn SSE_VERSIONS
 	Local file:String = version + ".bmx"
 	Local path:String = "../" + file
 	Local xfile:String = "../" + version + ".x"
@@ -103,7 +103,7 @@ moduledata :+ "?~n"
 SaveText moduledata,modulefile
 
 ' create _MM_SHUFFLE constants file
-Local shufflefile$ = "../" + "_MM_SHUFFLE.bmx"
+Local shufflefile:String = "../" + "_MM_SHUFFLE.bmx"
 Local outstream:TStream = WriteStream(shufflefile)
 
 WriteLine(outstream, headerdata)
@@ -116,9 +116,9 @@ For Local a:Int = 0 Until 4
 	For Local b:Int = 0 Until 4
 		For Local c:Int = 0 Until 4
 			For Local d:Int  = 0 Until 4
-				Local shuffle$ = "Const _MM_SHUFFLE_" + String(a) + String(b) + String(c) + String(d) + ":Int"
-				Local value$ = String(a Shl 6 | b Shl 4 | c Shl 2 | d)
-				WriteLine outstream, shuffle$ + "=" + value
+				Local shuffle:String = "Const _MM_SHUFFLE_" + String(a) + String(b) + String(c) + String(d) + ":Int"
+				Local value:String = String(a Shl 6 | b Shl 4 | c Shl 2 | d)
+				WriteLine outstream, shuffle + "=" + value
 			Next
 		Next
 	Next
@@ -129,17 +129,17 @@ CloseStream outstream
 
 
 Type tparser
-	Field _data$
+	Field _data:String
 	Field _length:Int
 	Field _posa:Int,_posb:Int
-	Field _token$
+	Field _token:String
 	
-	Field _xfunc$
+	Field _xfunc:String
 	Field _xpos:Int
 
-	Field _out$
+	Field _out:String
 	
-	Method New(data$)
+	Method New(data:String)
 		_data = data
 		_length = data.length
 		_out = "~t"
@@ -196,8 +196,8 @@ Type tparser
 	EndMethod
 	
 	Method ParseFunction()
-		Local rettype$
-		Local funcname$
+		Local rettype:String
+		Local funcname:String
 		
 		rettype = ParseType()
 		
@@ -220,7 +220,7 @@ Type tparser
 		
 		nexttoken
 
-		Local param$
+		Local param:String
 		If _token <> ")"
 			param = ParseParameter()
 			Emit(param)
@@ -231,7 +231,7 @@ Type tparser
 				_xfunc :+ ","
 				NextToken
 
-				Local param$ = ParseParameter()
+				Local param:String = ParseParameter()
 				Emit(param)
 			Wend
 		EndIf
@@ -243,9 +243,9 @@ Type tparser
 		NextToken
 	EndMethod
 	
-	Method ParseType$()
+	Method ParseType:String()
 		_xpos = _posa
-		Local t$
+		Local t:String
 		Select _token
 		Case "__m64"
 			t = "Float64"
@@ -314,18 +314,18 @@ Type tparser
 		Return t
 	EndMethod
 	
-	Method ParseParameter$()
-		Local t$ = ParseType()		
+	Method ParseParameter:String()
+		Local t:String = ParseType()		
 		If t = "" And ( _token = "," Or _token = ")" ) Return ""
 		
 		Assert(_token.length)
-		Local name$ = _token
+		Local name:String = _token
 		nexttoken
 		
 		Return name + ":" + t
 	EndMethod
 	
-	Method Emit(s$)
+	Method Emit(s:String)
 		_out :+ s
 	EndMethod
 
@@ -393,10 +393,10 @@ Type tparser
 	EndMethod
 EndType
 
-Function BackupFile(filename$)
+Function BackupFile(filename:String)
 	If FileType(filename)
-		Local data$ = LoadText(filename)
-		Local backup$ = filename+".bak"
+		Local data:String = LoadText(filename)
+		Local backup:String = filename+".bak"
 		SaveText data,backup
 	EndIf
 EndFunction

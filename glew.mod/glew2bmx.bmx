@@ -16,7 +16,7 @@ End Rem
 
 Global in:TStream=ReadStream( "GL/glew.h" )
 
-Global curr$,text$
+Global curr:String,text:String
 
 Local funMap:TMap=New TMap
 Local constMap:TMap=New TMap
@@ -26,11 +26,11 @@ While Not Eof(in)
 	bump
 	If curr="GLAPI"
 		bump
-		Local funty$=gltype()
+		Local funty:String=gltype()
 		If funty<>"x" And curr="GLAPIENTRY"
-			Local id$=bump()
+			Local id:String=bump()
 			If id[..2]="gl" And bump()="("
-				Local proto$=glproto()
+				Local proto:String=glproto()
 				If proto<>"x"
 					Print "Function "+id+funty+"("+proto+")"
 				EndIf
@@ -38,12 +38,12 @@ While Not Eof(in)
 		EndIf
 	Else If curr="#"
 		If bump()="define"
-			Local id$=bump()
+			Local id:String=bump()
 			If id[..11]="GL_VERSION_"
 				
 			Else If id[..3]="GL_"
 				If Not constMap.ValueForKey(id)
-					Local n$=bump()
+					Local n:String=bump()
 					If n[..2]="0x"
 						Print "Const "+id+"=$"+n[2..]
 					Else If n.length And isdigit(n[0]) And n<>"1"
@@ -53,17 +53,17 @@ While Not Eof(in)
 				EndIf
 			Else If id[..5]="GLEW_"
 				If bump()="GLEW_GET_VAR" And bump()="("
-					Local sym$=bump()
+					Local sym:String=bump()
 					If sym[..7]="__GLEW_" And bump()=")"
 						Print "Global GL_"+id[5..]+":Byte=~q"+sym+"~q"
 					EndIf
 				EndIf
 			Else If id[..2]="gl"
 				If bump()="GLEW_GET_FUN" And bump()="("
-					Local sym$=bump()
+					Local sym:String=bump()
 					If sym[..6]="__glew" And bump()=")"
-						Local key$="PFNGL"+sym[6..].ToUpper()+"PROC"
-						Local val$=String( funMap.ValueForKey( key ) )
+						Local key:String="PFNGL"+sym[6..].ToUpper()+"PROC"
+						Local val:String=String( funMap.ValueForKey( key ) )
 						If val
 							Print "Global "+id+val+"=~q"+sym+"~q"
 						Else
@@ -75,11 +75,11 @@ While Not Eof(in)
 		EndIf
 	Else If curr="typedef"
 		bump
-		Local funty$=gltype()
+		Local funty:String=gltype()
 		If funty<>"x" And curr="(" And bump()="GLAPIENTRY" And bump()="*"
-			Local id$=bump()
+			Local id:String=bump()
 			If id[..5]="PFNGL" And bump()=")" And bump()="("
-				Local proto$=glproto()
+				Local proto:String=glproto()
 				If proto<>"x"
 					funMap.Insert id,funty+"("+proto+")"
 				EndIf
@@ -90,15 +90,15 @@ Wend
 
 in.Close
 
-Function glproto$()
+Function glproto:String()
 	If bump()=")" Return ""
-	Local proto$,err,argid
+	Local proto:String,err,argid
 	Repeat
-		Local argty$=gltype()
+		Local argty:String=gltype()
 		If argty="x" Return argty
-		Local id$
+		Local id:String
 		If curr<>"," And curr<>")" And curr.length And (isalpha(curr[0]) Or curr[0]=Asc("_"))
-			id$=curr
+			id:String=curr
 			If bump()="["
 				While bump()<>"]"
 				Wend
@@ -122,8 +122,8 @@ Function glproto$()
 	Forever
 End Function
 
-Function gltype$()
-	Local ty$
+Function gltype:String()
+	Local ty:String
 	If curr="const"
 		bump
 	EndIf
@@ -176,7 +176,7 @@ Function isxdigit( c )
 	Return (c>=Asc("A") And c<=Asc("F")) Or (c>=Asc("a") And c<=Asc("f")) Or isdigit(c)
 End Function
 
-Function bump$()
+Function bump:String()
 	Local i=0
 	While i<text.length And text[i]<=Asc(" ")
 		i:+1
