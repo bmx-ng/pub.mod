@@ -1025,7 +1025,8 @@ SDateTime bmx_datetime_from_epoch(BBLONG epochTimeSecs, BBLONG fracNanoseconds) 
 
     dt.utc = 1;
     dt.offset = 0;
-	dt.dst = 0;
+    //-1: let functions decide if during the given time DST is active
+    dt.dst = -1;
 
     return dt;
 }
@@ -1041,6 +1042,10 @@ BBLONG bmx_datetime_to_epoch(SDateTime * dt) {
     t.tm_min = dt->minute;
     t.tm_sec = dt->second;
     t.tm_isdst = dt->dst;
+
+    //convert utc to local time if necessary
+    //as mktime expects a local time value
+    t.tm_min =+ (dt->utc ? bmx_calc_timeoffset_mins() : 0);
 
     // Convert struct tm to time_t (seconds since the Epoch)
     ts = mktime(&t);

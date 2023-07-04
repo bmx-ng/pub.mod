@@ -501,14 +501,14 @@ Struct SDateTime
 	End Rem
 	Field offset:Int
 	Rem
-	bbdoc: #True if the date time is observing daylight savings time, #False otherwise.
+	bbdoc: 1 if the date time is observing daylight savings time, 0 if not, and -1 to auto-calculate DST state at the given time.
     about: Daylight Saving Time (DST) is the practice of setting the clock ahead by one hour from standard time
 	during the warmer months, and then back again in the fall, in order to extend evening daylight and reduce the
 	need for artificial lighting. This can affect local time calculations, and so it's important to track whether a
 	given datetime object is observing DST. Note that not all regions observe DST, and the start and end dates
 	for DST can vary from one region to another.
 	End Rem
-	Field dst:Int
+	Field dst:Int = -1
 
 	Rem
 	bbdoc: Returns a string representation of the date time in ISO 8601 format.
