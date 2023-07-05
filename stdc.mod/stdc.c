@@ -1030,9 +1030,8 @@ SDateTime bmx_datetime_from_epoch(BBLONG epochTimeSecs, BBLONG fracNanoseconds) 
     return dt;
 }
 
-BBLONG bmx_datetime_to_epoch(SDateTime * dt) {
+time_t bmx_datetime_to_time_t(SDateTime * dt) {
     struct tm t;
-    time_t ts;
 
     t.tm_year = dt->year - 1900;
     t.tm_mon = dt->month - 1;
@@ -1040,16 +1039,88 @@ BBLONG bmx_datetime_to_epoch(SDateTime * dt) {
     t.tm_hour = dt->hour;
     t.tm_min = dt->minute;
     t.tm_sec = dt->second;
-    t.tm_isdst = dt->dst;
+    t.tm_isdst = -1; // timegm and _mkgmtime do not use this field
 
-    // Convert struct tm to time_t (seconds since the Epoch)
-    ts = mktime(&t);
-    if (ts == -1) {
+    if (!dt->utc) {
+        // Convert the offset to seconds
+        int offsetSeconds = dt->offset * 60;
+        if (dt->dst == 1) {
+            offsetSeconds += 3600;
+        }
+
+        // Convert struct tm to time_t as if it was UTC
+        time_t ts;
+    #if defined(_WIN32) || defined(_WIN64)
+        ts = _mkgmtime(&t);
+    #else
+        ts = timegm(&t);
+    #endif
+        if (ts == -1) {
+            return -1;
+        }
+
+        // Apply the offset
+        ts -= offsetSeconds;
+
+        return (BBLONG)ts;
+    } else {
+        // Convert struct tm to time_t as UTC
+        time_t ts;
+    #if defined(_WIN32) || defined(_WIN64)
+        ts = _mkgmtime(&t);
+    #else
+        ts = timegm(&t);
+    #endif
+
+        if (ts == -1) {
+            return -1;
+        }
+
+        return ts;
+    }
+}
+
+BBLONG bmx_datetime_to_epoch(SDateTime * dt) {
+	return (BBLONG)bmx_datetime_to_time_t(dt);
+}
+
+int bmx_datetime_convert_to_utc(const SDateTime* dt, SDateTime* dt_utc) {
+   if (!dt || !dt_utc)
+        return -1; // Return error if either pointer is NULL
+
+	if (dt->utc == 1) {
+		*dt_utc = *dt;
+        return 0;
+    }
+
+	time_t ts = bmx_datetime_to_time_t(dt);
+
+	if (ts == -1) {
         return -1;
     }
-    
-    return (BBLONG)ts;
+
+    struct tm utc;
+
+#if defined(_WIN32) || defined(_WIN64)
+    gmtime_s(&timeinfo, &epochTimeSecs);
+#else
+    gmtime_r(&ts, &utc);
+#endif
+
+    dt_utc->year = utc.tm_year + 1900;
+    dt_utc->month = utc.tm_mon + 1;
+    dt_utc->day = utc.tm_mday;
+    dt_utc->hour = utc.tm_hour;
+    dt_utc->minute = utc.tm_min;
+    dt_utc->second = utc.tm_sec;
+    dt_utc->millisecond = dt->millisecond;
+    dt_utc->utc = 1;
+    dt_utc->offset = 0;
+    dt_utc->dst = 0;
+
+    return 0;
 }
+
 
 BBString * bmx_current_datetime_format(BBString * format) {
 	struct tm tm;
@@ -1086,9 +1157,10 @@ BBString * bmx_datetime_iso8601(const SDateTime *dt, int showMillis) {
                      dt->year, dt->month, dt->day, dt->hour, dt->minute, dt->second);
         }
     } else {
+		int offset = dt->dst == 1 ? dt->offset + 60 : dt->offset;
         int offset_sign = dt->offset >= 0 ? 1 : -1;
-        int offset_hours = dt->offset / 60 * offset_sign;
-        int offset_minutes = dt->offset % 60 * offset_sign;
+        int offset_hours = offset / 60;
+        int offset_minutes = offset % 60 * offset_sign;
 
         if (showMillis) {
             snprintf(buf, 32, "%04d-%02d-%02dT%02d:%02d:%02d.%03d%+03d:%02d",
