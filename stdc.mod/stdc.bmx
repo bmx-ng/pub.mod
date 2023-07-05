@@ -501,14 +501,30 @@ Struct SDateTime
 	End Rem
 	Field offset:Int
 	Rem
-	bbdoc: #True if the date time is observing daylight savings time, #False otherwise.
+	bbdoc: 1 if the date time is observing daylight savings time, 0 if not and -1 if it is not known.
     about: Daylight Saving Time (DST) is the practice of setting the clock ahead by one hour from standard time
 	during the warmer months, and then back again in the fall, in order to extend evening daylight and reduce the
 	need for artificial lighting. This can affect local time calculations, and so it's important to track whether a
 	given datetime object is observing DST. Note that not all regions observe DST, and the start and end dates
 	for DST can vary from one region to another.
 	End Rem
-	Field dst:Int
+	Field dst:Int = -1
+
+	Rem
+	bbdoc: Creates a new #SDateTime instance from the given date and time information.
+	End Rem
+	Method New(year:Int, month:Int, day:Int, hour:Int, minute:Int, second:Int, millisecond:Int = 0, utc:Int = True, offset:Int = 0, dst:Int = -1)
+		Self.year = year
+		Self.month = month
+		Self.day = day
+		Self.hour = hour
+		Self.minute = minute
+		Self.second = second
+		Self.millisecond = millisecond
+		Self.utc = utc
+		Self.offset = offset
+		Self.dst = dst
+	End Method
 
 	Rem
 	bbdoc: Returns a string representation of the date time in ISO 8601 format.
@@ -553,6 +569,20 @@ Struct SDateTime
 	End Rem
 	Method ToEpochSecs:Long()
 		Return bmx_datetime_to_epoch(Self)
+	End Method
+
+	Rem
+	bbdoc: Converts the current date time to the equivalent in UTC.
+	returns: The equivalent date time in UTC, or the original date time if the conversion failed.
+	End Rem
+	Method ToUtc:SDateTime()
+		Local dt:SDateTime
+		Local res:Int = bmx_datetime_convert_to_utc(Self, dt)
+		If res = 0 Then
+			Return dt
+		Else
+			Return Self
+		End If
 	End Method
 End Struct
 
@@ -609,6 +639,7 @@ Extern "c"
 	Function bmx_datetime_from_epoch:SDateTime(epochSecs:Long, fracNanoSecs:Long)
 	Function bmx_current_datetime_format:String(format:String)
 	Function bmx_datetime_to_epoch:Long(dt:SDateTime Var)
+	Function bmx_datetime_convert_to_utc:Int(dt:SDateTime Var, dtUtc:SDateTime Var)
 End Extern
 
 Startup
