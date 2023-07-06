@@ -89,16 +89,16 @@ Type TSDateTimeTest Extends TTest
 
 	Method AssertSDateTimeEquals( expected:SDateTime, actual:SDateTime )
 
-		AssertEquals( expected.year, actual.year )
-		AssertEquals( expected.month, actual.month )
-		AssertEquals( expected.day, actual.day )
-		AssertEquals( expected.hour, actual.hour )
-		AssertEquals( expected.minute, actual.minute )
-		AssertEquals( expected.second, actual.second )
-		AssertEquals( expected.milliSecond, actual.milliSecond )
-		AssertEquals( expected.utc, actual.utc )
-		AssertEquals( expected.offset, actual.offset )
-		AssertEquals( expected.dst, actual.dst )
+		AssertEquals( expected.year, actual.year, "year" )
+		AssertEquals( expected.month, actual.month, "month" )
+		AssertEquals( expected.day, actual.day, "day" )
+		AssertEquals( expected.hour, actual.hour, "hour" )
+		AssertEquals( expected.minute, actual.minute, "minute" )
+		AssertEquals( expected.second, actual.second, "second" )
+		AssertEquals( expected.milliSecond, actual.milliSecond, "millisecond" )
+		AssertEquals( expected.utc, actual.utc, "utc" )
+		AssertEquals( expected.offset, actual.offset, "offset" )
+		AssertEquals( expected.dst, actual.dst, "dst" )
 
 	End Method
 End Type
