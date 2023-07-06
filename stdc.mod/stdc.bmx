@@ -223,6 +223,7 @@ Function opendir_:Byte Ptr( path:String )
 Function closedir_:Int( dir:Byte Ptr )
 Function readdir_:String( dir:Byte Ptr )
 Function stat_:Int( path:String,st_mode:Int Var,st_size:Long Var,st_mtime:Int Var,st_ctime:Int Var,st_atime:Int Var )
+Function stat64_:Int( path:String,st_mode:Int Var,st_size:Long Var,st_mtime:Long Var,st_ctime:Long Var,st_atime:Long Var )
 Function system_:Int( cmd:String )
 Function utime_:Int( path:String, ty:Int, time:Long)
 
@@ -556,9 +557,10 @@ Struct SDateTime
 
 	If @fracNanoSecs is provided, it will be used to set the 'millisecond' field of the SDateTime instance.
 	The nanosecond fraction is effectively divided by a million to provide millisecond precision.
+	If @isLocal is set to #True, the epoch timestamp is assumed to be in local time, otherwise it is assumed to be in UTC.
 	End Rem
-	Function FromEpoch:SDateTime(epochSecs:Long, fracNanoSecs:Long = 0)
-		Return bmx_datetime_from_epoch(epochSecs, fracNanoSecs)
+	Function FromEpoch:SDateTime(epochSecs:Long, fracNanoSecs:Long = 0, isLocal:Int = False)
+		Return bmx_datetime_from_epoch(epochSecs, fracNanoSecs, isLocal:Int)
 	End Function
 
 	Rem
@@ -576,6 +578,10 @@ Struct SDateTime
 	returns: The equivalent date time in UTC, or the original date time if the conversion failed.
 	End Rem
 	Method ToUtc:SDateTime()
+		If utc Then
+			Return Self
+		End If
+
 		Local dt:SDateTime
 		Local res:Int = bmx_datetime_convert_to_utc(Self, dt)
 		If res = 0 Then
@@ -636,7 +642,7 @@ Private
 Extern "c"
 	Function bmx_datetime_iso8601:String(dt:SDateTime Var, showMillis:Int = False)
 	Function Startup()="bb_stdc_Startup"
-	Function bmx_datetime_from_epoch:SDateTime(epochSecs:Long, fracNanoSecs:Long)
+	Function bmx_datetime_from_epoch:SDateTime(epochSecs:Long, fracNanoSecs:Long, isLocal:Int)
 	Function bmx_current_datetime_format:String(format:String)
 	Function bmx_datetime_to_epoch:Long(dt:SDateTime Var)
 	Function bmx_datetime_convert_to_utc:Int(dt:SDateTime Var, dtUtc:SDateTime Var)

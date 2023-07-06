@@ -283,6 +283,38 @@ int stat_( BBString *path,int *t_mode,BBLONG *t_size,int *t_mtime,int *t_ctime,i
 	return 0;
 }
 
+int stat64_( BBString *path,int *t_mode,BBLONG *t_size,BBLONG *t_mtime,BBLONG *t_ctime,BBLONG *t_atime ){
+	int i;
+	struct _stati64 st;
+	
+	for( i=0;i<path->length;++i ){
+		if( path->buf[i]=='<' || path->buf[i]=='>' ) return -1;
+	}
+	
+	if( _bbusew ){
+		BBChar *p = bbStringToWString(path);
+		if( _wstati64( p,&st ) ) {
+			bbMemFree(p);
+			return -1;
+		}
+		bbMemFree(p);
+	}else{
+		char *p = bbStringToCString(path);
+		if( _stati64( p,&st ) ) {
+			bbMemFree(p);
+			return -1;
+		}
+		bbMemFree(p);
+	}
+
+	*t_mode=st.st_mode;
+	*t_size=st.st_size;
+	*t_mtime=st.st_mtime;
+	*t_ctime=st.st_ctime;
+	*t_atime=st.st_atime;
+	return 0;
+}
+
 int system_( BBString *cmd ){
 	int res;
 	PROCESS_INFORMATION pi={0};
@@ -476,6 +508,22 @@ int closedir_( DIR* dir ){
 }
 
 int stat_( BBString *path,int *t_mode,BBLONG *t_size,int *t_mtime,int *t_ctime,int *t_atime ){
+	struct stat st;
+	char *p = bbStringToUTF8String( path );
+	if( stat( p,&st ) ) {
+		bbMemFree(p);
+		return -1;
+	}
+	bbMemFree(p);
+	*t_mode=st.st_mode;
+	*t_size=st.st_size;
+	*t_mtime=st.st_mtime;
+	*t_ctime=st.st_ctime;
+	*t_atime=st.st_atime;
+	return 0;
+}
+
+int stat64_( BBString *path,int *t_mode,BBLONG *t_size,BBLONG *t_mtime,BBLONG *t_ctime,BBLONG *t_atime ){
 	struct stat st;
 	char *p = bbStringToUTF8String( path );
 	if( stat( p,&st ) ) {
@@ -1004,8 +1052,51 @@ void bmx_current_datetime(SDateTime * dt, int utc) {
 }
 #endif
 
-SDateTime bmx_datetime_from_epoch(BBLONG epochTimeSecs, BBLONG fracNanoseconds) {
+int bmx_datetime_from_local_epoch(BBLONG epoch, SDateTime* dt) {
+    struct tm* local;
+#if defined(__linux__) || defined(__APPLE__)
+    struct tm result;
+    local = localtime_r(&epoch, &result);
+#elif defined(_WIN32) || defined(_WIN64)
+    local = localtime(&epoch);
+#else
+    return -1; // Platform not supported
+#endif
+
+    if (!local) {
+        return -1;
+    }
+
+    dt->year = local->tm_year + 1900;
+    dt->month = local->tm_mon + 1;
+    dt->day = local->tm_mday;
+    dt->hour = local->tm_hour;
+    dt->minute = local->tm_min;
+    dt->second = local->tm_sec;
+    dt->millisecond = 0;
+    dt->utc = 0; // This is local time
+#if defined(__linux__) || defined(__APPLE__)
+    dt->offset = local->tm_gmtoff / 60; // 'tm_gmtoff' holds seconds east of UTC
+    dt->dst = local->tm_isdst;
+#elif defined(_WIN32) || defined(_WIN64)
+    dt->offset = -bmx_calc_timeoffset_mins(dt); // - is because Windows returns minutes west of UTC
+#endif
+    return 0;
+}
+
+SDateTime bmx_datetime_from_epoch(BBLONG epochTimeSecs, BBLONG fracNanoseconds, int isLocalTime) {
     SDateTime dt;
+
+	if (isLocalTime) {
+		int res = bmx_datetime_from_local_epoch(epochTimeSecs, &dt);
+
+		if (res == 0) {
+			dt.millisecond = fracNanoseconds / 1000000;
+		}
+
+		return dt;
+	}
+
     struct tm timeinfo;
 
 #if defined(_WIN32) || defined(_WIN64)
@@ -1081,7 +1172,21 @@ time_t bmx_datetime_to_time_t(SDateTime * dt) {
 }
 
 BBLONG bmx_datetime_to_epoch(SDateTime * dt) {
-	return (BBLONG)bmx_datetime_to_time_t(dt);
+	if (dt->utc) {
+		return (BBLONG)bmx_datetime_to_time_t(dt);
+	}
+
+	struct tm t;
+
+	t.tm_year = dt->year - 1900;
+	t.tm_mon = dt->month - 1;
+	t.tm_mday = dt->day;
+	t.tm_hour = dt->hour;
+	t.tm_min = dt->minute;
+	t.tm_sec = dt->second;
+	t.tm_isdst = dt->dst;
+
+	return (BBLONG)mktime(&t);
 }
 
 int bmx_datetime_convert_to_utc(const SDateTime* dt, SDateTime* dt_utc) {
