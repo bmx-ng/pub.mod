@@ -1207,7 +1207,7 @@ int bmx_datetime_convert_to_utc(const SDateTime* dt, SDateTime* dt_utc) {
     struct tm utc;
 
 #if defined(_WIN32) || defined(_WIN64)
-    gmtime_s(&ts, &utc);
+    gmtime_s(&utc, &ts);
 #else
     gmtime_r(&ts, &utc);
 #endif
