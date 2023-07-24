@@ -18,6 +18,7 @@
 #include <windows.h>
 #include <ws2tcpip.h>
 #include <utime.h>
+#include <fileapi.h>
 
 extern int bmx_inet_pton(int af, const char *src, void *dst);
 #define inet_pton bmx_inet_pton
@@ -389,9 +390,41 @@ int utime_( BBString *path, int type, BBLONG time){
 	} else {
 		return -1;
 	}
-
+	
 	wchar_t *p = bbStringToWString(path);
-	int res = _wutime( p, &times);
+	
+	struct _stati64 st;
+	if (_wstati64(p, &st)) {
+		bbMemFree(p);
+		return -1;
+	}
+	
+	int res = 0;
+	
+	if (S_ISDIR(st.st_mode)) {
+		HANDLE dirHandle = CreateFileW(p, FILE_WRITE_ATTRIBUTES, 
+			FILE_SHARE_READ|FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 
+			FILE_FLAG_BACKUP_SEMANTICS, NULL);
+		
+		if (dirHandle == INVALID_HANDLE_VALUE) {
+			return -1;
+		}
+		
+		FILETIME ft;
+
+		int64_t convTime = (int64_t)time * 10000000 + 116444736000000000;
+		ft.dwLowDateTime = (DWORD)convTime;
+		ft.dwHighDateTime = convTime >> 32;
+
+		if (!SetFileTime(dirHandle, type == 1 ? &ft : NULL, type == 2 ? &ft : NULL, type == 0 ? &ft : NULL)) {
+			res = -1;
+		}
+		
+		CloseHandle(dirHandle);
+	} else {
+		res = _wutime( p, &times);
+	}
+	
 	bbMemFree(p);
 	
 	return res == 0 ? 0 : -1;
