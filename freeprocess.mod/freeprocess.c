@@ -332,8 +332,7 @@ PROCESS_INFORMATION * fdProcess( BBString *cmd,size_t *procin,size_t *procout,si
 		si.hStdOutput=p_ostr;
 		si.hStdError=p_estr;
 		if (flags&HIDECONSOLE) {
-			si.dwFlags|=STARTF_USESHOWWINDOW;
-			si.wShowWindow=SW_HIDE;
+			pflags|=CREATE_NO_WINDOW;
 		} 
 		else if (flags&SHOWCONSOLE) {
 			pflags|=CREATE_NEW_CONSOLE;
@@ -354,8 +353,7 @@ PROCESS_INFORMATION * fdProcess( BBString *cmd,size_t *procin,size_t *procout,si
 		si.hStdOutput=p_ostr;
 		si.hStdError=p_estr;
 		if (flags&HIDECONSOLE) {
-			si.dwFlags|=STARTF_USESHOWWINDOW;
-			si.wShowWindow=SW_HIDE;
+			pflags|=CREATE_NO_WINDOW;
 		} 
 		else if (flags&SHOWCONSOLE) {
 			pflags|=CREATE_NEW_CONSOLE;
