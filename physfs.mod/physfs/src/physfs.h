@@ -148,6 +148,7 @@
  *   - .HOG (Descent I/II/III HOG file archives)
  *   - .MVL (Descent II movielib archives)
  *   - .WAD (DOOM engine archives)
+ *   - .BIN (Chasm: The Rift engine archives)
  *   - .VDF (Gothic I/II engine archives)
  *   - .SLB (Independence War archives)
  *
@@ -522,6 +523,11 @@ typedef struct PHYSFS_AndroidInit
  *          PHYSFS_init(). If you pass a NULL here, PHYSFS_init can still
  *          succeed, but PHYSFS_getBaseDir() and PHYSFS_getPrefDir() will be
  *          incorrect.
+ *
+ * \warning On Playdate, argv0 should be a non-NULL pointer to a PlaydateAPI
+ *          struct. PhysicsFS uses this object for system-level access and
+ *          will hold it until PHYSFS_deinit is called.
+ *          If you pass a NULL here, PhysicsFS will crash.
  *
  *   \param argv0 the argv[0] string passed to your program's mainline.
  *          This may be NULL on most platforms (such as ones without a
