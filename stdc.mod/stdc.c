@@ -430,6 +430,57 @@ int utime_( BBString *path, int type, BBLONG time){
 	return res == 0 ? 0 : -1;
 }
 
+typedef DWORD (WINAPI *GetFinalPathNameByHandleW_t)(HANDLE, LPWSTR, DWORD, DWORD);
+
+BBString * readlink_( BBString * path ) {
+    // Load kernel32.dll and get the address of GetFinalPathNameByHandleW
+    HMODULE hModule = LoadLibraryW(L"kernel32.dll");
+    if (!hModule) {
+        return &bbEmptyString;
+    }
+    
+    GetFinalPathNameByHandleW_t pGetFinalPathNameByHandleW = 
+        (GetFinalPathNameByHandleW_t)GetProcAddress(hModule, "GetFinalPathNameByHandleW");
+
+    if (!pGetFinalPathNameByHandleW) {
+        FreeLibrary(hModule);
+        return &bbEmptyString;
+    }
+
+    WCHAR * p = bbStringToWString( path );
+    
+    // Check if the path is a symbolic link
+    DWORD attributes = GetFileAttributesW(p);
+    if (attributes == INVALID_FILE_ATTRIBUTES || !(attributes & FILE_ATTRIBUTE_REPARSE_POINT)) {
+        bbMemFree(p);
+        FreeLibrary(hModule);
+        return &bbEmptyString;
+    }
+
+    HANDLE hFile = CreateFileW(
+        p, 
+        0, 
+        FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE, 
+        NULL, 
+        OPEN_EXISTING, 
+        FILE_FLAG_BACKUP_SEMANTICS, 
+        NULL
+    );
+    bbMemFree(p);
+
+    if (hFile == INVALID_HANDLE_VALUE) {
+        FreeLibrary(hModule);
+        return &bbEmptyString;
+    }
+
+    WCHAR buf[MAX_PATH];
+    DWORD res = pGetFinalPathNameByHandleW(hFile, buf, MAX_PATH, FILE_NAME_NORMALIZED);
+    CloseHandle(hFile);
+    FreeLibrary(hModule);
+
+    return res > 0 && res < MAX_PATH ? bbStringFromWString(buf) : &bbEmptyString;
+}
+
 #else
 
 int getchar_(){
@@ -616,6 +667,15 @@ BBLONG ftell_( FILE* stream ) {
 int ftruncate_(FILE* stream, BBLONG size) {
 	return ftruncate(fileno(stream), size);
 }
+
+BBString * readlink_( BBString * path ) {
+	char * p = bbStringToUTF8String( path );
+	char buf[PATH_MAX];
+	int res = readlink( p, buf, PATH_MAX );
+	bbMemFree(p);
+	return res >= 0 ? bbStringFromUTF8String( buf ) : &bbEmptyString;
+}
+
 #ifndef __APPLE__
 int clock_gettime_(int id, struct timespec * spec) {
 	return clock_gettime(id, spec);

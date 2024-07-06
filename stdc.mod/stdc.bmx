@@ -14,12 +14,14 @@ bbdoc: Standard C Library functions.
 End Rem
 Module Pub.StdC
 
-ModuleInfo "Version: 1.14"
+ModuleInfo "Version: 1.15"
 ModuleInfo "Author: Various"
 ModuleInfo "License: zlib/libpng"
 ModuleInfo "Modserver: BRL"
 ModuleInfo "Credit: Adapted for BlitzMax by Mark Sibly"
 
+ModuleInfo "History: 1.15"
+ModuleInfo "History: Added readlink_"
 ModuleInfo "History: 1.14"
 ModuleInfo "History: Added ftruncate_"
 ModuleInfo "History: 1.13 Release"
@@ -209,6 +211,7 @@ Function fgetc_:Int( c_stream:Byte Ptr )="int fgetc( FILE* ) !"
 Function ungetc_:Int( char:Int,c_stream:Byte Ptr )="int ungetc( int,FILE* ) !"
 Function fputs_:Int( str:String,c_stream:Byte Ptr )
 Function ftruncate_:Int(c_stream:Byte Ptr, size:Long)
+Function readlink_:String( path:String )
 
 'posix
 
