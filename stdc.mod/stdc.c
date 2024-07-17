@@ -1097,6 +1097,17 @@ void bmx_current_datetime(SDateTime * dt, int utc) {
     dt->utc = utc;
     dt->offset = utc ? 0 : bmx_calc_timeoffset_mins(dt);
 }
+
+BBULONG bmx_current_unix_time() {
+	SYSTEMTIME systemTime;
+	GetSystemTime(&systemTime);
+	FILETIME fileTime;
+	SystemTimeToFileTime(&systemTime, &fileTime);
+	ULARGE_INTEGER uli;
+	uli.LowPart = fileTime.dwLowDateTime;
+	uli.HighPart = fileTime.dwHighDateTime;
+	return (uli.QuadPart / 10000) - 11644473600000ULL;
+}
 #else
 int bmx_calc_timeoffset_mins() {
 	time_t rawtime;
@@ -1142,6 +1153,12 @@ void bmx_current_datetime(SDateTime * dt, int utc) {
     dt->millisecond = ts.tv_nsec / 1000000;
     dt->utc = utc;
     dt->offset = utc ? 0 : bmx_calc_timeoffset_mins();
+}
+
+BBULONG bmx_current_unix_time() {
+	struct timespec ts;
+	clock_gettime(CLOCK_REALTIME, &ts);
+	return (BBULONG)ts.tv_sec * 1000 + ts.tv_nsec / 1000000;
 }
 #endif
 
