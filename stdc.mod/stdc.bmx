@@ -450,7 +450,13 @@ Rem
 bbdoc: Returns the current date and time.
 End Rem
 Function CurrentDateTime(dt:SDateTime Var, utc:Int = True)="bmx_current_datetime"
-	
+
+Rem
+bbdoc: Returns the current Unix time in milliseconds.
+about: The Unix time is a system for describing a point in time, defined as the number of seconds that have
+elapsed since 00:00:00 Coordinated Universal Time (UTC), Thursday, 1 January 1970, minus the number of leap seconds.
+End Rem
+Function CurrentUnixTime:ULong()="bmx_current_unix_time"
 
 End Extern
 
