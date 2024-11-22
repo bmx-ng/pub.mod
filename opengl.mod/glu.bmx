@@ -7,191 +7,191 @@ Import "GL/glu.h"
 
 'GLU CONSTANTS
 ' Boolean
-Const GLU_FALSE:Int                          = 0
-Const GLU_TRUE:Int                           = 1
+Const GLU_FALSE:UInt                          = 0
+Const GLU_TRUE:UInt                           = 1
 
 ' StringName
-Const GLU_VERSION:Int                        = 100800
-Const GLU_EXTENSIONS:Int                     = 100801
+Const GLU_VERSION:UInt                        = 100800
+Const GLU_EXTENSIONS:UInt                     = 100801
 
 ' ErrorCode
-Const GLU_INVALID_ENUM:Int                   = 100900
-Const GLU_INVALID_VALUE:Int                  = 100901
-Const GLU_OUT_OF_MEMORY:Int                  = 100902
-Const GLU_INCOMPATIBLE_GL_VERSION:Int        = 100903
-Const GLU_INVALID_OPERATION:Int              = 100904
+Const GLU_INVALID_ENUM:UInt                   = 100900
+Const GLU_INVALID_VALUE:UInt                  = 100901
+Const GLU_OUT_OF_MEMORY:UInt                  = 100902
+Const GLU_INCOMPATIBLE_GL_VERSION:UInt        = 100903
+Const GLU_INVALID_OPERATION:UInt              = 100904
 
 ' NurbsDisplay
 '      GLU_FILL
-Const GLU_OUTLINE_POLYGON:Int                = 100240
-Const GLU_OUTLINE_PATCH:Int                  = 100241
+Const GLU_OUTLINE_POLYGON:UInt                = 100240
+Const GLU_OUTLINE_PATCH:UInt                  = 100241
 
 ' NurbsCallback
-Const GLU_NURBS_ERROR:Int                    = 100103
-Const GLU_ERROR:Int                          = 100103
-Const GLU_NURBS_BEGIN:Int                    = 100164
-Const GLU_NURBS_BEGIN_EXT:Int                = 100164
-Const GLU_NURBS_VERTEX:Int                   = 100165
-Const GLU_NURBS_VERTEX_EXT:Int               = 100165
-Const GLU_NURBS_NORMAL:Int                   = 100166
-Const GLU_NURBS_NORMAL_EXT:Int               = 100166
-Const GLU_NURBS_COLOR:Int                    = 100167
-Const GLU_NURBS_COLOR_EXT:Int                = 100167
-Const GLU_NURBS_TEXTURE_COORD:Int            = 100168
-Const GLU_NURBS_TEX_COORD_EXT:Int            = 100168
-Const GLU_NURBS_END:Int                      = 100169
-Const GLU_NURBS_END_EXT:Int                  = 100169
-Const GLU_NURBS_BEGIN_DATA:Int               = 100170
-Const GLU_NURBS_BEGIN_DATA_EXT:Int           = 100170
-Const GLU_NURBS_VERTEX_DATA:Int              = 100171
-Const GLU_NURBS_VERTEX_DATA_EXT:Int          = 100171
-Const GLU_NURBS_NORMAL_DATA:Int              = 100172
-Const GLU_NURBS_NORMAL_DATA_EXT:Int          = 100172
-Const GLU_NURBS_COLOR_DATA:Int               = 100173
-Const GLU_NURBS_COLOR_DATA_EXT:Int           = 100173
-Const GLU_NURBS_TEXTURE_COORD_DATA:Int       = 100174
-Const GLU_NURBS_TEX_COORD_DATA_EXT:Int       = 100174
-Const GLU_NURBS_END_DATA:Int                 = 100175
-Const GLU_NURBS_END_DATA_EXT:Int             = 100175
+Const GLU_NURBS_ERROR:UInt                    = 100103
+Const GLU_ERROR:UInt                          = 100103
+Const GLU_NURBS_BEGIN:UInt                    = 100164
+Const GLU_NURBS_BEGIN_EXT:UInt                = 100164
+Const GLU_NURBS_VERTEX:UInt                   = 100165
+Const GLU_NURBS_VERTEX_EXT:UInt               = 100165
+Const GLU_NURBS_NORMAL:UInt                   = 100166
+Const GLU_NURBS_NORMAL_EXT:UInt               = 100166
+Const GLU_NURBS_COLOR:UInt                    = 100167
+Const GLU_NURBS_COLOR_EXT:UInt                = 100167
+Const GLU_NURBS_TEXTURE_COORD:UInt            = 100168
+Const GLU_NURBS_TEX_COORD_EXT:UInt            = 100168
+Const GLU_NURBS_END:UInt                      = 100169
+Const GLU_NURBS_END_EXT:UInt                  = 100169
+Const GLU_NURBS_BEGIN_DATA:UInt               = 100170
+Const GLU_NURBS_BEGIN_DATA_EXT:UInt           = 100170
+Const GLU_NURBS_VERTEX_DATA:UInt              = 100171
+Const GLU_NURBS_VERTEX_DATA_EXT:UInt          = 100171
+Const GLU_NURBS_NORMAL_DATA:UInt              = 100172
+Const GLU_NURBS_NORMAL_DATA_EXT:UInt          = 100172
+Const GLU_NURBS_COLOR_DATA:UInt               = 100173
+Const GLU_NURBS_COLOR_DATA_EXT:UInt           = 100173
+Const GLU_NURBS_TEXTURE_COORD_DATA:UInt       = 100174
+Const GLU_NURBS_TEX_COORD_DATA_EXT:UInt       = 100174
+Const GLU_NURBS_END_DATA:UInt                 = 100175
+Const GLU_NURBS_END_DATA_EXT:UInt             = 100175
 
 ' NurbsError
-Const GLU_NURBS_ERROR1:Int                   = 100251
-Const GLU_NURBS_ERROR2:Int                   = 100252
-Const GLU_NURBS_ERROR3:Int                   = 100253
-Const GLU_NURBS_ERROR4:Int                   = 100254
-Const GLU_NURBS_ERROR5:Int                   = 100255
-Const GLU_NURBS_ERROR6:Int                   = 100256
-Const GLU_NURBS_ERROR7:Int                   = 100257
-Const GLU_NURBS_ERROR8:Int                   = 100258
-Const GLU_NURBS_ERROR9:Int                   = 100259
-Const GLU_NURBS_ERROR10:Int                  = 100260
-Const GLU_NURBS_ERROR11:Int                  = 100261
-Const GLU_NURBS_ERROR12:Int                  = 100262
-Const GLU_NURBS_ERROR13:Int                  = 100263
-Const GLU_NURBS_ERROR14:Int                  = 100264
-Const GLU_NURBS_ERROR15:Int                  = 100265
-Const GLU_NURBS_ERROR16:Int                  = 100266
-Const GLU_NURBS_ERROR17:Int                  = 100267
-Const GLU_NURBS_ERROR18:Int                  = 100268
-Const GLU_NURBS_ERROR19:Int                  = 100269
-Const GLU_NURBS_ERROR20:Int                  = 100270
-Const GLU_NURBS_ERROR21:Int                  = 100271
-Const GLU_NURBS_ERROR22:Int                  = 100272
-Const GLU_NURBS_ERROR23:Int                  = 100273
-Const GLU_NURBS_ERROR24:Int                  = 100274
-Const GLU_NURBS_ERROR25:Int                  = 100275
-Const GLU_NURBS_ERROR26:Int                  = 100276
-Const GLU_NURBS_ERROR27:Int                  = 100277
-Const GLU_NURBS_ERROR28:Int                  = 100278
-Const GLU_NURBS_ERROR29:Int                  = 100279
-Const GLU_NURBS_ERROR30:Int                  = 100280
-Const GLU_NURBS_ERROR31:Int                  = 100281
-Const GLU_NURBS_ERROR32:Int                  = 100282
-Const GLU_NURBS_ERROR33:Int                  = 100283
-Const GLU_NURBS_ERROR34:Int                  = 100284
-Const GLU_NURBS_ERROR35:Int                  = 100285
-Const GLU_NURBS_ERROR36:Int                  = 100286
-Const GLU_NURBS_ERROR37:Int                  = 100287
+Const GLU_NURBS_ERROR1:UInt                   = 100251
+Const GLU_NURBS_ERROR2:UInt                   = 100252
+Const GLU_NURBS_ERROR3:UInt                   = 100253
+Const GLU_NURBS_ERROR4:UInt                   = 100254
+Const GLU_NURBS_ERROR5:UInt                   = 100255
+Const GLU_NURBS_ERROR6:UInt                   = 100256
+Const GLU_NURBS_ERROR7:UInt                   = 100257
+Const GLU_NURBS_ERROR8:UInt                   = 100258
+Const GLU_NURBS_ERROR9:UInt                   = 100259
+Const GLU_NURBS_ERROR10:UInt                  = 100260
+Const GLU_NURBS_ERROR11:UInt                  = 100261
+Const GLU_NURBS_ERROR12:UInt                  = 100262
+Const GLU_NURBS_ERROR13:UInt                  = 100263
+Const GLU_NURBS_ERROR14:UInt                  = 100264
+Const GLU_NURBS_ERROR15:UInt                  = 100265
+Const GLU_NURBS_ERROR16:UInt                  = 100266
+Const GLU_NURBS_ERROR17:UInt                  = 100267
+Const GLU_NURBS_ERROR18:UInt                  = 100268
+Const GLU_NURBS_ERROR19:UInt                  = 100269
+Const GLU_NURBS_ERROR20:UInt                  = 100270
+Const GLU_NURBS_ERROR21:UInt                  = 100271
+Const GLU_NURBS_ERROR22:UInt                  = 100272
+Const GLU_NURBS_ERROR23:UInt                  = 100273
+Const GLU_NURBS_ERROR24:UInt                  = 100274
+Const GLU_NURBS_ERROR25:UInt                  = 100275
+Const GLU_NURBS_ERROR26:UInt                  = 100276
+Const GLU_NURBS_ERROR27:UInt                  = 100277
+Const GLU_NURBS_ERROR28:UInt                  = 100278
+Const GLU_NURBS_ERROR29:UInt                  = 100279
+Const GLU_NURBS_ERROR30:UInt                  = 100280
+Const GLU_NURBS_ERROR31:UInt                  = 100281
+Const GLU_NURBS_ERROR32:UInt                  = 100282
+Const GLU_NURBS_ERROR33:UInt                  = 100283
+Const GLU_NURBS_ERROR34:UInt                  = 100284
+Const GLU_NURBS_ERROR35:UInt                  = 100285
+Const GLU_NURBS_ERROR36:UInt                  = 100286
+Const GLU_NURBS_ERROR37:UInt                  = 100287
 
 ' NurbsProperty
-Const GLU_AUTO_LOAD_MATRIX:Int               = 100200
-Const GLU_CULLING:Int                        = 100201
-Const GLU_SAMPLING_TOLERANCE:Int             = 100203
-Const GLU_DISPLAY_MODE:Int                   = 100204
-Const GLU_PARAMETRIC_TOLERANCE:Int           = 100202
-Const GLU_SAMPLING_METHOD:Int                = 100205
-Const GLU_U_STEP:Int                         = 100206
-Const GLU_V_STEP:Int                         = 100207
-Const GLU_NURBS_MODE:Int                     = 100160
-Const GLU_NURBS_MODE_EXT:Int                 = 100160
-Const GLU_NURBS_TESSELLATOR:Int              = 100161
-Const GLU_NURBS_TESSELLATOR_EXT:Int          = 100161
-Const GLU_NURBS_RENDERER:Int                 = 100162
-Const GLU_NURBS_RENDERER_EXT:Int             = 100162
+Const GLU_AUTO_LOAD_MATRIX:UInt               = 100200
+Const GLU_CULLING:UInt                        = 100201
+Const GLU_SAMPLING_TOLERANCE:UInt             = 100203
+Const GLU_DISPLAY_MODE:UInt                   = 100204
+Const GLU_PARAMETRIC_TOLERANCE:UInt           = 100202
+Const GLU_SAMPLING_METHOD:UInt                = 100205
+Const GLU_U_STEP:UInt                         = 100206
+Const GLU_V_STEP:UInt                         = 100207
+Const GLU_NURBS_MODE:UInt                     = 100160
+Const GLU_NURBS_MODE_EXT:UInt                 = 100160
+Const GLU_NURBS_TESSELLATOR:UInt              = 100161
+Const GLU_NURBS_TESSELLATOR_EXT:UInt          = 100161
+Const GLU_NURBS_RENDERER:UInt                 = 100162
+Const GLU_NURBS_RENDERER_EXT:UInt             = 100162
 
 ' NurbsSampling
-Const GLU_OBJECT_PARAMETRIC_ERROR:Int        = 100208
-Const GLU_OBJECT_PARAMETRIC_ERROR_EXT:Int    = 100208
-Const GLU_OBJECT_PATH_LENGTH:Int             = 100209
-Const GLU_OBJECT_PATH_LENGTH_EXT:Int         = 100209
-Const GLU_PATH_LENGTH:Int                    = 100215
-Const GLU_PARAMETRIC_ERROR:Int               = 100216
-Const GLU_DOMAIN_DISTANCE:Int                = 100217
+Const GLU_OBJECT_PARAMETRIC_ERROR:UInt        = 100208
+Const GLU_OBJECT_PARAMETRIC_ERROR_EXT:UInt    = 100208
+Const GLU_OBJECT_PATH_LENGTH:UInt             = 100209
+Const GLU_OBJECT_PATH_LENGTH_EXT:UInt         = 100209
+Const GLU_PATH_LENGTH:UInt                    = 100215
+Const GLU_PARAMETRIC_ERROR:UInt               = 100216
+Const GLU_DOMAIN_DISTANCE:UInt                = 100217
 
 ' NurbsTrim
-Const GLU_MAP1_TRIM_2:Int                    = 100210
-Const GLU_MAP1_TRIM_3:Int                    = 100211
+Const GLU_MAP1_TRIM_2:UInt                    = 100210
+Const GLU_MAP1_TRIM_3:UInt                    = 100211
 
 ' QuadricDrawStyle
-Const GLU_POINT:Int                          = 100010
-Const GLU_LINE:Int                           = 100011
-Const GLU_FILL:Int                           = 100012
-Const GLU_SILHOUETTE:Int                     = 100013
+Const GLU_POINT:UInt                          = 100010
+Const GLU_LINE:UInt                           = 100011
+Const GLU_FILL:UInt                           = 100012
+Const GLU_SILHOUETTE:UInt                     = 100013
 
 ' QuadricCallback
 '      GLU_ERROR
 
 ' QuadricNormal
-Const GLU_SMOOTH:Int                         = 100000
-Const GLU_FLAT:Int                           = 100001
-Const GLU_NONE:Int                           = 100002
+Const GLU_SMOOTH:UInt                         = 100000
+Const GLU_FLAT:UInt                           = 100001
+Const GLU_NONE:UInt                           = 100002
 
 ' QuadricOrientation
-Const GLU_OUTSIDE:Int                        = 100020
-Const GLU_INSIDE:Int                         = 100021
+Const GLU_OUTSIDE:UInt                        = 100020
+Const GLU_INSIDE:UInt                         = 100021
 
 ' TessCallback
-Const GLU_TESS_BEGIN:Int                     = 100100
-Const GLU_BEGIN:Int                          = 100100
-Const GLU_TESS_VERTEX:Int                    = 100101
-Const GLU_VERTEX:Int                         = 100101
-Const GLU_TESS_END:Int                       = 100102
-Const GLU_END:Int                            = 100102
-Const GLU_TESS_ERROR:Int                     = 100103
-Const GLU_TESS_EDGE_FLAG:Int                 = 100104
-Const GLU_EDGE_FLAG:Int                      = 100104
-Const GLU_TESS_COMBINE:Int                   = 100105
-Const GLU_TESS_BEGIN_DATA:Int                = 100106
-Const GLU_TESS_VERTEX_DATA:Int               = 100107
-Const GLU_TESS_END_DATA:Int                  = 100108
-Const GLU_TESS_ERROR_DATA:Int                = 100109
-Const GLU_TESS_EDGE_FLAG_DATA:Int            = 100110
-Const GLU_TESS_COMBINE_DATA:Int              = 100111
+Const GLU_TESS_BEGIN:UInt                     = 100100
+Const GLU_BEGIN:UInt                          = 100100
+Const GLU_TESS_VERTEX:UInt                    = 100101
+Const GLU_VERTEX:UInt                         = 100101
+Const GLU_TESS_END:UInt                       = 100102
+Const GLU_END:UInt                            = 100102
+Const GLU_TESS_ERROR:UInt                     = 100103
+Const GLU_TESS_EDGE_FLAG:UInt                 = 100104
+Const GLU_EDGE_FLAG:UInt                      = 100104
+Const GLU_TESS_COMBINE:UInt                   = 100105
+Const GLU_TESS_BEGIN_DATA:UInt                = 100106
+Const GLU_TESS_VERTEX_DATA:UInt               = 100107
+Const GLU_TESS_END_DATA:UInt                  = 100108
+Const GLU_TESS_ERROR_DATA:UInt                = 100109
+Const GLU_TESS_EDGE_FLAG_DATA:UInt            = 100110
+Const GLU_TESS_COMBINE_DATA:UInt              = 100111
 
 ' TessContour
-Const GLU_CW:Int                             = 100120
-Const GLU_CCW:Int                            = 100121
-Const GLU_INTERIOR:Int                       = 100122
-Const GLU_EXTERIOR:Int                       = 100123
-Const GLU_UNKNOWN:Int                        = 100124
+Const GLU_CW:UInt                             = 100120
+Const GLU_CCW:UInt                            = 100121
+Const GLU_INTERIOR:UInt                       = 100122
+Const GLU_EXTERIOR:UInt                       = 100123
+Const GLU_UNKNOWN:UInt                        = 100124
 
 ' TessProperty
-Const GLU_TESS_WINDING_RULE:Int              = 100140
-Const GLU_TESS_BOUNDARY_ONLY:Int             = 100141
-Const GLU_TESS_TOLERANCE:Int                 = 100142
+Const GLU_TESS_WINDING_RULE:UInt              = 100140
+Const GLU_TESS_BOUNDARY_ONLY:UInt             = 100141
+Const GLU_TESS_TOLERANCE:UInt                 = 100142
 
 ' TessError
-Const GLU_TESS_ERROR1:Int                    = 100151
-Const GLU_TESS_ERROR2:Int                    = 100152
-Const GLU_TESS_ERROR3:Int                    = 100153
-Const GLU_TESS_ERROR4:Int                    = 100154
-Const GLU_TESS_ERROR5:Int                    = 100155
-Const GLU_TESS_ERROR6:Int                    = 100156
-Const GLU_TESS_ERROR7:Int                    = 100157
-Const GLU_TESS_ERROR8:Int                    = 100158
-Const GLU_TESS_MISSING_BEGIN_POLYGON:Int     = 100151
-Const GLU_TESS_MISSING_BEGIN_CONTOUR:Int     = 100152
-Const GLU_TESS_MISSING_END_POLYGON:Int       = 100153
-Const GLU_TESS_MISSING_END_CONTOUR:Int       = 100154
-Const GLU_TESS_COORD_TOO_LARGE:Int           = 100155
-Const GLU_TESS_NEED_COMBINE_CALLBACK:Int     = 100156
+Const GLU_TESS_ERROR1:UInt                    = 100151
+Const GLU_TESS_ERROR2:UInt                    = 100152
+Const GLU_TESS_ERROR3:UInt                    = 100153
+Const GLU_TESS_ERROR4:UInt                    = 100154
+Const GLU_TESS_ERROR5:UInt                    = 100155
+Const GLU_TESS_ERROR6:UInt                    = 100156
+Const GLU_TESS_ERROR7:UInt                    = 100157
+Const GLU_TESS_ERROR8:UInt                    = 100158
+Const GLU_TESS_MISSING_BEGIN_POLYGON:UInt     = 100151
+Const GLU_TESS_MISSING_BEGIN_CONTOUR:UInt     = 100152
+Const GLU_TESS_MISSING_END_POLYGON:UInt       = 100153
+Const GLU_TESS_MISSING_END_CONTOUR:UInt       = 100154
+Const GLU_TESS_COORD_TOO_LARGE:UInt           = 100155
+Const GLU_TESS_NEED_COMBINE_CALLBACK:UInt     = 100156
 
 ' TessWinding
-Const GLU_TESS_WINDING_ODD:Int               = 100130
-Const GLU_TESS_WINDING_NONZERO:Int           = 100131
-Const GLU_TESS_WINDING_POSITIVE:Int          = 100132
-Const GLU_TESS_WINDING_NEGATIVE:Int          = 100133
-Const GLU_TESS_WINDING_ABS_GEQ_TWO:Int       = 100134
+Const GLU_TESS_WINDING_ODD:UInt               = 100130
+Const GLU_TESS_WINDING_NONZERO:UInt           = 100131
+Const GLU_TESS_WINDING_POSITIVE:UInt          = 100132
+Const GLU_TESS_WINDING_NEGATIVE:UInt          = 100133
+Const GLU_TESS_WINDING_ABS_GEQ_TWO:UInt       = 100134
 
 
 'GLU FUNCTIONS
