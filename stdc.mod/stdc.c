@@ -1164,11 +1164,12 @@ BBULONG bmx_current_unix_time() {
 
 int bmx_datetime_from_local_epoch(BBLONG epoch, SDateTime* dt) {
     struct tm* local;
+	time_t time = (time_t)epoch;
 #if defined(__linux__) || defined(__APPLE__)
     struct tm result;
-    local = localtime_r(&epoch, &result);
+    local = localtime_r(&time, &result);
 #elif defined(_WIN32) || defined(_WIN64)
-    local = localtime(&epoch);
+    local = localtime(&time);
 #else
     return -1; // Platform not supported
 #endif
@@ -1208,11 +1209,12 @@ SDateTime bmx_datetime_from_epoch(BBLONG epochTimeSecs, BBLONG fracNanoseconds, 
 	}
 
     struct tm timeinfo;
+	time_t time = (time_t)epochTimeSecs;
 
 #if defined(_WIN32) || defined(_WIN64)
-    gmtime_s(&timeinfo, &epochTimeSecs);
+    gmtime_s(&timeinfo, &time);
 #else
-    gmtime_r(&epochTimeSecs, &timeinfo);
+    gmtime_r(&time, &timeinfo);
 #endif
 
     dt.year = timeinfo.tm_year + 1900;
