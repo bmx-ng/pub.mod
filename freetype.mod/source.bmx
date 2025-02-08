@@ -14,6 +14,7 @@ End Rem
 Import "include/*.h"
 
 Import "src/base/ftbase.c"
+Import "../../archive.mod/zlib.mod/zlib/*.h"
 
 Import "src/base/ftbbox.c"
 Import "src/base/ftbdf.c"
