@@ -1,12 +1,15 @@
 
-Strict
+SuperStrict
 
 Module Pub.FreeType
 
-ModuleInfo "Version: 1.14"
+ModuleInfo "Version: 1.15"
 ModuleInfo "License: FreeType License"
 ModuleInfo "Modserver: BRL"
 
+ModuleInfo "History: 1.15"
+ModuleInfo "History: Made SuperStrict"
+ModuleInfo "History: Updated to FreeType 2.13.3"
 ModuleInfo "History: 1.14"
 ModuleInfo "History: Updated to FreeType 2.10.0"
 ModuleInfo "History: Added include path for Arch-based Linux distros."
@@ -95,24 +98,24 @@ Import "glue.c"
 
 Extern
 
-Function FT_Init_FreeType( ft_lib:Byte Ptr Ptr )
+Function FT_Init_FreeType:Int( ft_lib:Byte Ptr Ptr )
 
-Function FT_Done_FreeType( ft_lib:Byte Ptr )
-Function FT_Done_Face( ft_face:Byte Ptr )
+Function FT_Done_FreeType:Int( ft_lib:Byte Ptr )
+Function FT_Done_Face:Int( ft_face:Byte Ptr )
 Function FT_Done_Glyph( ft_glyph:Byte Ptr )
 
-Function FT_New_Face( ft_lib:Byte Ptr,arg$z,faceIndex,ft_face:Byte Ptr Ptr )
-Function FT_New_Memory_Face( ft_lib:Byte Ptr,buf:Byte Ptr,size,faceIndex,ft_face:Byte Ptr Ptr )
+Function FT_New_Face:Int( ft_lib:Byte Ptr,arg$z,faceIndex:LongInt,ft_face:Byte Ptr Ptr )
+Function FT_New_Memory_Face:Int( ft_lib:Byte Ptr,buf:Byte Ptr,size:LongInt,faceIndex:LongInt,ft_face:Byte Ptr Ptr )
 
-Function FT_Set_Char_Size( ft_face:Byte Ptr, width:LongInt, height:LongInt, horz_resolution:UInt, vert_resolution:UInt)
+Function FT_Set_Char_Size:Int( ft_face:Byte Ptr, width:LongInt, height:LongInt, horz_resolution:UInt, vert_resolution:UInt)
 
-Function FT_Set_Pixel_Sizes( ft_face:Byte Ptr,width,height )
-Function FT_Get_Char_Index( ft_face:Byte Ptr,index )
-Function FT_Set_Charmap( ft_face:Byte Ptr,charmap )
+Function FT_Set_Pixel_Sizes:Int( ft_face:Byte Ptr,width:UInt,height:UInt )
+Function FT_Get_Char_Index:UInt( ft_face:Byte Ptr,index:ULongInt )
+Function FT_Set_Charmap:Int( ft_face:Byte Ptr,charmap:Byte Ptr )
 
-Function FT_Load_Char( ft_face:Byte Ptr,index,flags )
-Function FT_Load_Glyph( ft_face:Byte Ptr,index,flags )
-Function FT_Render_Glyph( ft_glyph:Byte Ptr,Mode )
+Function FT_Load_Char:Int( ft_face:Byte Ptr,index:ULongInt,flags:Int )
+Function FT_Load_Glyph:Int( ft_face:Byte Ptr,index:UInt,flags:Int )
+Function FT_Render_Glyph:Int( ft_glyph:Byte Ptr,mode:Int )
 
 
 Function bmx_freetype_Face_numglyphs:Int(ft_face:Byte Ptr)
@@ -135,23 +138,23 @@ Function bmx_freetype_Slot_bitmap_numgreys:Int(slot:Byte Ptr)
 
 End Extern
 
-Const FT_LOAD_DEFAULT=0
-Const FT_LOAD_NO_SCALE=1
-Const FT_LOAD_NO_HINTING=2
-Const FT_LOAD_RENDER=4
-Const FT_LOAD_NO_BITMAP=8
-Const FT_LOAD_VERTICAL_LAYOUT=$10
-Const FT_LOAD_FORCE_AUTOHINT=$20
-Const FT_LOAD_CROP_BITMAP=$40
-Const FT_LOAD_PEDANTIC=$80
-Const FT_LOAD_IGNORE_GLOBAL_ADVANCE_WIDTH=$200
-Const FT_LOAD_NO_RECURSE=$400
-Const FT_LOAD_IGNORE_TRANSFORM=$800
-Const FT_LOAD_MONOCHROME=$1000
-Const FT_LOAD_LINEAR_DESIGN=$2000
+Const FT_LOAD_DEFAULT:Int=0
+Const FT_LOAD_NO_SCALE:Int=1
+Const FT_LOAD_NO_HINTING:Int=2
+Const FT_LOAD_RENDER:Int=4
+Const FT_LOAD_NO_BITMAP:Int=8
+Const FT_LOAD_VERTICAL_LAYOUT:Int=$10
+Const FT_LOAD_FORCE_AUTOHINT:Int=$20
+Const FT_LOAD_CROP_BITMAP:Int=$40
+Const FT_LOAD_PEDANTIC:Int=$80
+Const FT_LOAD_IGNORE_GLOBAL_ADVANCE_WIDTH:Int=$200
+Const FT_LOAD_NO_RECURSE:Int=$400
+Const FT_LOAD_IGNORE_TRANSFORM:Int=$800
+Const FT_LOAD_MONOCHROME:Int=$1000
+Const FT_LOAD_LINEAR_DESIGN:Int=$2000
 
-Const FT_RENDER_MODE_NORMAL=0
-Const FT_RENDER_MODE_LIGHT=1
-Const FT_RENDER_MODE_MONO=2
-Const FT_RENDER_MODE_LCD=3
-Const FT_RENDER_MODE_LCD_V=4
+Const FT_RENDER_MODE_NORMAL:Int=0
+Const FT_RENDER_MODE_LIGHT:Int=1
+Const FT_RENDER_MODE_MONO:Int=2
+Const FT_RENDER_MODE_LCD:Int=3
+Const FT_RENDER_MODE_LCD_V:Int=4
