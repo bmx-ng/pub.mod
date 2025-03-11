@@ -104,6 +104,8 @@ Function FT_Done_Glyph( ft_glyph:Byte Ptr )
 Function FT_New_Face( ft_lib:Byte Ptr,arg$z,faceIndex,ft_face:Byte Ptr Ptr )
 Function FT_New_Memory_Face( ft_lib:Byte Ptr,buf:Byte Ptr,size,faceIndex,ft_face:Byte Ptr Ptr )
 
+Function FT_Set_Char_Size( ft_face:Byte Ptr, width:LongInt, height:LongInt, horz_resolution:UInt, vert_resolution:UInt)
+
 Function FT_Set_Pixel_Sizes( ft_face:Byte Ptr,width,height )
 Function FT_Get_Char_Index( ft_face:Byte Ptr,index )
 Function FT_Set_Charmap( ft_face:Byte Ptr,charmap )
