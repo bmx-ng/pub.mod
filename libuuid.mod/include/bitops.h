@@ -20,12 +20,18 @@
 #  include <sys/endian.h>
 #endif
 
+#if !(defined(HAVE_BYTESWAP_H) && defined(HAVE_ENDIAN_H))
+/*
+ * When both byteswap.h and endian.h are preseent, the proper macros are defined
+ * as those files are glibc compatible.  Otherwise, compensate for the slightly
+ * different interfaces between the different BSDs.
+ */
 #if defined(__OpenBSD__)
 # include <sys/types.h>
 # define be16toh(x) betoh16(x)
 # define be32toh(x) betoh32(x)
 # define be64toh(x) betoh64(x)
-#elif defined(__NetBSD__) || defined(__FreeBSD__) || defined(__DragonFly__)
+#elif defined(__NetBSD__) || defined(__DragonFly__)
 # define bswap_16(x) bswap16(x)
 # define bswap_32(x) bswap32(x)
 # define bswap_64(x) bswap64(x)
@@ -46,6 +52,7 @@
 # define bswap_16(x) OSSwapInt16(x)
 # define bswap_32(x) OSSwapInt32(x)
 # define bswap_64(x) OSSwapInt64(x)
+#endif
 #endif
 
 /*
@@ -80,7 +87,7 @@
 #endif
 
 #ifndef htobe16
-# if !defined(WORDS_BIGENDIAN)
+# if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
 #  define htobe16(x) bswap_16 (x)
 #  define htole16(x) (x)
 #  define be16toh(x) bswap_16 (x)

@@ -1,3 +1,7 @@
+/*
+ * No copyright is claimed.  This code is in the public domain; do with
+ * it what you wish.
+ */
 #ifndef UTIL_LINUX_PT_MBR_H
 #define UTIL_LINUX_PT_MBR_H
 
@@ -15,7 +19,7 @@ struct dos_partition {
 #define MBR_PT_OFFSET		0x1be
 #define MBR_PT_BOOTBITS_SIZE	440
 
-static inline struct dos_partition *mbr_get_partition(unsigned char *mbr, int i)
+static inline struct dos_partition *mbr_get_partition(const unsigned char *mbr, int i)
 {
 	return (struct dos_partition *)
 		(mbr + MBR_PT_OFFSET + (i * sizeof(struct dos_partition)));
@@ -38,7 +42,7 @@ static inline void __dos_store_4le(unsigned char *p, unsigned int val)
 	p[3] = ((val >> 24) & 0xff);
 }
 
-static inline unsigned int dos_partition_get_start(struct dos_partition *p)
+static inline unsigned int dos_partition_get_start(const struct dos_partition *p)
 {
 	return __dos_assemble_4le(&(p->start_sect[0]));
 }
@@ -48,7 +52,7 @@ static inline void dos_partition_set_start(struct dos_partition *p, unsigned int
 	__dos_store_4le(p->start_sect, n);
 }
 
-static inline unsigned int dos_partition_get_size(struct dos_partition *p)
+static inline unsigned int dos_partition_get_size(const struct dos_partition *p)
 {
 	return __dos_assemble_4le(&(p->nr_sects[0]));
 }
@@ -56,6 +60,28 @@ static inline unsigned int dos_partition_get_size(struct dos_partition *p)
 static inline void dos_partition_set_size(struct dos_partition *p, unsigned int n)
 {
 	__dos_store_4le(p->nr_sects, n);
+}
+
+static inline void dos_partition_sync_chs(struct dos_partition *p, unsigned long long int part_offset, unsigned int geom_sectors, unsigned int geom_heads)
+{
+	unsigned long long int start = part_offset + dos_partition_get_start(p);
+	unsigned long long int stop = start + dos_partition_get_size(p) - 1;
+	unsigned int spc = geom_heads * geom_sectors;
+
+	if (start / spc > 1023)
+		start = spc * 1024 - 1;
+	if (stop / spc > 1023)
+		stop = spc * 1024 - 1;
+
+	p->bc = (start / spc) & 0xff;
+	p->bh = (start / geom_sectors) % geom_heads;
+	p->bs = ((start % geom_sectors + 1) & 0x3f) |
+		(((start / spc) >> 2) & 0xc0);
+
+	p->ec = (stop / spc) & 0xff;
+	p->eh = (stop / geom_sectors) % geom_heads;
+	p->es = ((stop % geom_sectors + 1) & 0x3f) |
+		(((stop / spc) >> 2) & 0xc0);
 }
 
 static inline int mbr_is_valid_magic(const unsigned char *mbr)
@@ -87,7 +113,7 @@ enum {
 	MBR_FAT16_LESS32M_PARTITION	= 0x04,
 	MBR_DOS_EXTENDED_PARTITION	= 0x05,
 	MBR_FAT16_PARTITION		= 0x06, /* DOS 16-bit >=32M */
-	MBR_HPFS_NTFS_PARTITION		= 0x07, /* OS/2 IFS, eg, HPFS or NTFS or QNX */
+	MBR_HPFS_NTFS_PARTITION		= 0x07, /* OS/2 IFS, e.g., HPFS or NTFS or QNX or exFAT */
 	MBR_AIX_PARTITION		= 0x08, /* AIX boot (AIX -- PS/2 port) or SplitDrive */
 	MBR_AIX_BOOTABLE_PARTITION	= 0x09, /* AIX data or Coherent */
 	MBR_OS2_BOOTMNGR_PARTITION	= 0x0a, /* OS/2 Boot Manager */
@@ -177,6 +203,7 @@ enum {
 	MBR_SPEEDSTOR1_PARTITION	= 0xf1,
 	MBR_SPEEDSTOR2_PARTITION	= 0xf4, /* SpeedStor large partition */
 	MBR_DOS_SECONDARY_PARTITION	= 0xf2, /* DOS 3.3+ secondary */
+	MBR_EBBR_PROTECTIVE_PARTITION	= 0xf8, /* Arm EBBR firmware protective partition */
 	MBR_VMWARE_VMFS_PARTITION	= 0xfb,
 	MBR_VMWARE_VMKCORE_PARTITION	= 0xfc, /* VMware kernel dump partition */
 	MBR_LINUX_RAID_PARTITION	= 0xfd, /* Linux raid partition with autodetect using persistent superblock */

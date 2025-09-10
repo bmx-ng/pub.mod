@@ -40,6 +40,7 @@
 #define UUID MYUUID
 #endif
 
+#include <errno.h>
 #include <stdio.h>
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -52,35 +53,154 @@
 #include <time.h>
 
 #include "uuidP.h"
+#include "timeutils.h"
 
-time_t uuid_time(const uuid_t uu, struct timeval *ret_tv)
+#undef uuid_time
+
+/* prototype to make compiler happy */
+time_t __uuid_time(const uuid_t uu, struct timeval *ret_tv);
+
+static uint64_t gregorian_to_unix(uint64_t ts)
 {
-	struct timeval		tv;
-	struct uuid		uuid;
-	uint32_t		high;
-	uint64_t		clock_reg;
+	return ts - ((((uint64_t) 0x01B21DD2) << 32) + 0x13814000);
+}
+
+static void uuid_time_v1(const struct uuid *uuid, struct timeval *tv)
+{
+	uint32_t high;
+	uint64_t clock_reg;
+
+	high = uuid->time_mid | ((uuid->time_hi_and_version & 0xFFF) << 16);
+	clock_reg = uuid->time_low | ((uint64_t) high << 32);
+
+	clock_reg = gregorian_to_unix(clock_reg);
+	tv->tv_sec = clock_reg / 10000000;
+	tv->tv_usec = (clock_reg % 10000000) / 10;
+}
+
+static void uuid_time_v6(const struct uuid *uuid, struct timeval *tv)
+{
+	uint64_t clock_reg;
+
+	clock_reg = uuid->time_low;
+	clock_reg <<= 16;
+	clock_reg |= uuid->time_mid;
+	clock_reg <<= 12;
+	clock_reg |= uuid->time_hi_and_version & 0xFFF;
+
+	clock_reg = gregorian_to_unix(clock_reg);
+	tv->tv_sec = clock_reg / 10000000;
+	tv->tv_usec = (clock_reg % 10000000) / 10;
+}
+
+static void uuid_time_v7(const struct uuid *uuid, struct timeval *tv)
+{
+	uint64_t clock_reg;
+
+	clock_reg = uuid->time_low;
+	clock_reg <<= 16;
+	clock_reg |= uuid->time_mid;
+
+	tv->tv_sec = clock_reg / MSEC_PER_SEC;
+	tv->tv_usec = (clock_reg % MSEC_PER_SEC) * USEC_PER_MSEC;
+}
+
+static uint8_t __uuid_type(const struct uuid *uuid)
+{
+	return (uuid->time_hi_and_version >> 12) & 0xF;
+}
+
+/* this function could be 32bit time_t and 32bit timeval or 64bit,
+   depending on compiler flags and architecture. */
+time_t __uuid_time(const uuid_t uu, struct timeval *ret_tv)
+{
+	struct timeval	tv;
+	struct uuid	uuid;
+	uint8_t		type;
 
 	uuid_unpack(uu, &uuid);
+	type = __uuid_type(&uuid);
 
-	high = uuid.time_mid | ((uuid.time_hi_and_version & 0xFFF) << 16);
-	clock_reg = uuid.time_low | ((uint64_t) high << 32);
-
-	clock_reg -= (((uint64_t) 0x01B21DD2) << 32) + 0x13814000;
-	tv.tv_sec = clock_reg / 10000000;
-	tv.tv_usec = (clock_reg % 10000000) / 10;
+	switch (type) {
+	case UUID_TYPE_DCE_TIME:
+		uuid_time_v1(&uuid, &tv);
+		break;
+	case UUID_TYPE_DCE_TIME_V6:
+		uuid_time_v6(&uuid, &tv);
+		break;
+	case UUID_TYPE_DCE_TIME_V7:
+		uuid_time_v7(&uuid, &tv);
+		break;
+	default:
+		tv.tv_sec = -1;
+		tv.tv_usec = -1;
+		break;
+	}
 
 	if (ret_tv)
 		*ret_tv = tv;
 
 	return tv.tv_sec;
 }
+#if defined(__USE_TIME_BITS64) && defined(__GLIBC__)
+extern time_t uuid_time64(const uuid_t uu, struct timeval *ret_tv) __attribute__((weak, alias("__uuid_time")));
+#elif defined(__clang__) && defined(__APPLE__)
+__asm__(".globl _uuid_time");
+__asm__(".set _uuid_time, ___uuid_time");
+extern time_t uuid_time(const uuid_t uu, struct timeval *ret_tv);
+#else
+extern time_t uuid_time(const uuid_t uu, struct timeval *ret_tv) __attribute__((weak, alias("__uuid_time")));
+#endif
+
+#if defined(__USE_TIME_BITS64) && defined(__GLIBC__)
+struct timeval32
+{
+	int32_t tv_sec;
+	int32_t tv_usec;
+};
+
+/* prototype to make compiler happy */
+int32_t __uuid_time32(const uuid_t uu, struct timeval32 *ret_tv);
+
+/* Check whether time fits in 32bit time_t.  */
+static inline int
+in_time32_t_range(time_t t)
+{
+	int32_t		s;
+
+	s = t;
+
+	return s == t;
+}
+
+int32_t __uuid_time32(const uuid_t uu, struct timeval32 *ret_tv)
+{
+	struct timeval		tv;
+	time_t ret_time = __uuid_time(uu, &tv);
+
+	if (! in_time32_t_range(ret_time)) {
+		ret_tv->tv_sec = -1;
+		ret_tv->tv_usec = -1;
+	        errno = EOVERFLOW;
+		return -1;
+	}
+
+	if (ret_tv) {
+		ret_tv->tv_sec = tv.tv_sec;
+		ret_tv->tv_usec = tv.tv_usec;
+	}
+
+	return tv.tv_sec;
+}
+extern int32_t uuid_time(const uuid_t uu, struct timeval32 *ret_tv) __attribute__((weak, alias("__uuid_time32")));
+#endif
 
 int uuid_type(const uuid_t uu)
 {
 	struct uuid		uuid;
 
 	uuid_unpack(uu, &uuid);
-	return ((uuid.time_hi_and_version >> 12) & 0xF);
+	return __uuid_type(&uuid);
 }
 
 int uuid_variant(const uuid_t uu)
@@ -163,8 +283,8 @@ main(int argc, char **argv)
 		printf("Warning: not a time-based UUID, so UUID time "
 		       "decoding will likely not work!\n");
 	}
-	printf("UUID time is: (%ld, %ld): %s\n", (long)tv.tv_sec, (long)tv.tv_usec,
-	       ctime(&time_reg));
+	printf("UUID time is: (%"PRId64", %"PRId64"): %s\n",
+		(int64_t)tv.tv_sec, (int64_t)tv.tv_usec, ctime(&time_reg));
 
 	return 0;
 }

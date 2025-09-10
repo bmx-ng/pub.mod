@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2015-2020 Bruce A Henderson
+ Copyright (c) 2015-2025 Bruce A Henderson
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -34,7 +34,7 @@
 
 HCRYPTPROV hProvider;
 
-int random_get_bytes(void * buffer, size_t length) {
+int ul_random_get_bytes(void * buffer, size_t length) {
 
 	if (!hProvider) {
 		if (!CryptAcquireContext(&hProvider, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT)) {
@@ -47,7 +47,7 @@ int random_get_bytes(void * buffer, size_t length) {
 
 #else
 
-int random_get_bytes(void * buffer, size_t length) {
+int ul_random_get_bytes(void * buffer, size_t length) {
 
 	FILE * rf;
 		

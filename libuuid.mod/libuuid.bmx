@@ -1,4 +1,4 @@
-' Copyright (c) 2015-2020 Bruce A Henderson
+' Copyright (c) 2015-2025 Bruce A Henderson
 ' All rights reserved.
 '
 ' Redistribution and use in source and binary forms, with or without
@@ -27,11 +27,13 @@ SuperStrict
 
 Module Pub.LibUUID
 
-ModuleInfo "Version: 1.03"
+ModuleInfo "Version: 1.04"
 ModuleInfo "License: BSD"
-ModuleInfo "Copyright: Wrapper - 2015-2020 Bruce A Henderson"
+ModuleInfo "Copyright: Wrapper - 2015-2025 Bruce A Henderson"
 
-ModuleInfo "History: 1.02"
+ModuleInfo "History: 1.04"
+ModuleInfo "History: Updated to 2.41."
+ModuleInfo "History: 1.03"
 ModuleInfo "History: Updated for Haiku."
 ModuleInfo "History: 1.02"
 ModuleInfo "History: Fixed Linux build."
@@ -41,7 +43,7 @@ ModuleInfo "History: 1.00"
 ModuleInfo "History: Initial Release."
 
 ?linux
-ModuleInfo "CC_OPTS: -DHAVE_NANOSLEEP -DHAVE_STRNDUP"
+ModuleInfo "CC_OPTS: -DHAVE_NANOSLEEP -DHAVE_STRNDUP -DHAVE_SYS_FILE_H"
 ?macos
 ModuleInfo "CC_OPTS: -DHAVE_NANOSLEEP"
 ?haiku

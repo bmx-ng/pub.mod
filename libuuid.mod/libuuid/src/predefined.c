@@ -37,7 +37,7 @@
 
 /*
  * These are time-based UUIDs that are well-known in that they've
- * been canonized as part of RFC-4122, Appendex C.  They are to
+ * been canonicalized as part of RFC-4122, Appendix C.  They are to
  * be used as the namespace (ns) argument to the uuid_generate_md5()
  * and uuid_generate_sha1() functions.
  *
@@ -68,13 +68,16 @@ const uuid_t *uuid_get_template(const char *alias)
 
 	if (!strcmp(alias, "dns"))
 		return &NameSpace_DNS;
-	else if (!strcmp(alias, "url"))
+
+	if (!strcmp(alias, "url"))
 		return &NameSpace_URL;
-	else if (!strcmp(alias, "oid"))
+
+	if (!strcmp(alias, "oid"))
 		return &NameSpace_OID;
-	else if (!strcmp(alias, "x500") || !strcmp(alias, "x.500"))
+
+	if (!strcmp(alias, "x500") || !strcmp(alias, "x.500"))
 		return &NameSpace_X500;
-	else
-		return NULL;
+
+	return NULL;
 }
 
