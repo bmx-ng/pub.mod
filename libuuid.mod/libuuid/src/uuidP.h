@@ -31,6 +31,8 @@
  * DAMAGE.
  * %End-Header%
  */
+#ifndef _UUID_UUID_PRIVATE_H
+#define _UUID_UUID_PRIVATE_H
 
 #include <inttypes.h>
 #include <sys/types.h>
@@ -38,6 +40,7 @@
 #include "uuid.h"
 
 #define LIBUUID_CLOCK_FILE	"/var/lib/libuuid/clock.txt"
+#define LIBUUID_CLOCK_CONT_FILE	"/var/lib/libuuid/clock-cont.txt"
 
 /*
  * Offset between 15-Oct-1582 and 1-Jan-70
@@ -88,3 +91,5 @@ struct uuid {
  */
 void uuid_pack(const struct uuid *uu, uuid_t ptr);
 void uuid_unpack(const uuid_t in, struct uuid *uu);
+
+#endif /* _UUID_UUID_PRIVATE_H */

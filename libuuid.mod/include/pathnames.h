@@ -1,7 +1,6 @@
 /*
- * Vaguely based on
- *	@(#)pathnames.h	5.3 (Berkeley) 5/9/89
- * This code is in the public domain.
+ * No copyright is claimed.  This code is in the public domain; do with
+ * it what you wish.
  */
 #ifndef PATHNAMES_H
 #define PATHNAMES_H
@@ -64,17 +63,26 @@
 #define _PATH_SHADOW_PASSWD	"/etc/shadow"
 #define _PATH_SHELLS		"/etc/shells"
 
+#ifndef _PATH_TMP
+# define _PATH_TMP		"/tmp/"
+#endif
+
 #ifndef _PATH_BTMP
 # define _PATH_BTMP		"/var/log/btmp"
 #endif
 
-#define _PATH_ISSUE		"/etc/issue"
-#define _PATH_ISSUEDIR		_PATH_ISSUE ".d"
+#define _PATH_ISSUE_FILENAME	"issue"
+#define _PATH_ISSUE_DIRNAME	_PATH_ISSUE_FILENAME ".d"
+
+#define _PATH_ISSUE		"/etc/" _PATH_ISSUE_FILENAME
+#define _PATH_ISSUEDIR		"/etc/" _PATH_ISSUE_DIRNAME
 
 #define _PATH_OS_RELEASE_ETC	"/etc/os-release"
 #define _PATH_OS_RELEASE_USR	"/usr/lib/os-release"
 #define _PATH_NUMLOCK_ON	_PATH_RUNSTATEDIR "/numlock-on"
 #define _PATH_LOGINDEFS		"/etc/login.defs"
+
+#define _PATH_SD_UNITSLOAD	_PATH_RUNSTATEDIR "/systemd/systemd-units-load"
 
 /* misc paths */
 #define _PATH_WORDS             "/usr/share/dict/words"
@@ -82,6 +90,7 @@
 
 /* mount paths */
 #define _PATH_FILESYSTEMS	"/etc/filesystems"
+#define _PATH_PROC		"/proc"
 #define _PATH_PROC_SWAPS	"/proc/swaps"
 #define _PATH_PROC_FILESYSTEMS	"/proc/filesystems"
 #define _PATH_PROC_MOUNTS	"/proc/mounts"
@@ -91,11 +100,17 @@
 #define _PATH_PROC_LOCKS        "/proc/locks"
 #define _PATH_PROC_CDROMINFO	"/proc/sys/dev/cdrom/info"
 
+/* unshare paths */
+#define _PATH_SUBUID		"/etc/subuid"
+#define _PATH_SUBGID		"/etc/subgid"
 #define _PATH_PROC_UIDMAP	"/proc/self/uid_map"
 #define _PATH_PROC_GIDMAP	"/proc/self/gid_map"
 #define _PATH_PROC_SETGROUPS	"/proc/self/setgroups"
 
 #define _PATH_PROC_FDDIR	"/proc/self/fd"
+#define _PATH_PROC_TIMENS_OFF   "/proc/self/timens_offsets"
+
+#define _PATH_PROC_OOM_ADJ	"/proc/self/oom_score_adj"
 
 #define _PATH_PROC_ATTR_CURRENT	"/proc/self/attr/current"
 #define _PATH_PROC_ATTR_EXEC	"/proc/self/attr/exec"
@@ -107,6 +122,8 @@
 #define _PATH_SYS_DEVCHAR	"/sys/dev/char"
 #define _PATH_SYS_CLASS		"/sys/class"
 #define _PATH_SYS_SCSI		"/sys/bus/scsi"
+#define _PATH_SYS_CPU_BYTEORDER	"/sys/kernel/cpu_byteorder"
+#define _PATH_SYS_ADDRESS_BITS	"/sys/kernel/address_bits"
 
 #define _PATH_SYS_SELINUX	"/sys/fs/selinux"
 #define _PATH_SYS_APPARMOR	"/sys/kernel/security/apparmor"
@@ -129,7 +146,7 @@
 
 #ifndef _PATH_DEV
   /*
-   * The tailing '/' in _PATH_DEV is there for compatibility with libc.
+   * The trailing '/' in _PATH_DEV is there for compatibility with libc.
    */
 # define _PATH_DEV		"/dev/"
 #endif
@@ -168,20 +185,37 @@
 /* deprecated */
 #define _PATH_RAWDEVCTL_OLD	"/dev/rawctl"
 
+#define _PATH_PROC_KERNEL	"/proc/sys/kernel"
+
 /* ipc paths */
 #define _PATH_PROC_SYSV_MSG	"/proc/sysvipc/msg"
 #define _PATH_PROC_SYSV_SEM	"/proc/sysvipc/sem"
 #define _PATH_PROC_SYSV_SHM	"/proc/sysvipc/shm"
-#define _PATH_PROC_IPC_MSGMAX	"/proc/sys/kernel/msgmax"
-#define _PATH_PROC_IPC_MSGMNB	"/proc/sys/kernel/msgmnb"
-#define _PATH_PROC_IPC_MSGMNI	"/proc/sys/kernel/msgmni"
-#define _PATH_PROC_IPC_SEM	"/proc/sys/kernel/sem"
-#define _PATH_PROC_IPC_SHMALL	"/proc/sys/kernel/shmall"
-#define _PATH_PROC_IPC_SHMMAX	"/proc/sys/kernel/shmmax"
-#define _PATH_PROC_IPC_SHMMNI	"/proc/sys/kernel/shmmni"
+#define _PATH_PROC_IPC_MSGMAX	_PATH_PROC_KERNEL "/msgmax"
+#define _PATH_PROC_IPC_MSGMNB	_PATH_PROC_KERNEL "/msgmnb"
+#define _PATH_PROC_IPC_MSGMNI	_PATH_PROC_KERNEL "/msgmni"
+#define _PATH_PROC_IPC_SEM	_PATH_PROC_KERNEL "/sem"
+#define _PATH_PROC_IPC_SHMALL	_PATH_PROC_KERNEL "/shmall"
+#define _PATH_PROC_IPC_SHMMAX	_PATH_PROC_KERNEL "/shmmax"
+#define _PATH_PROC_IPC_SHMMNI	_PATH_PROC_KERNEL "/shmmni"
+
+/* util clamp */
+#define _PATH_PROC_UCLAMP_MIN	_PATH_PROC_KERNEL "/sched_util_clamp_min"
+#define _PATH_PROC_UCLAMP_MAX	_PATH_PROC_KERNEL "/sched_util_clamp_max"
+
+/* sysctl fs paths */
+#define _PATH_PROC_SYS_FS	"/proc/sys/fs"
+#define _PATH_PROC_PIPE_MAX_SIZE	_PATH_PROC_SYS_FS "/pipe-max-size"
+#define _PATH_PROC_BINFMT_MISC	_PATH_PROC_SYS_FS "/binfmt_misc"
+
+/* irqtop paths */
+#define _PATH_PROC_INTERRUPTS	"/proc/interrupts"
+#define _PATH_PROC_SOFTIRQS	"/proc/softirqs"
+#define _PATH_PROC_UPTIME	"/proc/uptime"
 
 /* kernel command line */
 #define _PATH_PROC_CMDLINE	"/proc/cmdline"
+
 
 /* logger paths */
 #define _PATH_DEVLOG		"/dev/log"
@@ -195,5 +229,18 @@
 /* rfkill paths */
 #define _PATH_DEV_RFKILL	"/dev/rfkill"
 #define _PATH_SYS_RFKILL	"/sys/class/rfkill"
+
+/* cgroup path */
+#define _PATH_SYS_CGROUP	"/sys/fs/cgroup"
+
+/* Maximum number of PIDs system supports */
+#define _PATH_PROC_PIDMAX	"/proc/sys/kernel/pid_max"
+
+/* econf path */
+#if USE_VENDORDIR
+# define UL_VENDORDIR_PATH      _PATH_VENDORDIR
+#else
+# define UL_VENDORDIR_PATH      NULL
+#endif
 
 #endif /* PATHNAMES_H */

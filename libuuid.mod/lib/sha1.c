@@ -1,4 +1,7 @@
 /*
+ * No copyright is claimed.  This code is in the public domain; do with
+ * it what you wish.
+ *
  * SHA-1 in C by Steve Reid <steve@edmweb.com>
  * 100% Public Domain
  *
@@ -19,7 +22,7 @@
 #define rol(value, bits) (((value) << (bits)) | ((value) >> (32 - (bits))))
 
 /* blk0() and blk() perform the initial expand. */
-#ifdef WORDS_BIGENDIAN
+#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
 # define blk0(i) block->l[i]
 #else
 # define blk0(i) (block->l[i] = (rol(block->l[i],24)&0xFF00FF00) \
@@ -153,7 +156,15 @@ void ul_SHA1Transform(uint32_t state[5], const unsigned char buffer[64])
 	state[3] += d;
 	state[4] += e;
 	/* Wipe variables */
+#ifdef HAVE_EXPLICIT_BZERO
+	explicit_bzero(&a, sizeof(a));
+	explicit_bzero(&b, sizeof(b));
+	explicit_bzero(&c, sizeof(c));
+	explicit_bzero(&d, sizeof(d));
+	explicit_bzero(&e, sizeof(e));
+#else
 	a = b = c = d = e = 0;
+#endif
 #ifdef UL_SHA1HANDSOFF
 	memset(block, '\0', sizeof(block));
 #endif

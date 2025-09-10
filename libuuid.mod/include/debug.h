@@ -1,9 +1,6 @@
 /*
- * Copyright (C) 2014 Ondrej Oprala <ooprala@redhat.com>
- * Copyright (C) 2014 Karel Zak <kzak@redhat.com>
- *
- * This file may be distributed under the terms of the
- * GNU Lesser General Public License.
+ * No copyright is claimed.  This code is in the public domain; do with
+ * it what you wish.
  */
 #ifndef UTIL_LINUX_DEBUG_H
 #define UTIL_LINUX_DEBUG_H
@@ -173,7 +170,7 @@ static inline void ul_debug_print_masks(
 	for (d = flagnames; d && d->name; d++) {
 		if (!d->help)
 			continue;
-		fprintf(stderr, "   %-8s [0x%04x] : %s\n",
+		fprintf(stderr, "   %-8s [0x%06x] : %s\n",
 				d->name, d->mask, d->help);
 	}
 }

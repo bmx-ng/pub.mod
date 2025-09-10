@@ -1,3 +1,7 @@
+/*
+ * No copyright is claimed.  This code is in the public domain; do with
+ * it what you wish.
+ */
 #ifndef UTIL_LINUX_MANGLE_H
 #define UTIL_LINUX_MANGLE_H
 
@@ -14,12 +18,14 @@ extern char *unmangle(const char *s, const char **end);
 
 static inline void unmangle_string(char *s)
 {
-	unmangle_to_buffer(s, s, strlen(s) + 1);
+	if (s)
+		unmangle_to_buffer(s, s, strlen(s) + 1);
 }
 
 static inline void unhexmangle_string(char *s)
 {
-	unhexmangle_to_buffer(s, s, strlen(s) + 1);
+	if (s)
+		unhexmangle_to_buffer(s, s, strlen(s) + 1);
 }
 
 #endif /* UTIL_LINUX_MANGLE_H */

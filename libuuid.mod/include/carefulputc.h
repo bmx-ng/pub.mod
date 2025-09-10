@@ -1,106 +1,84 @@
 #ifndef UTIL_LINUX_CAREFULPUTC_H
 #define UTIL_LINUX_CAREFULPUTC_H
 
-/*
- * A putc() for use in write and wall (that sometimes are sgid tty).
- * It avoids control characters in our locale, and also ASCII control
- * characters.   Note that the locale of the recipient is unknown.
-*/
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#ifdef HAVE_WIDECHAR
+#include <wctype.h>
+#include <wchar.h>
+#endif
+#include <stdbool.h>
 
-static inline int fputc_careful(int c, FILE *fp, const char fail)
-{
-	int ret;
-
-	if (isprint(c) || c == '\a' || c == '\t' || c == '\r' || c == '\n')
-		ret = putc(c, fp);
-	else if (!isascii(c))
-		ret = fprintf(fp, "\\%3o", (unsigned char)c);
-	else {
-		ret = putc(fail, fp);
-		if (ret != EOF)
-			ret = putc(c ^ 0x40, fp);
-	}
-	return (ret < 0) ? EOF : 0;
-}
+#include "cctype.h"
 
 /*
- * Requirements enumerated via testing (V8, Firefox, IE11):
- *
- * var charsToEscape = [];
- * for (var i = 0; i < 65535; i += 1) {
- *	try {
- *		JSON.parse('{"sample": "' + String.fromCodePoint(i) + '"}');
- *	} catch (e) {
- *		charsToEscape.push(i);
- *	}
- * }
+ * A puts() for use in write and wall (that sometimes are sgid tty).
+ * It avoids control and invalid characters.
+ * The locale of the recipient is nominally unknown,
+ * but it's a solid bet that it's compatible with the author's.
+ * Use soft_width=0 to disable wrapping.
  */
-static inline void fputs_quoted_case_json(const char *data, FILE *out, int dir)
+static inline int fputs_careful(const char * s, FILE *fp, const char ctrl, bool cr_lf, int soft_width)
 {
-	const char *p;
+	int ret = 0, col = 0;
 
-	fputc('"', out);
-	for (p = data; p && *p; p++) {
+	for (size_t slen = strlen(s); *s; ++s, --slen) {
+		if (*s == '\t')
+			col += (7 - (col % 8)) - 1;
+		else if (*s == '\r')
+			col = -1;
+		else if (*s == '\a')
+			--col;
 
-		const unsigned char c = (unsigned char) *p;
-
-		/* From http://www.json.org
-		 *
-		 * The double-quote and backslashes would break out a string or
-		 * init an escape sequence if not escaped.
-		 *
-		 * Note that single-quotes and forward slashes, while they're
-		 * in the JSON spec, don't break double-quoted strings.
-		 */
-		if (c == '"' || c == '\\') {
-			fputc('\\', out);
-			fputc(c, out);
-			continue;
+		if ((soft_width && col >= soft_width) || *s == '\n') {
+			if (soft_width) {
+				fprintf(fp, "%*s", soft_width - col, "");
+				col = 0;
+			}
+			ret = fputs(cr_lf ? "\r\n" : "\n", fp);
+			if (*s == '\n' || ret < 0)
+				goto wrote;
 		}
 
-		/* All non-control characters OK; do the case swap as required. */
-		if (c >= 0x20) {
-			fputc(dir ==  1 ? toupper(c) :
-			      dir == -1 ? tolower(c) : *p, out);
-			continue;
+		if (isprint(*s) || *s == '\a' || *s == '\t' || *s == '\r') {
+			ret = putc(*s, fp);
+			++col;
+		} else if (!c_isascii(*s)) {
+#ifdef HAVE_WIDECHAR
+			wchar_t w;
+			size_t clen = mbtowc(&w, s, slen);
+			switch(clen) {
+				case (size_t)-2:  // incomplete
+				case (size_t)-1:  // EILSEQ
+					mbtowc(NULL, NULL, 0);
+				nonprint:
+					col += ret = fprintf(fp, "\\%3hho", *s);
+					break;
+				default:
+					if(!iswprint(w))
+						goto nonprint;
+					ret = fwrite(s, 1, clen, fp);
+					if (soft_width)
+						col += wcwidth(w);
+					s += clen - 1;
+					slen -= clen - 1;
+					break;
+			}
+#else
+			col += ret = fprintf(fp, "\\%3hho", *s);
+#endif
+		} else {
+			ret = fputs((char[]){ ctrl, *s ^ 0x40, '\0' }, fp);
+			col += 2;
 		}
 
-		/* In addition, all chars under ' ' break Node's/V8/Chrome's, and
-		 * Firefox's JSON.parse function
-		 */
-		switch (c) {
-			/* Handle short-hand cases to reduce output size.  C
-			 * has most of the same stuff here, so if there's an
-			 * "Escape for C" function somewhere in the STL, we
-			 * should probably be using it.
-			 */
-			case '\b':
-				fputs("\\b", out);
-				break;
-			case '\t':
-				fputs("\\t", out);
-				break;
-			case '\n':
-				fputs("\\n", out);
-				break;
-			case '\f':
-				fputs("\\f", out);
-				break;
-			case '\r':
-				fputs("\\r", out);
-				break;
-			default:
-				/* Other assorted control characters */
-				fprintf(out, "\\u00%02x", c);
-				break;
-		}
+	wrote:
+		if (ret < 0)
+			return EOF;
 	}
-	fputc('"', out);
+	return 0;
 }
-
 
 static inline void fputs_quoted_case(const char *data, FILE *out, int dir)
 {
@@ -128,10 +106,6 @@ static inline void fputs_quoted_case(const char *data, FILE *out, int dir)
 #define fputs_quoted_upper(_d, _o)	fputs_quoted_case(_d, _o, 1)
 #define fputs_quoted_lower(_d, _o)	fputs_quoted_case(_d, _o, -1)
 
-#define fputs_quoted_json(_d, _o)       fputs_quoted_case_json(_d, _o, 0)
-#define fputs_quoted_json_upper(_d, _o) fputs_quoted_case_json(_d, _o, 1)
-#define fputs_quoted_json_lower(_d, _o) fputs_quoted_case_json(_d, _o, -1)
-
 static inline void fputs_nonblank(const char *data, FILE *out)
 {
 	const char *p;
@@ -148,6 +122,5 @@ static inline void fputs_nonblank(const char *data, FILE *out)
 			fputc(*p, out);
 	}
 }
-
 
 #endif  /*  _CAREFULPUTC_H  */

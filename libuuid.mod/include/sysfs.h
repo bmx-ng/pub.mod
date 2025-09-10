@@ -1,4 +1,7 @@
 /*
+ * No copyright is claimed.  This code is in the public domain; do with
+ * it what you wish.
+ *
  * Copyright (C) 2011 Karel Zak <kzak@redhat.com>
  */
 #ifndef UTIL_LINUX_SYSFS_H
@@ -84,6 +87,7 @@ char *sysfs_blkdev_get_devchain(struct path_cxt *pc, char *buf, size_t bufsz);
 int sysfs_blkdev_next_subsystem(struct path_cxt *pc __attribute__((unused)), char *devchain, char **subsys);
 
 int sysfs_blkdev_is_hotpluggable(struct path_cxt *pc);
+int sysfs_blkdev_is_removable(struct path_cxt *pc);
 int sysfs_blkdev_get_wholedisk( struct path_cxt *pc,
                                 char *diskname,
                                 size_t len,
@@ -93,8 +97,11 @@ int sysfs_devno_to_wholedisk(dev_t dev, char *diskname,
                              size_t len, dev_t *diskdevno);
 int sysfs_devno_is_dm_private(dev_t devno, char **uuid);
 int sysfs_devno_is_wholedisk(dev_t devno);
+
 dev_t sysfs_devname_to_devno(const char *name);
 dev_t __sysfs_devname_to_devno(const char *prefix, const char *name, const char *parent);
+int sysfs_devname_is_hidden(const char *prefix, const char *name);
+
 char *sysfs_devno_to_devpath(dev_t devno, char *buf, size_t bufsiz);
 char *sysfs_devno_to_devname(dev_t devno, char *buf, size_t bufsiz);
 int sysfs_devno_count_partitions(dev_t devno);
@@ -106,5 +113,14 @@ int sysfs_blkdev_scsi_host_is(struct path_cxt *pc, const char *type);
 int sysfs_blkdev_scsi_has_attribute(struct path_cxt *pc, const char *attr);
 int sysfs_blkdev_scsi_path_contains(struct path_cxt *pc, const char *pattern);
 
+char *sysfs_chrdev_devno_to_devname(dev_t devno, char *buf, size_t bufsiz);
+
+enum sysfs_byteorder {
+	SYSFS_BYTEORDER_LITTLE,
+	SYSFS_BYTEORDER_BIG,
+};
+
+extern enum sysfs_byteorder sysfs_get_byteorder(struct path_cxt *pc);
+extern int sysfs_get_address_bits(struct path_cxt *pc);
 
 #endif /* UTIL_LINUX_SYSFS_H */

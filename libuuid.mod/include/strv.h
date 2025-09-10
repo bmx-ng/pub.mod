@@ -1,3 +1,6 @@
+/*
+ * SPDX-License-Identifier: LGPL-2.1-or-later
+ */
 #ifndef UTIL_LINUX_STRV
 #define UTIL_LINUX_STRV
 
@@ -13,9 +16,12 @@ unsigned strv_length(char * const *l);
 int strv_extend_strv(char ***a, char **b);
 int strv_extend_strv_concat(char ***a, char **b, const char *suffix);
 int strv_extend(char ***l, const char *value);
-int strv_extendv(char ***l, const char *format, va_list ap);
+
+int strv_extendv(char ***l, const char *format, va_list ap)
+		__attribute__ ((__format__ (__printf__, 2, 0)));
 int strv_extendf(char ***l, const char *format, ...)
-			__attribute__ ((__format__ (__printf__, 2, 0)));
+		__attribute__ ((__format__ (__printf__, 2, 3)));
+
 int strv_push(char ***l, char *value);
 int strv_push_prepend(char ***l, char *value);
 int strv_consume(char ***l, char *value);
@@ -24,7 +30,6 @@ int strv_consume_prepend(char ***l, char *value);
 char **strv_remove(char **l, const char *s);
 
 char **strv_new(const char *x, ...);
-char **strv_new_ap(const char *x, va_list ap);
 
 static inline const char* STRV_IFNOTNULL(const char *x) {
         return x ? x : (const char *) -1;

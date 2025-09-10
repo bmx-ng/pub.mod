@@ -1,3 +1,7 @@
+/*
+ * No copyright is claimed.  This code is in the public domain; do with
+ * it what you wish.
+ */
 	{0x00, N_("Empty")},
 	{0x01, N_("FAT12")},
 	{0x02, N_("XENIX root")},
@@ -5,7 +9,7 @@
 	{0x04, N_("FAT16 <32M")},
 	{0x05, N_("Extended")},		/* DOS 3.3+ extended partition */
 	{0x06, N_("FAT16")},		/* DOS 16-bit >=32M */
-	{0x07, N_("HPFS/NTFS/exFAT")},	/* OS/2 IFS, eg, HPFS or NTFS or QNX or exFAT */
+	{0x07, N_("HPFS/NTFS/exFAT")},	/* OS/2 IFS, e.g., HPFS or NTFS or QNX or exFAT */
 	{0x08, N_("AIX")},		/* AIX boot (AIX -- PS/2 port) or SplitDrive */
 	{0x09, N_("AIX bootable")},	/* AIX data or Coherent */
 	{0x0a, N_("OS/2 Boot Manager")},/* OS/2 Boot Manager */
@@ -90,7 +94,10 @@
 	{0xe3, N_("DOS R/O")},		/* DOS R/O or SpeedStor */
 	{0xe4, N_("SpeedStor")},	/* SpeedStor 16-bit FAT extended
 					   partition < 1024 cyl. */
-	{0xea, N_("Rufus alignment")},	/* Rufus extra partition for alignment */
+
+	/* Linux https://www.freedesktop.org/wiki/Specifications/BootLoaderSpec/ */
+	{0xea, N_("Linux extended boot")},
+
 	{0xeb, N_("BeOS fs")},
 	{0xee, N_("GPT")},		/* Intel EFI GUID Partition Table */
 	{0xef, N_("EFI (FAT-12/16/32)")},/* Intel EFI System Partition */
@@ -98,6 +105,7 @@
 	{0xf1, N_("SpeedStor")},
 	{0xf4, N_("SpeedStor")},	/* SpeedStor large partition */
 	{0xf2, N_("DOS secondary")},	/* DOS 3.3+ secondary */
+	{0xf8, N_("EBBR protective")},	/* Arm EBBR firmware protective partition */
 	{0xfb, N_("VMware VMFS")},
 	{0xfc, N_("VMware VMKCORE")},	/* VMware kernel dump partition */
 	{0xfd, N_("Linux raid autodetect")},/* Linux raid partition with
