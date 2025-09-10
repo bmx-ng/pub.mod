@@ -43,7 +43,7 @@ ModuleInfo "History: 1.00"
 ModuleInfo "History: Initial Release."
 
 ?linux
-ModuleInfo "CC_OPTS: -DHAVE_NANOSLEEP -DHAVE_STRNDUP -DHAVE_SYS_FILE_H"
+ModuleInfo "CC_OPTS: -DHAVE_NANOSLEEP -DHAVE_STRNDUP -DHAVE_SYS_FILE_H -DHAVE_REALLOCARRAY"
 ?macos
 ModuleInfo "CC_OPTS: -DHAVE_NANOSLEEP"
 ?haiku
