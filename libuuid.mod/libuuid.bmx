@@ -27,10 +27,12 @@ SuperStrict
 
 Module Pub.LibUUID
 
-ModuleInfo "Version: 1.04"
+ModuleInfo "Version: 1.05"
 ModuleInfo "License: BSD"
 ModuleInfo "Copyright: Wrapper - 2015-2025 Bruce A Henderson"
 
+ModuleInfo "History: 1.05"
+ModuleInfo "History: Not available on Win32"
 ModuleInfo "History: 1.04"
 ModuleInfo "History: Updated to 2.41."
 ModuleInfo "History: 1.03"
@@ -50,7 +52,7 @@ ModuleInfo "CC_OPTS: -DHAVE_NANOSLEEP"
 ModuleInfo "CC_OPTS: -DHAVE_NANOSLEEP -DHAVE_STRNDUP -DHAVE_SYS_FILE_H"
 ?
 
-
+?Not win32
 Import "include/*.h"
 Import "libuuid/src/*.h"
 
@@ -70,15 +72,12 @@ Import "lib/md5.c"
 
 Import "glue.c"
 
-?win32
-Import "-ladvapi32"
-?
-
 Extern
-	Function strlen:Int(out:Byte Ptr)
+	Function strlen:Size_T(out:Byte Ptr)
 
 	Function uuid_generate(buf:Byte Ptr)
 	Function uuid_unparse(buf:Byte Ptr, out:Byte Ptr)
 	Function uuid_unparse_upper(buf:Byte Ptr, out:Byte Ptr)
 	
 End Extern
+?
