@@ -599,7 +599,80 @@ Struct SDateTime
 			Return Self
 		End If
 	End Method
+
+	Rem
+	bbdoc: Returns the day of the week for the current date.
+	returns: An enumeration representing the day of the week.
+	about: This method uses Zeller's Congruence algorithm to calculate the day of the week.
+	End Rem
+	Method DayOfWeek:EWeekday()
+		Local m:Int = month
+		Local y:Int = year
+
+		' adjust for January and February
+		If m = 1 Then
+			m = 13
+			y = y - 1
+		End If
+
+		If m = 2 Then
+			m = 14
+			y = y - 1
+		End If
+
+		Local q:Int = day
+		Local k:Int = y Mod 100
+		Local j:Int = y / 100
+
+		Local h:Int = (q + ((13 * (m + 1)) / 5) + k + (k / 4) + (j / 4) + (5 * j)) Mod 7
+
+		Local d:Int = ((h + 5) Mod 7) + 1 ' Convert to 1=Monday, ..., 7=Sunday
+
+		Return EWeekday(d)
+	End Method
 End Struct
+
+Rem
+bbdoc: Enumeration for the days of the week.
+End Rem
+Enum EWeekday
+	Monday = 1
+	Tuesday = 2
+	Wednesday = 3
+	Thursday = 4
+	Friday = 5
+	Saturday = 6
+	Sunday = 7
+End Enum
+
+Rem
+bbdoc: Enumeration for the abbreviated days of the week.
+End Rem
+Enum EShortWeekday
+	Mon = 1
+	Tue = 2
+	Wed = 3
+	Thu = 4
+	Fri = 5
+	Sat = 6
+	Sun = 7
+End Enum
+
+Rem
+bbdoc: Converts an #EWeekday value to its corresponding #EShortWeekday value.
+returns: The corresponding #EShortWeekday value.
+End Rem
+Function WeekDayToShortWeekday:EShortWeekday(day:EWeekday)
+	Return EShortWeekday(day.Ordinal())
+End Function
+
+Rem
+bbdoc: Converts an #EShortWeekday value to its corresponding #EWeekday value.
+returns: The corresponding #EWeekday value.
+End Rem
+Function ShortWeekdayToWeekDay:EWeekday(shortDay:EShortWeekday)
+	Return EWeekday(shortDay.Ordinal())
+End Function
 
 Rem
 bbdoc: Gets the current date string.

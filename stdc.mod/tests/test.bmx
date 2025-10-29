@@ -101,4 +101,29 @@ Type TSDateTimeTest Extends TTest
 		AssertEquals( expected.dst, actual.dst, "dst" )
 
 	End Method
+
+	Method TestDayOfWeek() { test }
+
+		Local dt:SDateTime = New SDateTime( 2021, 9, 27, 0, 0, 0, 0, True, 0, 0 ) ' Monday
+		AssertEquals(EWeekday.Monday.Ordinal(), dt.DayOfWeek().Ordinal() )
+
+		dt = New SDateTime( 2021, 9, 28, 0, 0, 0, 0, True, 0, 0 ) ' Tuesday
+		AssertEquals(EWeekday.Tuesday.Ordinal(), dt.DayOfWeek().Ordinal() )
+
+		dt = New SDateTime( 2021, 9, 29, 0, 0, 0, 0, True, 0, 0 ) ' Wednesday
+		AssertEquals(EWeekday.Wednesday.Ordinal(), dt.DayOfWeek().Ordinal() )
+
+		dt = New SDateTime( 2021, 9, 30, 0, 0, 0, 0, True, 0, 0 ) ' Thursday
+		AssertEquals(EWeekday.Thursday.Ordinal(), dt.DayOfWeek().Ordinal() )
+
+		dt = New SDateTime( 2021, 10, 1, 0, 0, 0, 0, True, 0, 0 ) ' Friday
+		AssertEquals(EWeekday.Friday.Ordinal(), dt.DayOfWeek().Ordinal() )
+
+		dt = New SDateTime( 2021, 10, 2, 0, 0, 0, 0, True, 0, 0 ) ' Saturday
+		AssertEquals(EWeekday.Saturday.Ordinal(), dt.DayOfWeek().Ordinal() )
+
+		dt = New SDateTime( 2021, 10, 3, 0, 0, 0, 0, True, 0, 0 ) ' Sunday
+		AssertEquals(EWeekday.Sunday.Ordinal(), dt.DayOfWeek().Ordinal() )
+
+	End Method
 End Type
