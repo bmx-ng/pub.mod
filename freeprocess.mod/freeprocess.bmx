@@ -5,13 +5,16 @@ bbdoc: System/Execute Processes
 End Rem
 Module Pub.FreeProcess
 
-ModuleInfo "Version: 1.04"
+ModuleInfo "Version: 1.05"
 ModuleInfo "Framework: FreeProcess multi platform external process control"
 ModuleInfo "License: zlib/libpng"
 ModuleInfo "Copyright: Blitz Research Ltd"
 ModuleInfo "Author: Simon Armstrong"
 ModuleInfo "Modserver: BRL"
 
+ModuleInfo "History: 1.05"
+ModuleInfo "History: Added Eof() method to TPipeStream."
+ModuleInfo "History: Fixed issues with losing data at end of process output."
 ModuleInfo "History: 1.04 Release"
 ModuleInfo "History: Added Documentation, Added Detach and Attach Process Functions"
 ModuleInfo "History: 1.03 Release"
@@ -40,6 +43,7 @@ Extern
 	Function fdWrite:Long(fd:Size_T,buffer:Byte Ptr,count:Long)
 	Function fdFlush(fd:Size_T)
 	Function fdAvail:Int(fd:Size_T)
+	Function fdEof:Int(fd:Size_T)
 ?win32
 	Function fdProcess:Byte Ptr(exe:String,in_fd:Size_T Ptr,out_fd:Size_T Ptr,err_fd:Size_T Ptr,flags:Int)="fdProcess"
 	Function fdProcessStatus:Int(processhandle:Byte Ptr)
@@ -94,7 +98,7 @@ Type TPipeStream Extends TStream
 	Method ReadPipe:Byte[]()
 		Local bytes:Byte[],n:Int
 		n=ReadAvail()
-		If n
+		If n > 0 Then
 			bytes=New Byte[n]
 			Read(bytes,n)
 			Return bytes
@@ -125,6 +129,20 @@ Type TPipeStream Extends TStream
 				Return line
 			EndIf
 		Next
+
+		' No newline found. If pipe is EOF and we have buffered bytes, return them as final line.
+		If bufferpos > 0 And fdEof(readhandle) Then
+			Local line:String = String.FromBytes(Varptr readbuffer[0], Int(bufferpos))
+			bufferpos = 0
+			Return line
+		EndIf
+	End Method
+
+	Method Eof:Int() Override
+		' EOF is true only when the OS says pipe is closed AND we have no buffered bytes left
+		If bufferpos > 0 Then Return False
+		If readhandle = 0 Then Return True
+		Return fdEof(readhandle) <> 0
 	End Method
 
 	Function Create:TPipeStream( in:Size_T,out:Size_T )
