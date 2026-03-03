@@ -13,12 +13,42 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <signal.h>
+#include <poll.h>
 
 int fdClose(size_t fd) {return close(fd);}
 BBLONG fdRead(size_t fd,char *buffer,BBLONG count) {return read(fd,buffer,count);}
 BBLONG fdWrite(size_t fd,char *buffer,BBLONG count) {return write(fd,buffer,count);}
-int fdAvail(size_t fd) {int avail;if (ioctl(fd,FIONREAD,&avail)) avail=avail;return avail;}
+int fdAvail(size_t fd) {
+    int avail = 0;
+    if (ioctl((int)fd, FIONREAD, &avail) != 0) return 0;
+    return avail;
+}
 int fdFlush(size_t fd) { return 0;}//flush(fd);}
+
+int fdEof(size_t fd)
+{
+    struct pollfd pfd;
+    pfd.fd = (int)fd;
+    pfd.events = POLLIN;
+    pfd.revents = 0;
+
+    int pr = poll(&pfd, 1, 0);
+    if (pr <= 0) {
+        return 0; // no event (or error) => assume not EOF
+    }
+
+    // If writer closed, we usually get POLLHUP.
+    if (pfd.revents & POLLHUP) {
+        // Only call it EOF if there's no data left to read right now.
+        int avail = 0;
+        if (ioctl((int)fd, FIONREAD, &avail) == 0) {
+            return avail == 0;
+        }
+        return 0;
+    }
+
+    return 0;
+}
 
 ///return 1 for running, 0 for finished
 //
@@ -218,6 +248,26 @@ int fdClose(size_t fd)
 	return CloseHandle((HANDLE)fd);
 }
 
+int fdEof(size_t fd)
+{
+    DWORD avail = 0;
+
+    // If PeekNamedPipe succeeds, the pipe is still connected.
+    // EOF is only true if there are no bytes available AND the writer is gone.
+    // Unfortunately PeekNamedPipe doesn't directly say "writer gone" when it succeeds.
+    // But when the writer has closed, PeekNamedPipe will fail with ERROR_BROKEN_PIPE.
+    if (PeekNamedPipe((HANDLE)fd, NULL, 0, NULL, &avail, NULL)) {
+        return 0; // not EOF (pipe still valid)
+    }
+
+    DWORD err = GetLastError();
+    if (err == ERROR_BROKEN_PIPE || err == ERROR_PIPE_NOT_CONNECTED) {
+        return 1; // EOF
+    }
+
+    return 0; // treat other errors as "not EOF"
+}
+
 BBLONG fdRead(size_t fd,char *buffer,BBLONG bytes)
 {
 	int		res;
@@ -303,6 +353,7 @@ PROCESS_INFORMATION * fdProcess( BBString *cmd,size_t *procin,size_t *procout,si
 		//unable to create pipe
 		return 0;
 	}
+	SetHandleInformation( istr, HANDLE_FLAG_INHERIT, 0 );
 
 	if( !CreatePipe( &p_istr,&ostr,&sa,0 ) ){
 		CloseHandle( istr );
@@ -310,6 +361,7 @@ PROCESS_INFORMATION * fdProcess( BBString *cmd,size_t *procin,size_t *procout,si
 		//ditto
 		return 0;
 	}
+	SetHandleInformation( ostr, HANDLE_FLAG_INHERIT, 0 );
 
 	if (!CreatePipe(&estr,&p_estr,&sa,0)) {
 		CloseHandle( istr );
@@ -319,6 +371,7 @@ PROCESS_INFORMATION * fdProcess( BBString *cmd,size_t *procin,size_t *procout,si
 		//unable to create pipe
 		return 0;
 	}
+	SetHandleInformation( estr, HANDLE_FLAG_INHERIT, 0 );
 
 	pi=(PROCESS_INFORMATION*)calloc(1,sizeof(PROCESS_INFORMATION));
 
