@@ -5,7 +5,7 @@
 <br />
 
 <div align="center">
-    <a href="https://github.com/zpl-c/enet/actions"><img src="https://img.shields.io/github/workflow/status/zpl-c/enet/tests?label=Tests&style=for-the-badge" alt="build status" /></a>
+    <a href="https://github.com/zpl-c/enet/actions"><img src="https://img.shields.io/github/actions/workflow/status/zpl-c/enet/tests.yml?branch=master&label=Tests&style=for-the-badge" alt="build status" /></a>
     <img src="https://img.shields.io/github/package-json/v/zpl-c/enet?style=for-the-badge" alt="version" /></a>
     <a href="https://discord.gg/2fZVEym"><img src="https://img.shields.io/discord/354670964400848898?color=7289DA&style=for-the-badge" alt="discord" /></a>
     <a href="LICENSE"><img src="https://img.shields.io/github/license/zpl-c/enet?style=for-the-badge" alt="license" /></a>
@@ -22,9 +22,9 @@
     Brought to you by 
     <a href="https://github.com/lsalzman">@lsalzman</a>,
     <a href="https://github.com/inlife">@inlife</a>,
-    <a href="https://github.com/zaklaus">@zaklaus</a>,
+    <a href="https://github.com/zpl-zak">@zpl-zak</a>,
     <a href="https://github.com/nxrighthere">@nxrighthere</a>
-    and other <a href="https://github.com/zpl-c/librg/graphs/contributors">contributors</a>
+    and other <a href="https://github.com/zpl-c/enet/graphs/contributors">contributors</a>
   </sub>
 </div>
 

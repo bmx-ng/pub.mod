@@ -2,9 +2,11 @@ SuperStrict
 
 Module Pub.Enet
 
-ModuleInfo "Version: 1.03"
+ModuleInfo "Version: 1.04"
 ModuleInfo "Author: Lee Salzman, Vladyslav Hrytsenko, Dominik Madarasz"
 
+ModuleInfo "History: 1.04"
+ModuleInfo "History: Updated to enet 2.6.5"
 ModuleInfo "History: 1.03"
 ModuleInfo "History: Updated to enet 2.3.6"
 ModuleInfo "History: 1.02"
@@ -104,6 +106,7 @@ Extern
 	Function enet_packet_destroy(packet:Byte Ptr)
 	Function bmx_enet_packet_data:Byte Ptr(packet:Byte Ptr)
 	Function bmx_enet_packet_size:Size_T(packet:Byte Ptr)
+	Function enet_packet_resize:Byte Ptr(packet:Byte Ptr, dataLength:Size_T)
 End Extern
 
 Const ENET_HOST_ANY:String = "ENET_HOST_ANY"
