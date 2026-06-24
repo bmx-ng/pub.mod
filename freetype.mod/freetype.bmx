@@ -3,10 +3,12 @@ SuperStrict
 
 Module Pub.FreeType
 
-ModuleInfo "Version: 1.15"
+ModuleInfo "Version: 1.16"
 ModuleInfo "License: FreeType License"
 ModuleInfo "Modserver: BRL"
 
+ModuleInfo "History: 1.16"
+ModuleInfo "History: Added pixel mode retrieval for glyphs"
 ModuleInfo "History: 1.15"
 ModuleInfo "History: Made SuperStrict"
 ModuleInfo "History: Updated to FreeType 2.13.3"
@@ -135,6 +137,7 @@ Function bmx_freetype_Slot_bitmap_pitch:Int(slot:Byte Ptr)
 Function bmx_freetype_Slot_advance_x:Int(slot:Byte Ptr)
 Function bmx_freetype_Slot_bitmap_buffer:Byte Ptr(slot:Byte Ptr)
 Function bmx_freetype_Slot_bitmap_numgreys:Int(slot:Byte Ptr)
+Function bmx_freetype_Slot_bitmap_pixelmode:Int(slot:Byte Ptr)
 
 End Extern
 
@@ -158,3 +161,12 @@ Const FT_RENDER_MODE_LIGHT:Int=1
 Const FT_RENDER_MODE_MONO:Int=2
 Const FT_RENDER_MODE_LCD:Int=3
 Const FT_RENDER_MODE_LCD_V:Int=4
+
+Const FT_PIXEL_MODE_NONE:Int = 0
+Const FT_PIXEL_MODE_MONO:Int = 1
+Const FT_PIXEL_MODE_GRAY:Int = 2
+Const FT_PIXEL_MODE_GRAY2:Int = 3
+Const FT_PIXEL_MODE_GRAY4:Int = 4
+Const FT_PIXEL_MODE_LCD:Int = 5
+Const FT_PIXEL_MODE_LCD_V:Int = 6
+Const FT_PIXEL_MODE_BGRA:Int = 7
