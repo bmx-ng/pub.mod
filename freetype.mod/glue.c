@@ -51,6 +51,10 @@ int bmx_freetype_Slot_bitmap_numgreys(FT_GlyphSlot slot) {
 	return slot->bitmap.num_grays;
 }
 
+int bmx_freetype_Slot_bitmap_pixelmode(FT_GlyphSlot slot) {
+	return slot->bitmap.pixel_mode;
+}
+
 int bmx_freetype_Slot_advance_x(FT_GlyphSlot slot) {
 	return slot->advance.x;
 }
