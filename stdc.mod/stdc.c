@@ -534,8 +534,8 @@ int chdir_( BBString *path ){
 
 BBString *getcwd_(){
 	char buf[PATH_MAX];
-	getcwd( buf,PATH_MAX );
-	return bbStringFromUTF8String( buf );
+	char *res = getcwd( buf,PATH_MAX );
+	return res ? bbStringFromUTF8String( buf ) : &bbEmptyString;
 }
 
 int chmod_( BBString *path,int mode ){
@@ -1233,7 +1233,7 @@ SDateTime bmx_datetime_from_epoch(BBLONG epochTimeSecs, BBLONG fracNanoseconds, 
     return dt;
 }
 
-time_t bmx_datetime_to_time_t(SDateTime * dt) {
+time_t bmx_datetime_to_time_t(const SDateTime * dt) {
     struct tm t;
 
     t.tm_year = dt->year - 1900;
@@ -1283,7 +1283,7 @@ time_t bmx_datetime_to_time_t(SDateTime * dt) {
     }
 }
 
-BBLONG bmx_datetime_to_epoch(SDateTime * dt) {
+BBLONG bmx_datetime_to_epoch(const SDateTime * dt) {
 	if (dt->utc) {
 		return (BBLONG)bmx_datetime_to_time_t(dt);
 	}
@@ -1301,7 +1301,7 @@ BBLONG bmx_datetime_to_epoch(SDateTime * dt) {
 	return (BBLONG)mktime(&t);
 }
 
-int bmx_datetime_convert_to_utc(const SDateTime* dt, SDateTime* dt_utc) {
+int bmx_datetime_convert_to_utc(const SDateTime * dt, SDateTime * dt_utc) {
    if (!dt || !dt_utc)
         return -1; // Return error if either pointer is NULL
 
@@ -1364,13 +1364,14 @@ BBString * bmx_current_datetime_format(BBString * format) {
 }
 
 BBString * bmx_datetime_iso8601(const SDateTime *dt, int showMillis) {
-	char buf[32];
+	char buf[128];
+	int length = 0;
 	if (dt->utc) {
         if (showMillis) {
-            snprintf(buf, 32, "%04d-%02d-%02dT%02d:%02d:%02d.%03dZ",
+            length = snprintf(buf, 128, "%04d-%02d-%02dT%02d:%02d:%02d.%03dZ",
                      dt->year, dt->month, dt->day, dt->hour, dt->minute, dt->second, dt->millisecond);
         } else {
-            snprintf(buf, 32, "%04d-%02d-%02dT%02d:%02d:%02dZ",
+            length = snprintf(buf, 128, "%04d-%02d-%02dT%02d:%02d:%02dZ",
                      dt->year, dt->month, dt->day, dt->hour, dt->minute, dt->second);
         }
     } else {
@@ -1380,15 +1381,18 @@ BBString * bmx_datetime_iso8601(const SDateTime *dt, int showMillis) {
         int offset_minutes = offset % 60 * offset_sign;
 
         if (showMillis) {
-            snprintf(buf, 32, "%04d-%02d-%02dT%02d:%02d:%02d.%03d%+03d:%02d",
+            length = snprintf(buf, 128, "%04d-%02d-%02dT%02d:%02d:%02d.%03d%+03d:%02d",
                      dt->year, dt->month, dt->day, dt->hour, dt->minute, dt->second, dt->millisecond,
                      offset_hours, offset_minutes);
         } else {
-            snprintf(buf, 32, "%04d-%02d-%02dT%02d:%02d:%02d%+03d:%02d",
+            length = snprintf(buf, 128, "%04d-%02d-%02dT%02d:%02d:%02d%+03d:%02d",
                      dt->year, dt->month, dt->day, dt->hour, dt->minute, dt->second,
                      offset_hours, offset_minutes);
         }
     }
+	if (length < 0 || (size_t)length >= sizeof(buf)) {
+		return &bbEmptyString; // Error or buffer overflow
+	}
 	return bbStringFromCString(buf);
 }
 

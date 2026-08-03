@@ -201,8 +201,8 @@ Function getenv_:String( env:String )
 
 Function fopen_:Byte Ptr( file:String,Mode:String )
 Function fclose_:Int( c_stream:Byte Ptr )="int fclose( FILE* ) !"
-Function fread_:Long( buf:Byte Ptr,size:Long,count:Long,c_stream:Byte Ptr )="size_t fread( void* , size_t, size_t, FILE* ) !"
-Function fwrite_:Long( buf:Byte Ptr,size:Long,count:Long,c_stream:Byte Ptr )="size_t fwrite( void* ,size_t, size_t, FILE* ) !"
+Function fread_:Size_T( buf:Byte Ptr,size:Size_T,count:Size_T,c_stream:Byte Ptr )="size_t fread( void* , size_t, size_t, FILE* ) !"
+Function fwrite_:Size_T( buf:Byte Ptr,size:Size_T,count:Size_T,c_stream:Byte Ptr )="size_t fwrite( void* ,size_t, size_t, FILE* ) !"
 Function fflush_( c_stream:Byte Ptr )="int fflush( FILE* ) !"
 Function fseek_:Int( c_stream:Byte Ptr,offset:Long,origin:Int )'="fseek"
 Function ftell_:Long( c_stream:Byte Ptr )'="ftell"
