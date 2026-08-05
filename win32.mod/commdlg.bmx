@@ -14,12 +14,12 @@ Const CC_ANYCOLOR=256
 
 Type CHOOSECOLOR
 	Field lStructSize
-	Field hwndOwner
-	Field hInstance
+	Field hwndOwner:Byte Ptr
+	Field hInstance:Byte Ptr
 	Field rgbResult
 	Field lpCustColors:Byte Ptr
 	Field Flags
-	Field lCustData
+	Field lCustData:LParam
 	Field lpfnHook:Byte Ptr
 	Field lpTemplateName:Short Ptr
 End Type

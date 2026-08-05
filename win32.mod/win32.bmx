@@ -72,18 +72,10 @@ Global lwin:Int, rwin:Int
 Extern "win32"
 	Function SetWindowsHookEx:Byte Ptr(idHook:Int, lpfn:Byte Ptr, hMod:Byte Ptr, threadId:Int) = "HHOOK __stdcall SetWindowsHookEx(int, HOOKPROC, HINSTANCE, DWORD)!"
 	Function UnhookWindowsHookEx:Int(hook:Byte Ptr) = "WINBOOL __stdcall UnhookWindowsHookEx(HHOOK)!"
-?win32 and ptr64
-	Function CallNextHookEx:Long( hook:Byte Ptr, code:Int, wp:WParam, lp:LParam) = "LRESULT __stdcall CallNextHookEx(HHOOK, int, WPARAM, LPARAM)!"
-?win32 and ptr32
-	Function CallNextHookEx:LongInt( hook:Byte Ptr, code:Int, wp:WParam, lp:LParam) = "LRESULT __stdcall CallNextHookEx(HHOOK, int, WPARAM, LPARAM)!"
-?win32
+	Function CallNextHookEx:LParam( hook:Byte Ptr, code:Int, wp:WParam, lp:LParam) = "LRESULT __stdcall CallNextHookEx(HHOOK, int, WPARAM, LPARAM)!"
 End Extern
 
-?win32 and Ptr64
-Function KeyboardProc:Long(code:Int, wp:WParam, lp:LParam) "win32"
-?win32 and Ptr32
-Function KeyboardProc:LongInt(code:Int, wp:WParam, lp:LParam) "win32"
-?win32
+Function KeyboardProc:LParam(code:Int, wp:WParam, lp:LParam) "win32"
 	If code <= 0 Then
 		CallNextHookEx( wkhook, code, wp, lp )
 	End If
