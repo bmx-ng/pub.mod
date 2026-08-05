@@ -693,8 +693,8 @@ Extern "Win32"
 	Function SwapBuffers( hdc:Byte Ptr )="BOOL SwapBuffers(HDC)!"
 	
 	Function wglCreateContext:Byte Ptr( hdc:Byte Ptr )="HGLRC wglCreateContext(HDC)!"
-	Function wglDeleteContext( hglrc )="BOOL wglDeleteContext(HGLRC)!"
-	Function wglMakeCurrent( hdc:Byte Ptr,hglrc )="BOOL wglMakeCurrent(HDC,HGLRC)!"
+	Function wglDeleteContext( hglrc:Byte Ptr )="BOOL wglDeleteContext(HGLRC)!"
+	Function wglMakeCurrent( hdc:Byte Ptr,hglrc:Byte Ptr )="BOOL wglMakeCurrent(HDC,HGLRC)!"
 	
 	Function BitBlt(hdc:Byte Ptr,x,y,w,h,src_dc:Byte Ptr,src_x,src_y,dwrop)="BOOL BitBlt(HDC,int,int,int,int,HDC,int,int,DWORD)!"
 	

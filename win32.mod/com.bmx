@@ -7,9 +7,9 @@ Import "com.cpp"
 
 Extern "win32"
 
-Function CLSIDFromProgID(code$w,clsid:Byte Ptr)="BBINT CLSIDFromProgID(BBSHORT * ,BBBYTE * )!"
-Function CoCreateInstance(rclsid:Byte Ptr,pUnkOuter:Byte Ptr,dwClsContext,riid:Byte Ptr,ppv:Byte Ptr Ptr)="BBINT CoCreateInstance(BBBYTE * ,BBBYTE * ,BBINT ,BBBYTE * ,BBBYTE ** )!"
-Function IIDFromString_(lpsz$w,riid:Byte Ptr)="BBINT IIDFromString(BBSHORT * ,BBBYTE * )!"
+Function CLSIDFromProgID(code$w,clsid:Byte Ptr)="HRESULT CLSIDFromProgID(LPCOLESTR, LPCLSID)!"
+Function CoCreateInstance(rclsid:Byte Ptr,pUnkOuter:Byte Ptr,dwClsContext,riid:Byte Ptr,ppv:Byte Ptr Ptr)="HRESULT CoCreateInstance(REFCLSID, LPUNKNOWN, DWORD, REFIID, LPVOID *)!"
+Function IIDFromString_(lpsz$w,riid:Byte Ptr)="BBINT IIDFromString(BBSHORT * ,GUID * )!"
 Function StringFromIID_(riid:Byte Ptr,lpsz:Short Ptr Ptr)="HRESULT StringFromIID(REFIID, LPOLESTR *)!"
 End Extern
 
@@ -144,7 +144,7 @@ Interface IWebBrowserApp_ Extends IWebBrowser_
 	
 	Method lfget_Name(Name:Byte Ptr )
 	
-	Method lfget_HWND(pHWND:Int Ptr)
+	Method lfget_HWND(pHWND:Byte Ptr Ptr)
 	
 	Method lfget_FullName(FullName:Short Ptr Ptr)
 	

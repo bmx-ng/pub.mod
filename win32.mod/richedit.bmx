@@ -373,9 +373,9 @@ Const lDefaultTab=720
 Const MAX_TABLE_CELLS=63
 
 Type EDITSTREAM
-	Field	dwCookie:Byte Ptr Ptr
+	Field	dwCookie:WParam
 	Field	dwError
-	Field	pfnCallback(cookie:Byte Ptr Ptr,buff:Byte Ptr,n,n_out:Int Ptr) "win32"
+	Field	pfnCallback(cookie:WParam,buff:Byte Ptr,n,n_out:Int Ptr) "win32"
 End Type
 
 Type TEXTRANGEW

@@ -120,7 +120,7 @@ Extern
 	Function bmx_win32_COMBOBOXEXITEMW_new:Byte Ptr()
 	Function bmx_win32_COMBOBOXEXITEMW_free(handle:Byte Ptr)
 	Function bmx_win32_COMBOBOXEXITEMW_Setmask(handle:Byte Ptr, mask:UInt)
-	Function bmx_win32_COMBOBOXEXITEMW_SetiItem(handle:Byte Ptr, iItem:Int Ptr)
+	Function bmx_win32_COMBOBOXEXITEMW_SetiItem(handle:Byte Ptr, iItem:LParam)
 	Function bmx_win32_COMBOBOXEXITEMW_SetpszText(handle:Byte Ptr, pszText:Short Ptr)
 	Function bmx_win32_COMBOBOXEXITEMW_SetiImage(handle:Byte Ptr, iImage:Int)
 	Function bmx_win32_COMBOBOXEXITEMW_SetiSelectedImage(handle:Byte Ptr, iSelectedImage:Int)
@@ -149,7 +149,7 @@ Type COMBOBOXEXITEMW
 		bmx_win32_COMBOBOXEXITEMW_Setmask(itemPtr, mask)
 	End Method
 	
-	Method SetiItem(iItem:Int Ptr)
+	Method SetiItem(iItem:LParam)
 		bmx_win32_COMBOBOXEXITEMW_SetiItem(itemPtr, iItem)
 	End Method
 	
@@ -463,7 +463,7 @@ Extern
 	Function bmx_win32_TVITEMW_hItem:Byte Ptr(handle:Byte Ptr)
 	Function bmx_win32_TVITEMW_pszText:Short Ptr(handle:Byte Ptr)
 	Function bmx_win32_TVITEMW_iImage:Int(handle:Byte Ptr)
-	Function bmx_win32_TVITEMW_lParam:Byte Ptr(handle:Byte Ptr)
+	Function bmx_win32_TVITEMW_lParam:LParam(handle:Byte Ptr)
 End Extern
 Type TVITEMW
 	Field itemPtr:Byte Ptr
@@ -539,7 +539,7 @@ Type TVITEMW
 		Return bmx_win32_TVITEMW_iImage(itemPtr)
 	End Method
 	
-	Method LParam:Byte Ptr()
+	Method LParam:LParam()
 		Return bmx_win32_TVITEMW_lParam(itemPtr)
 	End Method
 '	Field mask
@@ -569,10 +569,10 @@ Extern
 	Function bmx_win32_TVINSERTSTRUCTW_Setitem_iImage(handle:Byte Ptr, item_iImage:Int)
 	Function bmx_win32_TVINSERTSTRUCTW_Setitem_iSelectedImage(handle:Byte Ptr, item_iSelectedImage:Int)
 	Function bmx_win32_TVINSERTSTRUCTW_Setitem_cChildren(handle:Byte Ptr, item_cChildren:Int)
-	Function bmx_win32_TVINSERTSTRUCTW_Setitem_lParam(handle:Byte Ptr, item_lParam:Byte Ptr)
+	Function bmx_win32_TVINSERTSTRUCTW_Setitem_lParam(handle:Byte Ptr, item_lParam:LParam)
 	Function bmx_win32_TVINSERTSTRUCTW_item_mask:UInt(handle:Byte Ptr)
 	Function bmx_win32_TVINSERTSTRUCTW_item_iImage:Int(handle:Byte Ptr)
-	Function bmx_win32_TVINSERTSTRUCTW_item_lparam:Byte Ptr(handle:Byte Ptr)
+	Function bmx_win32_TVINSERTSTRUCTW_item_lparam:LParam(handle:Byte Ptr)
 	Function bmx_win32_TVINSERTSTRUCTW_item_pszText:Short Ptr(handle:Byte Ptr)
 End Extern
 Type TVINSERTSTRUCTW
@@ -637,7 +637,7 @@ Type TVINSERTSTRUCTW
 		bmx_win32_TVINSERTSTRUCTW_Setitem_cChildren(structPtr, item_cChildren)
 	End Method
 	
-	Method Setitem_lParam(item_lParam:Byte Ptr)
+	Method Setitem_lParam(item_lParam:LParam)
 		bmx_win32_TVINSERTSTRUCTW_Setitem_lParam(structPtr, item_lParam)
 	End Method
 	
@@ -649,7 +649,7 @@ Type TVINSERTSTRUCTW
 		Return bmx_win32_TVINSERTSTRUCTW_item_iImage(structPtr)
 	End Method
 	
-	Method item_lparam:Byte Ptr()
+	Method item_lparam:LParam()
 		Return bmx_win32_TVINSERTSTRUCTW_item_lparam(structPtr)
 	End Method
 	
@@ -1094,7 +1094,7 @@ Extern
 	Function bmx_win32_TOOLINFOW_free(handle:Byte Ptr)
 	Function bmx_win32_TOOLINFOW_SetuFlags(handle:Byte Ptr, uFlags:UInt)
 	Function bmx_win32_TOOLINFOW_Sethwnd(handle:Byte Ptr, hwnd:Byte Ptr)
-	Function bmx_win32_TOOLINFOW_SetuId(handle:Byte Ptr, uId:Byte Ptr)
+	Function bmx_win32_TOOLINFOW_SetuId(handle:Byte Ptr, uId:WParam)
 	Function bmx_win32_TOOLINFOW_Sethinst(handle:Byte Ptr, hinst:Byte Ptr)
 	Function bmx_win32_TOOLINFOW_SetlpszText(handle:Byte Ptr, lpszText:Short Ptr)
 	Function bmx_win32_TOOLINFOW_rect:Int Ptr(handle:Byte Ptr)
@@ -1128,7 +1128,7 @@ Type TOOLINFOW
 		bmx_win32_TOOLINFOW_Sethwnd(infoPtr, hwnd)
 	End Method
 	
-	Method SetuId(uId:Byte Ptr)
+	Method SetuId(uId:WParam)
 		bmx_win32_TOOLINFOW_SetuId(infoPtr, uId)
 	End Method
 	
@@ -1748,7 +1748,7 @@ Const LVFI_NEARESTXY          =$0040
 Type FINDINFOW
 	Field flags
     Field psz:Short Ptr
-    Field LParam
+    Field LParam:LParam
     Field pt_x,pt_y
 	Field vkDirection
 End Type
@@ -2082,7 +2082,7 @@ Const CMB_MASKED              =$02
 Extern "Win32"
 
 Function ImageList_Create:Byte Ptr(cx,cy,flags:UInt,cInitial,cGrow)="HIMAGELIST __stdcall ImageList_Create(int ,int ,UINT ,int ,int )!"
-Function ImageList_AddMasked(himl:Byte Ptr,hbmImage:Byte Ptr,crMask:Byte Ptr)="int __stdcall ImageList_AddMasked(HIMAGELIST ,HBITMAP ,COLORREF )!"
+Function ImageList_AddMasked(himl:Byte Ptr,hbmImage:Byte Ptr,crMask:UInt)="int __stdcall ImageList_AddMasked(HIMAGELIST,HBITMAP,COLORREF)!"
 Function ImageList_Add(himl:Byte Ptr,hbmImage:Byte Ptr,crMask:Byte Ptr)="int __stdcall ImageList_Add(HIMAGELIST ,HBITMAP ,HBITMAP )!"
 Function ImageList_Destroy( hImageList:Byte Ptr )="WINBOOL __stdcall ImageList_Destroy(HIMAGELIST )!"
 Function ImageList_GetImageCount( hImageList:Byte Ptr )="int __stdcall ImageList_GetImageCount(HIMAGELIST )!"

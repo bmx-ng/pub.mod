@@ -1,5 +1,6 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -13,7 +14,8 @@ extern "C" {
 	void bmx_win32_WNDCLASSW_SetlpszClassName(WNDCLASSW * clas, LPCWSTR lpszClassName);
 	void bmx_win32_WNDCLASSW_Setstyle(WNDCLASSW * clas, int style);
 	void bmx_win32_WNDCLASSW_SethIcon(WNDCLASSW * clas, HICON hIcon);
-	void bmx_win32_WNDCLASSW_SethbrBackground(WNDCLASSW * clas, int hbrBackground);
+	void bmx_win32_WNDCLASSW_SethbrBackground(WNDCLASSW * clas, HBRUSH hbrBackground);
+	void bmx_win32_WNDCLASSW_SetBackgroundColor(WNDCLASSW * clas, int color);
 	void bmx_win32_WNDCLASSW_SetcbWndExtra(WNDCLASSW * clas, int cbWndExtra);
 
 	ICONINFO * bmx_win32_ICONINFO_new();
@@ -114,8 +116,12 @@ void bmx_win32_WNDCLASSW_SethIcon(WNDCLASSW * clas, HICON hIcon) {
 	clas->hIcon = hIcon;
 }
 
-void bmx_win32_WNDCLASSW_SethbrBackground(WNDCLASSW * clas, int hbrBackground) {
-	clas->hbrBackground = (HBRUSH)hbrBackground;
+void bmx_win32_WNDCLASSW_SethbrBackground(WNDCLASSW * clas, HBRUSH hbrBackground) {
+	clas->hbrBackground = hbrBackground;
+}
+
+void bmx_win32_WNDCLASSW_SetBackgroundColor(WNDCLASSW * clas, int color) {
+	clas->hbrBackground = (HBRUSH)(INT_PTR)color;
 }
 
 void bmx_win32_WNDCLASSW_SetcbWndExtra(WNDCLASSW * clas, int cbWndExtra) {
@@ -366,4 +372,3 @@ void bmx_win32_MSG_GetPt(MSG * msg, int * x, int * y) {
 	*x = msg->pt.x;
 	*y = msg->pt.y;
 }
-
