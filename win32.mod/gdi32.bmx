@@ -714,7 +714,7 @@ Extern "Win32"
 	Function CreateCompatibleDC:Byte Ptr( hdc:Byte Ptr )="HDC CreateCompatibleDC(HDC)!"
 	Function CreateCompatibleBitmap:Byte Ptr( hdc:Byte Ptr,nWidth,nHeight )="HBITMAP CreateCompatibleBitmap(HDC,int,int)!"
 	
-	Function SetDIBits( hdc:Byte Ptr,hbmp:Byte Ptr,uStartScan:UInt,cScanLines:UInt,lpvBits:Byte Ptr,lpbmi:Byte Ptr,fuColorUse:UInt )="int SetDIBits(HDC,HBITMAP,UINT,UINT,VOID *,const BITMAPINFO*,UINT)!"
+	Function SetDIBits( hdc:Byte Ptr,hbmp:Byte Ptr,uStartScan:UInt,cScanLines:UInt,lpvBits:Byte Ptr,lpbmi:Byte Ptr,fuColorUse:UInt )="int SetDIBits(HDC,HBITMAP,UINT,UINT,const VOID*,const BITMAPINFO*,UINT)!"
 	Function DeleteDC( hdc:Byte Ptr )="BOOL DeleteDC(HDC)!"
 	
 	Function SetStretchBltMode( hdc:Byte Ptr,iStretchMode )="int SetStretchBltMode(HDC,int)!"

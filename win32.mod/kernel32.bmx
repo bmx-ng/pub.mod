@@ -23,35 +23,35 @@ Const GMEM_FIXED=0
 Const GMEM_MOVEABLE=2
 Const GMEM_ZEROINT=$40
 
-Function Sleep( dwMilliseconds )="BBINT Sleep(BBINT )!"
-Function beep( dwFreq,dwDuration )="BBINT Beep(BBINT ,BBINT )!"
-Function GetModuleHandleA:Byte Ptr( lpModuleName:Byte Ptr  )="HMODULE GetModuleHandleA(BBBYTE * )!"
-Function GetModuleHandleW:Byte Ptr( lpModuleName:Short Ptr )="HMODULE GetModuleHandleW(BBSHORT * )!"
+Function Sleep( dwMilliseconds )="void Sleep(DWORD)!"
+Function beep( dwFreq,dwDuration )="BOOL Beep(DWORD,DWORD)!"
+Function GetModuleHandleA:Byte Ptr( lpModuleName:Byte Ptr  )="HMODULE GetModuleHandleA(LPCSTR)!"
+Function GetModuleHandleW:Byte Ptr( lpModuleName:Short Ptr )="HMODULE GetModuleHandleW(LPCWSTR)!"
 Function SetFileAttributesA( lpFileName$z,dwFileAttributes )="BOOL SetFileAttributesA(LPCSTR,DWORD)!"
 Function SetFileAttributesW( lpFileName$w,dwFileAttributes )="BOOL SetFileAttributesW(LPCWSTR,DWORD)!"
 Function GetFileAttributesA( lpFileName$z )="DWORD GetFileAttributesA(LPCSTR)!"
 Function GetFileAttributesW( lpFileName$w )="DWORD GetFileAttributesW(LPCWSTR)!"
 
-Function GetCurrentThreadId()="BBINT GetCurrentThreadId()!"
+Function GetCurrentThreadId:UInt()="DWORD GetCurrentThreadId()!"
 
 Function GlobalAlloc:Byte Ptr(uFlags:UInt,dwBytes:Size_T)="HGLOBAL GlobalAlloc(UINT ,SIZE_T )!"
 Function GlobalSize:Size_T(hMem:Byte Ptr)="SIZE_T GlobalSize(HGLOBAL )!"
-Function GlobalFree(hMem:Byte Ptr)="HGLOBAL GlobalFree(HGLOBAL )!"
-Function GlobalLock:Byte Ptr(hMem:Byte Ptr)="BBBYTE * GlobalLock(HGLOBAL )!"
-Function GlobalUnlock(hMem:Byte Ptr)="BBINT GlobalUnlock(HGLOBAL )!"
+Function GlobalFree:Byte Ptr(hMem:Byte Ptr)="HGLOBAL GlobalFree(HGLOBAL)!"
+Function GlobalLock:Byte Ptr(hMem:Byte Ptr)="LPVOID GlobalLock(HGLOBAL)!"
+Function GlobalUnlock(hMem:Byte Ptr)="BOOL GlobalUnlock(HGLOBAL)!"
 
 Const STD_INPUT_HANDLE=-10
 Const STD_OUTPUT_HANDLE=-11
 Const STD_ERROR_HANDLE=-12
 
-Function GetLastError()="DWORD __stdcall GetLastError()!"
+Function GetLastError:UInt()="DWORD __stdcall GetLastError()!"
 
-Function GetStdHandle:Byte Ptr(nStdHandle)="HANDLE __stdcall GetStdHandle(BBINT )!"
+Function GetStdHandle:Byte Ptr(nStdHandle)="HANDLE __stdcall GetStdHandle(DWORD)!"
 
 Function ReleaseMutex(mutex:Byte Ptr)="WINBOOL __stdcall ReleaseMutex(HANDLE)!"
 Function CreateMutexW:Byte Ptr( security:Byte Ptr, owner:Int, name$w)="HANDLE __stdcall CreateMutexW(LPSECURITY_ATTRIBUTES, WINBOOL , LPCWSTR)!"
 
-Function RegisterApplicationRestart:Int(pwzCommandline:Byte Ptr, dwFlags:Int)="HRESULT RegisterApplicationRestart(PCWSTR, DWORD)!"
+Function RegisterApplicationRestart:Int(pwzCommandline:Short Ptr, dwFlags:Int)="HRESULT RegisterApplicationRestart(PCWSTR, DWORD)!"
 Function UnregisterApplicationRestart:Int()="HRESULT UnregisterApplicationRestart()!"
 
 Const RESTART_NO_CRASH:Int = 1

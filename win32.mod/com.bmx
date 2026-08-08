@@ -9,7 +9,7 @@ Extern "win32"
 
 Function CLSIDFromProgID(code$w,clsid:Byte Ptr)="HRESULT CLSIDFromProgID(LPCOLESTR, LPCLSID)!"
 Function CoCreateInstance(rclsid:Byte Ptr,pUnkOuter:Byte Ptr,dwClsContext,riid:Byte Ptr,ppv:Byte Ptr Ptr)="HRESULT CoCreateInstance(REFCLSID, LPUNKNOWN, DWORD, REFIID, LPVOID *)!"
-Function IIDFromString_(lpsz$w,riid:Byte Ptr)="BBINT IIDFromString(BBSHORT * ,GUID * )!"
+Function IIDFromString_(lpsz$w,riid:Byte Ptr)="HRESULT IIDFromString(LPCOLESTR,LPIID)!"
 Function StringFromIID_(riid:Byte Ptr,lpsz:Short Ptr Ptr)="HRESULT StringFromIID(REFIID, LPOLESTR *)!"
 End Extern
 
@@ -42,7 +42,7 @@ End Extern
 
 ' oleautomation
 Extern 
-Function SysAllocStringLen:Short Ptr(bstr:Short Ptr,length:UInt)="BBSHORT * SysAllocStringLen(BBSHORT * ,UINT )!"
+Function SysAllocStringLen:Short Ptr(bstr:Short Ptr,length:UInt)="BSTR SysAllocStringLen(const OLECHAR*,UINT)!"
 Function SysFreeString(bstr:Short Ptr)="void SysFreeString(BBSHORT * )!"
 End Extern
 
