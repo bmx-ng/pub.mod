@@ -1,14 +1,9 @@
 SuperStrict
 
-Import "user32.bmx"
+Import "shcore.cpp"
 
-Local shcoreLib:Byte Ptr = LoadLibraryA( "Shcore.dll" )
-
-Global GetDpiForMonitor:Int(monitor:Byte Ptr, dpiType:Int, dpix:UInt Var, dpiy:UInt Var)"Win32"
-
-If shcoreLib Then
-	GetDpiForMonitor = GetProcAddress( shcoreLib, "GetDpiForMonitor" )
-End If
-
+Extern "Win32"
+	Function GetDpiForMonitor:Int(monitor:Byte Ptr, dpiType:Int, dpix:UInt Var, dpiy:UInt Var)="bmx_win32_GetDpiForMonitor"
+End Extern
 
 

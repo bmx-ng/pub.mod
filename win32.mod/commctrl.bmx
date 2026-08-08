@@ -991,10 +991,10 @@ End Type
 
 ' TreeView messages
 
-Const TVI_ROOT:Size_T=$FFFF0000
-Const TVI_FIRST:Size_T=$FFFF0001
-Const TVI_LAST:Size_T=$FFFF0002
-Const TVI_SORT:Size_T=$FFFF0003
+Const TVI_ROOT:LParam=-$10000
+Const TVI_FIRST:LParam=-$0ffff
+Const TVI_LAST:LParam=-$0fffe
+Const TVI_SORT:LParam=-$0fffd
 
 Const TV_FIRST=$1100
 Const TVM_INSERTITEMA=TV_FIRST+0

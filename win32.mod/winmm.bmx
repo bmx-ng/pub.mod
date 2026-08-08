@@ -1,6 +1,6 @@
 Strict
 Extern "win32"
 
-Function timeGetTime()="BBINT timeGetTime()!"
+Function timeGetTime:UInt()="DWORD timeGetTime()!"
 
 End Extern

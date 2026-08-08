@@ -80,6 +80,12 @@ extern "C" {
 	LPARAM bmx_win32_MSG_GetLParam(MSG * msg);
 	int bmx_win32_MSG_GetTime(MSG * msg);
 	void bmx_win32_MSG_GetPt(MSG * msg, int * x, int * y);
+	HWND WINAPI bmx_win32_WindowFromPoint(int * point);
+}
+
+HWND WINAPI bmx_win32_WindowFromPoint(int * point) {
+	POINT nativePoint = { point[0], point[1] };
+	return WindowFromPoint(nativePoint);
 }
 
 // ********************************************************
