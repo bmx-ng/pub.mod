@@ -14,12 +14,14 @@ bbdoc: Standard C Library functions.
 End Rem
 Module Pub.StdC
 
-ModuleInfo "Version: 1.15"
+ModuleInfo "Version: 1.16"
 ModuleInfo "Author: Various"
 ModuleInfo "License: zlib/libpng"
 ModuleInfo "Modserver: BRL"
 ModuleInfo "Credit: Adapted for BlitzMax by Mark Sibly"
 
+ModuleInfo "History: 1.16"
+ModuleInfo "History: Added setbinarymode_ for byte-exact standard and file stream protocols"
 ModuleInfo "History: 1.15"
 ModuleInfo "History: Added readlink_"
 ModuleInfo "History: 1.14"
@@ -204,6 +206,7 @@ Function fclose_:Int( c_stream:Byte Ptr )="int fclose( FILE* ) !"
 Function fread_:Size_T( buf:Byte Ptr,size:Size_T,count:Size_T,c_stream:Byte Ptr )="size_t fread( void* , size_t, size_t, FILE* ) !"
 Function fwrite_:Size_T( buf:Byte Ptr,size:Size_T,count:Size_T,c_stream:Byte Ptr )="size_t fwrite( void* ,size_t, size_t, FILE* ) !"
 Function fflush_( c_stream:Byte Ptr )="int fflush( FILE* ) !"
+Function setbinarymode_:Int( c_stream:Byte Ptr )
 Function fseek_:Int( c_stream:Byte Ptr,offset:Long,origin:Int )'="fseek"
 Function ftell_:Long( c_stream:Byte Ptr )'="ftell"
 Function feof_:Int( c_stream:Byte Ptr )="int feof( FILE* ) !"

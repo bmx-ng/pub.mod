@@ -49,6 +49,15 @@ FILE* stdin_;
 FILE* stdout_;
 FILE* stderr_;
 
+int setbinarymode_(FILE *stream) {
+	if (!stream) return 0;
+#if _WIN32
+	return _setmode(_fileno(stream), _O_BINARY) != -1;
+#else
+	return 1;
+#endif
+}
+
 extern BBObject * pub_stdc_TAddrInfo__Create(struct addrinfo * info, int owner);
 extern BBArray * pub_stdc_TAddrInfo__CreateArray(int count);
 extern void pub_stdc_TAddrInfo__SetAtIndex(BBArray * arr, BBObject * info, int index);
