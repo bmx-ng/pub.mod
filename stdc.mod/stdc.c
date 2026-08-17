@@ -19,6 +19,8 @@
 #include <ws2tcpip.h>
 #include <utime.h>
 #include <fileapi.h>
+#include <fcntl.h>
+#include <io.h>
 
 extern int bmx_inet_pton(int af, const char *src, void *dst);
 #define inet_pton bmx_inet_pton
