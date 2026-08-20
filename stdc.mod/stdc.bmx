@@ -572,7 +572,7 @@ Struct SDateTime
 	If @isLocal is set to #True, the epoch timestamp is assumed to be in local time, otherwise it is assumed to be in UTC.
 	End Rem
 	Function FromEpoch:SDateTime(epochSecs:Long, fracNanoSecs:Long = 0, isLocal:Int = False)
-		Return bmx_datetime_from_epoch(epochSecs, fracNanoSecs, isLocal:Int)
+		Return bmx_datetime_from_epoch(epochSecs, fracNanoSecs, isLocal)
 	End Function
 
 	Rem
