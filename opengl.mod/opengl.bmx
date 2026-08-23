@@ -13,7 +13,6 @@ ModuleInfo "History: 1.02 Release"
 ModuleInfo "History: Restored GLU"
 
 ?osx
-Import "-framework AGL"
 Import "-framework OpenGL"
 Import "glu.bmx"
 ?Win32

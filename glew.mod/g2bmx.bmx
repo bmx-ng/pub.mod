@@ -399,7 +399,6 @@ Type TCodeGenerator
 		WriteLine OutOpenGL, "ModuleInfo ~qHistory: Restored GLU~q"
 		WriteLine OutOpenGL, ""
 		WriteLine OutOpenGL, "?MacOS"
-		WriteLine OutOpenGL, "Import ~q-Framework AGL~q"
 		WriteLine OutOpenGL, "Import ~q-Framework OpenGL~q"
 		WriteLine OutOpenGL, "?Win32"
 		WriteLine OutOpenGL, "Import ~q-lglu32~q"
