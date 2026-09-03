@@ -5,7 +5,7 @@ bbdoc: Date, time and calendar functions.
 End Rem
 Module Pub.Time
 
-ModuleInfo "Version: 1.00"
+ModuleInfo "Version: 1.01"
 ModuleInfo "Author: Various"
 ModuleInfo "License: zlib/libpng"
 ModuleInfo "Modserver: BRL"
@@ -13,8 +13,14 @@ ModuleInfo "Credit: Adapted for BlitzMax by Mark Sibly"
 
 ModuleInfo "History: 1.00"
 ModuleInfo "History: Extracted date and time support from Pub.StdC"
+ModuleInfo "History: 1.01"
+ModuleInfo "History: Added a compact Pico calendar backend"
 
+?pico
+Import "glue_pico.c"
+?Not pico
 Import "glue.c"
+?
 
 Extern "C"
 
@@ -23,7 +29,7 @@ Function localtime_:Byte Ptr( time:Byte Ptr ) ' note : not thread safe
 Function strftime_:Int( buf:Byte Ptr,size:Int,fmt:String,time:Byte Ptr )
 
 ?Not macos
-Function clock_gettime_(id:Int, spec:STimeSpec Var)
+Function clock_gettime_:Int(id:Int, spec:STimeSpec Var)
 ?macos
 Function mach_absolute_time_ns:ULong()
 ?
