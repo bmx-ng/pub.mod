@@ -2,7 +2,7 @@ SuperStrict
 
 Framework brl.standardio
 Import BRL.MaxUnit
-Import Pub.Stdc
+Import Pub.Time
 
 New TTestSuite.run()
 
@@ -84,6 +84,19 @@ Type TSDateTimeTest Extends TTest
 		AssertEquals(epoch, dt.ToEpochSecs())
 		AssertEquals("2020-03-08T07:00:00Z", dt.ToString())
 		AssertEquals("2020-03-08T03:00:00-04:00", expected.ToString())
+
+		Local halfHourWest:SDateTime = New SDateTime(2020, 1, 2, 3, 4, 5, 6, False, -210, 0)
+		AssertEquals("2020-01-02T03:04:05-03:30", halfHourWest.ToString())
+		AssertEquals("2020-01-02T03:04:05.006-03:30", halfHourWest.ToIso8601(True))
+
+		Local halfHourEast:SDateTime = New SDateTime(2020, 1, 2, 3, 4, 5, 0, False, 330, 0)
+		AssertEquals("2020-01-02T03:04:05+05:30", halfHourEast.ToString())
+
+		Local explicitOffset:SDateTime = New SDateTime(1970, 1, 1, 5, 30, 0, 0, False, 330, 0)
+		AssertEquals(0:Long, explicitOffset.ToEpochSecs())
+
+		Local localDateTime:SDateTime = SDateTime.FromEpoch(epoch, 0, True)
+		AssertEquals(epoch, localDateTime.ToEpochSecs())
 
 	End Method
 
