@@ -5,12 +5,14 @@ bbdoc: Low-level networking and socket functions.
 End Rem
 Module Pub.Net
 
-ModuleInfo "Version: 1.00"
+ModuleInfo "Version: 1.01"
 ModuleInfo "Author: Various"
 ModuleInfo "License: zlib/libpng"
 ModuleInfo "Modserver: BRL"
 ModuleInfo "Credit: Adapted for BlitzMax by Mark Sibly"
 
+ModuleInfo "History: 1.01"
+ModuleInfo "History: Added the Pico raw-lwIP socket backend."
 ModuleInfo "History: 1.00"
 ModuleInfo "History: Extracted networking and socket support from Pub.StdC"
 
@@ -21,7 +23,11 @@ Import "inet_pton.c"
 Import "-lnetwork"
 ?
 
+?pico
+Import "net_pico.c"
+?not pico
 Import "net.c"
+?
 
 Type TAddrInfo
 
@@ -336,6 +342,10 @@ Function bmx_stdc_bind_info:Int(socket:Long, info:Byte Ptr)
 Function bmx_stdc_accept_:Long(socket:Long, storage:Byte Ptr)
 Function bmx_stdc_getsockname:Int(socket:Long, port:Int Var, address:String Var)
 Function bmx_stdc_getpeername:Int(socket:Long, port:Int Var, address:String Var)
+?
+
+?pico
+Function bmx_net_read_avail:Int(socket:Int)
 ?
 
 
