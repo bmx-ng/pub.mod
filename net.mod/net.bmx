@@ -346,6 +346,8 @@ Function bmx_stdc_getpeername:Int(socket:Long, port:Int Var, address:String Var)
 
 ?pico
 Function bmx_net_read_avail:Int(socket:Int)
+Function bmx_net_set_event_tokens:Int(socket:Int, readableToken:UInt, ..
+	writableToken:UInt, acceptToken:UInt, closedToken:UInt, errorToken:UInt)
 ?
 
 
