@@ -112,8 +112,8 @@ typedef struct BMXPicoDNSRequest {
 
 struct pub_net_TAddrInfo_obj;
 extern struct pub_net_TAddrInfo_obj *pub_net_TAddrInfo__Create(void *info, int owner);
-extern BMXPicoArray *pub_net_TAddrInfo__CreateArray(int count);
-extern void pub_net_TAddrInfo__SetAtIndex(BMXPicoArray *array,
+extern BMXEmbeddedArray *pub_net_TAddrInfo__CreateArray(int count);
+extern void pub_net_TAddrInfo__SetAtIndex(BMXEmbeddedArray *array,
     struct pub_net_TAddrInfo_obj *info, int index);
 extern int32_t bmx_pico_wifi_initialized(void) __attribute__((weak));
 
@@ -1015,13 +1015,13 @@ int bmx_net_set_event_tokens(int handle, uint32_t readable_token,
     return 1;
 }
 
-static const BMXPicoString *bmx_pico_net_address_string(const ip_addr_t *address) {
+static const BMXEmbeddedString *bmx_pico_net_address_string(const ip_addr_t *address) {
     char text[IP4ADDR_STRLEN_MAX];
-    if (!ipaddr_ntoa_r(address, text, sizeof(text))) return &bmx_pico_empty_string;
-    return bmx_pico_string_from_utf8_string((const uint8_t *)text);
+    if (!ipaddr_ntoa_r(address, text, sizeof(text))) return &bmx_embedded_empty_string;
+    return bmx_embedded_string_from_utf8_string((const uint8_t *)text);
 }
 
-int bmx_stdc_getsockname(int handle, int *port, const BMXPicoString **address) {
+int bmx_stdc_getsockname(int handle, int *port, const BMXEmbeddedString **address) {
     BMXPicoSocket *socket = bmx_pico_net_socket_for_handle(handle);
     if (!socket || !port || !address) return -1;
     *port = socket->local_port;
@@ -1029,7 +1029,7 @@ int bmx_stdc_getsockname(int handle, int *port, const BMXPicoString **address) {
     return 0;
 }
 
-int bmx_stdc_getpeername(int handle, int *port, const BMXPicoString **address) {
+int bmx_stdc_getpeername(int handle, int *port, const BMXEmbeddedString **address) {
     BMXPicoSocket *socket = bmx_pico_net_socket_for_handle(handle);
     if (!socket || !port || !address || !socket->connected) return -1;
     *port = socket->remote_port;
@@ -1037,12 +1037,12 @@ int bmx_stdc_getpeername(int handle, int *port, const BMXPicoString **address) {
     return 0;
 }
 
-BMXPicoArray *getaddrinfo_hints(const BMXPicoString *name,
-        const BMXPicoString *service,
+BMXEmbeddedArray *getaddrinfo_hints(const BMXEmbeddedString *name,
+        const BMXEmbeddedString *service,
         BMXPicoAddrInfo *hints) {
-    uint8_t *name_text = bmx_pico_string_to_utf8_string(name);
-    uint8_t *service_text = service == &bmx_pico_empty_string ? NULL :
-        bmx_pico_string_to_utf8_string(service);
+    uint8_t *name_text = bmx_embedded_string_to_utf8_string(name);
+    uint8_t *service_text = service == &bmx_embedded_empty_string ? NULL :
+        bmx_embedded_string_to_utf8_string(service);
     uint16_t port;
     ip_addr_t address;
     bool valid = (!hints || hints->family == BMX_PICO_NET_AF_UNSPEC ||
@@ -1051,35 +1051,35 @@ BMXPicoArray *getaddrinfo_hints(const BMXPicoString *name,
         bmx_pico_net_resolve((const char *)name_text, &address);
     bbMemFree(service_text);
     bbMemFree(name_text);
-    if (!valid) return &bmx_pico_empty_array;
+    if (!valid) return &bmx_embedded_empty_array;
     BMXPicoAddrInfo *info = (BMXPicoAddrInfo *)bmx_pico_net_allocate(sizeof(*info));
-    if (!info) return &bmx_pico_empty_array;
+    if (!info) return &bmx_embedded_empty_array;
     info->family = BMX_PICO_NET_AF_INET;
     info->socket_type = hints ? hints->socket_type : 0;
     info->protocol = hints ? hints->protocol : 0;
     info->flags = hints ? hints->flags : 0;
     info->port = port;
     ip_addr_copy(info->address, address);
-    BMXPicoArray *array = pub_net_TAddrInfo__CreateArray(1);
-    if (array == &bmx_pico_empty_array) {
+    BMXEmbeddedArray *array = pub_net_TAddrInfo__CreateArray(1);
+    if (array == &bmx_embedded_empty_array) {
         bbMemFree(info);
         return array;
     }
-    BMXPicoArray *array_root = array;
-    BMXPicoRootSlot root_slot = {
-        (void *)&array_root, BMX_PICO_ROOT_ARRAY, NULL
+    BMXEmbeddedArray *array_root = array;
+    BMXEmbeddedRootSlot root_slot = {
+        (void *)&array_root, BMX_EMBEDDED_ROOT_ARRAY, NULL
     };
-    BMXPicoRootFrame root_frame;
-    bmx_pico_root_frame_enter(&root_frame, &root_slot, 1);
+    BMXEmbeddedRootFrame root_frame;
+    bmx_embedded_root_frame_enter(&root_frame, &root_slot, 1);
     struct pub_net_TAddrInfo_obj *object = pub_net_TAddrInfo__Create(info, 1);
     if (object) pub_net_TAddrInfo__SetAtIndex(array_root, object, 0);
     else bbMemFree(info);
-    bmx_pico_root_frame_leave(&root_frame);
+    bmx_embedded_root_frame_leave(&root_frame);
     return array_root;
 }
 
-BMXPicoArray *getaddrinfo_(const BMXPicoString *name,
-        const BMXPicoString *service, int family) {
+BMXEmbeddedArray *getaddrinfo_(const BMXEmbeddedString *name,
+        const BMXEmbeddedString *service, int family) {
     BMXPicoAddrInfo hints = {0};
     hints.family = family;
     return getaddrinfo_hints(name, service, &hints);
@@ -1096,23 +1096,23 @@ int bmx_stdc_addrinfo_socktype(BMXPicoAddrInfo *info) { return info ? info->sock
 int bmx_stdc_addrinfo_protocol(BMXPicoAddrInfo *info) { return info ? info->protocol : 0; }
 int bmx_stdc_addrinfo_addrlen(BMXPicoAddrInfo *info) { return info ? 4 : 0; }
 void *bmx_stdc_addrinfo_addr(BMXPicoAddrInfo *info) { return info ? &info->address : NULL; }
-const BMXPicoString *bmx_stdc_addrinfo_hostname(BMXPicoAddrInfo *info, int flags) {
+const BMXEmbeddedString *bmx_stdc_addrinfo_hostname(BMXPicoAddrInfo *info, int flags) {
     (void)flags;
-    return info ? bmx_pico_net_address_string(&info->address) : &bmx_pico_empty_string;
+    return info ? bmx_pico_net_address_string(&info->address) : &bmx_embedded_empty_string;
 }
-const BMXPicoString *bmx_stdc_addrinfo_canonname(BMXPicoAddrInfo *info) {
+const BMXEmbeddedString *bmx_stdc_addrinfo_canonname(BMXPicoAddrInfo *info) {
     return info && info->canonical_name[0] ?
-        bmx_pico_string_from_utf8_string((const uint8_t *)info->canonical_name) :
-        &bmx_pico_empty_string;
+        bmx_embedded_string_from_utf8_string((const uint8_t *)info->canonical_name) :
+        &bmx_embedded_empty_string;
 }
 void bmx_stdc_addrinfo_setflags(BMXPicoAddrInfo *info, int value) { if (info) info->flags = value; }
 void bmx_stdc_addrinfo_setfamily(BMXPicoAddrInfo *info, int value) { if (info) info->family = value; }
 void bmx_stdc_addrinfo_setsocktype(BMXPicoAddrInfo *info, int value) { if (info) info->socket_type = value; }
 void bmx_stdc_addrinfo_setprotocol(BMXPicoAddrInfo *info, int value) { if (info) info->protocol = value; }
 
-int inet_pton_(int family, const BMXPicoString *source, void *destination) {
+int inet_pton_(int family, const BMXEmbeddedString *source, void *destination) {
     if (family != BMX_PICO_NET_AF_INET || !destination) return -1;
-    uint8_t *text = bmx_pico_string_to_utf8_string(source);
+    uint8_t *text = bmx_embedded_string_to_utf8_string(source);
     ip4_addr_t address;
     int result = ip4addr_aton((const char *)text, &address);
     bbMemFree(text);
@@ -1127,9 +1127,9 @@ BMXPicoSockaddrStorage *bmx_stdc_sockaddrestorage_new(void) {
 int bmx_stdc_sockaddrestorage_family(BMXPicoSockaddrStorage *storage) {
     return storage ? storage->family : 0;
 }
-const BMXPicoString *bmx_stdc_sockaddrestorage_address(BMXPicoSockaddrStorage *storage) {
+const BMXEmbeddedString *bmx_stdc_sockaddrestorage_address(BMXPicoSockaddrStorage *storage) {
     return storage ? bmx_pico_net_address_string(&storage->address) :
-        &bmx_pico_empty_string;
+        &bmx_embedded_empty_string;
 }
 void bmx_net_sockaddrestorage_free(BMXPicoSockaddrStorage *storage) {
     bbMemFree(storage);
@@ -1142,10 +1142,14 @@ char *gethostbyaddr_(void *address, int length, int family) {
 
 void bb_net_Startup(void) {}
 
-uint32_t bmx_pico_net_active_socket_count(void) {
+uint32_t bmx_embedded_net_active_socket_count(void) {
     uint32_t count = 0;
     for (uint32_t index = 0; index < BMX_PICO_NET_SOCKET_CAPACITY; ++index) {
         if (bmx_pico_net_sockets[index].active) ++count;
     }
     return count;
+}
+
+uint32_t bmx_pico_net_active_socket_count(void) {
+    return bmx_embedded_net_active_socket_count();
 }

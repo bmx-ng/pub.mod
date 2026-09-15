@@ -177,7 +177,7 @@ int bmx_datetime_convert_to_utc(const SDateTime *date_time, SDateTime *utc) {
     return 0;
 }
 
-const BMXPicoString *bmx_datetime_iso8601(const SDateTime *date_time, int show_milliseconds) {
+const BMXEmbeddedString *bmx_datetime_iso8601(const SDateTime *date_time, int show_milliseconds) {
     char buffer[48];
     size_t length = 0;
     if (!bmx_pico_time_append_number(buffer, sizeof(buffer), &length, date_time->year, 4, '0') ||
@@ -190,11 +190,11 @@ const BMXPicoString *bmx_datetime_iso8601(const SDateTime *date_time, int show_m
         !bmx_pico_time_append_char(buffer, sizeof(buffer), &length, ':') ||
         !bmx_pico_time_append_number(buffer, sizeof(buffer), &length, date_time->minute, 2, '0') ||
         !bmx_pico_time_append_char(buffer, sizeof(buffer), &length, ':') ||
-        !bmx_pico_time_append_number(buffer, sizeof(buffer), &length, date_time->second, 2, '0')) return &bmx_pico_empty_string;
+        !bmx_pico_time_append_number(buffer, sizeof(buffer), &length, date_time->second, 2, '0')) return &bmx_embedded_empty_string;
     if (show_milliseconds && (!bmx_pico_time_append_char(buffer, sizeof(buffer), &length, '.') ||
-        !bmx_pico_time_append_number(buffer, sizeof(buffer), &length, date_time->millisecond, 3, '0'))) return &bmx_pico_empty_string;
+        !bmx_pico_time_append_number(buffer, sizeof(buffer), &length, date_time->millisecond, 3, '0'))) return &bmx_embedded_empty_string;
     if (date_time->utc) {
-        if (!bmx_pico_time_append_char(buffer, sizeof(buffer), &length, 'Z')) return &bmx_pico_empty_string;
+        if (!bmx_pico_time_append_char(buffer, sizeof(buffer), &length, 'Z')) return &bmx_embedded_empty_string;
     } else {
         int offset = date_time->offset + (date_time->dst == 1 ? 60 : 0);
         char sign = offset < 0 ? '-' : '+';
@@ -202,17 +202,17 @@ const BMXPicoString *bmx_datetime_iso8601(const SDateTime *date_time, int show_m
         if (!bmx_pico_time_append_char(buffer, sizeof(buffer), &length, sign) ||
             !bmx_pico_time_append_number(buffer, sizeof(buffer), &length, offset / 60, 2, '0') ||
             !bmx_pico_time_append_char(buffer, sizeof(buffer), &length, ':') ||
-            !bmx_pico_time_append_number(buffer, sizeof(buffer), &length, offset % 60, 2, '0')) return &bmx_pico_empty_string;
+            !bmx_pico_time_append_number(buffer, sizeof(buffer), &length, offset % 60, 2, '0')) return &bmx_embedded_empty_string;
     }
-    return bmx_pico_string_from_utf8_string((const uint8_t *)buffer);
+    return bmx_embedded_string_from_utf8_string((const uint8_t *)buffer);
 }
 
-const BMXPicoString *bmx_current_datetime_format(const BMXPicoString *format) {
+const BMXEmbeddedString *bmx_current_datetime_format(const BMXEmbeddedString *format) {
     SDateTime date_time;
     char buffer[256];
     if (!format || !bmx_pico_calendar_get(&date_time) ||
-        !bmx_pico_time_format(buffer, sizeof(buffer), &date_time, format->buf, format->length)) return &bmx_pico_empty_string;
-    return bmx_pico_string_from_utf8_string((const uint8_t *)buffer);
+        !bmx_pico_time_format(buffer, sizeof(buffer), &date_time, format->buf, format->length)) return &bmx_embedded_empty_string;
+    return bmx_embedded_string_from_utf8_string((const uint8_t *)buffer);
 }
 
 int time_(void *time_pointer) {
@@ -243,7 +243,7 @@ void *localtime_(void *time_pointer) {
     return &result;
 }
 
-int strftime_(char *buffer, int size, const BMXPicoString *format, void *time_pointer) {
+int strftime_(char *buffer, int size, const BMXEmbeddedString *format, void *time_pointer) {
     if (!buffer || size <= 0 || !format || !time_pointer) return 0;
     const struct tm *value = (const struct tm *)time_pointer;
     SDateTime date_time = {
