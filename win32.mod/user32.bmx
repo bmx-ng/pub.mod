@@ -1291,7 +1291,7 @@ Function SetParent_:Byte Ptr( hWnd:Byte Ptr,hWnd2:Byte Ptr )="HWND SetParent(HWN
 Function WindowFromPoint:Byte Ptr( point:Int Ptr )="bmx_win32_WindowFromPoint"
 Function GetKeyState:Short(vkey:Int)="SHORT GetKeyState(int)!"
 
-Function SetWindowsHookExW:Byte Ptr(idHook,lpfn:Byte Ptr,hmod:Byte Ptr,dwThreadId)="HHOOK SetWindowsHookExW(int,HOOKPROC,HINSTANCE,DWORD)!"
+Function SetWindowsHookExW:Byte Ptr(idHook,lpfn:Byte Ptr,hmod:Byte Ptr,dwThreadId:UInt)="HHOOK SetWindowsHookExW(int,HOOKPROC,HINSTANCE,DWORD)!"
 Function CallNextHookEx:LParam(hhk:Byte Ptr,ncode,wp:WParam,lp:LParam)="LRESULT CallNextHookEx(HHOOK,int,WPARAM,LPARAM)!"
 Function UnhookWindowsHookEx(hhk:Byte Ptr)="BBINT UnhookWindowsHookEx(HHOOK)!"
 
