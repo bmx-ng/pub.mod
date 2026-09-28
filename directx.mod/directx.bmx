@@ -1,14 +1,16 @@
 
-Strict
+SuperStrict
 
 Module Pub.DirectX
 
-ModuleInfo "Version: 1.07"
+ModuleInfo "Version: 1.08"
 ModuleInfo "Author: Various"
 ModuleInfo "License: zlib/libpng"
 ModuleInfo "Modserver: BRL"
 ModuleInfo "Credit: Adapted for BlitzMax by Mark Sibly"
 
+ModuleInfo "History: 1.08 Release"
+ModuleInfo "History: SuperStrict declarations; corrected native void returns, handles, BOOL arrays and clip extents"
 ModuleInfo "History: 1.07 Release"
 ModuleInfo "History: Fixed IDirectSound.GetCurrentPosition decl"
 ModuleInfo "History: 1.06 Release"

@@ -1,0 +1,5 @@
+#include <d3d11.h>
+extern "C" const void *bmx_d3d11_iid(int index){
+ static const GUID *const ids[]={&__uuidof(ID3D11DeviceChild),&__uuidof(ID3D11Asynchronous),&__uuidof(ID3D11Query),&__uuidof(ID3D11Resource),&__uuidof(ID3D11View),&__uuidof(ID3D11BlendState),&__uuidof(ID3D11Buffer),&__uuidof(ID3D11ClassInstance),&__uuidof(ID3D11ClassLinkage),&__uuidof(ID3D11CommandList),&__uuidof(ID3D11ComputeShader),&__uuidof(ID3D11Counter),&__uuidof(ID3D11DepthStencilState),&__uuidof(ID3D11DepthStencilView),&__uuidof(ID3D11DomainShader),&__uuidof(ID3D11GeometryShader),&__uuidof(ID3D11HullShader),&__uuidof(ID3D11InputLayout),&__uuidof(ID3D11PixelShader),&__uuidof(ID3D11Predicate),&__uuidof(ID3D11RasterizerState),&__uuidof(ID3D11RenderTargetView),&__uuidof(ID3D11SamplerState),&__uuidof(ID3D11ShaderResourceView),&__uuidof(ID3D11Texture1D),&__uuidof(ID3D11Texture2D),&__uuidof(ID3D11Texture3D),&__uuidof(ID3D11UnorderedAccessView),&__uuidof(ID3D11VertexShader),&__uuidof(ID3D11DeviceContext),&__uuidof(ID3D11Device)};
+ return index>=0&&index<int(sizeof(ids)/sizeof(ids[0]))?ids[index]:nullptr;
+}
