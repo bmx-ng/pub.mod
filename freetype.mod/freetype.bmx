@@ -3,10 +3,12 @@ SuperStrict
 
 Module Pub.FreeType
 
-ModuleInfo "Version: 1.16"
+ModuleInfo "Version: 1.17"
 ModuleInfo "License: FreeType License"
 ModuleInfo "Modserver: BRL"
 
+ModuleInfo "History: 1.17"
+ModuleInfo "History: Link system FreeType on all Linux architectures, including ARM64"
 ModuleInfo "History: 1.16"
 ModuleInfo "History: Added pixel mode retrieval for glyphs"
 ModuleInfo "History: 1.15"
@@ -50,19 +52,7 @@ ftoption.h : FT_RENDER_POOL_SIZE changed to 65536L, was 16384. This appears to b
 
 End Rem
 
-?Linuxx86
-
-ModuleInfo "CC_OPTS: `pkg-config --cflags freetype2`"
-
-Import "-lfreetype"
-
-?Linuxx64
-
-ModuleInfo "CC_OPTS: `pkg-config --cflags freetype2`"
-
-Import "-lfreetype"
-
-?raspberrypi
+?linux
 
 ModuleInfo "CC_OPTS: `pkg-config --cflags freetype2`"
 
