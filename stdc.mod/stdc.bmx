@@ -47,7 +47,7 @@ ModuleInfo "History: 1.05 Release"
 ModuleInfo "History: 1.04 Release"
 ModuleInfo "History: Fixed C Compiler warnings"
 
-?linux
+?linux And Not android
 ModuleInfo "CC_OPTS: -D_FILE_OFFSET_BITS=64"
 ?
 
