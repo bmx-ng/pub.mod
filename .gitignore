@@ -27,6 +27,7 @@
 .generics/
 *.bmxbuild
 *.bmxbuild.stamp
+*.bmxbuild.*
 
 # Extensionless test executables
 **/tests/test
