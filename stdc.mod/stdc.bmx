@@ -106,7 +106,11 @@ Function chmod_:Int( path:String,Mode:Int )
 Function mkdir_:Int( path:String,Mode:Int )
 Function rmdir_:Int( path:String )
 Function rename_:Int( from_path:String,to_path:String )
+?emscripten
+Function remove_:Int( path:String )
+?Not emscripten
 Function remove_( path:String )
+?
 Function opendir_:Byte Ptr( path:String )
 Function closedir_:Int( dir:Byte Ptr )
 Function readdir_:String( dir:Byte Ptr )

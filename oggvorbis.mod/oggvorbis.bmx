@@ -54,7 +54,11 @@ Function Decode_Ogg:Byte Ptr(..
 	reado(buf@Ptr,size,nmemb,src:Object),..
 	seeko(src:Object,offset:Long,whence),..
 	closeo(src:Object),..
+	?emscripten
+	tello:Int(src:Object ),..
+	?Not emscripten
 	tello:Long(src:Object ),..
+	?
 	samples Var,channels Var,freq Var)
 
 Function Read_Ogg(ogg:Byte Ptr,buf:Byte Ptr,size)	'null buffer to close
