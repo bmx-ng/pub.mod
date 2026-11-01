@@ -115,7 +115,7 @@ extern struct pub_net_TAddrInfo_obj *pub_net_TAddrInfo__Create(void *info, int o
 extern BMXEmbeddedArray *pub_net_TAddrInfo__CreateArray(int count);
 extern void pub_net_TAddrInfo__SetAtIndex(BMXEmbeddedArray *array,
     struct pub_net_TAddrInfo_obj *info, int index);
-extern int32_t bmx_pico_wifi_initialized(void) __attribute__((weak));
+extern int32_t bmx_embedded_wifi_initialized(void) __attribute__((weak));
 
 static BMXPicoSocket bmx_pico_net_sockets[BMX_PICO_NET_SOCKET_CAPACITY];
 static BMXPicoDNSRequest bmx_pico_net_dns_request;
@@ -417,7 +417,7 @@ static bool bmx_pico_net_resolve(const char *name, ip_addr_t *address) {
         return true;
     }
     if (ipaddr_aton(name, address)) return IP_IS_V4(address);
-    if (!bmx_pico_wifi_initialized || !bmx_pico_wifi_initialized()) return false;
+    if (!bmx_embedded_wifi_initialized || !bmx_embedded_wifi_initialized()) return false;
     BMXPicoDNSRequest *request = &bmx_pico_net_dns_request;
     if (request->in_progress) return false;
     memset(request, 0, sizeof(*request));
@@ -457,7 +457,7 @@ int socket_(int family, int type, int protocol) {
         return -1;
     if (type != BMX_PICO_NET_SOCK_STREAM && type != BMX_PICO_NET_SOCK_DGRAM)
         return -1;
-    if (!bmx_pico_wifi_initialized || !bmx_pico_wifi_initialized()) return -1;
+    if (!bmx_embedded_wifi_initialized || !bmx_embedded_wifi_initialized()) return -1;
     int32_t handle = -1;
     BMXPicoSocket *socket = bmx_pico_net_allocate_socket(type, &handle);
     if (!socket) return -1;
