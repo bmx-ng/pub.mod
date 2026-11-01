@@ -346,6 +346,14 @@ Function bmx_stdc_getsockname:Int(socket:Long, port:Int Var, address:String Var)
 Function bmx_stdc_getpeername:Int(socket:Long, port:Int Var, address:String Var)
 ?
 
+?not win32
+Rem
+Returns -2 when the operation would block, -1 for an error, or a byte count.
+These calls never wait for socket readiness.
+End Rem
+Function bmx_net_try_send:Int(socket:Int, buffer:Byte Ptr, count:Size_T)
+Function bmx_net_try_recv:Int(socket:Int, buffer:Byte Ptr, count:Size_T)
+?
 ?embedded
 Function bmx_net_read_avail:Int(socket:Int)
 Function bmx_net_set_event_tokens:Int(socket:Int, readableToken:UInt, ..

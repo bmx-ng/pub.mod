@@ -380,6 +380,20 @@ int bmx_net_read_avail(int socket) {
 }
 #endif
 
+#if !defined(_WIN32)
+int bmx_net_try_send(int socket, const void *buffer, size_t count) {
+    int result = send(socket, buffer, count, MSG_DONTWAIT);
+    if (result >= 0) return result;
+    return errno == EAGAIN || errno == EWOULDBLOCK ? -2 : -1;
+}
+
+int bmx_net_try_recv(int socket, void *buffer, size_t count) {
+    int result = recv(socket, buffer, count, MSG_DONTWAIT);
+    if (result >= 0) return result;
+    return errno == EAGAIN || errno == EWOULDBLOCK ? -2 : -1;
+}
+#endif
+
 static int bmx_net_native_family(int family) {
 	switch (family) {
 		case 2:
