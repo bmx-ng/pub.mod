@@ -115,7 +115,7 @@ extern struct pub_net_TAddrInfo_obj *pub_net_TAddrInfo__Create(void *info, int o
 extern BMXEmbeddedArray *pub_net_TAddrInfo__CreateArray(int count);
 extern void pub_net_TAddrInfo__SetAtIndex(BMXEmbeddedArray *array,
     struct pub_net_TAddrInfo_obj *info, int index);
-extern int32_t bmx_pico_wifi_initialized(void) __attribute__((weak));
+extern int32_t bmx_embedded_wifi_initialized(void) __attribute__((weak));
 
 static BMXPicoSocket bmx_pico_net_sockets[BMX_PICO_NET_SOCKET_CAPACITY];
 static BMXPicoDNSRequest bmx_pico_net_dns_request;
@@ -417,7 +417,7 @@ static bool bmx_pico_net_resolve(const char *name, ip_addr_t *address) {
         return true;
     }
     if (ipaddr_aton(name, address)) return IP_IS_V4(address);
-    if (!bmx_pico_wifi_initialized || !bmx_pico_wifi_initialized()) return false;
+    if (!bmx_embedded_wifi_initialized || !bmx_embedded_wifi_initialized()) return false;
     BMXPicoDNSRequest *request = &bmx_pico_net_dns_request;
     if (request->in_progress) return false;
     memset(request, 0, sizeof(*request));
@@ -457,7 +457,7 @@ int socket_(int family, int type, int protocol) {
         return -1;
     if (type != BMX_PICO_NET_SOCK_STREAM && type != BMX_PICO_NET_SOCK_DGRAM)
         return -1;
-    if (!bmx_pico_wifi_initialized || !bmx_pico_wifi_initialized()) return -1;
+    if (!bmx_embedded_wifi_initialized || !bmx_embedded_wifi_initialized()) return -1;
     int32_t handle = -1;
     BMXPicoSocket *socket = bmx_pico_net_allocate_socket(type, &handle);
     if (!socket) return -1;
@@ -838,6 +838,57 @@ int send_(int handle, const char *buffer, size_t size, int flags) {
         bmx_pico_net_notify_error(socket);
     }
     return result == ERR_OK ? count : -1;
+}
+
+/* The managed HTTP service loop needs a bounded operation even when a peer
+   stops reading. Keep the legacy send_/recv_ behaviour for existing callers. */
+int bmx_net_try_send(int handle, const char *buffer, size_t size) {
+    BMXPicoSocket *socket = bmx_pico_net_socket_for_handle(handle);
+    if (!socket || !buffer || socket->type != BMX_PICO_NET_SOCK_STREAM ||
+            socket->send_closed || !socket->connected || !socket->pcb.tcp)
+        return -1;
+    if (!size) return 0;
+    cyw43_arch_lwip_begin();
+    u16_t count = tcp_sndbuf(socket->pcb.tcp);
+    if (count > size) count = (u16_t)size;
+    err_t result = count ? tcp_write(socket->pcb.tcp, buffer, count,
+        TCP_WRITE_FLAG_COPY) : ERR_MEM;
+    if (result == ERR_OK) tcp_output(socket->pcb.tcp);
+    cyw43_arch_lwip_end();
+    if (result == ERR_MEM) return -2;
+    if (result != ERR_OK) {
+        socket->error = result;
+        bmx_pico_net_notify_error(socket);
+        return -1;
+    }
+    return count;
+}
+
+int bmx_net_try_recv(int handle, char *buffer, size_t size) {
+    BMXPicoSocket *socket = bmx_pico_net_socket_for_handle(handle);
+    if (!socket || !buffer || socket->type != BMX_PICO_NET_SOCK_STREAM ||
+            socket->receive_closed) return -1;
+    if (!size) return 0;
+    cyw43_arch_lwip_begin();
+    uint32_t available = socket->tcp_rx_put - socket->tcp_rx_get;
+    if (!available) {
+        int result = socket->remote_closed ? 0 :
+            (socket->error == ERR_OK ? -2 : -1);
+        cyw43_arch_lwip_end();
+        return result;
+    }
+    uint32_t count = available < size ? available : (uint32_t)size;
+    uint32_t source = socket->tcp_rx_get % BMX_PICO_NET_TCP_RX_CAPACITY;
+    uint32_t first = BMX_PICO_NET_TCP_RX_CAPACITY - source;
+    if (first > count) first = count;
+    memcpy(buffer, socket->tcp_rx + source, first);
+    if (first < count) memcpy(buffer + first, socket->tcp_rx, count - first);
+    socket->tcp_rx_get += count;
+    if (socket->tcp_rx_get == socket->tcp_rx_put)
+        socket->readable_notified = false;
+    if (socket->pcb.tcp) tcp_recved(socket->pcb.tcp, (u16_t)count);
+    cyw43_arch_lwip_end();
+    return (int)count;
 }
 
 int recv_(int handle, char *buffer, size_t size, int flags) {
