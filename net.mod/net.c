@@ -650,9 +650,15 @@ ssize_t send_( SOCKET socket,const char *buf,size_t size,int flags ){
 #else
 ssize_t send_( int socket,const char *buf,size_t size,int flags ){
 #endif
+#if defined(BMX_ESP32) && defined(BMX_EMBEDDED_MULTICORE) && BMX_EMBEDDED_MULTICORE
+	int native_safe = bmx_embedded_gc_enter_native_safe_for_buffers(buf, size, NULL, 0u);
+#endif
 	ssize_t result = send(socket, buf, size, flags);
 #if defined(BMX_ESP32)
 	bmx_net_event_reset(socket, BMX_NET_EVENT_WRITABLE);
+#endif
+#if defined(BMX_ESP32) && defined(BMX_EMBEDDED_MULTICORE) && BMX_EMBEDDED_MULTICORE
+	if (native_safe) bmx_embedded_gc_leave_native_safe();
 #endif
 	return result;
 }
@@ -698,9 +704,15 @@ ssize_t recv_( SOCKET socket,char *buf,size_t size,int flags ){
 #else
 ssize_t recv_( int socket,char *buf,size_t size,int flags ){
 #endif
+#if defined(BMX_ESP32) && defined(BMX_EMBEDDED_MULTICORE) && BMX_EMBEDDED_MULTICORE
+	int native_safe = bmx_embedded_gc_enter_native_safe_for_buffers(buf, size, NULL, 0u);
+#endif
 	ssize_t result = recv(socket, buf, size, flags);
 #if defined(BMX_ESP32)
 	bmx_net_event_reset(socket, BMX_NET_EVENT_READABLE);
+#endif
+#if defined(BMX_ESP32) && defined(BMX_EMBEDDED_MULTICORE) && BMX_EMBEDDED_MULTICORE
+	if (native_safe) bmx_embedded_gc_leave_native_safe();
 #endif
 	return result;
 }
