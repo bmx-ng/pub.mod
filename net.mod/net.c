@@ -564,6 +564,12 @@ SOCKET accept_( SOCKET socket,const char *addr,unsigned int *addr_len ){
 int accept_( int socket,const char *addr,unsigned int *addr_len ){
 #endif
 	bmx_socklen_t native_addr_len = addr_len ? (bmx_socklen_t)*addr_len : 0;
+#if defined(BMX_ESP32) && defined(BMX_EMBEDDED_MULTICORE) && BMX_EMBEDDED_MULTICORE
+	int native_safe = (!addr || addr_len) &&
+		bmx_embedded_gc_enter_native_safe_for_buffers(
+			addr, addr_len ? (size_t)native_addr_len : 0u,
+			addr_len, addr_len ? sizeof(*addr_len) : 0u);
+#endif
 	int accepted = accept(socket, (void *)addr, addr_len ? &native_addr_len : NULL);
 	if (addr_len) {
 		*addr_len = (unsigned int)native_addr_len;
@@ -571,6 +577,9 @@ int accept_( int socket,const char *addr,unsigned int *addr_len ){
 #if defined(BMX_ESP32)
 	bmx_net_event_reset(socket, BMX_NET_EVENT_ACCEPT);
 	if (accepted >= 0) bmx_net_socket_opened();
+#endif
+#if defined(BMX_ESP32) && defined(BMX_EMBEDDED_MULTICORE) && BMX_EMBEDDED_MULTICORE
+	if (native_safe) bmx_embedded_gc_leave_native_safe();
 #endif
 	return accepted;
 }
