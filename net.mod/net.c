@@ -580,6 +580,10 @@ SOCKET bmx_stdc_accept_(SOCKET socket, struct sockaddr_storage * storage) {
 #else
 int bmx_stdc_accept_(int socket, struct sockaddr_storage * storage) {
 #endif
+#if defined(BMX_ESP32) && defined(BMX_EMBEDDED_MULTICORE) && BMX_EMBEDDED_MULTICORE
+	int native_safe = bmx_embedded_gc_enter_native_safe_for_buffers(
+		storage, storage ? sizeof(*storage) : 0u, NULL, 0u);
+#endif
 	int accepted;
 	if (storage) {
 		bmx_socklen_t size = sizeof(struct sockaddr_storage );
@@ -590,6 +594,9 @@ int bmx_stdc_accept_(int socket, struct sockaddr_storage * storage) {
 #if defined(BMX_ESP32)
 	bmx_net_event_reset(socket, BMX_NET_EVENT_ACCEPT);
 	if (accepted >= 0) bmx_net_socket_opened();
+#endif
+#if defined(BMX_ESP32) && defined(BMX_EMBEDDED_MULTICORE) && BMX_EMBEDDED_MULTICORE
+	if (native_safe) bmx_embedded_gc_leave_native_safe();
 #endif
 	return accepted;
 }
