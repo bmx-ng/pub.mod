@@ -752,6 +752,10 @@ int recvfrom_( int socket,char *buf,int size,int flags,int *_ip,int *_port){
 	struct	sockaddr_in sa;
 	bmx_socklen_t sasize;
 	int		count;
+#if defined(BMX_ESP32) && defined(BMX_EMBEDDED_MULTICORE) && BMX_EMBEDDED_MULTICORE
+	int native_safe = size >= 0 && bmx_embedded_gc_enter_native_safe_for_three_buffers(
+		buf, (size_t)size, _ip, sizeof(*_ip), _port, sizeof(*_port));
+#endif
 	memset( &sa,0,sizeof(sa) );
 	sasize=sizeof(sa);
 	count=recvfrom(socket,buf,size,flags,(void*)&sa,&sasize);
@@ -760,6 +764,9 @@ int recvfrom_( int socket,char *buf,int size,int flags,int *_ip,int *_port){
 #endif
 	*_ip=ntohl_(sa.sin_addr.s_addr);
 	*_port=ntohs_(sa.sin_port);
+#if defined(BMX_ESP32) && defined(BMX_EMBEDDED_MULTICORE) && BMX_EMBEDDED_MULTICORE
+	if (native_safe) bmx_embedded_gc_leave_native_safe();
+#endif
 	return count;
 }
 
