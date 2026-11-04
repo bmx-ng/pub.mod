@@ -719,7 +719,16 @@ int sendto_( int socket,const char *buf,int size,int flags,const char * dest_ip,
 #endif
 //			memcpy( &sa.sin_addr,dest_ip,4 );
 			sa.sin_port=htons( dest_port );
-			return sendto( socket,buf,size,flags,(void*)&sa,sizeof(sa));
+#if defined(BMX_ESP32) && defined(BMX_EMBEDDED_MULTICORE) && BMX_EMBEDDED_MULTICORE
+			/* The destination has been copied to the stack before parking. */
+			int native_safe = size >= 0 &&
+				bmx_embedded_gc_enter_native_safe_for_buffers(buf, (size_t)size, NULL, 0u);
+#endif
+			int result = sendto( socket,buf,size,flags,(void*)&sa,sizeof(sa));
+#if defined(BMX_ESP32) && defined(BMX_EMBEDDED_MULTICORE) && BMX_EMBEDDED_MULTICORE
+			if (native_safe) bmx_embedded_gc_leave_native_safe();
+#endif
+			return result;
 		}
 		case AF_INET6:
 		{
@@ -729,7 +738,16 @@ int sendto_( int socket,const char *buf,int size,int flags,const char * dest_ip,
 			sa.sin6_port=htons( dest_port );
 			memcpy( &sa.sin6_addr, dest_ip,16 );
 
-			return sendto( socket,buf,size,flags,(void*)&sa,sizeof(sa));
+#if defined(BMX_ESP32) && defined(BMX_EMBEDDED_MULTICORE) && BMX_EMBEDDED_MULTICORE
+			/* The destination has been copied to the stack before parking. */
+			int native_safe = size >= 0 &&
+				bmx_embedded_gc_enter_native_safe_for_buffers(buf, (size_t)size, NULL, 0u);
+#endif
+			int result = sendto( socket,buf,size,flags,(void*)&sa,sizeof(sa));
+#if defined(BMX_ESP32) && defined(BMX_EMBEDDED_MULTICORE) && BMX_EMBEDDED_MULTICORE
+			if (native_safe) bmx_embedded_gc_leave_native_safe();
+#endif
+			return result;
 		}
 	}
 	return 0;
