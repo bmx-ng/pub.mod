@@ -610,6 +610,18 @@ int select_( int n_read,int *r_socks,int n_write,int *w_socks,int n_except,int *
 	int i,n,r;
 	struct timeval tv,*tvp;
 	fd_set r_set,w_set,e_set;
+#if defined(BMX_ESP32) && defined(BMX_EMBEDDED_MULTICORE) && BMX_EMBEDDED_MULTICORE
+	int native_safe = 0;
+	if (n_read >= 0 && n_write >= 0 && n_except >= 0 &&
+		(size_t)n_read <= ((size_t)-1) / sizeof(*r_socks) &&
+		(size_t)n_write <= ((size_t)-1) / sizeof(*w_socks) &&
+		(size_t)n_except <= ((size_t)-1) / sizeof(*e_socks)) {
+		native_safe = bmx_embedded_gc_enter_native_safe_for_three_buffers(
+			r_socks, (size_t)n_read * sizeof(*r_socks),
+			w_socks, (size_t)n_write * sizeof(*w_socks),
+			e_socks, (size_t)n_except * sizeof(*e_socks));
+	}
+#endif
 
 	n=-1;
 
@@ -638,7 +650,12 @@ int select_( int n_read,int *r_socks,int n_write,int *w_socks,int n_except,int *
 	}
 
 	r=select( n+1,&r_set,&w_set,&e_set,tvp );
-	if( r<0 ) return r;
+	if( r<0 ) {
+#if defined(BMX_ESP32) && defined(BMX_EMBEDDED_MULTICORE) && BMX_EMBEDDED_MULTICORE
+		if (native_safe) bmx_embedded_gc_leave_native_safe();
+#endif
+		return r;
+	}
 
 	for( i=0;i<n_read;++i ){
 		if( !FD_ISSET(r_socks[i],&r_set) ) r_socks[i]=0;
@@ -649,6 +666,9 @@ int select_( int n_read,int *r_socks,int n_write,int *w_socks,int n_except,int *
 	for( i=0;i<n_except;++i ){
 		if( !FD_ISSET(e_socks[i],&e_set) ) e_socks[i]=0;
 	}
+#if defined(BMX_ESP32) && defined(BMX_EMBEDDED_MULTICORE) && BMX_EMBEDDED_MULTICORE
+	if (native_safe) bmx_embedded_gc_leave_native_safe();
+#endif
 	return r;
 }
 
