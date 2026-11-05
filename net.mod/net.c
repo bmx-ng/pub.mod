@@ -564,6 +564,12 @@ SOCKET accept_( SOCKET socket,const char *addr,unsigned int *addr_len ){
 int accept_( int socket,const char *addr,unsigned int *addr_len ){
 #endif
 	bmx_socklen_t native_addr_len = addr_len ? (bmx_socklen_t)*addr_len : 0;
+#if defined(BMX_ESP32) && defined(BMX_EMBEDDED_MULTICORE) && BMX_EMBEDDED_MULTICORE
+	int native_safe = (!addr || addr_len) &&
+		bmx_embedded_gc_enter_native_safe_for_buffers(
+			addr, addr_len ? (size_t)native_addr_len : 0u,
+			addr_len, addr_len ? sizeof(*addr_len) : 0u);
+#endif
 	int accepted = accept(socket, (void *)addr, addr_len ? &native_addr_len : NULL);
 	if (addr_len) {
 		*addr_len = (unsigned int)native_addr_len;
@@ -572,6 +578,9 @@ int accept_( int socket,const char *addr,unsigned int *addr_len ){
 	bmx_net_event_reset(socket, BMX_NET_EVENT_ACCEPT);
 	if (accepted >= 0) bmx_net_socket_opened();
 #endif
+#if defined(BMX_ESP32) && defined(BMX_EMBEDDED_MULTICORE) && BMX_EMBEDDED_MULTICORE
+	if (native_safe) bmx_embedded_gc_leave_native_safe();
+#endif
 	return accepted;
 }
 
@@ -579,6 +588,10 @@ int accept_( int socket,const char *addr,unsigned int *addr_len ){
 SOCKET bmx_stdc_accept_(SOCKET socket, struct sockaddr_storage * storage) {
 #else
 int bmx_stdc_accept_(int socket, struct sockaddr_storage * storage) {
+#endif
+#if defined(BMX_ESP32) && defined(BMX_EMBEDDED_MULTICORE) && BMX_EMBEDDED_MULTICORE
+	int native_safe = bmx_embedded_gc_enter_native_safe_for_buffers(
+		storage, storage ? sizeof(*storage) : 0u, NULL, 0u);
 #endif
 	int accepted;
 	if (storage) {
@@ -590,6 +603,9 @@ int bmx_stdc_accept_(int socket, struct sockaddr_storage * storage) {
 #if defined(BMX_ESP32)
 	bmx_net_event_reset(socket, BMX_NET_EVENT_ACCEPT);
 	if (accepted >= 0) bmx_net_socket_opened();
+#endif
+#if defined(BMX_ESP32) && defined(BMX_EMBEDDED_MULTICORE) && BMX_EMBEDDED_MULTICORE
+	if (native_safe) bmx_embedded_gc_leave_native_safe();
 #endif
 	return accepted;
 }
@@ -603,6 +619,18 @@ int select_( int n_read,int *r_socks,int n_write,int *w_socks,int n_except,int *
 	int i,n,r;
 	struct timeval tv,*tvp;
 	fd_set r_set,w_set,e_set;
+#if defined(BMX_ESP32) && defined(BMX_EMBEDDED_MULTICORE) && BMX_EMBEDDED_MULTICORE
+	int native_safe = 0;
+	if (n_read >= 0 && n_write >= 0 && n_except >= 0 &&
+		(size_t)n_read <= ((size_t)-1) / sizeof(*r_socks) &&
+		(size_t)n_write <= ((size_t)-1) / sizeof(*w_socks) &&
+		(size_t)n_except <= ((size_t)-1) / sizeof(*e_socks)) {
+		native_safe = bmx_embedded_gc_enter_native_safe_for_three_buffers(
+			r_socks, (size_t)n_read * sizeof(*r_socks),
+			w_socks, (size_t)n_write * sizeof(*w_socks),
+			e_socks, (size_t)n_except * sizeof(*e_socks));
+	}
+#endif
 
 	n=-1;
 
@@ -631,7 +659,12 @@ int select_( int n_read,int *r_socks,int n_write,int *w_socks,int n_except,int *
 	}
 
 	r=select( n+1,&r_set,&w_set,&e_set,tvp );
-	if( r<0 ) return r;
+	if( r<0 ) {
+#if defined(BMX_ESP32) && defined(BMX_EMBEDDED_MULTICORE) && BMX_EMBEDDED_MULTICORE
+		if (native_safe) bmx_embedded_gc_leave_native_safe();
+#endif
+		return r;
+	}
 
 	for( i=0;i<n_read;++i ){
 		if( !FD_ISSET(r_socks[i],&r_set) ) r_socks[i]=0;
@@ -642,6 +675,9 @@ int select_( int n_read,int *r_socks,int n_write,int *w_socks,int n_except,int *
 	for( i=0;i<n_except;++i ){
 		if( !FD_ISSET(e_socks[i],&e_set) ) e_socks[i]=0;
 	}
+#if defined(BMX_ESP32) && defined(BMX_EMBEDDED_MULTICORE) && BMX_EMBEDDED_MULTICORE
+	if (native_safe) bmx_embedded_gc_leave_native_safe();
+#endif
 	return r;
 }
 
@@ -650,9 +686,15 @@ ssize_t send_( SOCKET socket,const char *buf,size_t size,int flags ){
 #else
 ssize_t send_( int socket,const char *buf,size_t size,int flags ){
 #endif
+#if defined(BMX_ESP32) && defined(BMX_EMBEDDED_MULTICORE) && BMX_EMBEDDED_MULTICORE
+	int native_safe = bmx_embedded_gc_enter_native_safe_for_buffers(buf, size, NULL, 0u);
+#endif
 	ssize_t result = send(socket, buf, size, flags);
 #if defined(BMX_ESP32)
 	bmx_net_event_reset(socket, BMX_NET_EVENT_WRITABLE);
+#endif
+#if defined(BMX_ESP32) && defined(BMX_EMBEDDED_MULTICORE) && BMX_EMBEDDED_MULTICORE
+	if (native_safe) bmx_embedded_gc_leave_native_safe();
 #endif
 	return result;
 }
@@ -677,7 +719,16 @@ int sendto_( int socket,const char *buf,int size,int flags,const char * dest_ip,
 #endif
 //			memcpy( &sa.sin_addr,dest_ip,4 );
 			sa.sin_port=htons( dest_port );
-			return sendto( socket,buf,size,flags,(void*)&sa,sizeof(sa));
+#if defined(BMX_ESP32) && defined(BMX_EMBEDDED_MULTICORE) && BMX_EMBEDDED_MULTICORE
+			/* The destination has been copied to the stack before parking. */
+			int native_safe = size >= 0 &&
+				bmx_embedded_gc_enter_native_safe_for_buffers(buf, (size_t)size, NULL, 0u);
+#endif
+			int result = sendto( socket,buf,size,flags,(void*)&sa,sizeof(sa));
+#if defined(BMX_ESP32) && defined(BMX_EMBEDDED_MULTICORE) && BMX_EMBEDDED_MULTICORE
+			if (native_safe) bmx_embedded_gc_leave_native_safe();
+#endif
+			return result;
 		}
 		case AF_INET6:
 		{
@@ -687,7 +738,16 @@ int sendto_( int socket,const char *buf,int size,int flags,const char * dest_ip,
 			sa.sin6_port=htons( dest_port );
 			memcpy( &sa.sin6_addr, dest_ip,16 );
 
-			return sendto( socket,buf,size,flags,(void*)&sa,sizeof(sa));
+#if defined(BMX_ESP32) && defined(BMX_EMBEDDED_MULTICORE) && BMX_EMBEDDED_MULTICORE
+			/* The destination has been copied to the stack before parking. */
+			int native_safe = size >= 0 &&
+				bmx_embedded_gc_enter_native_safe_for_buffers(buf, (size_t)size, NULL, 0u);
+#endif
+			int result = sendto( socket,buf,size,flags,(void*)&sa,sizeof(sa));
+#if defined(BMX_ESP32) && defined(BMX_EMBEDDED_MULTICORE) && BMX_EMBEDDED_MULTICORE
+			if (native_safe) bmx_embedded_gc_leave_native_safe();
+#endif
+			return result;
 		}
 	}
 	return 0;
@@ -698,9 +758,15 @@ ssize_t recv_( SOCKET socket,char *buf,size_t size,int flags ){
 #else
 ssize_t recv_( int socket,char *buf,size_t size,int flags ){
 #endif
+#if defined(BMX_ESP32) && defined(BMX_EMBEDDED_MULTICORE) && BMX_EMBEDDED_MULTICORE
+	int native_safe = bmx_embedded_gc_enter_native_safe_for_buffers(buf, size, NULL, 0u);
+#endif
 	ssize_t result = recv(socket, buf, size, flags);
 #if defined(BMX_ESP32)
 	bmx_net_event_reset(socket, BMX_NET_EVENT_READABLE);
+#endif
+#if defined(BMX_ESP32) && defined(BMX_EMBEDDED_MULTICORE) && BMX_EMBEDDED_MULTICORE
+	if (native_safe) bmx_embedded_gc_leave_native_safe();
 #endif
 	return result;
 }
@@ -713,6 +779,10 @@ int recvfrom_( int socket,char *buf,int size,int flags,int *_ip,int *_port){
 	struct	sockaddr_in sa;
 	bmx_socklen_t sasize;
 	int		count;
+#if defined(BMX_ESP32) && defined(BMX_EMBEDDED_MULTICORE) && BMX_EMBEDDED_MULTICORE
+	int native_safe = size >= 0 && bmx_embedded_gc_enter_native_safe_for_three_buffers(
+		buf, (size_t)size, _ip, sizeof(*_ip), _port, sizeof(*_port));
+#endif
 	memset( &sa,0,sizeof(sa) );
 	sasize=sizeof(sa);
 	count=recvfrom(socket,buf,size,flags,(void*)&sa,&sasize);
@@ -721,6 +791,9 @@ int recvfrom_( int socket,char *buf,int size,int flags,int *_ip,int *_port){
 #endif
 	*_ip=ntohl_(sa.sin_addr.s_addr);
 	*_port=ntohs_(sa.sin_port);
+#if defined(BMX_ESP32) && defined(BMX_EMBEDDED_MULTICORE) && BMX_EMBEDDED_MULTICORE
+	if (native_safe) bmx_embedded_gc_leave_native_safe();
+#endif
 	return count;
 }
 
