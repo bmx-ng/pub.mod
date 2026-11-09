@@ -840,14 +840,31 @@ int send_(int handle, const char *buffer, size_t size, int flags) {
     return result == ERR_OK ? count : -1;
 }
 
-/* The managed HTTP service loop needs a bounded operation even when a peer
-   stops reading. Keep the legacy send_/recv_ behaviour for existing callers. */
+/* Managed service loops need bounded operations. Keep the legacy blocking
+   send_/recv_ behaviour for existing callers. */
 int bmx_net_try_send(int handle, const char *buffer, size_t size) {
     BMXPicoSocket *socket = bmx_pico_net_socket_for_handle(handle);
-    if (!socket || !buffer || socket->type != BMX_PICO_NET_SOCK_STREAM ||
-            socket->send_closed || !socket->connected || !socket->pcb.tcp)
+    if (!socket || !buffer || socket->send_closed || !socket->connected)
         return -1;
     if (!size) return 0;
+    if (socket->type == BMX_PICO_NET_SOCK_DGRAM) {
+        if (!socket->pcb.udp || size > UINT16_MAX) return -1;
+        cyw43_arch_lwip_begin();
+        struct pbuf *packet = pbuf_alloc(PBUF_TRANSPORT, (u16_t)size, PBUF_RAM);
+        err_t result = packet ? pbuf_take(packet, buffer, (u16_t)size) : ERR_MEM;
+        if (result == ERR_OK) result = udp_sendto(socket->pcb.udp, packet,
+            &socket->remote_address, socket->remote_port);
+        if (packet) pbuf_free(packet);
+        cyw43_arch_lwip_end();
+        if (result == ERR_MEM) return -2;
+        if (result != ERR_OK) {
+            socket->error = result;
+            bmx_pico_net_notify_error(socket);
+            return -1;
+        }
+        return (int)size;
+    }
+    if (!socket->pcb.tcp) return -1;
     cyw43_arch_lwip_begin();
     u16_t count = tcp_sndbuf(socket->pcb.tcp);
     if (count > size) count = (u16_t)size;
@@ -866,10 +883,28 @@ int bmx_net_try_send(int handle, const char *buffer, size_t size) {
 
 int bmx_net_try_recv(int handle, char *buffer, size_t size) {
     BMXPicoSocket *socket = bmx_pico_net_socket_for_handle(handle);
-    if (!socket || !buffer || socket->type != BMX_PICO_NET_SOCK_STREAM ||
-            socket->receive_closed) return -1;
+    if (!socket || !buffer || socket->receive_closed) return -1;
     if (!size) return 0;
     cyw43_arch_lwip_begin();
+    if (socket->type == BMX_PICO_NET_SOCK_DGRAM) {
+        if (socket->udp_rx_put == socket->udp_rx_get) {
+            int result = socket->error == ERR_OK ? -2 : -1;
+            cyw43_arch_lwip_end();
+            return result;
+        }
+        BMXPicoUDPDatagram *datagram =
+            &socket->udp_rx[socket->udp_rx_get % BMX_PICO_NET_UDP_RX_CAPACITY];
+        uint16_t count = datagram->buffer->tot_len < size ?
+            datagram->buffer->tot_len : (uint16_t)size;
+        pbuf_copy_partial(datagram->buffer, buffer, count, 0);
+        pbuf_free(datagram->buffer);
+        memset(datagram, 0, sizeof(*datagram));
+        ++socket->udp_rx_get;
+        if (socket->udp_rx_get == socket->udp_rx_put)
+            socket->readable_notified = false;
+        cyw43_arch_lwip_end();
+        return count;
+    }
     uint32_t available = socket->tcp_rx_put - socket->tcp_rx_get;
     if (!available) {
         int result = socket->remote_closed ? 0 :
