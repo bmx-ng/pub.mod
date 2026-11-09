@@ -16,6 +16,7 @@ extern int bmx_inet_pton(int af, const char *src, void *dst);
 #else
 
 #if defined(BMX_EMBEDDED)
+#include "lwip/opt.h"
 #include "lwip/inet.h"
 #include "lwip/netdb.h"
 #include "lwip/sockets.h"
@@ -30,17 +31,32 @@ extern int bmx_inet_pton(int af, const char *src, void *dst);
 #include <arpa/inet.h>
 #endif
 
+#if defined(BMX_ESP8266) && !LWIP_IPV6
+#define BMX_NET_HAS_IPV6 0
+#else
+#define BMX_NET_HAS_IPV6 1
+#endif
+
+#endif
+
+#ifndef BMX_NET_HAS_IPV6
+#define BMX_NET_HAS_IPV6 1
 #endif
 
 #if defined(BMX_EMBEDDED)
 #include <blitzmax/embedded_runtime.h>
-#if defined(BMX_ESP32)
-#include "esp_err.h"
-#include "esp_netif.h"
+#if defined(BMX_ESP32) || defined(BMX_ESP8266)
+#define BMX_EMBEDDED_LWIP_EVENTS 1
 #include "freertos/FreeRTOS.h"
 #include "freertos/semphr.h"
 #include "freertos/task.h"
 #include <blitzmax/embedded_events.h>
+#endif
+#if defined(BMX_ESP32)
+#include "esp_err.h"
+#include "esp_netif.h"
+#elif defined(BMX_ESP8266)
+#include "tcpip_adapter.h"
 #endif
 typedef const BMXEmbeddedString BBString;
 typedef BMXEmbeddedObject BBObject;
@@ -69,8 +85,8 @@ extern void pub_net_TAddrInfo__SetOwner(BBObject * info, BBObject * owner);
 
 static int bmx_net_native_family(int family);
 
-#if defined(BMX_ESP32)
-static int bmx_net_esp32_initialized;
+#if defined(BMX_EMBEDDED_LWIP_EVENTS)
+static int bmx_net_platform_initialized;
 
 #define BMX_NET_EVENT_SOCKET_CAPACITY 16
 #define BMX_NET_EVENT_READABLE 1u
@@ -96,25 +112,32 @@ static int bmx_net_listener_sockets[BMX_NET_EVENT_SOCKET_CAPACITY];
 static SemaphoreHandle_t bmx_net_event_mutex;
 static TaskHandle_t bmx_net_event_task_handle;
 static uint32_t bmx_net_active_socket_count;
+#if defined(BMX_ESP32)
 static portMUX_TYPE bmx_net_socket_count_lock = portMUX_INITIALIZER_UNLOCKED;
+#define BMX_NET_COUNT_LOCK() portENTER_CRITICAL(&bmx_net_socket_count_lock)
+#define BMX_NET_COUNT_UNLOCK() portEXIT_CRITICAL(&bmx_net_socket_count_lock)
+#else
+#define BMX_NET_COUNT_LOCK() taskENTER_CRITICAL()
+#define BMX_NET_COUNT_UNLOCK() taskEXIT_CRITICAL()
+#endif
 
 static void bmx_net_socket_opened(void) {
-	portENTER_CRITICAL(&bmx_net_socket_count_lock);
+	BMX_NET_COUNT_LOCK();
 	++bmx_net_active_socket_count;
-	portEXIT_CRITICAL(&bmx_net_socket_count_lock);
+	BMX_NET_COUNT_UNLOCK();
 }
 
 static void bmx_net_socket_closed(void) {
-	portENTER_CRITICAL(&bmx_net_socket_count_lock);
+	BMX_NET_COUNT_LOCK();
 	if (bmx_net_active_socket_count) --bmx_net_active_socket_count;
-	portEXIT_CRITICAL(&bmx_net_socket_count_lock);
+	BMX_NET_COUNT_UNLOCK();
 }
 
 uint32_t bmx_embedded_net_active_socket_count(void) {
 	uint32_t count;
-	portENTER_CRITICAL(&bmx_net_socket_count_lock);
+	BMX_NET_COUNT_LOCK();
 	count = bmx_net_active_socket_count;
-	portEXIT_CRITICAL(&bmx_net_socket_count_lock);
+	BMX_NET_COUNT_UNLOCK();
 	return count;
 }
 
@@ -263,11 +286,15 @@ static int bmx_net_event_initialize(void) {
 	return 1;
 }
 
-static int bmx_net_esp32_initialize(void) {
-	if (bmx_net_esp32_initialized) return 0;
+static int bmx_net_platform_initialize(void) {
+	if (bmx_net_platform_initialized) return 0;
+#if defined(BMX_ESP32)
 	esp_err_t result = esp_netif_init();
 	if (result != ESP_OK && result != ESP_ERR_INVALID_STATE) return -1;
-	bmx_net_esp32_initialized = 1;
+#else
+	tcpip_adapter_init();
+#endif
+	bmx_net_platform_initialized = 1;
 	return 0;
 }
 
@@ -348,8 +375,8 @@ SOCKET socket_( int addr_type,int comm_type,int protocol ){
 	return socket( bmx_net_native_family(addr_type),comm_type,protocol );
 #else
 int socket_( int addr_type,int comm_type,int protocol ){
-#if defined(BMX_ESP32)
-	if (bmx_net_esp32_initialize() != 0) return -1;
+#if defined(BMX_EMBEDDED_LWIP_EVENTS)
+	if (bmx_net_platform_initialize() != 0) return -1;
 	int result = socket( bmx_net_native_family(addr_type),comm_type,protocol );
 	if (result >= 0) bmx_net_socket_opened();
 	return result;
@@ -364,7 +391,7 @@ void closesocket_( SOCKET s ){
 	closesocket( s );
 #else
 void closesocket_( int s ){
-#if defined(BMX_ESP32)
+#if defined(BMX_EMBEDDED_LWIP_EVENTS)
 	bmx_net_listener_unmark(s);
 	bmx_net_event_remove(s);
 	bmx_net_socket_closed();
@@ -438,6 +465,7 @@ int bind_( int socket,int addr_type,int port ){
 			sa.sin_port=htons( port );
 			return bind( socket,(void*)&sa,sizeof(sa) );
 		}
+#if BMX_NET_HAS_IPV6
 		case AF_INET6:
 		{
 			struct sockaddr_in6 sa;
@@ -447,6 +475,7 @@ int bind_( int socket,int addr_type,int port ){
 			sa.sin6_port=htons( port );
 			return bind( socket,(void*)&sa,sizeof(sa) );
 		}
+#endif
 		default:
 			return -1;
 	}
@@ -540,7 +569,7 @@ int connect_( SOCKET socket, struct addrinfo * info ){
 int connect_( int socket, struct addrinfo * info ){
 #endif
 	int result = connect(socket, info->ai_addr, info->ai_addrlen);
-#if defined(BMX_ESP32)
+#if defined(BMX_EMBEDDED_LWIP_EVENTS)
 	bmx_net_event_reset(socket, BMX_NET_EVENT_WRITABLE);
 #endif
 	return result;
@@ -552,7 +581,7 @@ int listen_( SOCKET socket,int backlog ){
 int listen_( int socket,int backlog ){
 #endif
 	int result = listen(socket, backlog);
-#if defined(BMX_ESP32)
+#if defined(BMX_EMBEDDED_LWIP_EVENTS)
 	if (result == 0) bmx_net_listener_mark(socket);
 #endif
 	return result;
@@ -574,7 +603,7 @@ int accept_( int socket,const char *addr,unsigned int *addr_len ){
 	if (addr_len) {
 		*addr_len = (unsigned int)native_addr_len;
 	}
-#if defined(BMX_ESP32)
+#if defined(BMX_EMBEDDED_LWIP_EVENTS)
 	bmx_net_event_reset(socket, BMX_NET_EVENT_ACCEPT);
 	if (accepted >= 0) bmx_net_socket_opened();
 #endif
@@ -600,7 +629,7 @@ int bmx_stdc_accept_(int socket, struct sockaddr_storage * storage) {
 	} else {
 		accepted = accept(socket, NULL, NULL);
 	}
-#if defined(BMX_ESP32)
+#if defined(BMX_EMBEDDED_LWIP_EVENTS)
 	bmx_net_event_reset(socket, BMX_NET_EVENT_ACCEPT);
 	if (accepted >= 0) bmx_net_socket_opened();
 #endif
@@ -690,7 +719,7 @@ ssize_t send_( int socket,const char *buf,size_t size,int flags ){
 	int native_safe = bmx_embedded_gc_enter_native_safe_for_buffers(buf, size, NULL, 0u);
 #endif
 	ssize_t result = send(socket, buf, size, flags);
-#if defined(BMX_ESP32)
+#if defined(BMX_EMBEDDED_LWIP_EVENTS)
 	bmx_net_event_reset(socket, BMX_NET_EVENT_WRITABLE);
 #endif
 #if defined(BMX_ESP32) && defined(BMX_EMBEDDED_MULTICORE) && BMX_EMBEDDED_MULTICORE
@@ -730,6 +759,7 @@ int sendto_( int socket,const char *buf,int size,int flags,const char * dest_ip,
 #endif
 			return result;
 		}
+#if BMX_NET_HAS_IPV6
 		case AF_INET6:
 		{
 			struct sockaddr_in6 sa;
@@ -749,6 +779,7 @@ int sendto_( int socket,const char *buf,int size,int flags,const char * dest_ip,
 #endif
 			return result;
 		}
+#endif
 	}
 	return 0;
 }
@@ -762,7 +793,7 @@ ssize_t recv_( int socket,char *buf,size_t size,int flags ){
 	int native_safe = bmx_embedded_gc_enter_native_safe_for_buffers(buf, size, NULL, 0u);
 #endif
 	ssize_t result = recv(socket, buf, size, flags);
-#if defined(BMX_ESP32)
+#if defined(BMX_EMBEDDED_LWIP_EVENTS)
 	bmx_net_event_reset(socket, BMX_NET_EVENT_READABLE);
 #endif
 #if defined(BMX_ESP32) && defined(BMX_EMBEDDED_MULTICORE) && BMX_EMBEDDED_MULTICORE
@@ -786,7 +817,7 @@ int recvfrom_( int socket,char *buf,int size,int flags,int *_ip,int *_port){
 	memset( &sa,0,sizeof(sa) );
 	sasize=sizeof(sa);
 	count=recvfrom(socket,buf,size,flags,(void*)&sa,&sasize);
-#if defined(BMX_ESP32)
+#if defined(BMX_EMBEDDED_LWIP_EVENTS)
 	bmx_net_event_reset(socket, BMX_NET_EVENT_READABLE);
 #endif
 	*_ip=ntohl_(sa.sin_addr.s_addr);
@@ -849,7 +880,7 @@ int getsockopt_( int socket,int level,int optname,void *optval,int *count){
 #else
 	socklen_t length = (socklen_t)*count;
 	int result = getsockopt(socket, level, optname, optval, &length);
-#if defined(BMX_ESP32)
+#if defined(BMX_EMBEDDED_LWIP_EVENTS)
 	if (level == SOL_SOCKET && optname == SO_ERROR)
 		bmx_net_event_reset(socket, BMX_NET_EVENT_ERROR);
 #endif
@@ -1029,9 +1060,12 @@ BBString * bmx_stdc_addrinfo_hostname(struct addrinfo * info, int flags) {
 	const void * address = NULL;
 	if (info->ai_family == AF_INET) {
 		address = &((const struct sockaddr_in *)info->ai_addr)->sin_addr;
-	} else if (info->ai_family == AF_INET6) {
+	}
+#if BMX_NET_HAS_IPV6
+	else if (info->ai_family == AF_INET6) {
 		address = &((const struct sockaddr_in6 *)info->ai_addr)->sin6_addr;
 	}
+#endif
 	if (!address || !inet_ntop(info->ai_family, address, host, sizeof(host))) {
 		return &bbEmptyString;
 	}
@@ -1085,13 +1119,16 @@ BBString * bmx_stdc_sockaddrestorage_address(struct sockaddr_storage * storage) 
 
 #else
 
-	char add[256];
+	char add[256] = {0};
 
 	if (storage->ss_family == AF_INET) {
 		inet_ntop(storage->ss_family, &((struct sockaddr_in*)storage)->sin_addr, add, sizeof(add));
-	} else {
+	}
+#if BMX_NET_HAS_IPV6
+	else if (storage->ss_family == AF_INET6) {
 		inet_ntop(storage->ss_family, &((struct sockaddr_in6*)storage)->sin6_addr, add, sizeof(add));
 	}
+#endif
 
 	address = bbStringFromCString(add);
 
@@ -1113,9 +1150,12 @@ int bmx_stdc_getsockname(int socket, int * port, BBSTRING * address) {
 	if (res >= 0) {
 		if (storage.ss_family == AF_INET) {
 			*port = ntohs(((struct sockaddr_in*)&storage)->sin_port);
-		} else {
+		}
+#if BMX_NET_HAS_IPV6
+		else if (storage.ss_family == AF_INET6) {
 			*port = ntohs(((struct sockaddr_in6*)&storage)->sin6_port);
 		}
+#endif
 
 		*address = bmx_stdc_sockaddrestorage_address(&storage);
 	}
@@ -1136,9 +1176,12 @@ int bmx_stdc_getpeername(int socket, int * port, BBSTRING * address) {
 	if (res >= 0) {
 		if (storage.ss_family == AF_INET) {
 			*port = ntohs(((struct sockaddr_in*)&storage)->sin_port);
-		} else {
+		}
+#if BMX_NET_HAS_IPV6
+		else if (storage.ss_family == AF_INET6) {
 			*port = ntohs(((struct sockaddr_in6*)&storage)->sin6_port);
 		}
+#endif
 
 		*address = bmx_stdc_sockaddrestorage_address(&storage);
 	}
