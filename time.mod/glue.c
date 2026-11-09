@@ -71,6 +71,27 @@ typedef struct {
 	int dst;
 } SDateTime;
 
+#if defined(BMX_ESP8266)
+static int64_t bmx_days_from_civil(int year, unsigned month, unsigned day) {
+	year -= month <= 2;
+	const int era = (year >= 0 ? year : year - 399) / 400;
+	const unsigned year_of_era = (unsigned)(year - era * 400);
+	const unsigned adjusted_month = month > 2 ? month - 3u : month + 9u;
+	const unsigned day_of_year = (153u * adjusted_month + 2u) / 5u + day - 1u;
+	const unsigned day_of_era = year_of_era * 365u + year_of_era / 4u - year_of_era / 100u + day_of_year;
+	return (int64_t)era * 146097 + (int64_t)day_of_era - 719468;
+}
+
+static time_t bmx_timegm(struct tm * value) {
+	int64_t seconds = bmx_days_from_civil(value->tm_year + 1900,
+		(unsigned)value->tm_mon + 1u, (unsigned)value->tm_mday) * 86400;
+	seconds += (int64_t)value->tm_hour * 3600 + (int64_t)value->tm_min * 60 + value->tm_sec;
+	return (time_t)seconds;
+}
+#else
+#define bmx_timegm timegm
+#endif
+
 #if defined(_WIN32) || defined(_WIN64)
 int bmx_calc_timeoffset_mins(int *dst) {
 	TIME_ZONE_INFORMATION tz;
@@ -133,7 +154,7 @@ BBULONG bmx_current_unix_time() {
 #else
 int bmx_calc_timeoffset_mins(time_t rawtime, const struct tm * local_tm) {
 	struct tm local_as_utc = *local_tm;
-	time_t local_epoch = timegm(&local_as_utc);
+	time_t local_epoch = bmx_timegm(&local_as_utc);
 	if (local_epoch == (time_t)-1) {
 		return 0;
 	}
@@ -280,7 +301,7 @@ time_t bmx_datetime_to_time_t(const SDateTime * dt) {
     #if defined(_WIN32) || defined(_WIN64)
         ts = _mkgmtime(&t);
     #else
-        ts = timegm(&t);
+		ts = bmx_timegm(&t);
     #endif
         if (ts == -1) {
             return -1;
@@ -296,7 +317,7 @@ time_t bmx_datetime_to_time_t(const SDateTime * dt) {
     #if defined(_WIN32) || defined(_WIN64)
         ts = _mkgmtime(&t);
     #else
-        ts = timegm(&t);
+		ts = bmx_timegm(&t);
     #endif
 
         if (ts == -1) {
@@ -312,8 +333,9 @@ BBLONG bmx_datetime_to_epoch(const SDateTime * dt) {
 }
 
 int bmx_datetime_convert_to_utc(const SDateTime * dt, SDateTime * dt_utc) {
-   if (!dt || !dt_utc)
-        return -1; // Return error if either pointer is NULL
+	if (!dt || !dt_utc) {
+		return -1; // Return error if either pointer is NULL
+	}
 
 	if (dt->utc == 1) {
 		*dt_utc = *dt;
