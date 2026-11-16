@@ -18,7 +18,9 @@ ModuleInfo "History: Added a compact Pico calendar backend"
 
 ?pico
 Import "glue_pico.c"
-?Not pico
+?nrf52
+Import "glue_nrf52.c"
+?Not pico And Not nrf52
 Import "glue.c"
 ?
 
